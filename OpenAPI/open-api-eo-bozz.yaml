@@ -1,0 +1,740 @@
+openapi: 3.0.0
+info:
+  description: |
+    Dokumen Open API Aplikasi Alta Immersive Dashboard
+  version: "1.0.0"
+  title: Immersive Dashboard App Project
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license: 
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: Base URL Server GCP
+    url: http://54.179.170.113:8000
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/YUSNARSETIYADI150403/OPEN-API-DASHBOARD/1.0.0
+  - description: BE servers
+    url: https://{environment}.api.alta.id
+    variables:
+      environment:
+        default: dev
+        enum:
+          - "dev"
+          - "prod"
+tags:
+  - name: Auth
+    description:  API mengelola fitur Auth
+  - name: Users 
+    description: API mengelola fitur User  
+  - name: Classes
+    description:  API mengelola fitur Class  
+  - name: Mentees
+    description:  API mengelola fitur Mentee
+  - name: Logs
+    description:  API mengelola fitur Log / Feedback mentee
+  - name: Data
+    description:  API mengelola data statik yang dibutuhkan aplikasi
+
+
+paths:
+
+### Endpoint Auth
+  /login:
+    post:
+      summary: "Login User"
+      tags:
+      - "Auth"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                "email":
+                  type: string
+                "password":
+                  type: string
+            example:
+              email: "budi123@gmail.com"
+              password: "123"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "Login Success"
+                data:
+                  id: 1
+                  full_name: "Budiman"
+                  email: "budi123@gmail.com"
+                  team: "Academic"
+                  role: "User"
+                  status: "Active"
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzAwMzYwMjcsInJvbGUiOiJ1c2VyIiwidXNlcklkIjoxfQ.pT-FmSraUUb8HY73ofYbbt3vFgbej0XaHP9VMas8Q44"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Users
+  /users:
+    post:
+      tags:
+        - Users
+      summary: "Create User" 
+      description: "Register User with Role = User."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              full_name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+              team: "Academic"
+              status: "Active" 
+      responses:
+        '201':
+          description: "Success Create User"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "User successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+    get:
+      tags:
+        - Users
+      summary: "Get All Users And Search by name"
+      description: "Get all users and can use query parameter to search. Input using lowercase"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ""
+          description: "No value in parameter."
+          required: false
+          in: query
+          schema:
+            type: string
+            example: ""
+        - name: name
+          description: "nama user"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "budiman"
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all users"
+                  data:
+                    - id: 1
+                      full_name: "Budiman"
+                      email: "budi123@gmail.com"
+                      team: "Academic"
+                      role: "User"
+                      status: "Active" 
+                    - id: 2
+                      full_name: "Jasiman"
+                      email: "Jasiman123@gmail.com"
+                      team: "Academic"
+                      role: "Admin"
+                      status: "Active" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: "Get User by Id"
+      description: "Get data user using id user at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id user to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id user 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get User by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get User by Id"
+                  data:
+                    id: 1
+                    full_name: "Jasiman"
+                    email: "Jasiman123@gmail.com"
+                    team: "Academic"
+                    role: "User"
+                    status: "Active" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - Users
+      summary: "Update User"
+      description: "Update User using request body and using id for reference at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id user to update data"
+          required: true
+          in: path
+          schema:
+            description: "Id user 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              full_name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+              team: "Academic"
+              status: "Active" 
+      responses:
+        '200':
+          description: "Success update User"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update user."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    delete:
+      tags:
+        - Users
+      summary: "Delete User"
+      description: "Delete User using id at path parameter as reference."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id user to delete data."
+          required: true
+          in: path
+          schema:
+            description: "Id user 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Delete User."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete user"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+####################################
+#  COMPONENTS
+####################################
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT Token that generate after login."
+
+  schemas:
+
+### User Schemas
+    "GetUserObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "full_name":
+          type: string
+        "email":
+          type: string
+        "team":
+          type: string
+        "role":
+          type: string
+        "status":
+          type: string    
+    "ArrayUserObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/GetUserObject"
+    "InsertUserObject":
+      type: object
+      properties:
+        "full_name":
+          type: string
+        "email":
+          type: string
+        "password":
+          type: string
+        "team":
+          type: string
+        "status":
+          type: string  
+    "EditUserObject":
+      type: object
+      properties:
+        "full_name":
+          type: string
+        "email":
+          type: string
+        "password":
+          type: string
+        "team":
+          type: string
+        "status":
+          type: string
+
+### Class Schemas
+    "GetClassObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "name":
+          type: string
+        "user_id":
+          type: string
+    "ArrayClassObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/GetClassObject"
+    "InsertClassObject":
+      type: object
+      properties:
+        "name":
+          type: string
+        "user_id":
+          type: string
+    "EditClassObject":
+      type: object
+      properties:
+        "name":
+          type: string
+        "user_id":
+          type: string 
+
+### Mentee Schemas
+    "GetMenteeListObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "name":
+          type: string
+        "class_name":
+          type: string
+        "status":
+          type: string
+        "education_type":
+          type: string    
+        "gender":
+          type: string
+        "class_id":
+          type: string      
+    "ArrayMenteeListObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/GetMenteeListObject"
+    "GetMenteeObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "name":
+          type: string
+        "status":
+          type: string
+        "gender":
+          type: string
+        "nickname":
+          type: string
+        "address":
+          type: string    
+        "home_address":
+          type: string    
+        "email":
+          type: string    
+        "telegram":
+          type: string    
+        "discord":
+          type: string    
+        "phone":
+          type: string    
+        "emergency_name":
+          type: string    
+        "emergency_phone":
+          type: string    
+        "emergency_status":
+          type: string    
+        "education_type":
+          type: string    
+        "education_major":
+          type: string    
+        "education_graduate":
+          type: string    
+        "class":
+          type: string      
+        "class_id":
+          type: integer 
+        "logs":
+          type: array
+          items:
+            $ref: "#/components/schemas/ArrayLogObj"  
+    "ArrayMenteeObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/GetMenteeObject"
+    "InsertMenteeObject":
+      type: object
+      properties:
+        "name":
+          type: string
+        "status":
+          type: string
+        "gender":
+          type: string
+        "nickname":
+          type: string
+        "address":
+          type: string    
+        "home_address":
+          type: string    
+        "email":
+          type: string    
+        "telegram":
+          type: string    
+        "discord":
+          type: string    
+        "phone":
+          type: string    
+        "emergency_name":
+          type: string    
+        "emergency_phone":
+          type: string    
+        "emergency_status":
+          type: string    
+        "education_type":
+          type: string    
+        "education_major":
+          type: string    
+        "education_graduate":
+          type: string    
+        "class_id":
+          type: string   
+    "EditMenteeObject":
+      type: object
+      properties:
+        "name":
+          type: string
+        "status":
+          type: string
+        "gender":
+          type: string
+        "nickname":
+          type: string
+        "address":
+          type: string    
+        "home_address":
+          type: string    
+        "email":
+          type: string    
+        "telegram":
+          type: string    
+        "discord":
+          type: string    
+        "phone":
+          type: string    
+        "emergency_name":
+          type: string    
+        "emergency_phone":
+          type: string    
+        "emergency_status":
+          type: string    
+        "education_type":
+          type: string    
+        "education_major":
+          type: string    
+        "education_graduate":
+          type: string    
+        "class_id":
+          type: string    
+
+### Log Schemas
+    "GetLogObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "title":
+          type: string
+        "fullname_user":
+          type: string
+        "created_date":
+          type: string
+        "feedback":
+          type: string  
+        "status":
+          type: string  
+        "mentee_id":
+          type: integer  
+        "user_id":
+          type: integer  
+    "ArrayLogObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/GetLogObject"
+    "InsertLogObject":
+      type: object
+      properties:
+        "title":
+          type: string
+        "feedback":
+          type: string  
+        "status":
+          type: string  
+        "mentee_id":
+          type: integer  
+        "user_id":
+          type: integer  
+    "EditLogObject":
+      type: object
+      properties:
+        "title":
+          type: string
+        "feedback":
+          type: string  
+        "status":
+          type: string  
+        "mentee_id":
+          type: integer  
+        "user_id":
+          type: integer  
+
+### Other Schemas
+    "ResponseWithoutData":
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    "ResponseWithData":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          type: object
+    "SuccesArrayUserResult":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrayUserObj"
+    "SuccesArrayClassResult":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrayClassObj" 
+    "SuccesArrayMenteeListResult":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrayMenteeListObj" 
+    "SuccessMenteeResult":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          $ref: "#/components/schemas/GetMenteeObject" 
+    "SuccesArrayMenteeResult":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrayMenteeObj" 
+    "SuccesArrayLogResult":
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrayLogObj" 
+
+### Responses Schemas
+  responses:
+    '200':
+      description: "Success Process Data"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+              data:
+                type: object
+    '201':
+      description: "Success Create Data"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+              data:
+                type: object
+    '400':
+      description: "Wrong Request From User"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. Please check your input."
+    '401':
+      description: "Authorization information is missing or invalid."
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. User not authorized for this request."
+    '404':
+      description: "Page not found or wrong url. Please check again."
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. User not authorized for this request."
+    '500':
+      description: "Error process on server"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. Please check server."
