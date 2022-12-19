@@ -15,7 +15,6 @@ import (
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
 	userRepoFactory := userRepo.New(db)
-	// userRepoFactory := userRepo.NewRaw(db)
 	userServiceFactory := userService.New(userRepoFactory)
 	userDelivery.New(userServiceFactory, e)
 
