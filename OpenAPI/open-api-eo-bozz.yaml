@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
   description: |
-    Dokumen Open API Aplikasi Alta Immersive Dashboard
+    Document Open API EO-Bozz
   version: "1.0.0"
-  title: Immersive Dashboard App Project
+  title: EO-Bozz
   termsOfService: 'http://swagger.io/terms/'
   contact:
     email: apiteam@swagger.io
@@ -15,7 +15,7 @@ servers:
   - description: Base URL Server GCP
     url: http://54.179.170.113:8000
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/YUSNARSETIYADI150403/OPEN-API-DASHBOARD/1.0.0
+    url: https://virtserver.swaggerhub.com/YUSNARSETIYADI150403_1/EO-Bozz/1.0.0
   - description: BE servers
     url: https://{environment}.api.alta.id
     variables:
@@ -29,14 +29,22 @@ tags:
     description:  API mengelola fitur Auth
   - name: Users 
     description: API mengelola fitur User  
-  - name: Classes
-    description:  API mengelola fitur Class  
-  - name: Mentees
-    description:  API mengelola fitur Mentee
-  - name: Logs
-    description:  API mengelola fitur Log / Feedback mentee
-  - name: Data
-    description:  API mengelola data statik yang dibutuhkan aplikasi
+  - name: Clients
+    description:  API mengelola fitur Client
+  - name: Partners
+    description:  API mengelola fitur Partners
+  - name: Services
+    description:  API mengelola fitur Services
+  - name: Additionals
+    description:  API mengelola fitur Additionals
+  - name: Orders
+    description: API mengelola fitur Orders
+  - name: Reviews
+    description: API mengelola fitur Reviews
+  - name: Discussions
+    description: API mengelola fitur Discussions
+  - name: Withdraw-funds
+    description: API mengelola fitur Withdraw-funds
 
 
 paths:
@@ -73,11 +81,9 @@ paths:
                 message: "Login Success"
                 data:
                   id: 1
-                  full_name: "Budiman"
+                  name: "Budiman"
                   email: "budi123@gmail.com"
-                  team: "Academic"
                   role: "User"
-                  status: "Active"
                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzAwMzYwMjcsInJvbGUiOiJ1c2VyIiwidXNlcklkIjoxfQ.pT-FmSraUUb8HY73ofYbbt3vFgbej0XaHP9VMas8Q44"
         "400" :
           $ref : "#/components/responses/400"  
@@ -93,7 +99,7 @@ paths:
       tags:
         - Users
       summary: "Create User" 
-      description: "Register User with Role = User."
+      description: "Register User with Role = Admin."
       requestBody:
         required: true
         content:
@@ -101,11 +107,9 @@ paths:
             schema:
               $ref: "#/components/schemas/InsertUserObject"
             example:
-              full_name: "Budiman"
+              name: "Budiman"
               email: "budi123@gmail.com"
               password: "123"
-              team: "Academic"
-              status: "Active" 
       responses:
         '201':
           description: "Success Create User"
@@ -124,28 +128,14 @@ paths:
           $ref : "#/components/responses/404"  
         '500':
           $ref: "#/components/responses/500"
+
     get:
       tags:
         - Users
-      summary: "Get All Users And Search by name"
-      description: "Get all users and can use query parameter to search. Input using lowercase"
+      summary: "Get All Users"
+      description: "Get all users"
       security:
         - JWTAuth: []
-      parameters:
-        - name: ""
-          description: "No value in parameter."
-          required: false
-          in: query
-          schema:
-            type: string
-            example: ""
-        - name: name
-          description: "nama user"
-          required: false
-          in: query
-          schema:
-            type: string
-            example: "budiman"
       responses:
         '200':
           description: A list of users
@@ -158,17 +148,75 @@ paths:
                   message: "Success get all users"
                   data:
                     - id: 1
-                      full_name: "Budiman"
+                      name: "Budiman"
                       email: "budi123@gmail.com"
-                      team: "Academic"
-                      role: "User"
-                      status: "Active" 
-                    - id: 2
-                      full_name: "Jasiman"
-                      email: "Jasiman123@gmail.com"
-                      team: "Academic"
                       role: "Admin"
-                      status: "Active" 
+                    - id: 2
+                      name: "Jasiman"
+                      email: "Jasiman123@gmail.com"
+                      role: "Admin"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    put:
+      tags:
+        - Users
+      summary: "Update User"
+      description: "Update User currently logged in"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+      responses:
+        '200':
+          description: "Success update User"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update user."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    delete:
+      tags:
+        - Users
+      summary: "Delete User"
+      description: "Delete User currently logged in"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: "Success Delete User."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete user"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -207,11 +255,9 @@ paths:
                   message: "Success Get User by Id"
                   data:
                     id: 1
-                    full_name: "Jasiman"
+                    name: "Jasiman"
                     email: "Jasiman123@gmail.com"
-                    team: "Academic"
                     role: "User"
-                    status: "Active" 
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -220,22 +266,15 @@ paths:
           $ref : "#/components/responses/404"  
         '500':
           $ref: "#/components/responses/500"
+
+  /users/password:
     put:
       tags:
         - Users
-      summary: "Update User"
-      description: "Update User using request body and using id for reference at path parameter."
+      summary: "Update password User"
+      description: "Update password User currently logged in"
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id user to update data"
-          required: true
-          in: path
-          schema:
-            description: "Id user 1"
-            type: integer
-            example: 1
       requestBody:
         required: true
         content:
@@ -243,21 +282,153 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
-              full_name: "Budiman"
               email: "budi123@gmail.com"
               password: "123"
-              team: "Academic"
-              status: "Active" 
       responses:
         '200':
-          description: "Success update User"
+          description: "Success password update User"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseWithoutData" 
               example:
                   status: "Success"
-                  message: "Success Update user."
+                  message: "Success Update password user."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+        
+### Enpoint Client
+  /clients:
+    post:
+      tags:
+        - Clients
+      summary: "Create Client" 
+      description: "Register Client with Role = Client."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+              gender: "laki-laki"
+              address: "tangerang"
+              phone: "08123"
+      responses:
+        '201':
+          description: "Success Create User"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "client successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Clients
+      summary: "Get All Clients And Search by name"
+      description: "Get all Clients and can use query parameter to search. Input using lowercase"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ""
+          description: "No value in parameter."
+          required: false
+          in: query
+          schema:
+            type: string
+            example: ""
+        - name: name
+          description: "nama user"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "budiman"
+      responses:
+        '200':
+          description: A list of clients
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all clients"
+                  data:
+                    - id: 1
+                      name: "Budiman"
+                      email: "budi123@gmail.com"
+                      role: "Client"
+                      gender: "laki-laki"
+                      address: "tangerang"
+                      phone: "08123"
+                    - id: 2
+                      name: "Jasiman"
+                      email: "Jasiman123@gmail.com"
+                      role: "Client"
+                      gender: "laki-laki"
+                      address: "tangerang"
+                      phone: "08123"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    put:
+      tags:
+        - Clients
+      summary: "Update Client"
+      description: "Update Client currently logged in"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+              gender: "laki-laki"
+              address: "tangerang"
+              phone: "08123"
+      responses:
+        '200':
+          description: "Success update Client"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update client."
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -269,30 +440,21 @@ paths:
 
     delete:
       tags:
-        - Users
-      summary: "Delete User"
-      description: "Delete User using id at path parameter as reference."
+        - Clients
+      summary: "Delete Client"
+      description: "Delete Client currently logged in"
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id user to delete data."
-          required: true
-          in: path
-          schema:
-            description: "Id user 1"
-            type: integer
-            example: 1
       responses:
         '200':
-          description: "Success Delete User."
+          description: "Success Delete Client."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseWithoutData" 
               example:
                 status: "Success"
-                message: "Success Delete user"
+                message: "Success Delete client"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -301,6 +463,1721 @@ paths:
           $ref : "#/components/responses/404"  
         '500':
           $ref: "#/components/responses/500"
+
+  /clients/{id}:
+    get:
+      tags:
+        - Clients
+      summary: "Get Client by Id"
+      description: "Get data client using id user at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id client to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id client 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get Client by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get Client by Id"
+                  data:
+                      id: 1
+                      name: "Budiman"
+                      email: "budi123@gmail.com"
+                      role: "Client"
+                      gender: "laki-laki"
+                      address: "tangerang"
+                      phone: "08123"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /clients/{id}/orders:
+    get:
+      tags:
+        - Clients
+      summary: "Get Client orders by id"
+      description: "Get data client order using id user at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id client to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id client 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get Client orders by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get Client orders by Id"
+                  data:
+                      id: 1
+                      client_id: 1
+                      service_id: 1
+                      order_date: "2022-12-22"
+                      order_qty: 2
+                      order_price: 200000
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Partners
+  /partners:
+    post:
+      tags:
+        - Partners
+      summary: "Create Partner" 
+      description: "Register Partner with Role = Partner."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+              company_name: "budiman-EO"
+              company_phone: "0812333"
+              company_city: "jakarte"
+              company_image: "image.jpg"
+              company_address: "jalan rawa buaya 100"
+              link_website: "budiman-eo.com"
+              pic_name: "budiman"
+              pic_position: "owner"
+              pic_phone: "081234"
+              pic_address: "jekardah"
+              nib_number: "76763783748438837"
+              nib_image: "nib.jpg"
+              siup_number: "9979837467847"
+              siup_image: "siup.jpg"
+              event1_name: "wedding1"
+              event1_image: "wedding1.jpg"
+              event2_name: "wedding2"
+              event2_image: "wedding2.jpg"
+              event3_name: "wedding3"
+              event3_image: "wedding3.jpg"
+      responses:
+        '201':
+          description: "Success Create Partner"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "Partner successfully registration" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Partners
+      summary: "Get All Partner And Search by name"
+      description: "Get all Partner and can use query parameter to search. Input using lowercase"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ""
+          description: "No value in parameter."
+          required: false
+          in: query
+          schema:
+            type: string
+            example: ""
+        - name: name
+          description: "company name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "budiman-EO"
+      responses:
+        '200':
+          description: A list of partner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all partners"
+                  data:
+                    - id: 1
+                      name: "Budiman"
+                      email: "budi123@gmail.com"
+                      role: "Partner"
+                      company_name: "budiman-EO"
+                      company_phone: "0812333"
+                      company_city: "jakarte"
+                      company_image: "image.jpg"
+                      company_address: "jalan rawa buaya 100"
+                      link_website: "budiman-eo.com"
+                    - id: 2
+                      name: "Jasiman"
+                      email: "Jasiman123@gmail.com"
+                      role: "Partner"
+                      company_name: "jasiman-EO"
+                      company_phone: "0812333"
+                      company_city: "jakarte"
+                      company_image: "image.jpg"
+                      company_address: "jalan rawa buaya 100"
+                      link_website: "jasiman-eo.com"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    put:
+      tags:
+        - Partners
+      summary: "Update Partner"
+      description: "Update Partner currently logged in"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              name: "Budiman"
+              email: "budi123@gmail.com"
+              password: "123"
+              company_name: "budiman-EO"
+              company_phone: "0812333"
+              company_city: "jakarte"
+              company_image: "image.jpg"
+              company_address: "jalan rawa buaya 100"
+              link_website: "budiman-eo.com"
+              pic_name: "budiman"
+              pic_position: "owner"
+              pic_phone: "081234"
+              pic_address: "jekardah"
+              nib_number: "76763783748438837"
+              nib_image: "nib.jpg"
+              siup_number: "9979837467847"
+              siup_image: "siup.jpg"
+              event1_name: "wedding1"
+              event1_image: "wedding1.jpg"
+              event2_name: "wedding2"
+              event2_image: "wedding2.jpg"
+              event3_name: "wedding3"
+              event3_image: "wedding3.jpg"
+      responses:
+        '200':
+          description: "Success update Partner"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update partner."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    delete:
+      tags:
+        - Partners
+      summary: "Delete Partner"
+      description: "Delete Partner currently logged in"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: "Success Delete Partner."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete partner"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/{id}/orders/confirm:
+    post: 
+      tags:
+        - Partners
+      summary: "Confirm order" 
+      description: "Confirm Partner for partner by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              id: 1
+              client_id: 1
+              service_id: 1
+              confirm: "yes"
+      responses:
+        '201':
+          description: "Success Create confirm order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "confirm order successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/{id}/services:
+    get:
+      tags:
+        - Partners
+      summary: "Get Partner service by id"
+      description: "Get data partner service using id partner at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get Partner service by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get partner service by Id"
+                  data:
+                      id: 1
+                      name: "birthday party"
+                      category: "medium"
+                      price: 10000000
+                      partner_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+        
+  /partners/{id}/orders:
+    get:
+      tags:
+        - Partners
+      summary: "Get Partner order by id"
+      description: "Get data partner order using id partner at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get Partner order by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get partner order by Id"
+                  data:
+                      id: 1
+                      client_id: 1
+                      order_date: "2022-12-22"
+                      order_qty: 2
+                      order_price: 200000
+                      service_id: 1
+                      partner_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/{id}/withdraw-funds:
+    get:
+      tags:
+        - Partners
+      summary: "Get Partner withdraw-funds by id"
+      description: "Get data partner withdraw-funds using id partner at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get Partner withdraw-funds by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get partner withdraw-funds by Id"
+                  data:
+                      id: 1
+                      order_id: 1
+                      service_id: 1
+                      partner_id: 1
+                      withdraw-funds: 20000000
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/{id}/additionals:
+    get:
+      tags:
+        - Partners
+      summary: "Get Partner Additionals service by id"
+      description: "Get data partner additional service using id partner at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Get Partner additional service by Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get partner additional service by Id"
+                  data:
+                      id: 1
+                      name: "catering"
+                      price: 3000000
+                      service_id: 1
+                      partner_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/register:
+    get: 
+      tags:
+        - Partners
+      summary: "Get Partner register s"
+      description: "Get list partner register"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: A list of partner registration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all partners"
+                  data:
+                    - id: 1
+                      name: "Budiman"
+                      email: "budi123@gmail.com"
+                      company_name: "budiman-EO"
+                      company_city: "jakarte"
+                      link_website: "budiman-eo.com"
+                      nib_number: "76763783748438837"
+                      siup_number: "9979837467847"
+                    - id: 2
+                      name: "jasiman"
+                      email: "jasiman123@gmail.com"
+                      company_name: "jasiman-EO"
+                      company_city: "jakarte"
+                      link_website: "jasiman-eo.com"
+                      nib_number: "76763783748438837"
+                      siup_number: "9979837467847"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/{id}/register:
+    get:
+      tags:
+        - Partners
+      summary: "Get Partner register by id"
+      description: "Get partner register using id partner at path parameter. Only return 1 data."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A list of partner register
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get partners register"
+                  data:
+                    id: 1
+                    name: "Budiman"
+                    email: "budi123@gmail.com"
+                    company_name: "budiman-EO"
+                    company_phone: "0812333"
+                    company_city: "jakarte"
+                    company_image: "image.jpg"
+                    company_address: "jalan rawa buaya 100"
+                    link_website: "budiman-eo.com"
+                    nib_number: "76763783748438837"
+                    nib_image: "nib.jpg"
+                    siup_number: "9979837467847"
+                    siup_image: "siup.jpg"
+                    event1_name: "wedding1"
+                    event1_image: "wedding1.jpg"
+                    event2_name: "wedding2"
+                    event2_image: "wedding2.jpg"
+                    event3_name: "wedding3"
+                    event3_image: "wedding3.jpg"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/verify:
+    put:
+      tags:
+        - Partners
+      summary: "Update Partner status verify"
+      description: "Update Partner status verify"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              name: "Budiman"
+              email: "budi123@gmail.com"
+              company_name: "budiman-EO"
+              company_phone: "0812333"
+              company_city: "jakarte"
+              company_image: "image.jpg"
+              company_address: "jalan rawa buaya 100"
+              link_website: "budiman-eo.com"
+              pic_name: "budiman"
+              pic_position: "owner"
+              pic_phone: "081234"
+              pic_address: "jekardah"
+              nib_number: "76763783748438837"
+              nib_image: "nib.jpg"
+              siup_number: "9979837467847"
+              siup_image: "siup.jpg"
+              event1_name: "wedding1"
+              event1_image: "wedding1.jpg"
+              event2_name: "wedding2"
+              event2_image: "wedding2.jpg"
+              event3_name: "wedding3"
+              event3_image: "wedding3.jpg"
+      responses:
+        '200':
+          description: "Success update status Partner"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update status partner."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+      
+### Endpoint Service
+  /services:
+    post:
+      tags:
+        - Services
+      summary: "Create Services" 
+      description: "Create service."
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              name: "wedding"
+              category: "high"
+              price: 50000000
+      responses:
+        '201':
+          description: "Success Create service"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "service successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Services
+      summary: "Get All service And Search by name"
+      description: "Get all service and can use query parameter to search. Input using lowercase"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ""
+          description: "No value in parameter."
+          required: false
+          in: query
+          schema:
+            type: string
+            example: ""
+        - name: name
+          description: "service name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "wedding"
+      responses:
+        '200':
+          description: A list of service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all service"
+                  data:
+                    - id: 1
+                      name: "wedding"
+                      category: "high"
+                      price: 50000000
+                      partner_id: 1
+                    - id: 2
+                      name: "birthday"
+                      category: "medium"
+                      price: 50000000
+                      partner_id: 2
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /services/{id}:
+    put:
+      tags:
+        - Services
+      summary: "Update service by id"
+      description: "Update service using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              name: "wedding"
+              category: "high"
+              price: 50000000
+      responses:
+        '200':
+          description: "Success update service"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update service."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    delete:
+      tags:
+        - Services
+      summary: "Delete service"
+      description: "Delete service using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Delete service."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete service"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+        
+  /services/{id}/additionals:
+    get:
+      tags:
+        - Services
+      summary: "get service additional by id"
+      description: "get service additional using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A list of service additional
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all service additional"
+                  data:
+                      - id: 1
+                        name: "catering"
+                        price: 50000
+                        service_id: 1
+                      - id: 2
+                        name: "kue"
+                        price: 100000
+                        service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /services/{id}/reviews:
+    get:
+      tags:
+        - Services
+      summary: "get service Reviews by id"
+      description: "get service Reviews using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A list of service Reviews
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all service reviews"
+                  data:
+                      - id: 1
+                        rating: "*****"
+                        feedback: "blablablabalbalbalbalablabal"
+                        client_id: 1
+                        service_id: 1
+                      - id: 2
+                        rating: "*****"
+                        feedback: "blablablabalbalbalbalablabal"
+                        client_id: 2
+                        service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /services/{id}/discussions:
+    get:
+      tags:
+        - Services
+      summary: "get service Discussions by id"
+      description: "get service Discussions using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A list of service Discussions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all service discussions"
+                  data:
+                      - id: 1
+                        partner_id: 1
+                        client_id: 1
+                        service_id: 1
+                      - id: 2
+                        partner_id: 2
+                        client_id: 2
+                        service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /services/{id}/availbility/{start_date}&{end_date}:
+    post:
+      tags:
+        - Services
+      summary: "check service availbility by id"
+      description: "get service availbility using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+        - name: start_date
+          description: "start date "
+          required: true
+          in: path
+          schema:
+            description: "start date"
+            type: integer
+            example: 2022-12-21
+        - name: end_date
+          description: "end date "
+          required: true
+          in: path
+          schema:
+            description: "end date"
+            type: integer
+            example: 2022-12-24
+      responses:
+        '200':
+          description: answer check availbility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "services currently available"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Additionals
+  /additionals:
+    post:
+      tags:
+        - Additionals
+      summary: "Create additionals" 
+      description: "Create additionals."
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              name: "catering"
+              price: 50000000
+              service_id: 1
+      responses:
+        '201':
+          description: "Success Create additionals"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "additionals successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Additionals
+      summary: "Get All additionals"
+      description: "Get all additionals"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: A list of additional
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all additionals"
+                  data:
+                    - id: 1
+                      name: "catering"
+                      price: 50000000
+                      service_id: 1
+                    - id: 2
+                      name: "make up"
+                      price: 50000000
+                      service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /additionals/{id}:
+    put:
+      tags:
+        - Additionals
+      summary: "Update additionals by id"
+      description: "Update additionals using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id additionals to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id additionals 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              name: "catering"
+              price: 50000000
+              service_id: 1
+      responses:
+        '200':
+          description: "Success update additional"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update additional."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    delete:
+      tags:
+        - Additionals
+      summary: "Delete additional"
+      description: "Delete additional using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id additional to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id additional 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Delete additional."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete additional"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Orders
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: "Create order" 
+      description: "Create order."
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              service_id: 1
+              order_date: "2022-12-21"
+              order_qty: 1
+              order_price: 2000000
+      responses:
+        '201':
+          description: "Success Create order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "order successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Orders
+      summary: "Get All order And Search by name"
+      description: "Get all order and can use query parameter to search. Input using lowercase"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ""
+          description: "No value in parameter."
+          required: false
+          in: query
+          schema:
+            type: string
+            example: ""
+        - name: name
+          description: "service name"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "wedding"
+      responses:
+        '200':
+          description: A list of order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all order"
+                  data:
+                    - id: 1
+                      client_id: 1
+                      service_id: 1
+                      order_date: "2022-12-21"
+                      order_qty: 1
+                      order_price: 2000000
+                    - id: 2
+                      client_id: 2
+                      service_id: 2
+                      order_date: "2022-12-21"
+                      order_qty: 1
+                      order_price: 2000000
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /orders/{id}:
+    get:
+      tags:
+        - Orders
+      summary: "get order by id"
+      description: "get order using id order at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id order to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id order 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: order detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get order by id"
+                  data:
+                    id: 1
+                    client_id: 1
+                    service_id: 1
+                    order_date: "2022-12-21"
+                    order_qty: 1
+                    order_price: 2000000
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - Orders
+      summary: "Update order by id"
+      description: "Update order using id order at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id order to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id order 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              service_id: 1
+              order_date: "2022-12-21"
+              order_qty: 1
+              order_price: 2000000
+      responses:
+        '200':
+          description: "Success update order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update order."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Reviews
+  /reviews:
+    post:
+      tags:
+        - Reviews
+      summary: "Create review" 
+      description: "Create reviews."
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              rating: "*****"
+              feedback: "blbalalablbalablablab"
+              service_id: 1
+      responses:
+        '201':
+          description: "Success Create review"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "review successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Reviews
+      summary: "Get All review"
+      description: "Get all review"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: A list of review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all review"
+                  data:
+                    - id: 1
+                      rating: "*****"
+                      feedback: "blbalalablbalablablab"
+                      client_id: 1
+                      service_id: 1
+                    - id: 2
+                      rating: "*****"
+                      feedback: "blbalalablbalablablab"
+                      client_id: 2
+                      service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /reviews/{id}:
+    put:
+      tags:
+        - Reviews
+      summary: "Update review by id"
+      description: "Update review using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id review to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id review 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              rating: "*****"
+              feedback: "blbalalablbalablablab"
+              service_id: 1
+      responses:
+        '200':
+          description: "Success update review"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update review."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    delete:
+      tags:
+        - Reviews
+      summary: "Delete review"
+      description: "Delete review using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id review to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id review 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Delete review."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete review"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Discussions
+  /discussions:
+    post:
+      tags:
+        - Discussions
+      summary: "Create discussions" 
+      description: "Create dicussions."
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InsertUserObject"
+            example:
+              comment: "lorem ipsum blablabla"
+              partner_id: 1
+      responses:
+        '201':
+          description: "Success Create discussions"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "discussions successfully created" 
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    get:
+      tags:
+        - Discussions
+      summary: "Get All discussions"
+      description: "Get all dicuissions"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: all discussions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all discussions"
+                  data:
+                    - id: 1
+                      comment: "lorem ipsum blablabla"
+                      partner_id: 1
+                      client_id: 1
+                    - id: 2
+                      comment: "lorem ipsum blablabla"
+                      partner_id: 1
+                      client_id: 2
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /discussions/{id}:
+    delete:
+      tags:
+        - Discussions
+      summary: "Delete discussions"
+      description: "Delete discussions using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id discussions to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id discussions 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Success Delete discussions."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                status: "Success"
+                message: "Success Delete discussions"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+### Endpoint Withdraw-funds
+  /withdraw-funds:
+    get:
+      tags:
+        - Withdraw-funds
+      summary: "Get All Withdraw-funds"
+      description: "Get all Withdraw-funds"
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: all Withdraw-funds
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success get all Withdraw-funds"
+                  data:
+                    - id: 1
+                      order_id: 1
+                      service_id: 1
+                      partner_id: 1
+                      withdraw-funds: 20000000
+                    - id: 2
+                      order_id: 2
+                      service_id: 2
+                      partner_id: 2
+                      withdraw-funds: 20000000
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+  
+  /withdraw-funds/{id}:
+    put:
+      tags:
+        - Withdraw-funds
+      summary: "update Withdraw-funds"
+      description: "update Withdraw-funds"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id Withdraw-funds to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id Withdraw-funds 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              order_id: 2
+              service_id: 2
+              partner_id: 2
+              withdraw-funds: 20000000
+      responses:
+        '200':
+          description: update Withdraw-funds
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayUserResult"
+              example:
+                  status: "Success"
+                  message: "Success update Withdraw-funds"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+
+
 
 ####################################
 #  COMPONENTS
