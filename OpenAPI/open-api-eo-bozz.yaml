@@ -282,8 +282,8 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
-              email: "budi123@gmail.com"
-              password: "123"
+              old_password: "123"
+              new_password: "456"
       responses:
         '200':
           description: "Success password update User"
@@ -323,7 +323,9 @@ paths:
               password: "123"
               gender: "laki-laki"
               address: "tangerang"
+              city: "tangerang"
               phone: "08123"
+              client_image_file: "image.jpg"
       responses:
         '201':
           description: "Success Create User"
@@ -379,17 +381,19 @@ paths:
                     - id: 1
                       name: "Budiman"
                       email: "budi123@gmail.com"
-                      role: "Client"
                       gender: "laki-laki"
                       address: "tangerang"
                       phone: "08123"
+                      city: "tangerang"
+                      client_image_file: "image.jpg"
                     - id: 2
                       name: "Jasiman"
                       email: "Jasiman123@gmail.com"
-                      role: "Client"
                       gender: "laki-laki"
                       address: "tangerang"
                       phone: "08123"
+                      city: "tangerang"
+                      client_image_file: "image.jpg"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -418,7 +422,9 @@ paths:
               password: "123"
               gender: "laki-laki"
               address: "tangerang"
+              city: "tangerang"
               phone: "08123"
+              client_image_file: "image.jpg"
       responses:
         '200':
           description: "Success update Client"
@@ -495,10 +501,12 @@ paths:
                       id: 1
                       name: "Budiman"
                       email: "budi123@gmail.com"
-                      role: "Client"
+                      password: "123"
                       gender: "laki-laki"
                       address: "tangerang"
+                      city: "tangerang"
                       phone: "08123"
+                      client_image_file: "image.jpg"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -508,7 +516,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /clients/{id}/orders:
+  /clients/orders:
     get:
       tags:
         - Clients
@@ -516,15 +524,6 @@ paths:
       description: "Get data client order using id user at path parameter. Only return 1 data."
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id client to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id client 1"
-            type: integer
-            example: 1
       responses:
         '200':
           description: "Success Get Client orders by Id"
@@ -537,11 +536,15 @@ paths:
                   message: "Success Get Client orders by Id"
                   data:
                       id: 1
+                      event_name: "wedding"
+                      start_date: "2022-12-27"
+                      end_date: "2022-12-29"
+                      event_location: "jakarta"
+                      services_name: "wedding jawa"
+                      gross_ammount: 1000000
+                      order_status: "order confirmed"
+                      services_id: 1
                       client_id: 1
-                      service_id: 1
-                      order_date: "2022-12-22"
-                      order_qty: 2
-                      order_price: 200000
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -566,6 +569,7 @@ paths:
             schema:
               $ref: "#/components/schemas/InsertUserObject"
             example:
+              user_id: 1
               name: "Budiman"
               email: "budi123@gmail.com"
               password: "123"
@@ -575,7 +579,6 @@ paths:
               company_image: "image.jpg"
               company_address: "jalan rawa buaya 100"
               link_website: "budiman-eo.com"
-              pic_name: "budiman"
               pic_position: "owner"
               pic_phone: "081234"
               pic_address: "jekardah"
@@ -589,6 +592,9 @@ paths:
               event2_image: "wedding2.jpg"
               event3_name: "wedding3"
               event3_image: "wedding3.jpg"
+              bank_name: "bca"
+              bank_account_number: "87287835843"
+              bank_account_name: "budiman"
       responses:
         '201':
           description: "Success Create Partner"
@@ -693,7 +699,6 @@ paths:
               company_image: "image.jpg"
               company_address: "jalan rawa buaya 100"
               link_website: "budiman-eo.com"
-              pic_name: "budiman"
               pic_position: "owner"
               pic_phone: "081234"
               pic_address: "jekardah"
@@ -707,6 +712,9 @@ paths:
               event2_image: "wedding2.jpg"
               event3_name: "wedding3"
               event3_image: "wedding3.jpg"
+              bank_name: "bca"
+              bank_account_number: "87287835843"
+              bank_account_name: "budiman"
       responses:
         '200':
           description: "Success update Partner"
@@ -752,7 +760,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/{id}/orders/confirm:
+  /partners/orders/confirm:
     post: 
       tags:
         - Partners
@@ -760,15 +768,6 @@ paths:
       description: "Confirm Partner for partner by id"
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id partner to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id partner 1"
-            type: integer
-            example: 1
       requestBody:
         required: true
         content:
@@ -779,7 +778,7 @@ paths:
               id: 1
               client_id: 1
               service_id: 1
-              confirm: "yes"
+              confirm: "order confirmed"
       responses:
         '201':
           description: "Success Create confirm order"
@@ -799,7 +798,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/{id}/services:
+  /partners/services:
     get:
       tags:
         - Partners
@@ -807,15 +806,6 @@ paths:
       description: "Get data partner service using id partner at path parameter. Only return 1 data."
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id partner to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id partner 1"
-            type: integer
-            example: 1
       responses:
         '200':
           description: "Success Get Partner service by Id"
@@ -827,11 +817,22 @@ paths:
                   status: "Success"
                   message: "Success Get partner service by Id"
                   data:
-                      id: 1
-                      name: "birthday party"
-                      category: "medium"
-                      price: 10000000
-                      partner_id: 1
+                      - id: 1
+                        service_name: "wedding jawa"
+                        service_category: "wedding"
+                        service_price: 20000000
+                        average_rating: "****"
+                        service_image_url: "image.jpg"
+                        city: "tangerang"
+                        partner_id: 1
+                      - id: 2
+                        service_name: "wedding jawa"
+                        service_category: "wedding"
+                        service_price: 20000000
+                        average_rating: "****"
+                        service_image_url: "image.jpg"
+                        city: "tangerang"
+                        partner_id: 1
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -841,7 +842,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
         
-  /partners/{id}/orders:
+  /partners/orders:
     get:
       tags:
         - Partners
@@ -849,15 +850,6 @@ paths:
       description: "Get data partner order using id partner at path parameter. Only return 1 data."
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id partner to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id partner 1"
-            type: integer
-            example: 1
       responses:
         '200':
           description: "Success Get Partner order by Id"
@@ -869,13 +861,26 @@ paths:
                   status: "Success"
                   message: "Success Get partner order by Id"
                   data:
-                      id: 1
-                      client_id: 1
-                      order_date: "2022-12-22"
-                      order_qty: 2
-                      order_price: 200000
-                      service_id: 1
-                      partner_id: 1
+                      - id: 1
+                        event_name: "wedding"
+                        start_date: "2022-12-27"
+                        end_date: "2022-12-29"
+                        event_location: "jakarta"
+                        services_name: "wedding jawa"
+                        gross_ammount: 1000000
+                        order_status: "order confirmed"
+                        services_id: 1
+                        client_id: 1
+                      - id: 2
+                        event_name: "wedding"
+                        start_date: "2022-12-27"
+                        end_date: "2022-12-29"
+                        event_location: "jakarta"
+                        services_name: "wedding jawa"
+                        gross_ammount: 1000000
+                        order_status: "order confirmed"
+                        services_id: 1
+                        client_id: 2
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -885,7 +890,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/{id}/withdraw-funds:
+  /partners/withdraw-funds:
     get:
       tags:
         - Partners
@@ -893,15 +898,6 @@ paths:
       description: "Get data partner withdraw-funds using id partner at path parameter. Only return 1 data."
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id partner to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id partner 1"
-            type: integer
-            example: 1
       responses:
         '200':
           description: "Success Get Partner withdraw-funds by Id"
@@ -914,10 +910,11 @@ paths:
                   message: "Success Get partner withdraw-funds by Id"
                   data:
                       id: 1
-                      order_id: 1
-                      service_id: 1
-                      partner_id: 1
-                      withdraw-funds: 20000000
+                      event_name: "wedding"
+                      start_date: "2022-12-27"
+                      end_date: "2022-12-29"
+                      gross_ammount: 1000000
+                      withdraw-funds_status: "complete"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -927,7 +924,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/{id}/additionals:
+  /partners/additionals?type=:
     get:
       tags:
         - Partners
@@ -936,14 +933,20 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id
-          description: "Id partner to get data"
-          required: true
-          in: path
+        - name: ""
+          description: "No value in parameter."
+          required: false
+          in: query
           schema:
-            description: "Id partner 1"
-            type: integer
-            example: 1
+            type: string
+            example: ""
+        - name: name
+          description: "type"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "wedding"
       responses:
         '200':
           description: "Success Get Partner additional service by Id"
@@ -956,9 +959,9 @@ paths:
                   message: "Success Get partner additional service by Id"
                   data:
                       id: 1
-                      name: "catering"
-                      price: 3000000
-                      service_id: 1
+                      additional_name: "catering"
+                      additional_price: 3000000
+                      additional_type: "wedding"
                       partner_id: 1
         "400" :
           $ref : "#/components/responses/400"  
@@ -989,21 +992,21 @@ paths:
                   message: "Success get all partners"
                   data:
                     - id: 1
-                      name: "Budiman"
                       email: "budi123@gmail.com"
                       company_name: "budiman-EO"
                       company_city: "jakarte"
                       link_website: "budiman-eo.com"
                       nib_number: "76763783748438837"
                       siup_number: "9979837467847"
+                      status: "revision"
                     - id: 2
-                      name: "jasiman"
                       email: "jasiman123@gmail.com"
                       company_name: "jasiman-EO"
                       company_city: "jakarte"
                       link_website: "jasiman-eo.com"
                       nib_number: "76763783748438837"
                       siup_number: "9979837467847"
+                      status: "not verified"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1041,25 +1044,12 @@ paths:
                   status: "Success"
                   message: "Success get partners register"
                   data:
-                    id: 1
+                    user_id: 1
                     name: "Budiman"
                     email: "budi123@gmail.com"
                     company_name: "budiman-EO"
-                    company_phone: "0812333"
                     company_city: "jakarte"
-                    company_image: "image.jpg"
-                    company_address: "jalan rawa buaya 100"
-                    link_website: "budiman-eo.com"
-                    nib_number: "76763783748438837"
-                    nib_image: "nib.jpg"
-                    siup_number: "9979837467847"
-                    siup_image: "siup.jpg"
-                    event1_name: "wedding1"
-                    event1_image: "wedding1.jpg"
-                    event2_name: "wedding2"
-                    event2_image: "wedding2.jpg"
-                    event3_name: "wedding3"
-                    event3_image: "wedding3.jpg"
+                    verified_status: "not verified"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1084,28 +1074,9 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
-              name: "Budiman"
-              email: "budi123@gmail.com"
-              company_name: "budiman-EO"
-              company_phone: "0812333"
-              company_city: "jakarte"
-              company_image: "image.jpg"
-              company_address: "jalan rawa buaya 100"
-              link_website: "budiman-eo.com"
-              pic_name: "budiman"
-              pic_position: "owner"
-              pic_phone: "081234"
-              pic_address: "jekardah"
-              nib_number: "76763783748438837"
-              nib_image: "nib.jpg"
-              siup_number: "9979837467847"
-              siup_image: "siup.jpg"
-              event1_name: "wedding1"
-              event1_image: "wedding1.jpg"
-              event2_name: "wedding2"
-              event2_image: "wedding2.jpg"
-              event3_name: "wedding3"
-              event3_image: "wedding3.jpg"
+              verify_log: "revision your data"
+              status: "verified"
+              partner_id: 1
       responses:
         '200':
           description: "Success update status Partner"
@@ -1142,9 +1113,14 @@ paths:
             schema:
               $ref: "#/components/schemas/InsertUserObject"
             example:
-              name: "wedding"
-              category: "high"
-              price: 50000000
+              service_name: "wedding javva"
+              service_deacription: "wedding murmerr"
+              servoce_category: "wedding"
+              service_price: 50000000
+              average_rating: "*****"
+              service_image_url: "image.jpg"
+              city: "jakarte"
+              partner_id: 1
       responses:
         '201':
           description: "Success Create service"
@@ -1167,7 +1143,7 @@ paths:
     get:
       tags:
         - Services
-      summary: "Get All service And Search by name"
+      summary: "Get All service, Search by name and filter"
       description: "Get all service and can use query parameter to search. Input using lowercase"
       security:
         - JWTAuth: []
@@ -1185,7 +1161,28 @@ paths:
           in: query
           schema:
             type: string
+            example: "wedding javva"
+        - name: category
+          description: "service name"
+          required: false
+          in: query
+          schema:
+            type: string
             example: "wedding"
+        - name: min price
+          description: "min price"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: 200000
+        - name: max price
+          description: "max price"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: 2000000
       responses:
         '200':
           description: A list of service
@@ -1198,14 +1195,22 @@ paths:
                   message: "Success get all service"
                   data:
                     - id: 1
-                      name: "wedding"
-                      category: "high"
-                      price: 50000000
+                      service_name: "wedding javva"
+                      service_deacription: "wedding murmerr"
+                      servoce_category: "wedding"
+                      service_price: 50000000
+                      average_rating: "*****"
+                      service_image_url: "image.jpg"
+                      city: "jakarte"
                       partner_id: 1
                     - id: 2
-                      name: "birthday"
-                      category: "medium"
-                      price: 50000000
+                      service_name: "wedding javva"
+                      service_deacription: "wedding murmerr"
+                      servoce_category: "wedding"
+                      service_price: 50000000
+                      average_rating: "*****"
+                      service_image_url: "image.jpg"
+                      city: "jakarte"
                       partner_id: 2
         "400" :
           $ref : "#/components/responses/400"  
@@ -1240,9 +1245,14 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
-              name: "wedding"
-              category: "high"
-              price: 50000000
+              service_name: "wedding javva"
+              service_deacription: "wedding murmerr"
+              servoce_category: "wedding"
+              service_price: 50000000
+              average_rating: "*****"
+              service_image_url: "image.jpg"
+              city: "jakarte"
+              partner_id: 2
       responses:
         '200':
           description: "Success update service"
@@ -1298,6 +1308,42 @@ paths:
           $ref: "#/components/responses/500"
         
   /services/{id}/additionals:
+    post:
+      tags:
+        - Services
+      summary: "connect additional to service"
+      description: "conect to service"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/EditUserObject"
+            example:
+              service_id: 1
+              additionals:
+                - additional_id: 1
+                - additional_id: 2
+      responses:
+        '200':
+          description: "Success connect to service"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success connect to service."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
     get:
       tags:
         - Services
@@ -1328,11 +1374,15 @@ paths:
                       - id: 1
                         name: "catering"
                         price: 50000
+                        additional_type: "wedding"
                         service_id: 1
+                        additional_id: 1
                       - id: 2
-                        name: "kue"
-                        price: 100000
+                        name: "catering"
+                        price: 50000
+                        additional_type: "wedding"
                         service_id: 1
+                        additional_id: 2
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1372,12 +1422,14 @@ paths:
                   data:
                       - id: 1
                         rating: "*****"
-                        feedback: "blablablabalbalbalbalablabal"
+                        review: "blablablabalbalbalbalablabal"
+                        order_id: 1
                         client_id: 1
                         service_id: 1
                       - id: 2
                         rating: "*****"
-                        feedback: "blablablabalbalbalbalablabal"
+                        review: "blablablabalbalbalbalablabal"
+                        order_id: 2
                         client_id: 2
                         service_id: 1
         "400" :
@@ -1418,10 +1470,14 @@ paths:
                   message: "Success get all service discussions"
                   data:
                       - id: 1
+                        comment: "lorem ipsum blablablaaaa"
+                        created_at: "2022-12-29 00:00:00"
                         partner_id: 1
                         client_id: 1
                         service_id: 1
                       - id: 2
+                        comment: "lorem ipsum blablablaaaa"
+                        created_at: "2022-12-29 00:00:00"
                         partner_id: 2
                         client_id: 2
                         service_id: 1
@@ -1477,6 +1533,11 @@ paths:
               example:
                   status: "Success"
                   message: "services currently available"
+                  data: 
+                    service_name: "wedding java"
+                    start_date: "2022-12-25"
+                    end_date: "2022-12-29"
+                    availbility_status: "available"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1505,7 +1566,8 @@ paths:
             example:
               name: "catering"
               price: 50000000
-              service_id: 1
+              additional_type: "wedding"
+              partner_id: 1
       responses:
         '201':
           description: "Success Create additionals"
@@ -1546,11 +1608,13 @@ paths:
                     - id: 1
                       name: "catering"
                       price: 50000000
-                      service_id: 1
+                      additional_type: "wedding"
+                      partner_id: 1
                     - id: 2
                       name: "make up"
                       price: 50000000
-                      service_id: 1
+                      additional_type: "wedding"
+                      partner_id: 1
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1586,7 +1650,8 @@ paths:
             example:
               name: "catering"
               price: 50000000
-              service_id: 1
+              additional_type: "wedding"
+              partner_id: 1
       responses:
         '200':
           description: "Success update additional"
@@ -1658,10 +1723,24 @@ paths:
             schema:
               $ref: "#/components/schemas/InsertUserObject"
             example:
+              event_name: "wedding"
+              start_date: "2022-12-25"
+              start_time: "00:00:00"
+              end_date: "2022-12-19"
+              end_time: "00:00:00"
+              event_location: "jakarta"
+              event_address: "jl. rawa buata"
+              note_for_partner: "thnks"
+              services_name: "weddig java"
+              services_price: 2200000000
+              payment_method: "cod"
+              client_id: 1
               service_id: 1
-              order_date: "2022-12-21"
-              order_qty: 1
-              order_price: 2000000
+              additionals:
+                - additional_id: 1
+                  qty: 2
+                - additional_id: 2
+                  qty: 4
       responses:
         '201':
           description: "Success Create order"
@@ -1715,17 +1794,33 @@ paths:
                   message: "Success get all order"
                   data:
                     - id: 1
+                      event_name: "wedding"
+                      start_date: "2022-12-25"
+                      end_date: "2022-12-19"
+                      event_location: "jakarta"
+                      services_name: "weddig java"
+                      services_price: 2200000000
                       client_id: 1
                       service_id: 1
-                      order_date: "2022-12-21"
-                      order_qty: 1
-                      order_price: 2000000
+                      additionals:
+                        - additional_id: 1
+                          qty: 2
+                        - additional_id: 2
+                          qty: 4
                     - id: 2
+                      event_name: "wedding"
+                      start_date: "2022-12-25"
+                      end_date: "2022-12-19"
+                      event_location: "jakarta"
+                      services_name: "weddig java"
+                      services_price: 2200000000
                       client_id: 2
                       service_id: 2
-                      order_date: "2022-12-21"
-                      order_qty: 1
-                      order_price: 2000000
+                      additionals:
+                        - additional_id: 1
+                          qty: 2
+                        - additional_id: 2
+                          qty: 4
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1764,11 +1859,30 @@ paths:
                   message: "Success get order by id"
                   data:
                     id: 1
+                    event_name: "wedding"
+                    start_date: "2022-12-25"
+                    start_time: "00:00:00"
+                    end_date: "2022-12-19"
+                    end_time: "00:00:00"
+                    event_location: "jakarta"
+                    event_address: "jl. rawa buata"
+                    note_for_partner: "thnks"
+                    services_name: "weddig java"
+                    services_price: 2200000000
+                    payment_method: "cod"
                     client_id: 1
                     service_id: 1
-                    order_date: "2022-12-21"
-                    order_qty: 1
-                    order_price: 2000000
+                    additionals:
+                      - additional_name: "makeup"
+                        additional_price: 20000
+                        qty: 2
+                        detail_order_total: 2
+                        order_id: 1
+                      - additional_name: "caterng"
+                        additional_price: 20000
+                        qty: 2
+                        detail_order_total: 2
+                        order_id: 1
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1800,10 +1914,8 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
-              service_id: 1
-              order_date: "2022-12-21"
-              order_qty: 1
-              order_price: 2000000
+              orderid: 1
+              status: "waiting completion"
       responses:
         '200':
           description: "Success update order"
@@ -1840,9 +1952,11 @@ paths:
             schema:
               $ref: "#/components/schemas/InsertUserObject"
             example:
+              review: "blbalalablbalablablab"
               rating: "*****"
-              feedback: "blbalalablbalablablab"
+              order_id: 1
               service_id: 1
+              client_id: 1
       responses:
         '201':
           description: "Success Create review"
@@ -1881,15 +1995,17 @@ paths:
                   message: "Success get all review"
                   data:
                     - id: 1
+                      review: "blbalalablbalablablab"
                       rating: "*****"
-                      feedback: "blbalalablbalablablab"
+                      order_id: 1
+                      service_id: 1
                       client_id: 1
-                      service_id: 1
                     - id: 2
+                      review: "blbalalablbalablablab"
                       rating: "*****"
-                      feedback: "blbalalablbalablablab"
+                      order_id: 1
+                      service_id: 2
                       client_id: 2
-                      service_id: 1
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1923,9 +2039,11 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
+              review: "blbalalablbalablablab"
               rating: "*****"
-              feedback: "blbalalablbalablablab"
+              order_id: 1
               service_id: 1
+              client_id: 1
       responses:
         '200':
           description: "Success update review"
@@ -1998,7 +2116,10 @@ paths:
               $ref: "#/components/schemas/InsertUserObject"
             example:
               comment: "lorem ipsum blablabla"
+              created_at: "2022-12-25 00:00:00"
               partner_id: 1
+              client_id: 1
+              service_id: 1
       responses:
         '201':
           description: "Success Create discussions"
@@ -2038,12 +2159,16 @@ paths:
                   data:
                     - id: 1
                       comment: "lorem ipsum blablabla"
+                      created_at: "2022-12-25 00:00:00"
                       partner_id: 1
                       client_id: 1
+                      service_id: 1
                     - id: 2
                       comment: "lorem ipsum blablabla"
+                      created_at: "2022-12-25 00:00:00"
                       partner_id: 1
                       client_id: 2
+                      service_id: 2
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -2053,7 +2178,6 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /discussions/{id}:
     delete:
       tags:
         - Discussions
@@ -2061,15 +2185,6 @@ paths:
       description: "Delete discussions using id service at path parameter."
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id discussions to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id discussions 1"
-            type: integer
-            example: 1
       responses:
         '200':
           description: "Success Delete discussions."
@@ -2111,15 +2226,27 @@ paths:
                   message: "Success get all Withdraw-funds"
                   data:
                     - id: 1
+                      event_name: "wedding"
+                      start_date: "2022-12-25"
+                      end_date: "2022-12-29"
+                      gross_ammout: 2000000
+                      transfer_reciept_file: "file.jpg"
                       order_id: 1
                       service_id: 1
                       partner_id: 1
-                      withdraw-funds: 20000000
+                      client_id: 1
+                      withdraw-funds_status: "complete"
                     - id: 2
-                      order_id: 2
-                      service_id: 2
+                      event_name: "wedding"
+                      start_date: "2022-12-25"
+                      end_date: "2022-12-29"
+                      gross_ammout: 2000000
+                      transfer_reciept_file: "file.jpg"
+                      order_id: 1
+                      service_id: 1
                       partner_id: 2
-                      withdraw-funds: 20000000
+                      client_id: 2
+                      withdraw-funds_status: "complete"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -2153,10 +2280,8 @@ paths:
             schema:
                 $ref: "#/components/schemas/EditUserObject"
             example:
-              order_id: 2
-              service_id: 2
-              partner_id: 2
-              withdraw-funds: 20000000
+              image_upload_bukti_tf: "image.jpg"
+              status: "complete"
       responses:
         '200':
           description: update Withdraw-funds
