@@ -98,3 +98,17 @@ func (repo *userRepository) FindUser(email string) (result user.Core, err error)
 
 	return result, nil
 }
+
+// Update Password implements user.Repository
+func (repo *userRepository) UpdatePassword(input user.Core, id int) error {
+	userGorm := fromCore(input)
+	var user User
+	tx := repo.db.Model(&user).Where("ID = ?", id).Updates(&userGorm.Password) // proses update
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
+	return nil
+}

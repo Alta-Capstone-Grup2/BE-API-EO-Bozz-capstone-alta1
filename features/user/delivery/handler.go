@@ -25,6 +25,7 @@ func New(service user.ServiceInterface, e *echo.Echo) {
 	e.POST("/users", handler.Create)
 	e.PUT("/users", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/users", handler.Delete, middlewares.JWTMiddleware())
+	e.PUT("/users/password", handler.UpdatePassword, middlewares.JWTMiddleware())
 
 }
 
@@ -113,4 +114,25 @@ func (delivery *UserDelivery) Delete(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success delete data."))
+}
+
+func (delivery *UserDelivery) UpdatePassword(c echo.Context) error {
+	idUser := middlewares.ExtractTokenUserId(c)
+
+	userInput := UpdatePasswordRequest{}
+	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	}
+
+	dataCore := toCore(userInput)
+	err := delivery.userService.Update(dataCore, idUser, c)
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	}
+
+	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success update data."))
 }
