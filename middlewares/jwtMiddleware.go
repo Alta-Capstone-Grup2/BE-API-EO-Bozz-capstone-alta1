@@ -2,9 +2,6 @@ package middlewares
 
 import (
 	"capstone-alta1/config"
-	"capstone-alta1/utils/helper"
-	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -30,7 +27,7 @@ func CreateToken(userId int, name string) (string, error) {
 	claims["authorized"] = true
 	claims["userId"] = userId
 	claims["name"] = name
-	claims["role"] = "User"
+	claims["role"] = "Admin"
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix() //Token expires after 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(key))
@@ -55,49 +52,4 @@ func ExtractTokenUserName(e echo.Context) string {
 		return role
 	}
 	return ""
-}
-
-func IsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(e echo.Context) error {
-		user := e.Get("user").(*jwt.Token)
-		if user.Valid {
-			claims := user.Claims.(jwt.MapClaims)
-			role := claims["role"].(string)
-
-			if role != "Super Admin" {
-				return e.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access."))
-			}
-		}
-		return next(e)
-
-	}
-}
-
-func UserOnlySameId(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(e echo.Context) error {
-		user := e.Get("user").(*jwt.Token)
-		if user.Valid {
-			claims := user.Claims.(jwt.MapClaims)
-
-			role := claims["role"].(string)
-
-			// jika role bukan user (super admin) skip fungsi ini
-			if role == "User" {
-				userIdToken := claims["userId"].(float64)
-				idToken := int(userIdToken)
-
-				userIdParam := e.Param("id")
-				idParam, errConv := strconv.Atoi(userIdParam)
-				if errConv != nil {
-					return e.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
-				}
-
-				if idToken != idParam {
-					return e.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access data other user."))
-				}
-			}
-		}
-		return next(e)
-
-	}
 }
