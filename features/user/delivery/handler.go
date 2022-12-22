@@ -4,7 +4,6 @@ import (
 	"capstone-alta1/features/user"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
-	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -22,14 +21,10 @@ func New(service user.ServiceInterface, e *echo.Echo) {
 	}
 
 	e.GET("/users", handler.GetAll, middlewares.JWTMiddleware())
-	e.GET("/users/me", handler.GetMe, middlewares.JWTMiddleware())
 	e.GET("/users/:id", handler.GetById, middlewares.JWTMiddleware())
 	e.POST("/users", handler.Create)
-	e.PUT("/users/:id", handler.Update, middlewares.JWTMiddleware(), middlewares.UserOnlySameId)
-	e.DELETE("/users/:id", handler.Delete, middlewares.JWTMiddleware(), middlewares.UserOnlySameId)
-
-	//middlewares.IsAdmin = untuk membatasi akses endpoint hanya admin
-	//middlewares.UserOnlySameId = untuk membatasi akses user mengelola data diri sendiri saja
+	e.PUT("/users", handler.Update, middlewares.JWTMiddleware())
+	e.DELETE("/users", handler.Delete, middlewares.JWTMiddleware())
 
 }
 
@@ -47,24 +42,6 @@ func (delivery *UserDelivery) GetAll(c echo.Context) error {
 	dataResponse := fromCoreList(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data", dataResponse))
-}
-
-func (delivery *UserDelivery) GetMe(c echo.Context) error {
-	userId := middlewares.ExtractTokenUserId(c)
-	if userId < 1 {
-		return c.JSON(http.StatusBadRequest, errors.New("Failed load user id from JWT token, please check again."))
-	}
-	results, err := delivery.userService.GetById(userId)
-	if err != nil {
-		if strings.Contains(err.Error(), "Get data success. No data.") {
-			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
-		}
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
-	}
-
-	dataResponse := fromCore(results)
-
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
 
 func (delivery *UserDelivery) GetById(c echo.Context) error {
@@ -108,11 +85,7 @@ func (delivery *UserDelivery) Create(c echo.Context) error {
 }
 
 func (delivery *UserDelivery) Update(c echo.Context) error {
-	idParam := c.Param("id")
-	id, errConv := strconv.Atoi(idParam)
-	if errConv != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
-	}
+	idUser := middlewares.ExtractTokenUserId(c)
 
 	userInput := UpdateRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
@@ -121,7 +94,7 @@ func (delivery *UserDelivery) Update(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.userService.Update(dataCore, id, c)
+	err := delivery.userService.Update(dataCore, idUser, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -133,12 +106,8 @@ func (delivery *UserDelivery) Update(c echo.Context) error {
 }
 
 func (delivery *UserDelivery) Delete(c echo.Context) error {
-	idParam := c.Param("id")
-	id, errConv := strconv.Atoi(idParam)
-	if errConv != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
-	}
-	err := delivery.userService.Delete(id)
+	idUser := middlewares.ExtractTokenUserId(c)
+	err := delivery.userService.Delete(idUser)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}

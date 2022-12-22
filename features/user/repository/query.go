@@ -42,18 +42,6 @@ func (repo *userRepository) GetAll() (data []user.Core, err error) {
 	return dataCore, nil
 }
 
-// GetAll with search by name implements user.Repository
-func (repo *userRepository) GetAllWithSearch(query string) (data []user.Core, err error) {
-	var users []User
-
-	tx := repo.db.Where("full_name LIKE ?", "%"+query+"%").Find(&users)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	var dataCore = toCoreList(users)
-	return dataCore, nil
-}
-
 // GetById implements user.RepositoryInterface
 func (repo *userRepository) GetById(id int) (data user.Core, err error) {
 	var user User

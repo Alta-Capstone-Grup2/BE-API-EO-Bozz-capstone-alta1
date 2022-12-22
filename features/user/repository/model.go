@@ -9,13 +9,10 @@ import (
 // struct gorm model
 type User struct {
 	gorm.Model
-	FullName        string `validate:"required"`
-	Email           string `validate:"required,email,unique"`
-	Password        string `validate:"required"`
-	Phone           string `validate:"required"`
-	Gender          string
-	ProfileImageUrl string
-	Role            string
+	Name     string `validate:"required"`
+	Email    string `validate:"required,email,unique"`
+	Password string `validate:"required"`
+	Role     string
 }
 
 // mapping
@@ -23,13 +20,10 @@ type User struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore _user.Core) User {
 	userGorm := User{
-		FullName:        dataCore.FullName,
-		Email:           dataCore.Email,
-		Password:        dataCore.Password,
-		Phone:           dataCore.Phone,
-		Gender:          dataCore.Gender,
-		ProfileImageUrl: dataCore.ProfileImageUrl,
-		Role:            dataCore.Role,
+		Name:     dataCore.Name,
+		Email:    dataCore.Email,
+		Password: dataCore.Password,
+		Role:     dataCore.Role,
 	}
 	return userGorm
 }
@@ -37,16 +31,13 @@ func fromCore(dataCore _user.Core) User {
 // mengubah struct model gorm ke struct core
 func (dataModel *User) toCore() _user.Core {
 	return _user.Core{
-		ID:              dataModel.ID,
-		FullName:        dataModel.FullName,
-		Email:           dataModel.Email,
-		Password:        dataModel.Password,
-		Phone:           dataModel.Phone,
-		Gender:          dataModel.Gender,
-		ProfileImageUrl: dataModel.ProfileImageUrl,
-		Role:            dataModel.Role,
-		CreatedAt:       dataModel.CreatedAt,
-		UpdatedAt:       dataModel.UpdatedAt,
+		ID:        dataModel.ID,
+		Name:      dataModel.Name,
+		Email:     dataModel.Email,
+		Password:  dataModel.Password,
+		Role:      dataModel.Role,
+		CreatedAt: dataModel.CreatedAt,
+		UpdatedAt: dataModel.UpdatedAt,
 	}
 }
 
