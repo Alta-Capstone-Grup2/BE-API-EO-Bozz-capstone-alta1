@@ -40,6 +40,11 @@ func toCore(i interface{}) user.Core {
 			Email:    cnv.Email,
 			Password: cnv.Password,
 		}
+	case UpdatePasswordRequest:
+		cnv := i.(UpdatePasswordRequest)
+		return user.Core{
+			Password: cnv.NewPassword,
+		}
 	}
 
 	return user.Core{}

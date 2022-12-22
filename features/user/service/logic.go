@@ -102,3 +102,13 @@ func (service *userService) Delete(id int) error {
 	}
 	return nil
 }
+
+func (service *userService) UpdatePassword(input user.Core, id int) error {
+	err := service.userRepository.Update(input, id)
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+
+	return nil
+}
