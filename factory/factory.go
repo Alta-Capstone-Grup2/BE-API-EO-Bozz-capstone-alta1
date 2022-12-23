@@ -13,6 +13,10 @@ import (
 	clientRepo "capstone-alta1/features/client/repository"
 	clientService "capstone-alta1/features/client/service"
 
+	partnerDelivery "capstone-alta1/features/partner/delivery"
+	partnerRepo "capstone-alta1/features/partner/repository"
+	partnerService "capstone-alta1/features/partner/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -30,4 +34,7 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	clientServiceFactory := clientService.New(clientRepoFactory)
 	clientDelivery.New(clientServiceFactory, e)
 
+	partnerRepoFactory := partnerRepo.New(db)
+	partnerServiceFactory := partnerService.New(partnerRepoFactory)
+	partnerDelivery.New(partnerServiceFactory, e)
 }
