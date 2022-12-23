@@ -13,7 +13,7 @@ info:
 servers:
   # Added by API Auto Mocking Plugin
   - description: Base URL Server GCP
-    url: http://54.179.170.113:8000
+    url: https://irisminty.my.id/
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/YUSNARSETIYADI150403_1/EO-Bozz/1.0.0
   - description: BE servers
@@ -43,8 +43,6 @@ tags:
     description: API mengelola fitur Reviews
   - name: Discussions
     description: API mengelola fitur Discussions
-  - name: Withdraw-funds
-    description: API mengelola fitur Withdraw-funds
 
 
 paths:
@@ -60,12 +58,7 @@ paths:
         content:
           "application/json":
             schema:
-              type: object
-              properties:
-                "email":
-                  type: string
-                "password":
-                  type: string
+              $ref: "#/components/schemas/RequestLogin"
             example:
               email: "budi123@gmail.com"
               password: "123"
@@ -75,7 +68,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseWithoutData"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                 status: "Success"
                 message: "Login Success"
@@ -99,13 +92,13 @@ paths:
       tags:
         - Users
       summary: "Create User" 
-      description: "Register User with Role = Admin."
+      description: "Register User for Client or Partner, Role Admin (Hardcode) "
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/RequestUser"
             example:
               name: "Budiman"
               email: "budi123@gmail.com"
@@ -142,7 +135,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all users"
@@ -176,7 +169,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestUser"
             example:
               name: "Budiman"
               email: "budi123@gmail.com"
@@ -280,7 +273,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestUser"
             example:
               old_password: "123"
               new_password: "456"
@@ -314,18 +307,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
-            example:
-              name: "Budiman"
-              email: "budi123@gmail.com"
-              password: "123"
-              gender: "laki-laki"
-              address: "tangerang"
-              city: "tangerang"
-              phone: "08123"
-              client_image_file: "image.jpg"
+              $ref: "#/components/schemas/RequestClient"
       responses:
         '201':
           description: "Success Create User"
@@ -373,7 +357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all clients"
@@ -413,18 +397,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
-            example:
-              name: "Budiman"
-              email: "budi123@gmail.com"
-              password: "123"
-              gender: "laki-laki"
-              address: "tangerang"
-              city: "tangerang"
-              phone: "08123"
-              client_image_file: "image.jpg"
+              $ref: "#/components/schemas/RequestClient"
       responses:
         '200':
           description: "Success update Client"
@@ -501,7 +476,6 @@ paths:
                       id: 1
                       name: "Budiman"
                       email: "budi123@gmail.com"
-                      password: "123"
                       gender: "laki-laki"
                       address: "tangerang"
                       city: "tangerang"
@@ -565,36 +539,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
-            example:
-              user_id: 1
-              name: "Budiman"
-              email: "budi123@gmail.com"
-              password: "123"
-              company_name: "budiman-EO"
-              company_phone: "0812333"
-              company_city: "jakarte"
-              company_image: "image.jpg"
-              company_address: "jalan rawa buaya 100"
-              link_website: "budiman-eo.com"
-              pic_position: "owner"
-              pic_phone: "081234"
-              pic_address: "jekardah"
-              nib_number: "76763783748438837"
-              nib_image: "nib.jpg"
-              siup_number: "9979837467847"
-              siup_image: "siup.jpg"
-              event1_name: "wedding1"
-              event1_image: "wedding1.jpg"
-              event2_name: "wedding2"
-              event2_image: "wedding2.jpg"
-              event3_name: "wedding3"
-              event3_image: "wedding3.jpg"
-              bank_name: "bca"
-              bank_account_number: "87287835843"
-              bank_account_name: "budiman"
+              $ref: "#/components/schemas/RequestPartner"
       responses:
         '201':
           description: "Success Create Partner"
@@ -642,31 +589,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all partners"
                   data:
-                    - id: 1
+                    - user_id: 1
                       name: "Budiman"
-                      email: "budi123@gmail.com"
-                      role: "Partner"
                       company_name: "budiman-EO"
-                      company_phone: "0812333"
-                      company_city: "jakarte"
-                      company_image: "image.jpg"
-                      company_address: "jalan rawa buaya 100"
-                      link_website: "budiman-eo.com"
-                    - id: 2
+                      created_at: "2022-12-29"
+                      verification_status: "not verified"
+                    - user_id: 2
                       name: "Jasiman"
-                      email: "Jasiman123@gmail.com"
-                      role: "Partner"
                       company_name: "jasiman-EO"
-                      company_phone: "0812333"
-                      company_city: "jakarte"
-                      company_image: "image.jpg"
-                      company_address: "jalan rawa buaya 100"
-                      link_website: "jasiman-eo.com"
+                      created_at: "2022-12-29"
+                      verification_status: "not verified"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -686,35 +623,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
-            example:
-              name: "Budiman"
-              email: "budi123@gmail.com"
-              password: "123"
-              company_name: "budiman-EO"
-              company_phone: "0812333"
-              company_city: "jakarte"
-              company_image: "image.jpg"
-              company_address: "jalan rawa buaya 100"
-              link_website: "budiman-eo.com"
-              pic_position: "owner"
-              pic_phone: "081234"
-              pic_address: "jekardah"
-              nib_number: "76763783748438837"
-              nib_image: "nib.jpg"
-              siup_number: "9979837467847"
-              siup_image: "siup.jpg"
-              event1_name: "wedding1"
-              event1_image: "wedding1.jpg"
-              event2_name: "wedding2"
-              event2_image: "wedding2.jpg"
-              event3_name: "wedding3"
-              event3_image: "wedding3.jpg"
-              bank_name: "bca"
-              bank_account_number: "87287835843"
-              bank_account_name: "budiman"
+              $ref: "#/components/schemas/RequestUpdatePartner"
       responses:
         '200':
           description: "Success update Partner"
@@ -760,8 +671,72 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/orders/confirm:
-    post: 
+  /partners/{id}:
+    get:
+      tags:
+        - Partners
+      summary: "Get Partner by id"
+      description: "Get all Partner and can use query parameter to search. Input using lowercase"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A data of partner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success get partner by id"
+                  data:
+                    user_id: 1
+                    name: "budiman"
+                    email: "budiman@gmail.com"
+                    company_name: "budiman pabrik"
+                    company_phone: "08123131"
+                    company_city: "tng"
+                    company_image: "image.png"
+                    company_address: "jkt"
+                    link_website: "blablabla.com"
+                    pic_position: "owner"
+                    pic_phone: "08988989"
+                    pic_address: "papua"
+                    nib_number: "988798988"
+                    nib_image: "image.png"
+                    siup_number: "746324"
+                    siup_image: "image.jpg"
+                    event1_name: "weding"
+                    event1_image: "image.jpg"
+                    event2_name: "pernikahan"
+                    event2_image: "image.jpg"
+                    event3_name: "kawinan"
+                    event3_image: "image.jpg"
+                    bank_name: "bca"
+                    bank_account_number: "27767462736"
+                    bank_account_name: "budiman"
+                    verification_status: "not verified"
+                    verification_log: "revisi again yaa."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /partners/orders/{id}/confirm:
+    put: 
       tags:
         - Partners
       summary: "Confirm order" 
@@ -773,12 +748,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/RequestPartnerOther"
             example:
-              id: 1
-              client_id: 1
-              service_id: 1
-              confirm: "order confirmed"
+              order_status: "order confirmed"
       responses:
         '201':
           description: "Success Create confirm order"
@@ -890,41 +862,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/withdraw-funds:
-    get:
-      tags:
-        - Partners
-      summary: "Get Partner withdraw-funds by id"
-      description: "Get data partner withdraw-funds using id partner at path parameter. Only return 1 data."
-      security:
-        - JWTAuth: []
-      responses:
-        '200':
-          description: "Success Get Partner withdraw-funds by Id"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseWithData"
-              example:
-                  status: "Success"
-                  message: "Success Get partner withdraw-funds by Id"
-                  data:
-                      id: 1
-                      event_name: "wedding"
-                      start_date: "2022-12-27"
-                      end_date: "2022-12-29"
-                      gross_ammount: 1000000
-                      withdraw-funds_status: "complete"
-        "400" :
-          $ref : "#/components/responses/400"  
-        "401" :
-          $ref : "#/components/responses/401"  
-        "404" :
-          $ref : "#/components/responses/404"  
-        '500':
-          $ref: "#/components/responses/500"
-
-  /partners/additionals?type=:
+  /partners/additionals:
     get:
       tags:
         - Partners
@@ -932,21 +870,6 @@ paths:
       description: "Get data partner additional service using id partner at path parameter. Only return 1 data."
       security:
         - JWTAuth: []
-      parameters:
-        - name: ""
-          description: "No value in parameter."
-          required: false
-          in: query
-          schema:
-            type: string
-            example: ""
-        - name: name
-          description: "type"
-          required: false
-          in: query
-          schema:
-            type: string
-            example: "wedding"
       responses:
         '200':
           description: "Success Get Partner additional service by Id"
@@ -961,7 +884,6 @@ paths:
                       id: 1
                       additional_name: "catering"
                       additional_price: 3000000
-                      additional_type: "wedding"
                       partner_id: 1
         "400" :
           $ref : "#/components/responses/400"  
@@ -986,27 +908,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all partners"
                   data:
-                    - id: 1
-                      email: "budi123@gmail.com"
+                    - user_id: 1
                       company_name: "budiman-EO"
-                      company_city: "jakarte"
-                      link_website: "budiman-eo.com"
-                      nib_number: "76763783748438837"
-                      siup_number: "9979837467847"
-                      status: "revision"
-                    - id: 2
-                      email: "jasiman123@gmail.com"
+                      name: "budiman"
+                      created_at: "2022-12-29"
+                      verification_status: "not verified"
+                    - user_id: 2
                       company_name: "jasiman-EO"
-                      company_city: "jakarte"
-                      link_website: "jasiman-eo.com"
-                      nib_number: "76763783748438837"
-                      siup_number: "9979837467847"
-                      status: "not verified"
+                      name: "jasiman"
+                      created_at: "2022-12-29"
+                      verification_status: "not verified"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1039,7 +955,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get partners register"
@@ -1072,7 +988,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestPartnerOther"
             example:
               verify_log: "revision your data"
               status: "verified"
@@ -1096,7 +1012,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-      
+
 ### Endpoint Service
   /services:
     post:
@@ -1109,18 +1025,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
-            example:
-              service_name: "wedding javva"
-              service_deacription: "wedding murmerr"
-              servoce_category: "wedding"
-              service_price: 50000000
-              average_rating: "*****"
-              service_image_url: "image.jpg"
-              city: "jakarte"
-              partner_id: 1
+              $ref: "#/components/schemas/RequestService"
       responses:
         '201':
           description: "Success Create service"
@@ -1174,14 +1081,14 @@ paths:
           required: false
           in: query
           schema:
-            type: string
+            type: integer
             example: 200000
         - name: max price
           description: "max price"
           required: false
           in: query
           schema:
-            type: string
+            type: integer
             example: 2000000
       responses:
         '200':
@@ -1189,14 +1096,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all service"
                   data:
                     - id: 1
                       service_name: "wedding javva"
-                      service_deacription: "wedding murmerr"
                       servoce_category: "wedding"
                       service_price: 50000000
                       average_rating: "*****"
@@ -1205,7 +1111,6 @@ paths:
                       partner_id: 1
                     - id: 2
                       service_name: "wedding javva"
-                      service_deacription: "wedding murmerr"
                       servoce_category: "wedding"
                       service_price: 50000000
                       average_rating: "*****"
@@ -1222,6 +1127,50 @@ paths:
           $ref: "#/components/responses/500"
 
   /services/{id}:
+    get:
+      tags:
+        - Services
+      summary: "Get service by id"
+      description: "Get service by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: detail of service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success get service by id"
+                  data:
+                    id: 1
+                    service_name: "wedding javva"
+                    servoce_category: "wedding"
+                    service_price: 50000000
+                    average_rating: "*****"
+                    service_image_url: "image.jpg"
+                    city: "jakarte"
+                    partner_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
     put:
       tags:
         - Services
@@ -1241,18 +1190,9 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
-            example:
-              service_name: "wedding javva"
-              service_deacription: "wedding murmerr"
-              servoce_category: "wedding"
-              service_price: 50000000
-              average_rating: "*****"
-              service_image_url: "image.jpg"
-              city: "jakarte"
-              partner_id: 2
+              $ref: "#/components/schemas/RequestService"
       responses:
         '200':
           description: "Success update service"
@@ -1315,12 +1255,21 @@ paths:
       description: "conect to service"
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestServiceOther"
             example:
               service_id: 1
               additionals:
@@ -1366,7 +1315,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all service additional"
@@ -1374,13 +1323,11 @@ paths:
                       - id: 1
                         name: "catering"
                         price: 50000
-                        additional_type: "wedding"
                         service_id: 1
                         additional_id: 1
                       - id: 2
                         name: "catering"
                         price: 50000
-                        additional_type: "wedding"
                         service_id: 1
                         additional_id: 2
         "400" :
@@ -1415,7 +1362,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all service reviews"
@@ -1464,7 +1411,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all service discussions"
@@ -1490,7 +1437,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /services/{id}/availbility/{start_date}&{end_date}:
+  /services/{id}/availbility:
     post:
       tags:
         - Services
@@ -1513,7 +1460,7 @@ paths:
           in: path
           schema:
             description: "start date"
-            type: integer
+            type: string
             example: 2022-12-21
         - name: end_date
           description: "end date "
@@ -1521,7 +1468,7 @@ paths:
           in: path
           schema:
             description: "end date"
-            type: integer
+            type: string
             example: 2022-12-24
       responses:
         '200':
@@ -1529,7 +1476,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "services currently available"
@@ -1562,11 +1509,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/RequestAdditional"
             example:
               name: "catering"
               price: 50000000
-              additional_type: "wedding"
               partner_id: 1
       responses:
         '201':
@@ -1600,7 +1546,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all additionals"
@@ -1646,11 +1592,10 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestAdditional"
             example:
               name: "catering"
               price: 50000000
-              additional_type: "wedding"
               partner_id: 1
       responses:
         '200':
@@ -1721,18 +1666,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/RequestOrder"
             example:
               event_name: "wedding"
               start_date: "2022-12-25"
-              start_time: "00:00:00"
               end_date: "2022-12-19"
-              end_time: "00:00:00"
               event_location: "jakarta"
               event_address: "jl. rawa buata"
               note_for_partner: "thnks"
-              services_name: "weddig java"
-              services_price: 2200000000
               payment_method: "cod"
               client_id: 1
               service_id: 1
@@ -1788,39 +1729,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all order"
                   data:
-                    - id: 1
-                      event_name: "wedding"
+                    - event_name: "wedding"
                       start_date: "2022-12-25"
                       end_date: "2022-12-19"
                       event_location: "jakarta"
                       services_name: "weddig java"
-                      services_price: 2200000000
+                      gross_ammount: 20000000
+                      order_status: "order confirmed"
                       client_id: 1
                       service_id: 1
-                      additionals:
-                        - additional_id: 1
-                          qty: 2
-                        - additional_id: 2
-                          qty: 4
-                    - id: 2
-                      event_name: "wedding"
+                    - event_name: "wedding"
                       start_date: "2022-12-25"
                       end_date: "2022-12-19"
                       event_location: "jakarta"
                       services_name: "weddig java"
-                      services_price: 2200000000
+                      gross_ammount: 2200000000
                       client_id: 2
                       service_id: 2
-                      additionals:
-                        - additional_id: 1
-                          qty: 2
-                        - additional_id: 2
-                          qty: 4
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1853,7 +1783,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get order by id"
@@ -1869,7 +1799,11 @@ paths:
                     note_for_partner: "thnks"
                     services_name: "weddig java"
                     services_price: 2200000000
+                    gross_ammount: 200000000000
                     payment_method: "cod"
+                    order_status: "order confirmed"
+                    payout_data: 666464466
+                    payout_reciept_url: "image.jpg"
                     client_id: 1
                     service_id: 1
                     additionals:
@@ -1912,10 +1846,52 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestOrder"
             example:
-              orderid: 1
-              status: "waiting completion"
+              order_id: 1
+              status: "cancel"
+      responses:
+        '200':
+          description: "Success update order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update order."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /orders/{id}/payout:
+    put:
+      tags:
+        - Orders
+      summary: "Update status payout"
+      description: "Update status payout using id order at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id order to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id order 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+                $ref: "#/components/schemas/RequestOrderPayout"
       responses:
         '200':
           description: "Success update order"
@@ -1950,7 +1926,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/RequestReview"
             example:
               review: "blbalalablbalablablab"
               rating: "*****"
@@ -1989,7 +1965,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all review"
@@ -2037,7 +2013,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: "#/components/schemas/EditUserObject"
+                $ref: "#/components/schemas/RequestReview"
             example:
               review: "blbalalablbalablablab"
               rating: "*****"
@@ -2113,7 +2089,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/RequestDiscussion"
             example:
               comment: "lorem ipsum blablabla"
               created_at: "2022-12-25 00:00:00"
@@ -2152,7 +2128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
                   status: "Success"
                   message: "Success get all discussions"
@@ -2205,48 +2181,28 @@ paths:
           $ref: "#/components/responses/500"
 
 
-### Endpoint Withdraw-funds
-  /withdraw-funds:
+### Endpoint City
+  /city:
     get:
       tags:
-        - Withdraw-funds
-      summary: "Get All Withdraw-funds"
-      description: "Get all Withdraw-funds"
+        - City
+      summary: "View All City" 
+      description: "View All City"
       security:
         - JWTAuth: []
       responses:
-        '200':
-          description: all Withdraw-funds
+        '201':
+          description: "Success view all city"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
+                $ref: "#/components/schemas/ResponseWithData"
               example:
-                  status: "Success"
-                  message: "Success get all Withdraw-funds"
-                  data:
-                    - id: 1
-                      event_name: "wedding"
-                      start_date: "2022-12-25"
-                      end_date: "2022-12-29"
-                      gross_ammout: 2000000
-                      transfer_reciept_file: "file.jpg"
-                      order_id: 1
-                      service_id: 1
-                      partner_id: 1
-                      client_id: 1
-                      withdraw-funds_status: "complete"
-                    - id: 2
-                      event_name: "wedding"
-                      start_date: "2022-12-25"
-                      end_date: "2022-12-29"
-                      gross_ammout: 2000000
-                      transfer_reciept_file: "file.jpg"
-                      order_id: 1
-                      service_id: 1
-                      partner_id: 2
-                      client_id: 2
-                      withdraw-funds_status: "complete"
+                status: "Success"
+                message: "successfully view all city" 
+                data:
+                  id: 1
+                  city_name: "jakarta"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -2255,53 +2211,6 @@ paths:
           $ref : "#/components/responses/404"  
         '500':
           $ref: "#/components/responses/500"
-  
-  /withdraw-funds/{id}:
-    put:
-      tags:
-        - Withdraw-funds
-      summary: "update Withdraw-funds"
-      description: "update Withdraw-funds"
-      security:
-        - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id Withdraw-funds to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id Withdraw-funds 1"
-            type: integer
-            example: 1
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-                $ref: "#/components/schemas/EditUserObject"
-            example:
-              image_upload_bukti_tf: "image.jpg"
-              status: "complete"
-      responses:
-        '200':
-          description: update Withdraw-funds
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccesArrayUserResult"
-              example:
-                  status: "Success"
-                  message: "Success update Withdraw-funds"
-        "400" :
-          $ref : "#/components/responses/400"  
-        "401" :
-          $ref : "#/components/responses/401"  
-        "404" :
-          $ref : "#/components/responses/404"  
-        '500':
-          $ref: "#/components/responses/500"
-
-
 
 
 ####################################
@@ -2316,279 +2225,239 @@ components:
       description: "JWT Token that generate after login."
 
   schemas:
+### Auth Schemas
+    "RequestLogin":
+      type: object
+      properties:
+        "email":
+          type: string
+        "password":
+          type: string
 
 ### User Schemas
-    "GetUserObject":
+    "RequestUser":
       type: object
       properties:
-        "id":
-          type: integer
-        "full_name":
-          type: string
-        "email":
-          type: string
-        "team":
-          type: string
-        "role":
-          type: string
-        "status":
-          type: string    
-    "ArrayUserObj":
-      type: array
-      items :
-        $ref: "#/components/schemas/GetUserObject"
-    "InsertUserObject":
-      type: object
-      properties:
-        "full_name":
+        "name":
           type: string
         "email":
           type: string
         "password":
           type: string
-        "team":
+        "old_password":
           type: string
-        "status":
-          type: string  
-    "EditUserObject":
-      type: object
-      properties:
-        "full_name":
-          type: string
-        "email":
-          type: string
-        "password":
-          type: string
-        "team":
-          type: string
-        "status":
+        "new_password":
           type: string
 
-### Class Schemas
-    "GetClassObject":
+### Client Schemas
+    "RequestClient":
       type: object
       properties:
-        "id":
-          type: integer
-        "name":
+        name: 
           type: string
-        "user_id":
+        email:
           type: string
-    "ArrayClassObj":
-      type: array
-      items :
-        $ref: "#/components/schemas/GetClassObject"
-    "InsertClassObject":
-      type: object
-      properties:
-        "name":
+        password:
           type: string
-        "user_id":
+        gender:
           type: string
-    "EditClassObject":
-      type: object
-      properties:
-        "name":
+        address:
           type: string
-        "user_id":
-          type: string 
+        city:
+          type: string
+        phone:
+          type: string
+        client_image_file: 
+          type: string
+          format: binary
 
-### Mentee Schemas
-    "GetMenteeListObject":
+### Partner Schemas
+    "RequestPartner":
       type: object
       properties:
-        "id":
-          type: integer
-        "name":
+        name: 
           type: string
-        "class_name":
+        email: 
           type: string
-        "status":
+        password: 
           type: string
-        "education_type":
-          type: string    
-        "gender":
+        company_name: 
           type: string
-        "class_id":
-          type: string      
-    "ArrayMenteeListObj":
-      type: array
-      items :
-        $ref: "#/components/schemas/GetMenteeListObject"
-    "GetMenteeObject":
-      type: object
-      properties:
-        "id":
-          type: integer
-        "name":
+        company_phone:
           type: string
-        "status":
+        company_city:
           type: string
-        "gender":
+        company_image:
           type: string
-        "nickname":
+          format: binary
+        company_address:
           type: string
-        "address":
-          type: string    
-        "home_address":
-          type: string    
-        "email":
-          type: string    
-        "telegram":
-          type: string    
-        "discord":
-          type: string    
-        "phone":
-          type: string    
-        "emergency_name":
-          type: string    
-        "emergency_phone":
-          type: string    
-        "emergency_status":
-          type: string    
-        "education_type":
-          type: string    
-        "education_major":
-          type: string    
-        "education_graduate":
-          type: string    
-        "class":
-          type: string      
-        "class_id":
-          type: integer 
-        "logs":
-          type: array
-          items:
-            $ref: "#/components/schemas/ArrayLogObj"  
-    "ArrayMenteeObj":
-      type: array
-      items :
-        $ref: "#/components/schemas/GetMenteeObject"
-    "InsertMenteeObject":
-      type: object
-      properties:
-        "name":
+        link_website:
           type: string
-        "status":
+        pic_position:
           type: string
-        "gender":
+        pic_phone:
           type: string
-        "nickname":
+        pic_address:
           type: string
-        "address":
-          type: string    
-        "home_address":
-          type: string    
-        "email":
-          type: string    
-        "telegram":
-          type: string    
-        "discord":
-          type: string    
-        "phone":
-          type: string    
-        "emergency_name":
-          type: string    
-        "emergency_phone":
-          type: string    
-        "emergency_status":
-          type: string    
-        "education_type":
-          type: string    
-        "education_major":
-          type: string    
-        "education_graduate":
-          type: string    
-        "class_id":
-          type: string   
-    "EditMenteeObject":
-      type: object
-      properties:
-        "name":
+        nib_number:
           type: string
-        "status":
+        nib_image:
           type: string
-        "gender":
+          format: binary
+        siup_number:
           type: string
-        "nickname":
+        siup_image:
           type: string
-        "address":
-          type: string    
-        "home_address":
-          type: string    
-        "email":
-          type: string    
-        "telegram":
-          type: string    
-        "discord":
-          type: string    
-        "phone":
-          type: string    
-        "emergency_name":
-          type: string    
-        "emergency_phone":
-          type: string    
-        "emergency_status":
-          type: string    
-        "education_type":
-          type: string    
-        "education_major":
-          type: string    
-        "education_graduate":
-          type: string    
-        "class_id":
-          type: string    
+          format: binary
+        event1_name:
+          type: string
+        event1_image:
+          type: string
+          format: binary
+        event2_name:
+          type: string
+        event2_image:
+          type: string
+          format: binary
+        event3_name:
+          type: string
+        event3_image:
+          type: string
+          format: binary
+        bank_name:
+          type: string
+        bank_account_number:
+          type: string
+        bank_account_name:
+          type: string
 
-### Log Schemas
-    "GetLogObject":
+    "RequestUpdatePartner":
       type: object
       properties:
-        "id":
+        name: 
+          type: string
+        email: 
+          type: string
+        password: 
+          type: string
+        company_name: 
+          type: string
+        company_phone:
+          type: string
+        company_city:
+          type: string
+        company_image:
+          type: string
+          format: binary
+        company_address:
+          type: string
+        link_website:
+          type: string
+        pic_position:
+          type: string
+        pic_phone:
+          type: string
+        pic_address:
+          type: string
+        nib_number:
+          type: string
+        nib_image:
+          type: string
+          format: binary
+        siup_number:
+          type: string
+        siup_image:
+          type: string
+          format: binary
+        event1_name:
+          type: string
+        event1_image:
+          type: string
+          format: binary
+        event2_name:
+          type: string
+        event2_image:
+          type: string
+          format: binary
+        event3_name:
+          type: string
+        event3_image:
+          type: string
+          format: binary
+        bank_name:
+          type: string
+        bank_account_number:
+          type: string
+        bank_account_name:
+          type: string
+
+    "RequestPartnerOther":
+      type: object
+      properties:
+        other:
+          type: string
+
+### Service Schemas
+    "RequestService":
+      type: object
+      properties:
+        service_name:
+          type: string
+        service_deacription:
+          type: string
+        servoce_category:
+          type: string
+        service_price:
           type: integer
-        "title":
+        average_rating: 
           type: string
-        "fullname_user":
+        service_image_url:
           type: string
-        "created_date":
+          format: binary
+        city:
           type: string
-        "feedback":
-          type: string  
-        "status":
-          type: string  
-        "mentee_id":
-          type: integer  
-        "user_id":
-          type: integer  
-    "ArrayLogObj":
-      type: array
-      items :
-        $ref: "#/components/schemas/GetLogObject"
-    "InsertLogObject":
+
+    "RequestServiceOther":
       type: object
       properties:
-        "title":
+        other:  
           type: string
-        "feedback":
-          type: string  
-        "status":
-          type: string  
-        "mentee_id":
-          type: integer  
-        "user_id":
-          type: integer  
-    "EditLogObject":
+
+### Additional Schemas
+    "RequestAdditional":
       type: object
       properties:
-        "title":
+        other:
           type: string
-        "feedback":
-          type: string  
-        "status":
-          type: string  
-        "mentee_id":
-          type: integer  
-        "user_id":
-          type: integer  
+
+### Order Schemas
+    "RequestOrder":
+      type: object
+      properties:
+        other:
+          type: string
+
+    "RequestOrderPayout":
+      type: object
+      properties:
+        transfer_reciept_file:
+          type: string
+          format: binary
+
+### Review Schemas
+    "RequestReview":
+      type: object
+      properties:
+        other:
+          type: string
+
+### Discussion Schemas
+    "RequestDiscussion":
+      type: object
+      properties:
+        other:
+          type: string
 
 ### Other Schemas
     "ResponseWithoutData":
@@ -2607,70 +2476,7 @@ components:
           type: string
         data:
           type: object
-    "SuccesArrayUserResult":
-      type: object
-      properties:
-        status:
-          type: string
-        message: 
-          type: string
-        data:
-          type: array
-          items : 
-            $ref: "#/components/schemas/ArrayUserObj"
-    "SuccesArrayClassResult":
-      type: object
-      properties:
-        status:
-          type: string
-        message: 
-          type: string
-        data:
-          type: array
-          items : 
-            $ref: "#/components/schemas/ArrayClassObj" 
-    "SuccesArrayMenteeListResult":
-      type: object
-      properties:
-        status:
-          type: string
-        message: 
-          type: string
-        data:
-          type: array
-          items : 
-            $ref: "#/components/schemas/ArrayMenteeListObj" 
-    "SuccessMenteeResult":
-      type: object
-      properties:
-        status:
-          type: string
-        message: 
-          type: string
-        data:
-          $ref: "#/components/schemas/GetMenteeObject" 
-    "SuccesArrayMenteeResult":
-      type: object
-      properties:
-        status:
-          type: string
-        message: 
-          type: string
-        data:
-          type: array
-          items : 
-            $ref: "#/components/schemas/ArrayMenteeObj" 
-    "SuccesArrayLogResult":
-      type: object
-      properties:
-        status:
-          type: string
-        message: 
-          type: string
-        data:
-          type: array
-          items : 
-            $ref: "#/components/schemas/ArrayLogObj" 
+
 
 ### Responses Schemas
   responses:

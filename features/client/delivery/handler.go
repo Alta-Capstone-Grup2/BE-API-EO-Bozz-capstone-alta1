@@ -24,7 +24,7 @@ func New(service client.ServiceInterface, e *echo.Echo) {
 	e.POST("/clients", handler.Create)
 	e.PUT("/clients", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/clients", handler.Delete, middlewares.JWTMiddleware())
-	e.GET("/clients/:id/orders", handler.GetOrderById, middlewares.JWTMiddleware())
+	e.GET("/clients/orders", handler.GetOrderById, middlewares.JWTMiddleware())
 }
 
 func (delivery *ClientDelivery) GetAll(c echo.Context) error {
