@@ -45,7 +45,7 @@ func (repo *partnerRepository) GetAll() (data []partner.Core, err error) {
 
 func (repo *partnerRepository) GetAllWithSearch(query string) (data []partner.Core, err error) {
 	var partner []Partner
-	tx := repo.db.Where("name LIKE ?", "%"+query+"%").Find(&partner)
+	tx := repo.db.Preload("User").Where("name LIKE ?", "%"+query+"%").Find(&partner)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -64,7 +64,7 @@ func (repo *partnerRepository) GetAllWithSearch(query string) (data []partner.Co
 func (repo *partnerRepository) GetById(id int) (data partner.Core, err error) {
 	var partner Partner
 
-	tx := repo.db.First(&partner, id)
+	tx := repo.db.Preload("User").First(&partner, id)
 
 	if tx.Error != nil {
 		return data, tx.Error

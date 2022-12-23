@@ -66,6 +66,7 @@ func fromCore(dataCore partner.Core) PartnerResponse {
 		BankAccountName:    dataCore.BankName,
 		VerificationStatus: dataCore.VerificationStatus,
 		VerificationLog:    dataCore.VerificationLog,
+		UserID:             dataCore.UserID,
 	}
 }
 

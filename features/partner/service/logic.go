@@ -3,7 +3,6 @@ package service
 import (
 	"capstone-alta1/features/partner"
 	"capstone-alta1/utils/helper"
-	"capstone-alta1/utils/thirdparty"
 	"errors"
 	"strings"
 	"time"
@@ -59,17 +58,17 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 	}
 
 	// upload foto
-	file, _ := c.FormFile("file")
-	if file != nil {
-		res, err := thirdparty.UploadProfile(c)
-		if err != nil {
-			return errors.New("Failed. Cannot Upload Data.")
-		}
-		log.Print(res)
-		input.CompanyImageUrl = res
-	} else {
-		input.CompanyImageUrl = "https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png"
-	}
+	// file, _ := c.FormFile("file")
+	// if file != nil {
+	// 	res, err := thirdparty.UploadProfile(c)
+	// 	if err != nil {
+	// 		return errors.New("Failed. Cannot Upload Data.")
+	// 	}
+	// 	log.Print(res)
+	// 	input.CompanyImageUrl = res
+	// } else {
+	// 	input.CompanyImageUrl = "https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png"
+	// }
 
 	// Encrypt
 	bytePass, errEncrypt := bcrypt.GenerateFromPassword([]byte(input.User.Password), 10)
