@@ -2,6 +2,7 @@ package repository
 
 import (
 	client "capstone-alta1/features/client"
+	"capstone-alta1/features/order"
 	"errors"
 	"fmt"
 
@@ -61,7 +62,7 @@ func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core
 }
 
 // GetById implements user.RepositoryInterface
-func (repo *clientRepository) GetById(id int) (data client.Core, err error) {
+func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {
 	var client Client
 
 	tx := repo.db.First(&client, id)
@@ -79,7 +80,7 @@ func (repo *clientRepository) GetById(id int) (data client.Core, err error) {
 }
 
 // Update implements user.Repository
-func (repo *clientRepository) Update(input client.Core, id int) error {
+func (repo *clientRepository) Update(input client.Core, id uint) error {
 	clientGorm := fromCore(input)
 	var client Client
 	tx := repo.db.Model(&client).Where("ID = ?", id).Updates(&clientGorm) // proses update
@@ -93,7 +94,7 @@ func (repo *clientRepository) Update(input client.Core, id int) error {
 }
 
 // Delete implements user.Repository
-func (repo *clientRepository) Delete(id int) error {
+func (repo *clientRepository) Delete(id uint) error {
 	var client Client
 	tx := repo.db.Delete(&client, id) // proses delete
 	if tx.Error != nil {
@@ -115,4 +116,21 @@ func (repo *clientRepository) FindUser(email string) (result client.Core, err er
 	result = clientData.toCore()
 
 	return result, nil
+}
+
+func (repo *clientRepository) GetOrderById(id uint) (data []order.Core, err error) {
+	var clientorder []Order
+
+	tx := repo.db.First(&clientorder, id)
+
+	if tx.Error != nil {
+		return data, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	var dataCore = toCoreListOrder(clientorder)
+	return dataCore, nil
 }

@@ -24,7 +24,7 @@ func New(service client.ServiceInterface, e *echo.Echo) {
 	e.POST("/clients", handler.Create)
 	e.PUT("/clients", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/clients", handler.Delete, middlewares.JWTMiddleware())
-
+	e.GET("/clients/:id/orders", handler.GetOrderById, middlewares.JWTMiddleware())
 }
 
 func (delivery *ClientDelivery) GetAll(c echo.Context) error {
@@ -45,7 +45,8 @@ func (delivery *ClientDelivery) GetAll(c echo.Context) error {
 
 func (delivery *ClientDelivery) GetById(c echo.Context) error {
 	clientId := middlewares.ExtractTokenUserId(c)
-	results, err := delivery.clientService.GetById(clientId)
+	idUint := uint(clientId)
+	results, err := delivery.clientService.GetById(idUint)
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -81,6 +82,7 @@ func (delivery *ClientDelivery) Create(c echo.Context) error {
 
 func (delivery *ClientDelivery) Update(c echo.Context) error {
 	idUser := middlewares.ExtractTokenUserId(c)
+	idUint := uint(idUser)
 	userInput := ClientRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
@@ -88,7 +90,7 @@ func (delivery *ClientDelivery) Update(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.clientService.Update(dataCore, idUser, c)
+	err := delivery.clientService.Update(dataCore, idUint, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -101,10 +103,27 @@ func (delivery *ClientDelivery) Update(c echo.Context) error {
 
 func (delivery *ClientDelivery) Delete(c echo.Context) error {
 	idUser := middlewares.ExtractTokenUserId(c)
-	err := delivery.clientService.Delete(idUser)
+	idUint := uint(idUser)
+	err := delivery.clientService.Delete(idUint)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success delete data."))
+}
+
+func (delivery *ClientDelivery) GetOrderById(c echo.Context) error {
+	clientId := middlewares.ExtractTokenUserId(c)
+	idUint := uint(clientId)
+	results, err := delivery.clientService.GetOrderById(idUint)
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreListOrder(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
