@@ -9,16 +9,25 @@ import (
 	userRepo "capstone-alta1/features/user/repository"
 	userService "capstone-alta1/features/user/service"
 
+	clientDelivery "capstone-alta1/features/client/delivery"
+	clientRepo "capstone-alta1/features/client/repository"
+	clientService "capstone-alta1/features/client/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
+	authRepoFactory := authRepo.New(db)
+	authServiceFactory := authService.New(authRepoFactory)
+	authDelivery.New(authServiceFactory, e)
+
 	userRepoFactory := userRepo.New(db)
 	userServiceFactory := userService.New(userRepoFactory)
 	userDelivery.New(userServiceFactory, e)
 
-	authRepoFactory := authRepo.New(db)
-	authServiceFactory := authService.New(authRepoFactory)
-	authDelivery.New(authServiceFactory, e)
+	clientRepoFactory := clientRepo.New(db)
+	clientServiceFactory := clientService.New(clientRepoFactory)
+	clientDelivery.New(clientServiceFactory, e)
+
 }
