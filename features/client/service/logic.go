@@ -2,6 +2,7 @@ package service
 
 import (
 	"capstone-alta1/features/client"
+	"capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
 	"strings"
 
@@ -72,7 +73,7 @@ func (service *clientService) GetAll(query string) (data []client.Core, err erro
 	return data, err
 }
 
-func (service *clientService) GetById(id int) (data client.Core, err error) {
+func (service *clientService) GetById(id uint) (data client.Core, err error) {
 	data, err = service.clientRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
@@ -83,7 +84,7 @@ func (service *clientService) GetById(id int) (data client.Core, err error) {
 
 }
 
-func (service *clientService) Update(input client.Core, id int, c echo.Context) error {
+func (service *clientService) Update(input client.Core, id uint, c echo.Context) error {
 	if input.User.Password != "" {
 		generate, _ := bcrypt.GenerateFromPassword([]byte(input.User.Password), 10)
 		input.User.Password = string(generate)
@@ -97,7 +98,7 @@ func (service *clientService) Update(input client.Core, id int, c echo.Context) 
 	return nil
 }
 
-func (service *clientService) Delete(id int) error {
+func (service *clientService) Delete(id uint) error {
 	// proses
 	err := service.clientRepository.Delete(id)
 	if err != nil {
@@ -105,4 +106,15 @@ func (service *clientService) Delete(id int) error {
 		return helper.ServiceErrorMsg(err)
 	}
 	return nil
+}
+
+func (service *clientService) GetOrderById(id uint) (data []order.Core, err error) {
+	data, err = service.clientRepository.GetOrderById(id)
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
+	return data, err
+
 }
