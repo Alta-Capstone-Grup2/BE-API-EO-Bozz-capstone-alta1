@@ -17,14 +17,14 @@ func New(service auth.ServiceInterface, e *echo.Echo) {
 	handler := &AuthHandler{
 		authService: service,
 	}
-	e.POST("/login", handler.Login)
+	e.POST("/auth", handler.Login)
 }
 
 func (handler *AuthHandler) Login(c echo.Context) error {
 	userInput := UserRequest{}
 	errBind := c.Bind(&userInput)
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("failed to bind data"))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to bind data."))
 	}
 
 	dataCore := ToCore(userInput)

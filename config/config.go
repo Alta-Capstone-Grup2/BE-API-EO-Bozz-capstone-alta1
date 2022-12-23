@@ -61,5 +61,18 @@ func initConfig() *AppConfig {
 	defaultConfig.DB_PORT = uint(cnvDBPort)
 	defaultConfig.JWT_SECRET = os.Getenv("JWT_SECRET")
 
+	// log.Println(` Env List :
+	//  - server port : `, defaultConfig.SERVER_PORT,
+	// 	` \n - db name : `, defaultConfig.DB_NAME,
+	// 	` \n - db username : `, defaultConfig.DB_USERNAME,
+	// 	` \n - db password : `, defaultConfig.DB_PASSWORD,
+	// 	` \n - db host : `, defaultConfig.DB_HOST,
+	// 	` \n - db port : `, defaultConfig.DB_PORT,
+	// 	` \n - jwt secret : `, defaultConfig.JWT_SECRET,
+	// 	` \n - AWS_REGION : `, os.Getenv("JWT_SECRET"),
+	// 	` \n - AWS_BUCKET_NAME : `, os.Getenv("AWS_BUCKET_NAME"),
+	// 	` \n - ACCESS_KEY_IAM : `, os.Getenv("ACCESS_KEY_IAM"),
+	// 	` \n - SECRET_KEY_IAM : `, os.Getenv("SECRET_KEY_IAM"))
+
 	return &defaultConfig
 }
