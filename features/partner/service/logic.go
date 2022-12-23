@@ -3,7 +3,10 @@ package service
 import (
 	"capstone-alta1/features/partner"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
+	"errors"
 	"strings"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -31,15 +34,44 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 	}
 
 	input.User.Role = "Partner"
+	input.VerificationStatus = "Not Verified"
+
+	// datetime layout
+	layoutDefault := "2006-01-02 15:04:05"
+	//init the loc
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	//set timezone,
+	now := time.Now().In(loc).Format(layoutDefault)
+
+	input.VerificationLog = now + " Partner Register."
 
 	// validasi email harus unik
+	data, errFindEmail := service.partnerRepository.FindUser(input.User.Email)
+	// helper.LogDebug("\n\n\n find email input  ", input.Email)
+	// helper.LogDebug("\n\n\n find email data  ", data.Email)
 
-	_, errFindEmail := service.partnerRepository.FindUser(input.User.Email)
+	if data.User.Email == input.User.Email {
+		return errors.New("Email " + input.User.Email + " already exist. Please pick another email.")
+	}
 
 	if errFindEmail != nil && !strings.Contains(errFindEmail.Error(), "found") {
 		return helper.ServiceErrorMsg(errFindEmail)
 	}
 
+	// upload foto
+	file, _ := c.FormFile("file")
+	if file != nil {
+		res, err := thirdparty.UploadProfile(c)
+		if err != nil {
+			return errors.New("Failed. Cannot Upload Data.")
+		}
+		log.Print(res)
+		input.CompanyImageUrl = res
+	} else {
+		input.CompanyImageUrl = "https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png"
+	}
+
+	// Encrypt
 	bytePass, errEncrypt := bcrypt.GenerateFromPassword([]byte(input.User.Password), 10)
 	if errEncrypt != nil {
 		log.Error(errEncrypt.Error())
@@ -48,6 +80,7 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 
 	input.User.Password = string(bytePass)
 
+	// Process
 	errCreate := service.partnerRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())

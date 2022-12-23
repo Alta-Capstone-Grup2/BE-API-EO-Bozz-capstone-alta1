@@ -35,7 +35,7 @@ func (repo *partnerRepository) Create(input partner.Core) error {
 func (repo *partnerRepository) GetAll() (data []partner.Core, err error) {
 	var partner []Partner
 
-	tx := repo.db.Find(&partner)
+	tx := repo.db.Preload("User").Find(&partner)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -107,7 +107,7 @@ func (repo *partnerRepository) Delete(id int) error {
 
 func (repo *partnerRepository) FindUser(email string) (result partner.Core, err error) {
 	var partnerData Partner
-	tx := repo.db.Preload("Users", "email = ?", email).First(&partnerData)
+	tx := repo.db.Where("email", email).First(&partnerData.User)
 	if tx.Error != nil {
 		return partner.Core{}, tx.Error
 	}
