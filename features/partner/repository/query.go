@@ -107,7 +107,7 @@ func (repo *partnerRepository) Delete(id int) error {
 
 func (repo *partnerRepository) FindUser(email string) (result partner.Core, err error) {
 	var partnerData Partner
-	tx := repo.db.Where("email = ?", email).First(&partnerData)
+	tx := repo.db.Preload("Users", "email = ?", email).First(&partnerData)
 	if tx.Error != nil {
 		return partner.Core{}, tx.Error
 	}

@@ -3,10 +3,12 @@ package service
 import (
 	"capstone-alta1/features/partner"
 	"capstone-alta1/utils/helper"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type partnerService struct {
@@ -29,6 +31,22 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 	}
 
 	input.User.Role = "Partner"
+
+	// validasi email harus unik
+
+	_, errFindEmail := service.partnerRepository.FindUser(input.User.Email)
+
+	if errFindEmail != nil && !strings.Contains(errFindEmail.Error(), "found") {
+		return helper.ServiceErrorMsg(errFindEmail)
+	}
+
+	bytePass, errEncrypt := bcrypt.GenerateFromPassword([]byte(input.User.Password), 10)
+	if errEncrypt != nil {
+		log.Error(errEncrypt.Error())
+		return err
+	}
+
+	input.User.Password = string(bytePass)
 
 	errCreate := service.partnerRepository.Create(input)
 	if errCreate != nil {
