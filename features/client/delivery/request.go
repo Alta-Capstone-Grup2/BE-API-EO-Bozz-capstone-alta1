@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"capstone-alta1/features/client"
-	user "capstone-alta1/features/user"
 )
 
 type ClientRequest struct {
@@ -18,7 +17,7 @@ type ClientRequest struct {
 
 func toCore(input ClientRequest) client.Core {
 	clientCoredata := client.Core{
-		User: user.Core{
+		User: client.UserCore{
 			Name:     input.Name,
 			Email:    input.Email,
 			Password: input.Password,

@@ -1,20 +1,43 @@
 package client
 
 import (
-	"capstone-alta1/features/order"
-	"capstone-alta1/features/user"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
 
 type Core struct {
-	User           user.Core
+	ID             uint
 	Gender         string
 	Address        string
 	City           string
 	Phone          string
 	ClientImageUrl string
-	Order          []order.Core
+	UserID         uint
+	User           UserCore
+	Orders         []OrderCore
+}
+
+type UserCore struct {
+	ID       uint
+	Name     string `validate:"required"`
+	Email    string `validate:"required,email"`
+	Password string `validate:"required"`
+	Role     string
+}
+
+type OrderCore struct {
+	ID            uint
+	EventName     string
+	StartDate     time.Time
+	EndDate       time.Time
+	EventLocation string
+	ServiceName   string
+	GrossAmmount  int
+	OrderStatus   string
+	ServiceID     uint
+	ClientID      uint
+	UserID        uint
 }
 
 type ServiceInterface interface {
@@ -23,7 +46,7 @@ type ServiceInterface interface {
 	Create(input Core, c echo.Context) error
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
-	GetOrderById(id uint) (data []order.Core, err error)
+	GetOrderById(id uint) (data []OrderCore, err error)
 }
 
 type RepositoryInterface interface {
@@ -34,5 +57,5 @@ type RepositoryInterface interface {
 	Update(input Core, id uint) error
 	Delete(id uint) error
 	FindUser(email string) (data Core, err error)
-	GetOrderById(id uint) (data []order.Core, err error)
+	GetOrderById(id uint) (data []OrderCore, err error)
 }

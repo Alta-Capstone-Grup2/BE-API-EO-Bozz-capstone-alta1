@@ -2,7 +2,6 @@ package repository
 
 import (
 	client "capstone-alta1/features/client"
-	"capstone-alta1/features/order"
 	"errors"
 	"fmt"
 
@@ -36,7 +35,7 @@ func (repo *clientRepository) Create(input client.Core) error {
 func (repo *clientRepository) GetAll() (data []client.Core, err error) {
 	var client []Client
 
-	tx := repo.db.Find(&client)
+	tx := repo.db.Preload("User").Find(&client)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -46,7 +45,7 @@ func (repo *clientRepository) GetAll() (data []client.Core, err error) {
 
 func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core, err error) {
 	var client []Client
-	tx := repo.db.Where("name LIKE ?", "%"+query+"%").Find(&client)
+	tx := repo.db.Preload("User").Where("name LIKE ?", "%"+query+"%").Find(&client)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -65,7 +64,7 @@ func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core
 func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {
 	var client Client
 
-	tx := repo.db.First(&client, id)
+	tx := repo.db.Where("id", id).Preload("User").First(&client)
 
 	if tx.Error != nil {
 		return data, tx.Error
@@ -108,7 +107,7 @@ func (repo *clientRepository) Delete(id uint) error {
 
 func (repo *clientRepository) FindUser(email string) (result client.Core, err error) {
 	var clientData Client
-	tx := repo.db.Where("email = ?", email).First(&clientData)
+	tx := repo.db.Where("email = ?", email).First(&clientData.User)
 	if tx.Error != nil {
 		return client.Core{}, tx.Error
 	}
@@ -118,7 +117,7 @@ func (repo *clientRepository) FindUser(email string) (result client.Core, err er
 	return result, nil
 }
 
-func (repo *clientRepository) GetOrderById(id uint) (data []order.Core, err error) {
+func (repo *clientRepository) GetOrderById(id uint) (data []client.OrderCore, err error) {
 	var clientorder []Order
 
 	tx := repo.db.First(&clientorder, id)

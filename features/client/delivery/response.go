@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"capstone-alta1/features/client"
-	"capstone-alta1/features/order"
 	"time"
 )
 
@@ -16,6 +15,7 @@ type ClientResponse struct {
 	City           string `json:"city"`
 	Phone          string `json:"phone"`
 	ClientImageUrl string `json:"client_image_url"`
+	UserID         uint   `json:"user_id"`
 }
 
 type ClientOrderResponse struct {
@@ -28,12 +28,13 @@ type ClientOrderResponse struct {
 	GrossAmmount  int
 	OrderStatus   string
 	ServiceID     uint
+	ClientID      uint
 	UserID        uint
 }
 
 func fromCore(dataCore client.Core) ClientResponse {
 	return ClientResponse{
-		ID:             dataCore.User.ID,
+		ID:             dataCore.ID,
 		Name:           dataCore.User.Name,
 		Email:          dataCore.User.Email,
 		Role:           dataCore.User.Role,
@@ -42,10 +43,11 @@ func fromCore(dataCore client.Core) ClientResponse {
 		City:           dataCore.City,
 		Phone:          dataCore.Phone,
 		ClientImageUrl: dataCore.ClientImageUrl,
+		UserID:         dataCore.User.ID,
 	}
 }
 
-func fromCoreOrder(dataCore order.Core) ClientOrderResponse {
+func fromCoreOrder(dataCore client.OrderCore) ClientOrderResponse {
 	return ClientOrderResponse{
 		ID:            dataCore.ID,
 		EventName:     dataCore.EventName,
@@ -56,6 +58,7 @@ func fromCoreOrder(dataCore order.Core) ClientOrderResponse {
 		GrossAmmount:  dataCore.GrossAmmount,
 		OrderStatus:   dataCore.OrderStatus,
 		ServiceID:     dataCore.ServiceID,
+		ClientID:      dataCore.ClientID,
 		UserID:        dataCore.UserID,
 	}
 }
@@ -68,7 +71,7 @@ func fromCoreList(dataCore []client.Core) []ClientResponse {
 	return dataResponse
 }
 
-func fromCoreListOrder(dataCore []order.Core) []ClientOrderResponse {
+func fromCoreListOrder(dataCore []client.OrderCore) []ClientOrderResponse {
 	var dataResponse []ClientOrderResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromCoreOrder(v))

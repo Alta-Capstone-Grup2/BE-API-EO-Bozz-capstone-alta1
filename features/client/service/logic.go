@@ -2,8 +2,8 @@ package service
 
 import (
 	"capstone-alta1/features/client"
-	"capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
+	"errors"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -33,8 +33,13 @@ func (service *clientService) Create(input client.Core, c echo.Context) (err err
 	}
 
 	// validasi email harus unik
+	data, errFindEmail := service.clientRepository.FindUser(input.User.Email)
+	// helper.LogDebug("\n\n\n find email input  ", input.Email)
+	// helper.LogDebug("\n\n\n find email data  ", data.Email)
 
-	_, errFindEmail := service.clientRepository.FindUser(input.User.Email)
+	if data.User.Email == input.User.Email {
+		return errors.New("Email " + input.User.Email + " already exist. Please pick another email.")
+	}
 
 	if errFindEmail != nil && !strings.Contains(errFindEmail.Error(), "found") {
 		return helper.ServiceErrorMsg(errFindEmail)
@@ -108,7 +113,7 @@ func (service *clientService) Delete(id uint) error {
 	return nil
 }
 
-func (service *clientService) GetOrderById(id uint) (data []order.Core, err error) {
+func (service *clientService) GetOrderById(id uint) (data []client.OrderCore, err error) {
 	data, err = service.clientRepository.GetOrderById(id)
 	if err != nil {
 		log.Error(err.Error())
