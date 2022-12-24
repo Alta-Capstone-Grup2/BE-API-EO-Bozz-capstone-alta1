@@ -2,10 +2,7 @@ package repository
 
 import (
 	client "capstone-alta1/features/client"
-	ordercore "capstone-alta1/features/order"
-	order "capstone-alta1/features/order/repository"
-	usercore "capstone-alta1/features/user"
-	user "capstone-alta1/features/user/repository"
+
 	"time"
 
 	"gorm.io/gorm"
@@ -13,13 +10,23 @@ import (
 
 // struct gorm model
 type Client struct {
-	User           user.User
+	gorm.Model
 	Gender         string
 	Address        string
 	City           string
 	Phone          string
 	ClientImageUrl string
-	Order          []order.Order
+	UserID         uint
+	User           User
+	Orders         []Order
+}
+
+type User struct {
+	gorm.Model
+	Name     string
+	Email    string
+	Password string
+	Role     string
 }
 
 type Order struct {
@@ -32,6 +39,7 @@ type Order struct {
 	GrossAmmount  int
 	OrderStatus   string
 	ServiceID     uint
+	ClientID      uint
 	UserID        uint
 }
 
@@ -40,7 +48,7 @@ type Order struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore client.Core) Client {
 	clientGorm := Client{
-		User: user.User{
+		User: User{
 			Name:     dataCore.User.Name,
 			Email:    dataCore.User.Email,
 			Password: dataCore.User.Password,
@@ -51,6 +59,7 @@ func fromCore(dataCore client.Core) Client {
 		City:           dataCore.City,
 		Phone:          dataCore.Phone,
 		ClientImageUrl: dataCore.ClientImageUrl,
+		UserID:         dataCore.User.ID,
 	}
 	return clientGorm
 }
@@ -58,7 +67,7 @@ func fromCore(dataCore client.Core) Client {
 // mengubah struct model gorm ke struct core
 func (dataModel *Client) toCore() client.Core {
 	return client.Core{
-		User: usercore.Core{
+		User: client.UserCore{
 			ID:       dataModel.User.ID,
 			Name:     dataModel.User.Name,
 			Email:    dataModel.User.Email,
@@ -70,11 +79,13 @@ func (dataModel *Client) toCore() client.Core {
 		City:           dataModel.City,
 		Phone:          dataModel.Phone,
 		ClientImageUrl: dataModel.ClientImageUrl,
+		UserID:         dataModel.User.ID,
+		ID:             dataModel.ID,
 	}
 }
 
-func (data *Order) toCoreOrder() ordercore.Core {
-	return ordercore.Core{
+func (data *Order) toCoreOrder() client.OrderCore {
+	return client.OrderCore{
 		ID:            data.ID,
 		EventName:     data.EventName,
 		StartDate:     data.StartDate,
@@ -84,6 +95,7 @@ func (data *Order) toCoreOrder() ordercore.Core {
 		GrossAmmount:  data.GrossAmmount,
 		OrderStatus:   data.OrderStatus,
 		ServiceID:     data.ServiceID,
+		ClientID:      data.ClientID,
 		UserID:        data.UserID,
 	}
 }
@@ -97,8 +109,8 @@ func toCoreList(dataModel []Client) []client.Core {
 	return dataCore
 }
 
-func toCoreListOrder(dataModel []Order) []ordercore.Core {
-	var dataCore []ordercore.Core
+func toCoreListOrder(dataModel []Order) []client.OrderCore {
+	var dataCore []client.OrderCore
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCoreOrder())
 	}

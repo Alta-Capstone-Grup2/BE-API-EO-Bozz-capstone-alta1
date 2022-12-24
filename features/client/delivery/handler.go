@@ -5,6 +5,7 @@ import (
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -44,9 +45,12 @@ func (delivery *ClientDelivery) GetAll(c echo.Context) error {
 }
 
 func (delivery *ClientDelivery) GetById(c echo.Context) error {
-	clientId := middlewares.ExtractTokenUserId(c)
-	idUint := uint(clientId)
-	results, err := delivery.clientService.GetById(idUint)
+	idParam := c.Param("id")
+	id, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	results, err := delivery.clientService.GetById(uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
