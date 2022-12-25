@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"capstone-alta1/config"
+	additional "capstone-alta1/features/additional/repository"
 	client "capstone-alta1/features/client/repository"
 	partner "capstone-alta1/features/partner/repository"
 	review "capstone-alta1/features/review/repository"
@@ -32,4 +33,5 @@ func migrateDB(db *gorm.DB) {
 	db.AutoMigrate(&review.Review{})
 	db.AutoMigrate(&review.Service{})
 	db.AutoMigrate(&review.Order{})
+	db.AutoMigrate(&additional.Additional{})
 }

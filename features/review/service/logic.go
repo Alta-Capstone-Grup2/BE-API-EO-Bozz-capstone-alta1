@@ -3,7 +3,6 @@ package service
 import (
 	"capstone-alta1/features/review"
 	"capstone-alta1/utils/helper"
-	"errors"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -47,11 +46,6 @@ func (service *reviewService) GetAll(query string) (data []review.Core, err erro
 		return nil, helper.ServiceErrorMsg(err)
 	}
 
-	if len(data) == 0 {
-		helper.LogDebug("Get data success. No data.")
-		return nil, errors.New("Get data success. No data.")
-	}
-
 	return data, err
 }
 
@@ -60,11 +54,6 @@ func (service *reviewService) GetById(id int) (data review.Core, err error) {
 	if err != nil {
 		log.Error(err.Error())
 		return review.Core{}, helper.ServiceErrorMsg(err)
-	}
-
-	if data == (review.Core{}) {
-		helper.LogDebug("Get data success. No data.")
-		return review.Core{}, errors.New("Get data success. No data.")
 	}
 
 	return data, err
