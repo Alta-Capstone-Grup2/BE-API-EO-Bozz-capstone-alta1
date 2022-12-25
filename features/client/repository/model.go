@@ -31,16 +31,20 @@ type User struct {
 
 type Order struct {
 	gorm.Model
-	EventName     string
-	StartDate     time.Time
-	EndDate       time.Time
-	EventLocation string
-	ServiceName   string
-	GrossAmmount  int
-	OrderStatus   string
-	ServiceID     uint
-	ClientID      uint
-	UserID        uint
+	EventName        string
+	StartDate        time.Time
+	EndDate          time.Time
+	EventLocation    string
+	NotesForPartner  string
+	ServiceName      string
+	ServicePrice     uint
+	GrossAmmount     uint
+	PaymentMethod    string
+	OrderStatus      string
+	PayoutReceiptUrl string
+	PayoutDate       time.Time
+	ServiceID        uint
+	ClientID         uint
 }
 
 // mapping
@@ -96,7 +100,6 @@ func (data *Order) toCoreOrder() client.OrderCore {
 		OrderStatus:   data.OrderStatus,
 		ServiceID:     data.ServiceID,
 		ClientID:      data.ClientID,
-		UserID:        data.UserID,
 	}
 }
 

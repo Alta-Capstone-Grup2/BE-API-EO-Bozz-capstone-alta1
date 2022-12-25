@@ -17,6 +17,10 @@ import (
 	partnerRepo "capstone-alta1/features/partner/repository"
 	partnerService "capstone-alta1/features/partner/service"
 
+	reviewDelivery "capstone-alta1/features/review/delivery"
+	reviewRepo "capstone-alta1/features/review/repository"
+	reviewService "capstone-alta1/features/review/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -37,4 +41,8 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	partnerRepoFactory := partnerRepo.New(db)
 	partnerServiceFactory := partnerService.New(partnerRepoFactory)
 	partnerDelivery.New(partnerServiceFactory, e)
+
+	reviewRepoFactory := reviewRepo.New(db)
+	reviewServiceFactory := reviewService.New(reviewRepoFactory)
+	reviewDelivery.New(reviewServiceFactory, e)
 }

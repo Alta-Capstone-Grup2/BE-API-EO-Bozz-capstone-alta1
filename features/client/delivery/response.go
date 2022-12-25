@@ -25,11 +25,10 @@ type ClientOrderResponse struct {
 	EndDate       time.Time
 	EventLocation string
 	ServiceName   string
-	GrossAmmount  int
+	GrossAmmount  uint
 	OrderStatus   string
 	ServiceID     uint
 	ClientID      uint
-	UserID        uint
 }
 
 func fromCore(dataCore client.Core) ClientResponse {
@@ -59,7 +58,6 @@ func fromCoreOrder(dataCore client.OrderCore) ClientOrderResponse {
 		OrderStatus:   dataCore.OrderStatus,
 		ServiceID:     dataCore.ServiceID,
 		ClientID:      dataCore.ClientID,
-		UserID:        dataCore.UserID,
 	}
 }
 
