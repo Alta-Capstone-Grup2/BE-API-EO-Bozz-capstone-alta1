@@ -15,6 +15,9 @@ type Review struct {
 	OrderID   uint
 	ClientID  uint
 	ServiceID uint
+	Order     Order
+	Client    Client
+	Service   Service
 }
 
 type Client struct {

@@ -13,10 +13,13 @@ type Core struct {
 	OrderID   uint    `valiidate:"required"`
 	ClientID  uint    `valiidate:"required"`
 	ServiceID uint    `valiidate:"required"`
+	Order     Order
+	Client    Client
+	Service   Service
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
-type ClientCore struct {
+type Client struct {
 	ID             uint
 	Gender         string
 	Address        string
@@ -24,11 +27,11 @@ type ClientCore struct {
 	Phone          string
 	ClientImageUrl string
 	UserID         uint
-	User           UserCore
-	Orders         []OrderCore
+	User           User
+	Orders         []Order
 }
 
-type UserCore struct {
+type User struct {
 	ID       uint
 	Name     string `validate:"required"`
 	Email    string `validate:"required,email"`
@@ -36,7 +39,7 @@ type UserCore struct {
 	Role     string
 }
 
-type OrderCore struct {
+type Order struct {
 	ID               uint
 	EventName        string
 	StartDate        time.Time
@@ -54,7 +57,7 @@ type OrderCore struct {
 	ClientID         uint
 }
 
-type ServiceCore struct {
+type Service struct {
 	ID                 uint
 	ServiceName        string
 	ServiceDescription string
