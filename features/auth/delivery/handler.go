@@ -17,7 +17,7 @@ func New(service auth.ServiceInterface, e *echo.Echo) {
 	handler := &AuthHandler{
 		authService: service,
 	}
-	e.POST("/auth", handler.Login)
+	e.POST("/login", handler.Login)
 }
 
 func (handler *AuthHandler) Login(c echo.Context) error {

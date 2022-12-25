@@ -51,7 +51,7 @@ func (repo *partnerRepository) GetAllWithSearch(query string) (data []partner.Co
 	}
 
 	if tx.RowsAffected == 0 {
-		return data, errors.New("Data not found.")
+		return data, tx.Error
 	}
 
 	fmt.Println("\n\n 2 getall partner = ", partner)
@@ -82,26 +82,52 @@ func (repo *partnerRepository) GetById(id int) (data partner.Core, err error) {
 func (repo *partnerRepository) Update(input partner.Core, id int) error {
 	partnerGorm := fromCore(input)
 	var partner Partner
-	tx := repo.db.Model(&partner).Where("ID = ?", id).Updates(&partnerGorm) // proses update
-	if tx.Error != nil {
-		return tx.Error
-	}
-	if tx.RowsAffected == 0 {
-		return errors.New("update failed")
-	}
+	var user User
+	repo.db.Transaction(func(tx *gorm.DB) error {
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		if err := tx.Model(&partner).Where("ID = ?", id).Updates(&partnerGorm).Error; err != nil {
+			// return any error will rollback
+			return err
+		}
+
+		if err := tx.Model(&user).Where("ID = ?", id).Updates(&partnerGorm).Error; err != nil {
+			return err
+		}
+
+		if tx.RowsAffected == 0 {
+			return errors.New("update failed")
+		}
+
+		// return nil will commit the whole transaction
+		return nil
+	})
+
 	return nil
 }
 
 // Delete implements user.Repository
 func (repo *partnerRepository) Delete(id int) error {
 	var partner Partner
-	tx := repo.db.Delete(&partner, id) // proses delete
-	if tx.Error != nil {
-		return tx.Error
-	}
-	if tx.RowsAffected == 0 {
-		return errors.New("delete failed")
-	}
+	var user User
+	repo.db.Transaction(func(tx *gorm.DB) error {
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		if err := tx.Delete(&partner, id).Error; err != nil {
+			// return any error will rollback
+			return err
+		}
+
+		if err := tx.Delete(&user, id).Error; err != nil {
+			return err
+		}
+
+		if tx.RowsAffected == 0 {
+			return errors.New("update failed")
+		}
+
+		// return nil will commit the whole transaction
+		return nil
+	})
+
 	return nil
 }
 

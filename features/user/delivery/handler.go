@@ -94,7 +94,7 @@ func (delivery *UserDelivery) Update(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.userService.Update(dataCore, idUser, c)
+	err := delivery.userService.Update(dataCore, idUser)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -125,7 +125,7 @@ func (delivery *UserDelivery) UpdatePassword(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.userService.Update(dataCore, idUser, c)
+	err := delivery.userService.Update(dataCore, idUser)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
