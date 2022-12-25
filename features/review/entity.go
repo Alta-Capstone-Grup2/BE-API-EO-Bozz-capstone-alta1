@@ -8,11 +8,11 @@ import (
 
 type Core struct {
 	ID        uint
-	Review    string  `validate:"required"`
-	Rating    float64 `validate:"required"`
-	OrderID   uint    `validate:"required"`
-	ClientID  uint    `validate:"required"`
-	ServiceID uint    `validate:"required"`
+	Review    string  `valiidate:"required"`
+	Rating    float64 `valiidate:"required"`
+	OrderID   uint    `valiidate:"required"`
+	ClientID  uint    `valiidate:"required"`
+	ServiceID uint    `valiidate:"required"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

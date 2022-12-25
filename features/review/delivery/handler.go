@@ -20,11 +20,11 @@ func New(service review.ServiceInterface, e *echo.Echo) {
 		reviewService: service,
 	}
 
-	e.GET("/comments", handler.GetAll)
-	e.GET("/comments/:id", handler.GetById)
-	e.POST("/comments", handler.Create, middlewares.JWTMiddleware())
-	e.PUT("/comments/:id", handler.Update, middlewares.JWTMiddleware())
-	e.DELETE("/comments/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.GET("/reviews", handler.GetAll)
+	e.GET("/reviews/:id", handler.GetById)
+	e.POST("/reviews", handler.Create, middlewares.JWTMiddleware())
+	e.PUT("/reviews/:id", handler.Update, middlewares.JWTMiddleware())
+	e.DELETE("/reviews/:id", handler.Delete, middlewares.JWTMiddleware())
 
 	//middlewares.IsAdmin = untuk membatasi akses endpoint hanya admin
 	//middlewares.UserOnlySameId = untuk membatasi akses user mengelola data diri sendiri saja
@@ -103,14 +103,14 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 	if userId < 1 {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load user id from JWT token, please check again."))
 	}
-	data, errGet := delivery.reviewService.GetById(id)
-	if errGet != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errGet.Error()))
-	}
+	// data, errGet := delivery.reviewService.GetById(id)
+	// if errGet != nil {
+	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse(errGet.Error()))
+	// }
 
-	if userId != int(data.ClientID) {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed process data, data must be yours."))
-	}
+	// if userId != int(data.ClientID) {
+	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed process data, data must be yours."))
+	// }
 
 	// process
 	dataCore := toCore(userInput, uint(userId))
@@ -137,14 +137,14 @@ func (delivery *ReviewDelivery) Delete(c echo.Context) error {
 	if userId < 1 {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load user id from JWT token, please check again."))
 	}
-	data, errGet := delivery.reviewService.GetById(id)
-	if errGet != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errGet.Error()))
-	}
+	// data, errGet := delivery.reviewService.GetById(id)
+	// if errGet != nil {
+	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse(errGet.Error()))
+	// }
 
-	if userId != int(data.ClientID) {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed process data, data must be yours."))
-	}
+	// if userId != int(data.ClientID) {
+	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed process data, data must be yours."))
+	// }
 
 	// process
 	err := delivery.reviewService.Delete(id)
