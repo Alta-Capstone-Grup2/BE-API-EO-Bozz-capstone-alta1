@@ -79,7 +79,7 @@ func (service *userService) GetById(id int) (data user.Core, err error) {
 
 }
 
-func (service *userService) Update(input user.Core, id int, c echo.Context) error {
+func (service *userService) Update(input user.Core, id int) error {
 	if input.Password != "" {
 		generate, _ := bcrypt.GenerateFromPassword([]byte(input.Password), 10)
 		input.Password = string(generate)

@@ -11,7 +11,6 @@ type InsertRequest struct {
 }
 
 type UpdateRequest struct {
-	ID       uint   `json:"id" form:"id"`
 	Name     string `json:"name" form:"name"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
@@ -35,7 +34,6 @@ func toCore(i interface{}) user.Core {
 	case UpdateRequest:
 		cnv := i.(UpdateRequest)
 		return user.Core{
-			ID:       cnv.ID,
 			Name:     cnv.Name,
 			Email:    cnv.Email,
 			Password: cnv.Password,
