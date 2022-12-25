@@ -51,7 +51,7 @@ func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core
 	}
 
 	if tx.RowsAffected == 0 {
-		return data, errors.New("Data not found.")
+		return data, tx.Error
 	}
 
 	fmt.Println("\n\n 2 getall client = ", client)
@@ -82,26 +82,52 @@ func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {
 func (repo *clientRepository) Update(input client.Core, id uint) error {
 	clientGorm := fromCore(input)
 	var client Client
-	tx := repo.db.Model(&client).Where("ID = ?", id).Updates(&clientGorm) // proses update
-	if tx.Error != nil {
-		return tx.Error
-	}
-	if tx.RowsAffected == 0 {
-		return errors.New("update failed")
-	}
+	var user User
+	repo.db.Transaction(func(tx *gorm.DB) error {
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		if err := tx.Model(&client).Where("ID = ?", id).Updates(&clientGorm).Error; err != nil {
+			// return any error will rollback
+			return err
+		}
+
+		if err := tx.Model(&user).Where("ID = ?", id).Updates(&clientGorm).Error; err != nil {
+			return err
+		}
+
+		if tx.RowsAffected == 0 {
+			return errors.New("update failed")
+		}
+
+		// return nil will commit the whole transaction
+		return nil
+	})
+
 	return nil
 }
 
 // Delete implements user.Repository
 func (repo *clientRepository) Delete(id uint) error {
 	var client Client
-	tx := repo.db.Delete(&client, id) // proses delete
-	if tx.Error != nil {
-		return tx.Error
-	}
-	if tx.RowsAffected == 0 {
-		return errors.New("delete failed")
-	}
+	var user User
+	repo.db.Transaction(func(tx *gorm.DB) error {
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		if err := tx.Delete(&client, id).Error; err != nil {
+			// return any error will rollback
+			return err
+		}
+
+		if err := tx.Delete(&user, id).Error; err != nil {
+			return err
+		}
+
+		if tx.RowsAffected == 0 {
+			return errors.New("update failed")
+		}
+
+		// return nil will commit the whole transaction
+		return nil
+	})
+
 	return nil
 }
 
