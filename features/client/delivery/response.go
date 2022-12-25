@@ -14,7 +14,7 @@ type ClientResponse struct {
 	Address        string `json:"address"`
 	City           string `json:"city"`
 	Phone          string `json:"phone"`
-	ClientImageUrl string `json:"client_image_url"`
+	ClientImageUrl string `json:"client_image_file"`
 	UserID         uint   `json:"user_id"`
 }
 

@@ -26,7 +26,7 @@ type PartnerRequest struct {
 	Event2Name        string `json:"event2_name" form:"event2_name"`
 	Event2ImageUrl    string `json:"event2_image_file" form:"event2_image_file"`
 	Event3Name        string `json:"event3_name" form:"event3_name"`
-	Event3ImageUrl    string `json:"event4_image_file" form:"event3_image_file"`
+	Event3ImageUrl    string `json:"event3_image_file" form:"event3_image_file"`
 	BankName          string `json:"bank_name" form:"bank_name"`
 	BankAccountNumber string `json:"bank_account_number" form:"bank_account_number"`
 	BankAccountName   string `json:"bank_account_name" form:"bank_account_name"`

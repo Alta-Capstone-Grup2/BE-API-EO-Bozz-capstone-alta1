@@ -12,7 +12,7 @@ type ClientRequest struct {
 	Address        string `json:"address" form:"address"`
 	City           string `json:"city" form:"city"`
 	Phone          string `json:"phone" form:"phone"`
-	ClientImageUrl string `json:"client_image_url" form:"client_image_url"`
+	ClientImageUrl string `json:"client_image_file" form:"client_image_file"`
 }
 
 func toCore(input ClientRequest) client.Core {

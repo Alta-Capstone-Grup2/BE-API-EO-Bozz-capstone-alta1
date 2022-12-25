@@ -4,6 +4,9 @@ import (
 	"capstone-alta1/features/client"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
+	"errors"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -70,6 +73,18 @@ func (delivery *ClientDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
+	ClientImageUrl, _ := c.FormFile("client_image_file")
+	if ClientImageUrl != nil {
+		urlFile, err := thirdparty.Upload(c)
+		if err != nil {
+			return errors.New("registration failed. cannot upload data")
+		}
+		log.Print(urlFile)
+		userInput.ClientImageUrl = urlFile
+	} else {
+		userInput.ClientImageUrl = ""
+	}
+
 	dataCore := toCore(userInput)
 	err := delivery.clientService.Create(dataCore, c)
 	if err != nil {
@@ -91,6 +106,18 @@ func (delivery *ClientDelivery) Update(c echo.Context) error {
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	}
+
+	ClientImageUrl, _ := c.FormFile("client_image_url")
+	if ClientImageUrl != nil {
+		urlFile, err := thirdparty.Upload(c)
+		if err != nil {
+			return errors.New("registration failed. cannot upload data")
+		}
+		log.Print(urlFile)
+		userInput.ClientImageUrl = urlFile
+	} else {
+		userInput.ClientImageUrl = ""
 	}
 
 	dataCore := toCore(userInput)
