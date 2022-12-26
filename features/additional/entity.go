@@ -3,9 +3,8 @@ package additional
 type Core struct {
 	ID              uint
 	AdditionalName  string
-	AdditionalPrice int
+	AdditionalPrice uint
 	PartnerID       uint
-	Partner         Partner
 }
 
 type Partner struct {

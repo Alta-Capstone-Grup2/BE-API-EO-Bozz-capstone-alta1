@@ -25,6 +25,10 @@ import (
 	additionalRepo "capstone-alta1/features/additional/repository"
 	additionalService "capstone-alta1/features/additional/service"
 
+	discussionDelivery "capstone-alta1/features/discussion/delivery"
+	discussionRepo "capstone-alta1/features/discussion/repository"
+	discussionService "capstone-alta1/features/discussion/service"
+
 	cityDelivery "capstone-alta1/features/city/delivery"
 	cityRepo "capstone-alta1/features/city/repository"
 	cityService "capstone-alta1/features/city/service"
@@ -65,6 +69,10 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	additionalRepoFactory := additionalRepo.New(db)
 	additionalServiceFactory := additionalService.New(additionalRepoFactory)
 	additionalDelivery.New(additionalServiceFactory, e)
+
+	discussionRepoFactory := discussionRepo.New(db)
+	discussionServiceFactory := discussionService.New(discussionRepoFactory)
+	discussionDelivery.New(discussionServiceFactory, e)
 
 	cityRepoFactory := cityRepo.New(db)
 	cityServiceFactory := cityService.New(cityRepoFactory)
