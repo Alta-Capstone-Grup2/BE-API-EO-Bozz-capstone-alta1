@@ -2201,8 +2201,10 @@ paths:
                 status: "Success"
                 message: "successfully view all city" 
                 data:
-                  id: 1
-                  city_name: "jakarta"
+                  - id: 1
+                    city_name: "jakarta"
+                  - id: 2
+                    city_name: "bandung"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
