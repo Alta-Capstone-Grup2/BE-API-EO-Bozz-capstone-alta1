@@ -29,6 +29,14 @@ import (
 	cityRepo "capstone-alta1/features/city/repository"
 	cityService "capstone-alta1/features/city/service"
 
+	// serviceDelivery "capstone-alta1/features/service/delivery"
+	// serviceRepo "capstone-alta1/features/service/repository"
+	// serviceService "capstone-alta1/features/service/service"
+
+	// orderDelivery "capstone-alta1/features/order/delivery"
+	// orderRepo "capstone-alta1/features/order/repository"
+	// orderService "capstone-alta1/features/order/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -61,4 +69,12 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	cityRepoFactory := cityRepo.New(db)
 	cityServiceFactory := cityService.New(cityRepoFactory)
 	cityDelivery.New(cityServiceFactory, e)
+
+	// serviceRepoFactory := serviceRepo.New(db)
+	// serviceServiceFactory := serviceService.New(serviceRepoFactory)
+	// serviceDelivery.New(serviceServiceFactory, e)
+
+	// orderRepoFactory := orderRepo.New(db)
+	// orderServiceFactory := orderService.New(orderRepoFactory)
+	// orderDelivery.New(orderServiceFactory, e)
 }
