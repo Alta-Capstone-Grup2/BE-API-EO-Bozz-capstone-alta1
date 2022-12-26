@@ -9,10 +9,9 @@ import (
 // struct gorm model
 type Additional struct {
 	gorm.Model
-	NameAdditional  string
-	PriceAdditional int
+	AdditionalName  string
+	AdditionalPrice uint
 	PartnerID       uint
-	Partner         Partner
 }
 
 type Partner struct {
@@ -58,8 +57,8 @@ type User struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore additional.Core) Additional {
 	modelData := Additional{
-		NameAdditional:  dataCore.NameAdditional,
-		PriceAdditional: dataCore.PriceAdditional,
+		AdditionalName:  dataCore.AdditionalName,
+		AdditionalPrice: dataCore.AdditionalPrice,
 		PartnerID:       dataCore.PartnerID,
 	}
 	return modelData
@@ -69,8 +68,8 @@ func fromCore(dataCore additional.Core) Additional {
 func (dataModel *Additional) toCore() additional.Core {
 	return additional.Core{
 		ID:              dataModel.ID,
-		NameAdditional:  dataModel.NameAdditional,
-		PriceAdditional: dataModel.PriceAdditional,
+		AdditionalName:  dataModel.AdditionalName,
+		AdditionalPrice: dataModel.AdditionalPrice,
 		PartnerID:       dataModel.PartnerID,
 	}
 }

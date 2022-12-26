@@ -6,16 +6,16 @@ import (
 
 type AdditionalResponse struct {
 	ID              uint   `json:"id"`
-	NameAdditional  string `json:"name_additional"`
-	PriceAdditional int    `json:"price_additional"`
+	AdditionalName  string `json:"additional_name"`
+	AdditionalPrice uint   `json:"price_additional"`
 	PartnerID       uint   `json:"partner_id"`
 }
 
 func fromCore(dataCore additional.Core) AdditionalResponse {
 	return AdditionalResponse{
 		ID:              dataCore.ID,
-		NameAdditional:  dataCore.NameAdditional,
-		PriceAdditional: dataCore.PriceAdditional,
+		AdditionalName:  dataCore.AdditionalName,
+		AdditionalPrice: dataCore.AdditionalPrice,
 		PartnerID:       dataCore.PartnerID,
 	}
 }

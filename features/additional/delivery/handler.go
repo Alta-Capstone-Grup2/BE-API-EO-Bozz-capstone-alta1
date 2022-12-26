@@ -21,9 +21,9 @@ func New(service additional.ServiceInterface, e *echo.Echo) {
 	}
 
 	e.GET("/additionals", handler.GetAll, middlewares.JWTMiddleware())
-	e.POST("/additionals", handler.Create, middlewares.JWTMiddleware())
-	e.PUT("/additionals/:id", handler.Update, middlewares.JWTMiddleware())
-	e.DELETE("/additionals/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.POST("/additionals", handler.Create, middlewares.JWTMiddleware(), middlewares.PartnerAllowed)
+	e.PUT("/additionals/:id", handler.Update, middlewares.JWTMiddleware(), middlewares.PartnerAllowed)
+	e.DELETE("/additionals/:id", handler.Delete, middlewares.JWTMiddleware(), middlewares.PartnerAllowed)
 
 }
 
@@ -48,8 +48,8 @@ func (delivery *additionalDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	userId := middlewares.ExtractTokenUserId(c)
-	dataCore := toCore(userInput, uint(userId))
+	partnerID := middlewares.ExtractTokenPartnerID(c)
+	dataCore := toCore(userInput, uint(partnerID))
 	err := delivery.additionalService.Create(dataCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {

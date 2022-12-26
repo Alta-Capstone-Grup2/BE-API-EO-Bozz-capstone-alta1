@@ -4,6 +4,7 @@ import (
 	"capstone-alta1/config"
 	additional "capstone-alta1/features/additional/repository"
 	client "capstone-alta1/features/client/repository"
+	discussion "capstone-alta1/features/discussion/repository"
 	partner "capstone-alta1/features/partner/repository"
 	review "capstone-alta1/features/review/repository"
 	user "capstone-alta1/features/user/repository"
@@ -34,4 +35,5 @@ func migrateDB(db *gorm.DB) {
 	db.AutoMigrate(&review.Service{})
 	db.AutoMigrate(&review.Order{})
 	db.AutoMigrate(&additional.Additional{})
+	db.AutoMigrate(&discussion.Discussion{})
 }
