@@ -10,9 +10,9 @@ type AdditionalRequest struct {
 }
 
 func toCore(input AdditionalRequest, id uint) additional.Core {
-	clientCoredata := additional.Core{
+	inputData := additional.Core{
 		AdditionalName:  input.AdditionalName,
 		AdditionalPrice: input.AdditionalPrice,
 	}
-	return clientCoredata
+	return inputData
 }

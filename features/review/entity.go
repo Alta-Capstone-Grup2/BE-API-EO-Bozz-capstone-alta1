@@ -61,11 +61,10 @@ type Service struct {
 	ID                 uint
 	ServiceName        string
 	ServiceDescription string
-	ServiceIncluded    string
 	ServiceCategory    string
 	ServicePrice       uint
 	AverageRating      float64
-	ServiceImage_Url   string
+	ServiceImageUrl    string
 	City               string
 	PartnerID          uint
 }
