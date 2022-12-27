@@ -6,14 +6,14 @@ import (
 )
 
 type ServiceResponse struct {
-	ID              uint    `json:"id"`
-	ServiceName     string  `json:"service_name"`
-	ServiceCategory string  `json:"service_category"`
-	ServicePrice    uint    `json:"service_price"`
-	AverageRating   float64 `json:"average_rating"`
-	ServiceImageUrl string  `json:"service_image_file"`
-	City            string  `json:"city"`
-	PartnerID       uint    `json:"partner_id"`
+	ID               uint    `json:"id"`
+	ServiceName      string  `json:"service_name"`
+	ServiceCategory  string  `json:"service_category"`
+	ServicePrice     uint    `json:"service_price"`
+	AverageRating    float64 `json:"average_rating"`
+	ServiceImageFile string  `json:"service_image_file"`
+	City             string  `json:"city"`
+	PartnerID        uint    `json:"partner_id"`
 }
 
 type ServiceAdditionalResponse struct {
@@ -44,14 +44,14 @@ type ServiceDiscussionResponse struct {
 
 func fromCore(dataCore service.Core) ServiceResponse {
 	return ServiceResponse{
-		ID:              dataCore.ID,
-		ServiceName:     dataCore.ServiceName,
-		ServiceCategory: dataCore.ServiceCategory,
-		ServicePrice:    dataCore.ServicePrice,
-		AverageRating:   dataCore.AverageRating,
-		ServiceImageUrl: dataCore.ServiceImageUrl,
-		City:            dataCore.City,
-		PartnerID:       dataCore.PartnerID,
+		ID:               dataCore.ID,
+		ServiceName:      dataCore.ServiceName,
+		ServiceCategory:  dataCore.ServiceCategory,
+		ServicePrice:     dataCore.ServicePrice,
+		AverageRating:    dataCore.AverageRating,
+		ServiceImageFile: dataCore.ServiceImageFile,
+		City:             dataCore.City,
+		PartnerID:        dataCore.PartnerID,
 	}
 }
 

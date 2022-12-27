@@ -11,15 +11,15 @@ import (
 // struct gorm model
 type Client struct {
 	gorm.Model
-	Gender         string
-	Address        string
-	City           string
-	Phone          string
-	ClientImageUrl string
-	UserID         uint
-	User           User
-	Orders         []Order
-	Reviews        []Review
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
+	User            User
+	Orders          []Order
+	Reviews         []Review
 }
 
 type User struct {
@@ -64,12 +64,12 @@ func fromCore(dataCore client.Core) Client {
 			Password: dataCore.User.Password,
 			Role:     dataCore.User.Role,
 		},
-		Gender:         dataCore.Gender,
-		Address:        dataCore.Address,
-		City:           dataCore.City,
-		Phone:          dataCore.Phone,
-		ClientImageUrl: dataCore.ClientImageUrl,
-		UserID:         dataCore.User.ID,
+		Gender:          dataCore.Gender,
+		Address:         dataCore.Address,
+		City:            dataCore.City,
+		Phone:           dataCore.Phone,
+		ClientImageFile: dataCore.ClientImageFile,
+		UserID:          dataCore.User.ID,
 	}
 	return clientGorm
 }
@@ -84,13 +84,13 @@ func (dataModel *Client) toCore() client.Core {
 			Password: dataModel.User.Password,
 			Role:     dataModel.User.Role,
 		},
-		Gender:         dataModel.Gender,
-		Address:        dataModel.Address,
-		City:           dataModel.City,
-		Phone:          dataModel.Phone,
-		ClientImageUrl: dataModel.ClientImageUrl,
-		UserID:         dataModel.User.ID,
-		ID:             dataModel.ID,
+		Gender:          dataModel.Gender,
+		Address:         dataModel.Address,
+		City:            dataModel.City,
+		Phone:           dataModel.Phone,
+		ClientImageFile: dataModel.ClientImageFile,
+		UserID:          dataModel.User.ID,
+		ID:              dataModel.ID,
 	}
 }
 

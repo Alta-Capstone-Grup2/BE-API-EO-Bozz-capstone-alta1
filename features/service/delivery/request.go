@@ -10,7 +10,7 @@ type ServiceRequest struct {
 	ServiceCategory    string  `json:"service_category" form:"service_category"`
 	ServicePrice       uint    `json:"service_price" form:"service_price"`
 	AverageRating      float64 `json:"average_rating" form:"average_rating"`
-	ServiceImageUrl    string  `json:"service_image_file" form:"service_image_file"`
+	ServiceImageFile   string  `json:"service_image_file" form:"service_image_file"`
 	City               string  `json:"city" form:"city"`
 }
 
@@ -26,7 +26,7 @@ func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 		ServiceCategory:    input.ServiceCategory,
 		ServicePrice:       input.ServicePrice,
 		AverageRating:      input.AverageRating,
-		ServiceImageUrl:    input.ServiceImageUrl,
+		ServiceImageFile:   input.ServiceImageFile,
 		City:               input.City,
 		PartnerID:          InputPartnerID,
 	}

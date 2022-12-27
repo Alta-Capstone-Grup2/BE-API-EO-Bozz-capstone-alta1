@@ -7,15 +7,15 @@ import (
 )
 
 type Core struct {
-	ID             uint
-	Gender         string
-	Address        string
-	City           string
-	Phone          string
-	ClientImageUrl string
-	UserID         uint
-	User           User
-	Order          []Order
+	ID              uint
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
+	User            User
+	Order           []Order
 }
 
 type User struct {

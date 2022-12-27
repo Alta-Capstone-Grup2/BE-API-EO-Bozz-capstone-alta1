@@ -57,7 +57,7 @@ func (service *clientService) Create(input client.Core, c echo.Context) (err err
 
 	// upload foto
 	var errUpload error
-	input.ClientImageUrl, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
+	input.ClientImageFile, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
@@ -106,7 +106,7 @@ func (service *clientService) Update(input client.Core, clientID uint, userID ui
 
 	// upload file
 	var errUpload error
-	input.ClientImageUrl, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
+	input.ClientImageFile, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}

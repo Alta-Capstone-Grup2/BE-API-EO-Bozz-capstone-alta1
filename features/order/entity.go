@@ -3,30 +3,30 @@ package order
 import "time"
 
 type Core struct {
-	ID               uint
-	EventName        string
-	StartDate        time.Time
-	StartTime        time.Duration
-	EndDate          time.Time
-	EndTime          time.Duration
-	EventLocation    string
-	EventAddress     string
-	NotesForPartner  string
-	ServiceName      string
-	ServicePrice     uint
-	GrossAmmount     uint
-	PaymentMethod    string
-	OrderStatus      string
-	PayoutRecieptUrl string
-	PayoutDate       time.Time
-	ServiceID        uint
-	Service          Service
-	ClientID         uint
-	Client           Client
-	AdditionalID     uint
-	Additional       Additional
-	Qty              uint
-	DetailOrderTotal string
+	ID                uint
+	EventName         string
+	StartDate         time.Time
+	StartTime         time.Duration
+	EndDate           time.Time
+	EndTime           time.Duration
+	EventLocation     string
+	EventAddress      string
+	NotesForPartner   string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time
+	ServiceID         uint
+	Service           Service
+	ClientID          uint
+	Client            Client
+	AdditionalID      uint
+	Additional        Additional
+	Qty               uint
+	DetailOrderTotal  string
 }
 
 type Additional struct {
@@ -37,13 +37,13 @@ type Additional struct {
 }
 
 type Client struct {
-	ID             uint
-	Gender         string
-	Address        string
-	City           string
-	Phone          string
-	ClientImageUrl string
-	UserID         uint
+	ID              uint
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
 }
 
 type Service struct {
@@ -53,7 +53,7 @@ type Service struct {
 	ServiceCategory    string
 	ServicePrice       uint
 	AverageRating      float64
-	ServiceImageUrl    string
+	ServiceImageFile   string
 	City               string
 	PartnerID          uint
 }

@@ -6,16 +6,16 @@ import (
 )
 
 type ClientResponse struct {
-	ID             uint   `json:"id"`
-	Name           string `json:"name"`
-	Email          string `json:"email"`
-	Role           string `json:"role"`
-	Gender         string `json:"gender"`
-	Address        string `json:"address"`
-	City           string `json:"city"`
-	Phone          string `json:"phone"`
-	ClientImageUrl string `json:"client_image_file"`
-	UserID         uint   `json:"user_id"`
+	ID              uint   `json:"id"`
+	Name            string `json:"name"`
+	Email           string `json:"email"`
+	Role            string `json:"role"`
+	Gender          string `json:"gender"`
+	Address         string `json:"address"`
+	City            string `json:"city"`
+	Phone           string `json:"phone"`
+	ClientImageFile string `json:"client_image_file"`
+	UserID          uint   `json:"user_id"`
 }
 
 type ClientOrderResponse struct {
@@ -33,16 +33,16 @@ type ClientOrderResponse struct {
 
 func fromCore(dataCore client.Core) ClientResponse {
 	return ClientResponse{
-		ID:             dataCore.ID,
-		Name:           dataCore.User.Name,
-		Email:          dataCore.User.Email,
-		Role:           dataCore.User.Role,
-		Gender:         dataCore.Gender,
-		Address:        dataCore.Address,
-		City:           dataCore.City,
-		Phone:          dataCore.Phone,
-		ClientImageUrl: dataCore.ClientImageUrl,
-		UserID:         dataCore.User.ID,
+		ID:              dataCore.ID,
+		Name:            dataCore.User.Name,
+		Email:           dataCore.User.Email,
+		Role:            dataCore.User.Role,
+		Gender:          dataCore.Gender,
+		Address:         dataCore.Address,
+		City:            dataCore.City,
+		Phone:           dataCore.Phone,
+		ClientImageFile: dataCore.ClientImageFile,
+		UserID:          dataCore.User.ID,
 	}
 }
 
