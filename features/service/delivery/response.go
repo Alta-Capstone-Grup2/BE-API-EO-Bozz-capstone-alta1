@@ -3,28 +3,26 @@ package delivery
 import "capstone-alta1/features/service"
 
 type ServiceResponse struct {
-	ID                 uint    `json:"id"`
-	ServiceName        string  `json:"service_name"`
-	ServiceDescription string  `json:"service_description"`
-	ServiceCategory    string  `json:"service_category"`
-	ServicePrice       uint    `json:"service_proce"`
-	AverageRating      float64 `json:"average_rating"`
-	ServiceImageUrl    string  `json:"service_image_file"`
-	City               string  `json:"city"`
-	PartnerID          uint    `json:"partner_id"`
+	ID              uint    `json:"id"`
+	ServiceName     string  `json:"service_name"`
+	ServiceCategory string  `json:"service_category"`
+	ServicePrice    uint    `json:"service_proce"`
+	AverageRating   float64 `json:"average_rating"`
+	ServiceImageUrl string  `json:"service_image_file"`
+	City            string  `json:"city"`
+	PartnerID       uint    `json:"partner_id"`
 }
 
 func fromCore(dataCore service.Core) ServiceResponse {
 	return ServiceResponse{
-		ID:                 dataCore.ID,
-		ServiceName:        dataCore.ServiceName,
-		ServiceDescription: dataCore.ServiceDescription,
-		ServiceCategory:    dataCore.ServiceCategory,
-		ServicePrice:       dataCore.ServicePrice,
-		AverageRating:      dataCore.AverageRating,
-		ServiceImageUrl:    dataCore.ServiceImageUrl,
-		City:               dataCore.City,
-		PartnerID:          dataCore.PartnerID,
+		ID:              dataCore.ID,
+		ServiceName:     dataCore.ServiceName,
+		ServiceCategory: dataCore.ServiceCategory,
+		ServicePrice:    dataCore.ServicePrice,
+		AverageRating:   dataCore.AverageRating,
+		ServiceImageUrl: dataCore.ServiceImageUrl,
+		City:            dataCore.City,
+		PartnerID:       dataCore.PartnerID,
 	}
 }
 

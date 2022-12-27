@@ -17,6 +17,13 @@ type Service struct {
 	City               string
 	PartnerID          uint
 	Partner            Partner
+	Order              []Order
+}
+
+type Order struct {
+	gorm.Model
+	EventName string
+	ServiceID uint
 }
 
 type Partner struct {

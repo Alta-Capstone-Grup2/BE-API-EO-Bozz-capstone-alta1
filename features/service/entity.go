@@ -11,6 +11,13 @@ type Core struct {
 	City               string
 	PartnerID          uint
 	Partner            Partner
+	Order              []Order
+}
+
+type Order struct {
+	ID        uint
+	EventName string
+	ServiceID uint
 }
 
 type Partner struct {
@@ -52,7 +59,7 @@ type User struct {
 }
 
 type ServiceInterface interface {
-	GetAll() (data []Core, err error)
+	GetAll(queryName, queryCategory, queryCity, queryPrice string) (data []Core, err error)
 	GetById(id uint) (data Core, err error)
 	Create(input Core) error
 	Update(input Core, id uint) error
@@ -61,6 +68,7 @@ type ServiceInterface interface {
 
 type RepositoryInterface interface {
 	GetAll() (data []Core, err error)
+	GetAllWithSearch(queryName, queryCategory, queryCity, queryPrice string) (data []Core, err error)
 	GetById(id uint) (data Core, err error)
 	Create(input Core) error
 	Update(input Core, id uint) error
