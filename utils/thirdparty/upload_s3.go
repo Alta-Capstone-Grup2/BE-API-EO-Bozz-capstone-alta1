@@ -1,10 +1,10 @@
 package thirdparty
 
 import (
+	cfg "capstone-alta1/config"
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"time"
@@ -39,42 +39,42 @@ func String(length int) string {
 
 // UPLOAD TO AWS S3
 
-func UploadProfile(c echo.Context) (string, error) {
+// func UploadProfile(c echo.Context) (string, error) {
 
-	file, fileheader, err := c.Request().FormFile("file")
-	if err != nil {
-		log.Print(err)
-		return "", err
-	}
+// 	file, fileheader, err := c.Request().FormFile("file")
+// 	if err != nil {
+// 		log.Print(err)
+// 		return "", err
+// 	}
 
-	randomStr := String(20)
+// 	randomStr := String(20)
 
-	godotenv.Load(".env")
+// 	godotenv.Load(".env")
 
-	fmt.Println("aws region", os.Getenv("AWS_REGION"))
-	fmt.Println("access key", os.Getenv("ACCESS_KEY_IAM"))
-	fmt.Println("SECRET_KEY_IAM", os.Getenv("SECRET_KEY_IAM"))
-	fmt.Println("AWS_BUCKET_NAME", os.Getenv("AWS_BUCKET_NAME"))
+// 	fmt.Println("aws region", os.Getenv("AWS_REGION"))
+// 	fmt.Println("access key", os.Getenv("ACCESS_KEY_IAM"))
+// 	fmt.Println("SECRET_KEY_IAM", os.Getenv("SECRET_KEY_IAM"))
+// 	fmt.Println("AWS_BUCKET_NAME", os.Getenv("AWS_BUCKET_NAME"))
 
-	s3Config := &aws.Config{
-		Region:      aws.String(os.Getenv("AWS_REGION")),
-		Credentials: credentials.NewStaticCredentials(os.Getenv("ACCESS_KEY_IAM"), os.Getenv("SECRET_KEY_IAM"), ""),
-	}
-	s3Session := session.New(s3Config)
+// 	s3Config := &aws.Config{
+// 		Region:      aws.String(os.Getenv("AWS_REGION")),
+// 		Credentials: credentials.NewStaticCredentials(os.Getenv("ACCESS_KEY_IAM"), os.Getenv("SECRET_KEY_IAM"), ""),
+// 	}
+// 	s3Session := session.New(s3Config)
 
-	uploader := s3manager.NewUploader(s3Session)
+// 	uploader := s3manager.NewUploader(s3Session)
 
-	input := &s3manager.UploadInput{
-		Bucket:      aws.String(os.Getenv("AWS_BUCKET_NAME")),                       // bucket's name
-		Key:         aws.String("profile/" + randomStr + "-" + fileheader.Filename), // files destination location
-		Body:        file,                                                           // content of the file
-		ContentType: aws.String("image/jpg"),                                        // content type
-	}
-	res, err := uploader.UploadWithContext(context.Background(), input)
+// 	input := &s3manager.UploadInput{
+// 		Bucket:      aws.String(os.Getenv("AWS_BUCKET_NAME")),                       // bucket's name
+// 		Key:         aws.String("profile/" + randomStr + "-" + fileheader.Filename), // files destination location
+// 		Body:        file,                                                           // content of the file
+// 		ContentType: aws.String("image/jpg"),                                        // content type
+// 	}
+// 	res, err := uploader.UploadWithContext(context.Background(), input)
 
-	// RETURN URL LOCATION IN AWS
-	return res.Location, err
-}
+// 	// RETURN URL LOCATION IN AWS
+// 	return res.Location, err
+// }
 
 func Upload(c echo.Context, imageField string, folderPath string) (string, error) {
 	var errStr string
@@ -119,6 +119,6 @@ func Upload(c echo.Context, imageField string, folderPath string) (string, error
 
 	} else {
 		fmt.Println("\n\n Upload file failed. Field < " + imageField + " > not found. Sent defafult image url.")
-		return "https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png", nil
+		return cfg.DEFAULT_IMAGE_URL, nil
 	}
 }

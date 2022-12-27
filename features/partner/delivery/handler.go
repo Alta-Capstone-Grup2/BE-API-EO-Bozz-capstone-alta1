@@ -249,7 +249,7 @@ func (delivery *PartnerDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
 	}
 
-	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success update data."))
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
 }
 
 func (delivery *PartnerDelivery) Delete(c echo.Context) error {
