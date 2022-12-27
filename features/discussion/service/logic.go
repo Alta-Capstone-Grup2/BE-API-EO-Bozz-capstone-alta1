@@ -52,7 +52,7 @@ func (service *discussionService) GetAll() (data []discussion.Core, err error) {
 	return data, err
 }
 
-func (service *discussionService) GetById(id int) (data discussion.Core, err error) {
+func (service *discussionService) GetById(id uint) (data discussion.Core, err error) {
 	data, err = service.discussionRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
@@ -63,7 +63,7 @@ func (service *discussionService) GetById(id int) (data discussion.Core, err err
 
 }
 
-func (service *discussionService) Update(input discussion.Core, id int, c echo.Context) error {
+func (service *discussionService) Update(input discussion.Core, id uint, c echo.Context) error {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
@@ -86,7 +86,7 @@ func (service *discussionService) Update(input discussion.Core, id int, c echo.C
 	return nil
 }
 
-func (service *discussionService) Delete(id int) error {
+func (service *discussionService) Delete(id uint) error {
 	// validasi user dgn id path param, apakah ada datanya di database
 	_, errFindId := service.discussionRepository.GetById(id)
 	if errFindId != nil {

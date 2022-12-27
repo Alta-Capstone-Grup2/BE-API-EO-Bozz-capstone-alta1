@@ -44,18 +44,18 @@ type UserCore struct {
 
 type ServiceInterface interface {
 	GetAll(query string) (data []Core, err error)
-	GetById(id int) (data Core, err error)
+	GetById(id uint) (data Core, err error)
 	Create(input Core, c echo.Context) error
-	Update(input Core, id int, c echo.Context) error
-	Delete(id int) error
+	Update(input Core, id uint, c echo.Context) error
+	Delete(id uint) error
 }
 
 type RepositoryInterface interface {
 	GetAll() (data []Core, err error)
 	GetAllWithSearch(query string) (data []Core, err error)
-	GetById(id int) (data Core, err error)
+	GetById(id uint) (data Core, err error)
 	Create(input Core) error
-	Update(input Core, id int) error
-	Delete(id int) error
+	Update(input Core, id uint) error
+	Delete(id uint) error
 	FindUser(email string) (data Core, err error)
 }

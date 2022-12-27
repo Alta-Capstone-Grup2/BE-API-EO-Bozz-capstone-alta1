@@ -26,6 +26,8 @@ func New(service service.ServiceInterface, e *echo.Echo) {
 	e.GET("/services", handler.GetAll)
 	e.GET("/services/:id", handler.GetById)
 	e.GET("/services/:id/additionals", handler.GetAdditionalById)
+	e.GET("/services/:id/reviews", handler.GetReviewById)
+	e.GET("/services/:id/discussions", handler.GetDiscussionById)
 	e.POST("/services/:id/additionals", handler.AddAdditionalToService, middlewares.JWTMiddleware())
 	e.POST("/services", handler.Create, middlewares.JWTMiddleware())
 	e.PUT("/services/:id", handler.Update, middlewares.JWTMiddleware())
@@ -197,4 +199,42 @@ func (delivery *serviceDelivery) AddAdditionalToService(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
 	}
 	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success create data"))
+}
+
+func (delivery *serviceDelivery) GetReviewById(c echo.Context) error {
+	idParam := c.Param("id")
+	serviceId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	results, err := delivery.serviceService.GetReviewById(uint(serviceId))
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreListReview(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
+}
+
+func (delivery *serviceDelivery) GetDiscussionById(c echo.Context) error {
+	idParam := c.Param("id")
+	serviceId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	results, err := delivery.serviceService.GetDiscussionById(uint(serviceId))
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreListDiscussion(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }

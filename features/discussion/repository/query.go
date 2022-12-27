@@ -60,7 +60,7 @@ func (repo *discussionRepository) GetAllWithSearch(query string) (data []discuss
 }
 
 // GetById implements user.RepositoryInterface
-func (repo *discussionRepository) GetById(id int) (data discussion.Core, err error) {
+func (repo *discussionRepository) GetById(id uint) (data discussion.Core, err error) {
 	var result Discussion
 
 	tx := repo.db.First(&result, id)
@@ -78,7 +78,7 @@ func (repo *discussionRepository) GetById(id int) (data discussion.Core, err err
 }
 
 // Update implements user.Repository
-func (repo *discussionRepository) Update(input discussion.Core, id int) error {
+func (repo *discussionRepository) Update(input discussion.Core, id uint) error {
 	resultGorm := fromCore(input)
 	var result Discussion
 	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm) // proses update
@@ -92,7 +92,7 @@ func (repo *discussionRepository) Update(input discussion.Core, id int) error {
 }
 
 // Delete implements user.Repository
-func (repo *discussionRepository) Delete(id int) error {
+func (repo *discussionRepository) Delete(id uint) error {
 	var result Discussion
 	tx := repo.db.Delete(&result, id) // proses delete
 	if tx.Error != nil {

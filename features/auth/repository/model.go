@@ -13,6 +13,8 @@ type User struct {
 	Email     string
 	Password  string
 	Role      string
+	ClientID  uint
+	PartnerID uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt

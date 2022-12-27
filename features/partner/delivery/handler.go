@@ -57,7 +57,7 @@ func (delivery *PartnerDelivery) GetById(c echo.Context) error {
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
-	results, err := delivery.partnerService.GetById(id)
+	results, err := delivery.partnerService.GetById(uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -244,7 +244,7 @@ func (delivery *PartnerDelivery) Update(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.partnerService.Update(dataCore, idUser, c)
+	err := delivery.partnerService.Update(dataCore, uint(idUser), c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -257,7 +257,7 @@ func (delivery *PartnerDelivery) Update(c echo.Context) error {
 
 func (delivery *PartnerDelivery) Delete(c echo.Context) error {
 	idUser := middlewares.ExtractTokenUserId(c)
-	err := delivery.partnerService.Delete(idUser)
+	err := delivery.partnerService.Delete(uint(idUser))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}

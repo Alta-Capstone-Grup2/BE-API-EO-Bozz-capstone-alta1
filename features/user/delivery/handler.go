@@ -35,7 +35,7 @@ func (delivery *UserDelivery) GetMe(c echo.Context) error {
 	if userId < 1 {
 		return c.JSON(http.StatusBadRequest, errors.New("Failed load user id from JWT token, please check again."))
 	}
-	results, err := delivery.userService.GetById(userId)
+	results, err := delivery.userService.GetById(uint(userId))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -70,7 +70,7 @@ func (delivery *UserDelivery) GetById(c echo.Context) error {
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
-	results, err := delivery.userService.GetById(id)
+	results, err := delivery.userService.GetById(uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -114,7 +114,7 @@ func (delivery *UserDelivery) Update(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.userService.Update(dataCore, idUser)
+	err := delivery.userService.Update(dataCore, uint(idUser))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -127,7 +127,7 @@ func (delivery *UserDelivery) Update(c echo.Context) error {
 
 func (delivery *UserDelivery) Delete(c echo.Context) error {
 	idUser := middlewares.ExtractTokenUserId(c)
-	err := delivery.userService.Delete(idUser)
+	err := delivery.userService.Delete(uint(idUser))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
@@ -145,7 +145,7 @@ func (delivery *UserDelivery) UpdatePassword(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.userService.Update(dataCore, idUser)
+	err := delivery.userService.Update(dataCore, uint(idUser))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

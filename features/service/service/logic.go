@@ -31,14 +31,19 @@ func (service *serviceService) Create(input _service.Core) (err error) {
 }
 
 func (service *serviceService) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
-
-	data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
-
-	if err != nil {
-		helper.LogDebug(err)
-		return nil, helper.ServiceErrorMsg(err)
+	if queryName == "" && queryCategory == "" && queryCity == "" && queryMinPrice == "" && queryMaxPrice == "" {
+		data, err = service.serviceRepository.GetAll()
+		if err != nil {
+			helper.LogDebug(err)
+			return nil, helper.ServiceErrorMsg(err)
+		}
+	} else {
+		data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
+		if err != nil {
+			helper.LogDebug(err)
+			return nil, helper.ServiceErrorMsg(err)
+		}
 	}
-
 	return data, err
 }
 
@@ -89,4 +94,26 @@ func (service *serviceService) AddAdditionalToService(input _service.ServiceAddi
 	}
 
 	return nil
+}
+
+func (service *serviceService) GetReviewById(id uint) (data []_service.Review, err error) {
+	data, err = service.serviceRepository.GetReviewById(id)
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
+	return data, err
+
+}
+
+func (service *serviceService) GetDiscussionById(id uint) (data []_service.Discussion, err error) {
+	data, err = service.serviceRepository.GetDiscussionById(id)
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
+	return data, err
+
 }

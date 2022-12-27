@@ -8,6 +8,8 @@ type Core struct {
 	Email     string `validate:"required,email"`
 	Password  string `validate:"required"`
 	Role      string
+	ClientID  uint
+	PartnerID uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
