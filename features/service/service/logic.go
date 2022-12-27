@@ -1,10 +1,13 @@
 package service
 
 import (
+	cfg "capstone-alta1/config"
 	_service "capstone-alta1/features/service"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 )
 
@@ -20,7 +23,13 @@ func New(repo _service.RepositoryInterface) _service.ServiceInterface {
 	}
 }
 
-func (service *serviceService) Create(input _service.Core) (err error) {
+func (service *serviceService) Create(input _service.Core, c echo.Context) (err error) {
+	var errUpload error
+	input.ServiceImageUrl, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+
 	errCreate := service.serviceRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
@@ -56,7 +65,14 @@ func (service *serviceService) GetById(id uint) (data _service.Core, err error) 
 	return data, err
 }
 
-func (service *serviceService) Update(input _service.Core, id uint) error {
+func (service *serviceService) Update(input _service.Core, id uint, c echo.Context) error {
+
+	var errUpload error
+	input.ServiceImageUrl, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+
 	err := service.serviceRepository.Update(input, id)
 	if err != nil {
 		log.Error(err.Error())

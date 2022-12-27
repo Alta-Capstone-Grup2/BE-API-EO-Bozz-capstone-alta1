@@ -103,8 +103,8 @@ type User struct {
 type ServiceInterface interface {
 	GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []Core, err error)
 	GetById(id uint) (data Core, err error)
-	Create(input Core) error
-	Update(input Core, id uint) error
+	Create(input Core, c echo.Context) error
+	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
 	GetAdditionalById(id uint) (data []Additional, err error)
 	GetReviewById(id uint) (data []Review, err error)

@@ -1,8 +1,10 @@
 package service
 
 import (
+	cfg "capstone-alta1/config"
 	"capstone-alta1/features/partner"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
 	"errors"
 	"strings"
 	"time"
@@ -57,18 +59,32 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 		return helper.ServiceErrorMsg(errFindEmail)
 	}
 
-	// upload foto
-	// file, _ := c.FormFile("file")
-	// if file != nil {
-	// 	res, err := thirdparty.UploadProfile(c)
-	// 	if err != nil {
-	// 		return errors.New("Failed. Cannot Upload Data.")
-	// 	}
-	// 	log.Print(res)
-	// 	input.CompanyImageUrl = res
-	// } else {
-	// 	input.CompanyImageUrl = "https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png"
-	// }
+	// upload file
+	var errUpload error
+	input.CompanyImageUrl, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.NIBImageUrl, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.SIUPImageUrl, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.Event1ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.Event2ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.Event3ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
 
 	// Encrypt
 	bytePass, errEncrypt := bcrypt.GenerateFromPassword([]byte(input.User.Password), 10)
@@ -117,6 +133,34 @@ func (service *partnerService) GetById(id uint) (data partner.Core, err error) {
 }
 
 func (service *partnerService) Update(input partner.Core, id uint, c echo.Context) error {
+
+	// upload file
+	var errUpload error
+	input.CompanyImageUrl, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.NIBImageUrl, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.SIUPImageUrl, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.Event1ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.Event2ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+	input.Event3ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+
 	err := service.partnerRepository.Update(input, id)
 	if err != nil {
 		log.Error(err.Error())
