@@ -15,19 +15,19 @@ type Partner struct {
 	CompanyName        string
 	CompanyPhone       string
 	CompanyCity        string
-	CompanyImageUrl    string
+	CompanyImageFile   string
 	CompanyAddress     string
 	LinkWebsite        string
 	NIBNumber          string
-	NIBImageUrl        string
+	NIBImageFile       string
 	SIUPNumber         string
-	SIUPImageUrl       string
+	SIUPImageFile      string
 	Event1Name         string
-	Event1ImageUrl     string
+	Event1ImageFile    string
 	Event2Name         string
-	Event2ImageUrl     string
+	Event2ImageFile    string
 	Event3Name         string
-	Event3ImageUrl     string
+	Event3ImageFile    string
 	BankName           string
 	BankAccountNumber  string
 	BankAccountName    string
@@ -56,19 +56,19 @@ func fromCore(dataCore partner.Core) Partner {
 		CompanyName:        dataCore.CompanyName,
 		CompanyPhone:       dataCore.CompanyPhone,
 		CompanyCity:        dataCore.CompanyCity,
-		CompanyImageUrl:    dataCore.CompanyImageUrl,
+		CompanyImageFile:   dataCore.CompanyImageFile,
 		CompanyAddress:     dataCore.CompanyAddress,
 		LinkWebsite:        dataCore.LinkWebsite,
 		NIBNumber:          dataCore.NIBNumber,
-		NIBImageUrl:        dataCore.NIBImageUrl,
+		NIBImageFile:       dataCore.NIBImageFile,
 		SIUPNumber:         dataCore.SIUPNumber,
-		SIUPImageUrl:       dataCore.SIUPImageUrl,
+		SIUPImageFile:      dataCore.SIUPImageFile,
 		Event1Name:         dataCore.Event1Name,
-		Event1ImageUrl:     dataCore.Event1ImageUrl,
+		Event1ImageFile:    dataCore.Event1ImageFile,
 		Event2Name:         dataCore.Event2Name,
-		Event2ImageUrl:     dataCore.Event2ImageUrl,
+		Event2ImageFile:    dataCore.Event2ImageFile,
 		Event3Name:         dataCore.Event3Name,
-		Event3ImageUrl:     dataCore.Event3ImageUrl,
+		Event3ImageFile:    dataCore.Event3ImageFile,
 		BankName:           dataCore.BankName,
 		BankAccountNumber:  dataCore.BankAccountNumber,
 		BankAccountName:    dataCore.BankName,
@@ -95,19 +95,19 @@ func (dataModel *Partner) toCore() partner.Core {
 		CompanyName:        dataModel.CompanyName,
 		CompanyPhone:       dataModel.CompanyPhone,
 		CompanyCity:        dataModel.CompanyCity,
-		CompanyImageUrl:    dataModel.CompanyImageUrl,
+		CompanyImageFile:   dataModel.CompanyImageFile,
 		CompanyAddress:     dataModel.CompanyAddress,
 		LinkWebsite:        dataModel.LinkWebsite,
 		NIBNumber:          dataModel.NIBNumber,
-		NIBImageUrl:        dataModel.NIBImageUrl,
+		NIBImageFile:       dataModel.NIBImageFile,
 		SIUPNumber:         dataModel.SIUPNumber,
-		SIUPImageUrl:       dataModel.SIUPImageUrl,
+		SIUPImageFile:      dataModel.SIUPImageFile,
 		Event1Name:         dataModel.Event1Name,
-		Event1ImageUrl:     dataModel.Event1ImageUrl,
+		Event1ImageFile:    dataModel.Event1ImageFile,
 		Event2Name:         dataModel.Event2Name,
-		Event2ImageUrl:     dataModel.Event2ImageUrl,
+		Event2ImageFile:    dataModel.Event2ImageFile,
 		Event3Name:         dataModel.Event3Name,
-		Event3ImageUrl:     dataModel.Event3ImageUrl,
+		Event3ImageFile:    dataModel.Event3ImageFile,
 		BankName:           dataModel.BankName,
 		BankAccountNumber:  dataModel.BankAccountNumber,
 		BankAccountName:    dataModel.BankName,

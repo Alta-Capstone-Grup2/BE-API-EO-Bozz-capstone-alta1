@@ -37,21 +37,21 @@ type User struct {
 }
 
 type Order struct {
-	ID               uint
-	EventName        string
-	StartDate        time.Time
-	EndDate          time.Time
-	EventLocation    string
-	NotesForPartner  string
-	ServiceName      string
-	ServicePrice     uint
-	GrossAmmount     uint
-	PaymentMethod    string
-	OrderStatus      string
-	PayoutReceiptUrl string
-	PayoutDate       time.Time
-	ServiceID        uint
-	ClientID         uint
+	ID                uint
+	EventName         string
+	StartDate         time.Time
+	EndDate           time.Time
+	EventLocation     string
+	NotesForPartner   string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time
+	ServiceID         uint
+	ClientID          uint
 }
 
 type Service struct {
@@ -61,7 +61,7 @@ type Service struct {
 	ServiceCategory    string
 	ServicePrice       uint
 	AverageRating      float64
-	ServiceImageUrl    string
+	ServiceImageFile   string
 	City               string
 	PartnerID          uint
 }

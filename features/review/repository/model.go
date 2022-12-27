@@ -19,15 +19,15 @@ type Review struct {
 
 type Client struct {
 	gorm.Model
-	Gender         string
-	Address        string
-	City           string
-	Phone          string
-	ClientImageUrl string
-	UserID         uint
-	User           User
-	Orders         []Order
-	Reviews        []Review
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
+	User            User
+	Orders          []Order
+	Reviews         []Review
 }
 
 type User struct {
@@ -40,20 +40,20 @@ type User struct {
 
 type Order struct {
 	gorm.Model
-	EventName        string
-	StartDate        time.Time
-	EndDate          time.Time
-	EventLocation    string
-	NotesForPartner  string
-	ServiceName      string
-	ServicePrice     uint
-	GrossAmmount     uint
-	PaymentMethod    string
-	OrderStatus      string
-	PayoutReceiptUrl string
-	PayoutDate       time.Time
-	ServiceID        uint
-	ClientID         uint
+	EventName         string
+	StartDate         time.Time
+	EndDate           time.Time
+	EventLocation     string
+	NotesForPartner   string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time
+	ServiceID         uint
+	ClientID          uint
 }
 
 type Service struct {
@@ -63,7 +63,7 @@ type Service struct {
 	ServiceCategory    string
 	ServicePrice       uint
 	AverageRating      float64
-	ServiceImageUrl    string
+	ServiceImageFile   string
 	City               string
 	PartnerID          uint
 }

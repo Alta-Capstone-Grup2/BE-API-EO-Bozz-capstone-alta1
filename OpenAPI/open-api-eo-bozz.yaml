@@ -705,22 +705,22 @@ paths:
                     company_name: "budiman pabrik"
                     company_phone: "08123131"
                     company_city: "tng"
-                    company_image: "image.png"
+                    company_image_file: "image.png"
                     company_address: "jkt"
                     link_website: "blablabla.com"
                     pic_position: "owner"
                     pic_phone: "08988989"
                     pic_address: "papua"
                     nib_number: "988798988"
-                    nib_image: "image.png"
+                    nib_image_file: "image.png"
                     siup_number: "746324"
-                    siup_image: "image.jpg"
+                    siup_image_file: "image.jpg"
                     event1_name: "weding"
-                    event1_image: "image.jpg"
+                    event1_image_file: "image.jpg"
                     event2_name: "pernikahan"
-                    event2_image: "image.jpg"
+                    event2_image_file: "image.jpg"
                     event3_name: "kawinan"
-                    event3_image: "image.jpg"
+                    event3_image_file: "image.jpg"
                     bank_name: "bca"
                     bank_account_number: "27767462736"
                     bank_account_name: "budiman"
@@ -743,6 +743,15 @@ paths:
       description: "Confirm Partner for partner by id"
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -794,7 +803,7 @@ paths:
                         service_category: "wedding"
                         service_price: 20000000
                         average_rating: "****"
-                        service_image_url: "image.jpg"
+                        service_image_file: "image.jpg"
                         city: "tangerang"
                         partner_id: 1
                       - id: 2
@@ -802,7 +811,7 @@ paths:
                         service_category: "wedding"
                         service_price: 20000000
                         average_rating: "****"
-                        service_image_url: "image.jpg"
+                        service_image_file: "image.jpg"
                         city: "tangerang"
                         partner_id: 1
         "400" :
@@ -1106,7 +1115,7 @@ paths:
                       servoce_category: "wedding"
                       service_price: 50000000
                       average_rating: "*****"
-                      service_image_url: "image.jpg"
+                      service_image_file: "image.jpg"
                       city: "jakarte"
                       partner_id: 1
                     - id: 2
@@ -1114,7 +1123,7 @@ paths:
                       servoce_category: "wedding"
                       service_price: 50000000
                       average_rating: "*****"
-                      service_image_url: "image.jpg"
+                      service_image_file: "image.jpg"
                       city: "jakarte"
                       partner_id: 2
         "400" :
@@ -1159,7 +1168,7 @@ paths:
                     servoce_category: "wedding"
                     service_price: 50000000
                     average_rating: "*****"
-                    service_image_url: "image.jpg"
+                    service_image_file: "image.jpg"
                     city: "jakarte"
                     partner_id: 1
         "400" :
@@ -1272,9 +1281,8 @@ paths:
                 $ref: "#/components/schemas/RequestServiceOther"
             example:
               service_id: 1
-              additionals:
-                - additional_id: 1
-                - additional_id: 2
+              additional_id: 1
+                
       responses:
         '200':
           description: "Success connect to service"
@@ -1321,13 +1329,13 @@ paths:
                   message: "Success get all service additional"
                   data:
                       - id: 1
-                        name: "catering"
-                        price: 50000
+                        additional_name: "catering"
+                        additional_price: 50000
                         service_id: 1
                         additional_id: 1
                       - id: 2
-                        name: "catering"
-                        price: 50000
+                        additional_name: "catering"
+                        additional_price: 50000
                         service_id: 1
                         additional_id: 2
         "400" :
@@ -1437,7 +1445,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /services/{id}/availbility:
+  /services/{id}/availbility{start_date}{end_date}:
     post:
       tags:
         - Services
@@ -1511,8 +1519,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RequestAdditional"
             example:
-              name: "catering"
-              price: 50000000
+              additional_name: "catering"
+              additional_price: 50000
               partner_id: 1
       responses:
         '201':
@@ -1552,14 +1560,12 @@ paths:
                   message: "Success get all additionals"
                   data:
                     - id: 1
-                      name: "catering"
-                      price: 50000000
-                      additional_type: "wedding"
+                      additional_name: "catering"
+                      additional_price: 50000
                       partner_id: 1
                     - id: 2
-                      name: "make up"
-                      price: 50000000
-                      additional_type: "wedding"
+                      additional_name: "catering"
+                      additional_price: 50000
                       partner_id: 1
         "400" :
           $ref : "#/components/responses/400"  
@@ -1594,8 +1600,8 @@ paths:
             schema:
                 $ref: "#/components/schemas/RequestAdditional"
             example:
-              name: "catering"
-              price: 50000000
+              additional_name: "catering"
+              additional_price: 50000
               partner_id: 1
       responses:
         '200':
@@ -1803,7 +1809,7 @@ paths:
                     payment_method: "cod"
                     order_status: "order confirmed"
                     payout_data: 666464466
-                    payout_reciept_url: "image.jpg"
+                    payout_reciept_file: "image.jpg"
                     client_id: 1
                     service_id: 1
                     additionals:
@@ -2289,7 +2295,7 @@ components:
           type: string
         company_city:
           type: string
-        company_image:
+        company_image_file:
           type: string
           format: binary
         company_address:
@@ -2304,27 +2310,27 @@ components:
           type: string
         nib_number:
           type: string
-        nib_image:
+        nib_image_file:
           type: string
           format: binary
         siup_number:
           type: string
-        siup_image:
+        siup_image_file:
           type: string
           format: binary
         event1_name:
           type: string
-        event1_image:
+        event1_image_file:
           type: string
           format: binary
         event2_name:
           type: string
-        event2_image:
+        event2_image_file:
           type: string
           format: binary
         event3_name:
           type: string
-        event3_image:
+        event3_image_file:
           type: string
           format: binary
         bank_name:
@@ -2349,7 +2355,7 @@ components:
           type: string
         company_city:
           type: string
-        company_image:
+        company_image_file:
           type: string
           format: binary
         company_address:
@@ -2364,27 +2370,27 @@ components:
           type: string
         nib_number:
           type: string
-        nib_image:
+        nib_image_file:
           type: string
           format: binary
         siup_number:
           type: string
-        siup_image:
+        siup_image_file:
           type: string
           format: binary
         event1_name:
           type: string
-        event1_image:
+        event1_image_file:
           type: string
           format: binary
         event2_name:
           type: string
-        event2_image:
+        event2_image_file:
           type: string
           format: binary
         event3_name:
           type: string
-        event3_image:
+        event3_image_file:
           type: string
           format: binary
         bank_name:
@@ -2414,7 +2420,7 @@ components:
           type: integer
         average_rating: 
           type: string
-        service_image_url:
+        service_image_file:
           type: string
           format: binary
         city:

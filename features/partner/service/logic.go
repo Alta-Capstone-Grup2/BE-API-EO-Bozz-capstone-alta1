@@ -61,27 +61,27 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 
 	// upload file
 	var errUpload error
-	input.CompanyImageUrl, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.CompanyImageFile, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.NIBImageUrl, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.NIBImageFile, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.SIUPImageUrl, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.SIUPImageFile, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event1ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.Event1ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event2ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.Event2ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event3ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.Event3ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
@@ -136,27 +136,27 @@ func (service *partnerService) Update(input partner.Core, id uint, c echo.Contex
 
 	// upload file
 	var errUpload error
-	input.CompanyImageUrl, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.CompanyImageFile, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.NIBImageUrl, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.NIBImageFile, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.SIUPImageUrl, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.SIUPImageFile, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event1ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.Event1ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event2ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.Event2ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event3ImageUrl, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	input.Event3ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}

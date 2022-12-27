@@ -13,7 +13,7 @@ type Service struct {
 	ServiceCategory    string
 	ServicePrice       uint
 	AverageRating      float64
-	ServiceImageUrl    string
+	ServiceImageFile   string
 	City               string
 	PartnerID          uint
 	Partner            Partner
@@ -73,19 +73,19 @@ type Partner struct {
 	CompanyName        string
 	CompanyPhone       string
 	CompanyCity        string
-	CompanyImageUrl    string
+	CompanyImageFile   string
 	CompanyAddress     string
 	LinkWebsite        string
 	NIBNumber          string
-	NIBImageUrl        string
+	NIBImageFile       string
 	SIUPNumber         string
-	SIUPImageUrl       string
+	SIUPImageFile      string
 	Event1Name         string
-	Event1ImageUrl     string
+	Event1ImageFile    string
 	Event2Name         string
-	Event2ImageUrl     string
+	Event2ImageFile    string
 	Event3Name         string
-	Event3ImageUrl     string
+	Event3ImageFile    string
 	BankName           string
 	BankAccountNumber  string
 	BankAccountName    string
@@ -113,7 +113,7 @@ func fromCore(dataCore service.Core) Service {
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
 		AverageRating:      dataCore.AverageRating,
-		ServiceImageUrl:    dataCore.ServiceImageUrl,
+		ServiceImageFile:   dataCore.ServiceImageFile,
 		City:               dataCore.City,
 		PartnerID:          dataCore.PartnerID,
 	}
@@ -137,7 +137,7 @@ func (dataModel *Service) toCore() service.Core {
 		ServiceCategory:    dataModel.ServiceCategory,
 		ServicePrice:       dataModel.ServicePrice,
 		AverageRating:      dataModel.AverageRating,
-		ServiceImageUrl:    dataModel.ServiceImageUrl,
+		ServiceImageFile:   dataModel.ServiceImageFile,
 		City:               dataModel.City,
 		PartnerID:          dataModel.PartnerID,
 	}

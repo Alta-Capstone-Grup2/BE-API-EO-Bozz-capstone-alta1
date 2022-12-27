@@ -13,7 +13,7 @@ type Core struct {
 	ServiceCategory    string
 	ServicePrice       uint
 	AverageRating      float64
-	ServiceImageUrl    string
+	ServiceImageFile   string
 	City               string
 	PartnerID          uint
 	Partner            Partner
@@ -74,19 +74,19 @@ type Partner struct {
 	CompanyName        string
 	CompanyPhone       string
 	CompanyCity        string
-	CompanyImageUrl    string
+	CompanyImageFile   string
 	CompanyAddress     string
 	LinkWebsite        string
 	NIBNumber          string
-	NIBImageUrl        string
+	NIBImageFile       string
 	SIUPNumber         string
-	SIUPImageUrl       string
+	SIUPImageFile      string
 	Event1Name         string
-	Event1ImageUrl     string
+	Event1ImageFile    string
 	Event2Name         string
-	Event2ImageUrl     string
+	Event2ImageFile    string
 	Event3Name         string
-	Event3ImageUrl     string
+	Event3ImageFile    string
 	BankName           string
 	BankAccountNumber  string
 	BankAccountName    string

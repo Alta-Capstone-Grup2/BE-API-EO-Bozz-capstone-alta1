@@ -28,19 +28,19 @@ type Partner struct {
 	CompanyName        string
 	CompanyPhone       string
 	CompanyCity        string
-	CompanyImageUrl    string
+	CompanyImageFile   string
 	CompanyAddress     string
 	LinkWebsite        string
 	NIBNumber          string
-	NIBImageUrl        string
+	NIBImageFile       string
 	SIUPNumber         string
-	SIUPImageUrl       string
+	SIUPImageFile      string
 	Event1Name         string
-	Event1ImageUrl     string
+	Event1ImageFile    string
 	Event2Name         string
-	Event2ImageUrl     string
+	Event2ImageFile    string
 	Event3Name         string
-	Event3ImageUrl     string
+	Event3ImageFile    string
 	BankName           string
 	BankAccountNumber  string
 	BankAccountName    string
@@ -52,13 +52,13 @@ type Partner struct {
 
 type Client struct {
 	gorm.Model
-	Gender         string
-	Address        string
-	City           string
-	Phone          string
-	ClientImageUrl string
-	UserID         uint
-	User           User
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
+	User            User
 	// Orders         []Order // krn ga di pake di comment
 }
 
@@ -79,13 +79,13 @@ func (dataModel User) toCore() auth.Core {
 // mengubah struct model gorm ke struct core
 func (dataModel *Client) toCore() auth.ClientCore {
 	return auth.ClientCore{
-		ID:             dataModel.ID,
-		Gender:         dataModel.Gender,
-		Address:        dataModel.Address,
-		City:           dataModel.City,
-		Phone:          dataModel.Phone,
-		ClientImageUrl: dataModel.ClientImageUrl,
-		UserID:         dataModel.User.ID,
+		ID:              dataModel.ID,
+		Gender:          dataModel.Gender,
+		Address:         dataModel.Address,
+		City:            dataModel.City,
+		Phone:           dataModel.Phone,
+		ClientImageFile: dataModel.ClientImageFile,
+		UserID:          dataModel.User.ID,
 		User: auth.Core{
 			ID:       dataModel.User.ID,
 			Name:     dataModel.User.Name,
@@ -106,19 +106,19 @@ func (dataModel *Partner) toCore() auth.PartnerCore {
 		CompanyName:        dataModel.CompanyName,
 		CompanyPhone:       dataModel.CompanyPhone,
 		CompanyCity:        dataModel.CompanyCity,
-		CompanyImageUrl:    dataModel.CompanyImageUrl,
+		CompanyImageFile:   dataModel.CompanyImageFile,
 		CompanyAddress:     dataModel.CompanyAddress,
 		LinkWebsite:        dataModel.LinkWebsite,
 		NIBNumber:          dataModel.NIBNumber,
-		NIBImageUrl:        dataModel.NIBImageUrl,
+		NIBImageFile:       dataModel.NIBImageFile,
 		SIUPNumber:         dataModel.SIUPNumber,
-		SIUPImageUrl:       dataModel.SIUPImageUrl,
+		SIUPImageFile:      dataModel.SIUPImageFile,
 		Event1Name:         dataModel.Event1Name,
-		Event1ImageUrl:     dataModel.Event1ImageUrl,
+		Event1ImageFile:    dataModel.Event1ImageFile,
 		Event2Name:         dataModel.Event2Name,
-		Event2ImageUrl:     dataModel.Event2ImageUrl,
+		Event2ImageFile:    dataModel.Event2ImageFile,
 		Event3Name:         dataModel.Event3Name,
-		Event3ImageUrl:     dataModel.Event3ImageUrl,
+		Event3ImageFile:    dataModel.Event3ImageFile,
 		BankName:           dataModel.BankName,
 		BankAccountNumber:  dataModel.BankAccountNumber,
 		BankAccountName:    dataModel.BankName,

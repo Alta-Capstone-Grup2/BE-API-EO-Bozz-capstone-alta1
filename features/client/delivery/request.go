@@ -5,14 +5,14 @@ import (
 )
 
 type ClientRequest struct {
-	Name           string `json:"name" form:"name"`
-	Email          string `json:"email" form:"email"`
-	Password       string `json:"password" form:"password"`
-	Gender         string `json:"gender" form:"gender"`
-	Address        string `json:"address" form:"address"`
-	City           string `json:"city" form:"city"`
-	Phone          string `json:"phone" form:"phone"`
-	ClientImageUrl string `json:"client_image_file" form:"client_image_file"`
+	Name            string `json:"name" form:"name"`
+	Email           string `json:"email" form:"email"`
+	Password        string `json:"password" form:"password"`
+	Gender          string `json:"gender" form:"gender"`
+	Address         string `json:"address" form:"address"`
+	City            string `json:"city" form:"city"`
+	Phone           string `json:"phone" form:"phone"`
+	ClientImageFile string `json:"client_image_file" form:"client_image_file"`
 }
 
 func toCore(input ClientRequest) client.Core {
@@ -22,11 +22,11 @@ func toCore(input ClientRequest) client.Core {
 			Email:    input.Email,
 			Password: input.Password,
 		},
-		Gender:         input.Gender,
-		Address:        input.Address,
-		City:           input.City,
-		Phone:          input.Phone,
-		ClientImageUrl: input.ClientImageUrl,
+		Gender:          input.Gender,
+		Address:         input.Address,
+		City:            input.City,
+		Phone:           input.Phone,
+		ClientImageFile: input.ClientImageFile,
 	}
 	return clientCoredata
 }
