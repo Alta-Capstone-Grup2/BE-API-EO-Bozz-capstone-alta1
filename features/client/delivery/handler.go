@@ -4,9 +4,8 @@ import (
 	"capstone-alta1/features/client"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
-	"capstone-alta1/utils/thirdparty"
-	"errors"
-	"log"
+	"fmt"
+
 	"net/http"
 	"strconv"
 	"strings"
@@ -77,18 +76,6 @@ func (delivery *ClientDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	ClientImageUrl, _ := c.FormFile("client_image_file")
-	if ClientImageUrl != nil {
-		urlFile, err := thirdparty.Upload(c)
-		if err != nil {
-			return errors.New("registration failed. cannot upload data")
-		}
-		log.Print(urlFile)
-		userInput.ClientImageUrl = urlFile
-	} else {
-		userInput.ClientImageUrl = ""
-	}
-
 	dataCore := toCore(userInput)
 	err := delivery.clientService.Create(dataCore, c)
 	if err != nil {
@@ -104,27 +91,19 @@ func (delivery *ClientDelivery) Create(c echo.Context) error {
 }
 
 func (delivery *ClientDelivery) Update(c echo.Context) error {
-	idUser := middlewares.ExtractTokenUserId(c)
+	clientID := uint(middlewares.ExtractTokenClientID(c))
+	userID := uint(middlewares.ExtractTokenUserId(c))
 	userInput := ClientRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	ClientImageUrl, _ := c.FormFile("client_image_url")
-	if ClientImageUrl != nil {
-		urlFile, err := thirdparty.Upload(c)
-		if err != nil {
-			return errors.New("registration failed. cannot upload data")
-		}
-		log.Print(urlFile)
-		userInput.ClientImageUrl = urlFile
-	} else {
-		userInput.ClientImageUrl = ""
-	}
-
 	dataCore := toCore(userInput)
-	err := delivery.clientService.Update(dataCore, uint(idUser), c)
+
+	fmt.Println("handler update data ", dataCore)
+
+	err := delivery.clientService.Update(dataCore, clientID, userID, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

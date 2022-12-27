@@ -38,7 +38,7 @@ type PartnerResponse struct {
 
 func fromCore(dataCore partner.Core) PartnerResponse {
 	return PartnerResponse{
-		ID:                 dataCore.User.ID,
+		ID:                 dataCore.ID,
 		Name:               dataCore.User.Name,
 		Email:              dataCore.User.Email,
 		Role:               dataCore.User.Role,
