@@ -10,9 +10,8 @@ import (
 type Additional struct {
 	gorm.Model
 	AdditionalName  string
-	AdditionalPrice int
+	AdditionalPrice uint
 	PartnerID       uint
-	Partner         Partner
 }
 
 type Partner struct {

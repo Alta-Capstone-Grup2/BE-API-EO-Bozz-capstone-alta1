@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"capstone-alta1/features/review"
+	"capstone-alta1/features/discussion"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
 	"fmt"
@@ -12,30 +12,28 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type ReviewDelivery struct {
-	reviewService review.ServiceInterface
+type DiscussionDelivery struct {
+	discussionService discussion.ServiceInterface
 }
 
-func New(service review.ServiceInterface, e *echo.Echo) {
-	handler := &ReviewDelivery{
-		reviewService: service,
+func New(service discussion.ServiceInterface, e *echo.Echo) {
+	handler := &DiscussionDelivery{
+		discussionService: service,
 	}
 
-	e.GET("/reviews", handler.GetAll)
-	e.GET("/reviews/:id", handler.GetById)
-	e.POST("/reviews", handler.Create, middlewares.JWTMiddleware())
-	e.PUT("/reviews/:id", handler.Update, middlewares.JWTMiddleware())
-	e.DELETE("/reviews/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.GET("/discussions", handler.GetAll)
+	e.GET("/discussions/:id", handler.GetById)
+	e.POST("/discussions", handler.Create, middlewares.JWTMiddleware())
+	e.PUT("/discussions/:id", handler.Update, middlewares.JWTMiddleware())
+	e.DELETE("/discussions/:id", handler.Delete, middlewares.JWTMiddleware())
 
 	//middlewares.IsAdmin = untuk membatasi akses endpoint hanya admin
 	//middlewares.UserOnlySameId = untuk membatasi akses user mengelola data diri sendiri saja
 
 }
 
-func (delivery *ReviewDelivery) GetAll(c echo.Context) error {
-	query := c.QueryParam("title")
-	helper.LogDebug("isi query = ", query)
-	results, err := delivery.reviewService.GetAll(query)
+func (delivery *DiscussionDelivery) GetAll(c echo.Context) error {
+	results, err := delivery.discussionService.GetAll()
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -48,13 +46,13 @@ func (delivery *ReviewDelivery) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
 }
 
-func (delivery *ReviewDelivery) GetById(c echo.Context) error {
+func (delivery *DiscussionDelivery) GetById(c echo.Context) error {
 	idParam := c.Param("id")
 	id, errConv := strconv.Atoi(idParam)
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
-	results, err := delivery.reviewService.GetById(id)
+	results, err := delivery.discussionService.GetById(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -67,20 +65,24 @@ func (delivery *ReviewDelivery) GetById(c echo.Context) error {
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
-func (delivery *ReviewDelivery) Create(c echo.Context) error {
+func (delivery *DiscussionDelivery) Create(c echo.Context) error {
 	userInput := InsertRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	clientID := middlewares.ExtractTokenClientID(c)
-	dataCore := toCore(userInput, uint(clientID))
+	fmt.Println("Cek discussion data = ", userInput)
+	dataCore := toCore(userInput)
 
-	fmt.Println("datacore ", dataCore, "\n\n")
-	fmt.Println("clientID ", clientID, "\n\n")
+	fmt.Println("Cek discussion data = ", dataCore)
+	// paratner id client id dr token // di comment dlu
+	// dataCore.PartnerID = uint(middlewares.ExtractTokenPartnerID(c))
+	// dataCore.ClientID = uint(middlewares.ExtractTokenClientID(c))
 
-	err := delivery.reviewService.Create(dataCore, c)
+	fmt.Println("Cek discussion data = ", dataCore)
+
+	err := delivery.discussionService.Create(dataCore, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -90,7 +92,7 @@ func (delivery *ReviewDelivery) Create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success create data"))
 }
 
-func (delivery *ReviewDelivery) Update(c echo.Context) error {
+func (delivery *DiscussionDelivery) Update(c echo.Context) error {
 	idParam := c.Param("id")
 	id, errConv := strconv.Atoi(idParam)
 	if errConv != nil {
@@ -104,11 +106,11 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 	}
 
 	// validasi data di proses oleh user ybs
-	clientID := middlewares.ExtractTokenClientID(c)
-	if clientID < 1 {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load client id from JWT token, please check again."))
+	userId := middlewares.ExtractTokenUserId(c)
+	if userId < 1 {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load user id from JWT token, please check again."))
 	}
-	// data, errGet := delivery.reviewService.GetById(id)
+	// data, errGet := delivery.discussionService.GetById(id)
 	// if errGet != nil {
 	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse(errGet.Error()))
 	// }
@@ -118,8 +120,13 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 	// }
 
 	// process
-	dataCore := toCore(userInput, uint(clientID))
-	err := delivery.reviewService.Update(dataCore, id, c)
+	dataCore := toCore(userInput)
+
+	// paratner id client id dr token
+	dataCore.PartnerID = uint(middlewares.ExtractTokenPartnerID(c))
+	dataCore.ClientID = uint(middlewares.ExtractTokenClientID(c))
+
+	err := delivery.discussionService.Update(dataCore, id, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -130,7 +137,7 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success update data."))
 }
 
-func (delivery *ReviewDelivery) Delete(c echo.Context) error {
+func (delivery *DiscussionDelivery) Delete(c echo.Context) error {
 	idParam := c.Param("id")
 	id, errConv := strconv.Atoi(idParam)
 	if errConv != nil {
@@ -142,7 +149,7 @@ func (delivery *ReviewDelivery) Delete(c echo.Context) error {
 	if userId < 1 {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load user id from JWT token, please check again."))
 	}
-	// data, errGet := delivery.reviewService.GetById(id)
+	// data, errGet := delivery.discussionService.GetById(id)
 	// if errGet != nil {
 	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse(errGet.Error()))
 	// }
@@ -152,7 +159,7 @@ func (delivery *ReviewDelivery) Delete(c echo.Context) error {
 	// }
 
 	// process
-	err := delivery.reviewService.Delete(id)
+	err := delivery.discussionService.Delete(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}

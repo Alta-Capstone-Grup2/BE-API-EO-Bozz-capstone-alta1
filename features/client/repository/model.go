@@ -19,6 +19,7 @@ type Client struct {
 	UserID         uint
 	User           User
 	Orders         []Order
+	Reviews        []Review
 }
 
 type User struct {
@@ -45,6 +46,15 @@ type Order struct {
 	PayoutDate       time.Time
 	ServiceID        uint
 	ClientID         uint
+}
+
+type Review struct {
+	gorm.Model
+	Review    string
+	Rating    float64
+	OrderID   uint
+	ClientID  uint
+	ServiceID uint
 }
 
 // mapping

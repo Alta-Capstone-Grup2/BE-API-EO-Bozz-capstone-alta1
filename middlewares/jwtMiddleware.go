@@ -25,16 +25,17 @@ func JWTMiddleware() echo.MiddlewareFunc {
 	})
 }
 
-func CreateToken(userId int, name string, role string) (string, error) {
+func CreateToken(userId int, name string, role string, clientID int, partnerID int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["userId"] = userId
+	claims["clientID"] = clientID
+	claims["partnerID"] = partnerID
 	claims["name"] = name
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix() //Token expires after 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(key))
-
 }
 
 func ExtractTokenUserId(e echo.Context) int {
@@ -43,6 +44,16 @@ func ExtractTokenUserId(e echo.Context) int {
 		claims := user.Claims.(jwt.MapClaims)
 		userId := claims["userId"].(float64)
 		return int(userId)
+	}
+	return 0
+}
+
+func ExtractTokenClientID(e echo.Context) int {
+	user := e.Get("user").(*jwt.Token)
+	if user.Valid {
+		claims := user.Claims.(jwt.MapClaims)
+		clientID := claims["clientID"].(float64)
+		return int(clientID)
 	}
 	return 0
 }
@@ -57,6 +68,16 @@ func ExtractTokenUserRole(e echo.Context) string {
 	return ""
 }
 
+func ExtractTokenPartnerID(e echo.Context) int {
+	user := e.Get("user").(*jwt.Token)
+	if user.Valid {
+		claims := user.Claims.(jwt.MapClaims)
+		partnerID := claims["partnerID"].(float64)
+		return int(partnerID)
+	}
+	return 0
+}
+
 func ExtractTokenUserName(e echo.Context) string {
 	user := e.Get("user").(*jwt.Token)
 	if user.Valid {
@@ -67,7 +88,7 @@ func ExtractTokenUserName(e echo.Context) string {
 	return ""
 }
 
-func IsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
+func AdminAllowed(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(e echo.Context) error {
 		user := e.Get("user").(*jwt.Token)
 		if user.Valid {
@@ -82,6 +103,55 @@ func IsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 
 	}
 }
+
+func ClientAllowed(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(e echo.Context) error {
+		user := e.Get("user").(*jwt.Token)
+		if user.Valid {
+			claims := user.Claims.(jwt.MapClaims)
+			role := claims["role"].(string)
+
+			if role != "Client" {
+				return e.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access."))
+			}
+		}
+		return next(e)
+
+	}
+}
+
+func PartnerAllowed(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(e echo.Context) error {
+		user := e.Get("user").(*jwt.Token)
+		if user.Valid {
+			claims := user.Claims.(jwt.MapClaims)
+			role := claims["role"].(string)
+
+			if role != "Partner" {
+				return e.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access."))
+			}
+		}
+		return next(e)
+
+	}
+}
+
+// masih tes blm berhasil
+// func Authorized(roleAdmin, roleClient, rolePartner string, next echo.HandlerFunc) echo.HandlerFunc {
+// 	return func(e echo.Context) error {
+// 		user := e.Get("user").(*jwt.Token)
+// 		if user.Valid {
+// 			claims := user.Claims.(jwt.MapClaims)
+// 			role := claims["role"].(string)
+
+// 			if role != "Admin" {
+// 				return e.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access."))
+// 			}
+// 		}
+// 		return next(e)
+
+// 	}
+// }
 
 func UserOnlySameId(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(e echo.Context) error {

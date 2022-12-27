@@ -15,9 +15,6 @@ type Review struct {
 	OrderID   uint
 	ClientID  uint
 	ServiceID uint
-	Order     Order
-	Client    Client
-	Service   Service
 }
 
 type Client struct {
@@ -30,6 +27,7 @@ type Client struct {
 	UserID         uint
 	User           User
 	Orders         []Order
+	Reviews        []Review
 }
 
 type User struct {

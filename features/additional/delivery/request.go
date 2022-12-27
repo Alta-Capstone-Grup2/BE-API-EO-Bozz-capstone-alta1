@@ -6,13 +6,14 @@ import (
 
 type AdditionalRequest struct {
 	AdditionalName  string `json:"additional_name" form:"additional_name"`
-	AdditionalPrice int    `json:"additional_price" form:"additional_price"`
+	AdditionalPrice uint   `json:"additional_price" form:"additional_price"`
 }
 
-func toCore(input AdditionalRequest, id uint) additional.Core {
-	inputData := additional.Core{
+func toCore(input AdditionalRequest, partnerID uint) additional.Core {
+	clientCoredata := additional.Core{
 		AdditionalName:  input.AdditionalName,
 		AdditionalPrice: input.AdditionalPrice,
+		PartnerID:       partnerID,
 	}
-	return inputData
+	return clientCoredata
 }

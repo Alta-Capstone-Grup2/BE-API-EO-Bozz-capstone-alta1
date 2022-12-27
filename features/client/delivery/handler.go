@@ -32,10 +32,10 @@ func New(service client.ServiceInterface, e *echo.Echo) {
 }
 
 func (delivery *ClientDelivery) GetAll(c echo.Context) error {
-	userRole := middlewares.ExtractTokenUserRole(c)
-	if userRole != "Admin" {
-		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
-	}
+	// userRole := middlewares.ExtractTokenUserRole(c)
+	// if userRole != "Admin" {
+	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access."))
+	// }
 	query := c.QueryParam("name")
 	helper.LogDebug("isi query = ", query)
 	results, err := delivery.clientService.GetAll(query)
@@ -67,7 +67,7 @@ func (delivery *ClientDelivery) GetById(c echo.Context) error {
 
 	dataResponse := fromCore(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
 func (delivery *ClientDelivery) Create(c echo.Context) error {
@@ -160,5 +160,5 @@ func (delivery *ClientDelivery) GetOrderById(c echo.Context) error {
 
 	dataResponse := fromCoreListOrder(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }

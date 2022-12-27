@@ -51,7 +51,33 @@ func (service *authService) Login(dataCore auth.Core) (auth.Core, string, error)
 		return auth.Core{}, "", errors.New("Failed to login, password didn't match, please check password again.")
 	}
 
-	token, errToken := middlewares.CreateToken(int(result.ID), result.Name, result.Role)
+	var partnerID, clientID uint
+
+	// get data client / partner
+	if result.Role == "Partner" {
+		fmt.Println("Logged in as : Partner")
+		dataPartner, errPartner := service.authData.FindPartner(result.ID)
+		if errPartner != nil {
+			log.Error(errLogin.Error())
+			return auth.Core{}, "", errors.New("Failed to login, error on process, partner data not found. Please check your input.")
+		}
+		partnerID = dataPartner.ID
+	} else if result.Role == "Client" {
+		fmt.Println("Logged in as : Client")
+		dataClient, errClient := service.authData.FindClient(result.ID)
+		if errClient != nil {
+			log.Error(errLogin.Error())
+			return auth.Core{}, "", errors.New("Failed to login, error on process, partner data not found. Please check your input.")
+		}
+		clientID = dataClient.ID
+	} else if result.Role == "Admin" {
+		fmt.Println("Logged in as : Admin")
+	} else {
+		fmt.Println("Role not found. Role = ", result.Role)
+		return auth.Core{}, "", errors.New("Failed to login, error on process get role.")
+	}
+
+	token, errToken := middlewares.CreateToken(int(result.ID), result.Name, result.Role, int(clientID), int(partnerID))
 	if errToken != nil {
 		log.Error(errToken.Error())
 		return auth.Core{}, "", errors.New("Failed to login, error on generate token, please try again.")

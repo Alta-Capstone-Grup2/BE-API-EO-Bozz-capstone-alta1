@@ -1,7 +1,7 @@
 package service
 
 import (
-	"capstone-alta1/features/review"
+	"capstone-alta1/features/discussion"
 	"capstone-alta1/utils/helper"
 	"fmt"
 
@@ -10,27 +10,27 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-type reviewService struct {
-	reviewRepository review.RepositoryInterface
-	validate         *validator.Validate
+type discussionService struct {
+	discussionRepository discussion.RepositoryInterface
+	validate             *validator.Validate
 }
 
-func New(repo review.RepositoryInterface) review.ServiceInterface {
-	return &reviewService{
-		reviewRepository: repo,
-		validate:         validator.New(),
+func New(repo discussion.RepositoryInterface) discussion.ServiceInterface {
+	return &discussionService{
+		discussionRepository: repo,
+		validate:             validator.New(),
 	}
 }
 
-func (service *reviewService) Create(input review.Core, c echo.Context) (err error) {
+func (service *discussionService) Create(input discussion.Core, c echo.Context) (err error) {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
 	}
 
-	fmt.Println("input service ", input, "\n\n")
+	fmt.Println("Cek discussion d service data = ", input)
 
-	errCreate := service.reviewRepository.Create(input)
+	errCreate := service.discussionRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
 		return helper.ServiceErrorMsg(err)
@@ -40,9 +40,9 @@ func (service *reviewService) Create(input review.Core, c echo.Context) (err err
 }
 
 // GetAll implements user.ServiceInterface
-func (service *reviewService) GetAll(query string) (data []review.Core, err error) {
+func (service *discussionService) GetAll() (data []discussion.Core, err error) {
 
-	data, err = service.reviewRepository.GetAll()
+	data, err = service.discussionRepository.GetAll()
 
 	if err != nil {
 		helper.LogDebug(err)
@@ -52,32 +52,32 @@ func (service *reviewService) GetAll(query string) (data []review.Core, err erro
 	return data, err
 }
 
-func (service *reviewService) GetById(id int) (data review.Core, err error) {
-	data, err = service.reviewRepository.GetById(id)
+func (service *discussionService) GetById(id int) (data discussion.Core, err error) {
+	data, err = service.discussionRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
-		return review.Core{}, helper.ServiceErrorMsg(err)
+		return discussion.Core{}, helper.ServiceErrorMsg(err)
 	}
 
 	return data, err
 
 }
 
-func (service *reviewService) Update(input review.Core, id int, c echo.Context) error {
+func (service *discussionService) Update(input discussion.Core, id int, c echo.Context) error {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
 	}
 
 	// validasi user dgn id path param, apakah ada datanya di database
-	_, errFindId := service.reviewRepository.GetById(id)
+	_, errFindId := service.discussionRepository.GetById(id)
 	if errFindId != nil {
 		log.Error(errFindId.Error())
 		return helper.ServiceErrorMsg(errFindId)
 	}
 
 	// proses
-	err := service.reviewRepository.Update(input, id)
+	err := service.discussionRepository.Update(input, id)
 	if err != nil {
 		log.Error(err.Error())
 		return helper.ServiceErrorMsg(err)
@@ -86,16 +86,16 @@ func (service *reviewService) Update(input review.Core, id int, c echo.Context) 
 	return nil
 }
 
-func (service *reviewService) Delete(id int) error {
+func (service *discussionService) Delete(id int) error {
 	// validasi user dgn id path param, apakah ada datanya di database
-	_, errFindId := service.reviewRepository.GetById(id)
+	_, errFindId := service.discussionRepository.GetById(id)
 	if errFindId != nil {
 		log.Error(errFindId.Error())
 		return helper.ServiceErrorMsg(errFindId)
 	}
 
 	// proses
-	err := service.reviewRepository.Delete(id)
+	err := service.discussionRepository.Delete(id)
 	if err != nil {
 		log.Error(err.Error())
 		return helper.ServiceErrorMsg(err)

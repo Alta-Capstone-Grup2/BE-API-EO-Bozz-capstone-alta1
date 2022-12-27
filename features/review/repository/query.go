@@ -3,6 +3,7 @@ package repository
 import (
 	"capstone-alta1/features/review"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -19,6 +20,9 @@ func New(db *gorm.DB) review.RepositoryInterface {
 
 // Create implements user.Repository
 func (repo *reviewRepository) Create(input review.Core) error {
+
+	fmt.Println("input query ", input, "\n\n")
+
 	var service Service
 	userGorm := fromCore(input)
 	tx := repo.db.Create(&userGorm) // proses insert data
