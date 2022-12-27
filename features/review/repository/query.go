@@ -71,7 +71,7 @@ func (repo *reviewRepository) GetAllWithSearch(query string) (data []review.Core
 }
 
 // GetById implements user.RepositoryInterface
-func (repo *reviewRepository) GetById(id int) (data review.Core, err error) {
+func (repo *reviewRepository) GetById(id uint) (data review.Core, err error) {
 	var result Review
 
 	tx := repo.db.First(&result, id)
@@ -89,7 +89,7 @@ func (repo *reviewRepository) GetById(id int) (data review.Core, err error) {
 }
 
 // Update implements user.Repository
-func (repo *reviewRepository) Update(input review.Core, id int) error {
+func (repo *reviewRepository) Update(input review.Core, id uint) error {
 	resultGorm := fromCore(input)
 	var result Review
 	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm) // proses update
@@ -103,7 +103,7 @@ func (repo *reviewRepository) Update(input review.Core, id int) error {
 }
 
 // Delete implements user.Repository
-func (repo *reviewRepository) Delete(id int) error {
+func (repo *reviewRepository) Delete(id uint) error {
 	var result Review
 	tx := repo.db.Delete(&result, id) // proses delete
 	if tx.Error != nil {

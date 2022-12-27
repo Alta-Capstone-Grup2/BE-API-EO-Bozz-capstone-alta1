@@ -1,6 +1,6 @@
 package service
 
-import "github.com/labstack/echo/v4"
+import "time"
 
 type Core struct {
 	ID                 uint
@@ -14,7 +14,29 @@ type Core struct {
 	PartnerID          uint
 	Partner            Partner
 	Additional         []Additional
+	Review             []Review
+	Discussion         []Discussion
 	Order              []Order
+}
+
+type Discussion struct {
+	ID        uint
+	Comment   string
+	CreatedAt time.Time
+	PartnerID uint
+	ClientID  uint
+	ServiceID uint
+	Service   Core
+}
+
+type Review struct {
+	ID        uint
+	Review    string
+	Rating    float64
+	OrderID   uint
+	ClientID  uint
+	ServiceID uint
+	Service   Core
 }
 
 type ServiceAdditional struct {
@@ -85,6 +107,8 @@ type ServiceInterface interface {
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
 	GetAdditionalById(id uint) (data []Additional, err error)
+	GetReviewById(id uint) (data []Review, err error)
+	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input ServiceAdditional, id uint) error
 }
 
@@ -96,5 +120,7 @@ type RepositoryInterface interface {
 	Update(input Core, id uint) error
 	Delete(id uint) error
 	GetAdditionalById(id uint) (data []Additional, err error)
+	GetReviewById(id uint) (data []Review, err error)
+	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input ServiceAdditional, id uint) error
 }

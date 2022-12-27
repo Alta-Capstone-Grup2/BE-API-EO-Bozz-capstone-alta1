@@ -121,7 +121,7 @@ func (service *partnerService) GetAll(query string) (data []partner.Core, err er
 	return data, err
 }
 
-func (service *partnerService) GetById(id int) (data partner.Core, err error) {
+func (service *partnerService) GetById(id uint) (data partner.Core, err error) {
 	data, err = service.partnerRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
@@ -132,7 +132,7 @@ func (service *partnerService) GetById(id int) (data partner.Core, err error) {
 
 }
 
-func (service *partnerService) Update(input partner.Core, id int, c echo.Context) error {
+func (service *partnerService) Update(input partner.Core, id uint, c echo.Context) error {
 
 	// upload file
 	var errUpload error
@@ -170,7 +170,7 @@ func (service *partnerService) Update(input partner.Core, id int, c echo.Context
 	return nil
 }
 
-func (service *partnerService) Delete(id int) error {
+func (service *partnerService) Delete(id uint) error {
 	// proses
 	err := service.partnerRepository.Delete(id)
 	if err != nil {

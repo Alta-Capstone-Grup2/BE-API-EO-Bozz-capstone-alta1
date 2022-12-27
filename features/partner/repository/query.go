@@ -61,7 +61,7 @@ func (repo *partnerRepository) GetAllWithSearch(query string) (data []partner.Co
 }
 
 // GetById implements user.RepositoryInterface
-func (repo *partnerRepository) GetById(id int) (data partner.Core, err error) {
+func (repo *partnerRepository) GetById(id uint) (data partner.Core, err error) {
 	var partner Partner
 
 	tx := repo.db.Preload("User").First(&partner, id)
@@ -79,7 +79,7 @@ func (repo *partnerRepository) GetById(id int) (data partner.Core, err error) {
 }
 
 // Update implements user.Repository
-func (repo *partnerRepository) Update(input partner.Core, id int) error {
+func (repo *partnerRepository) Update(input partner.Core, id uint) error {
 	partnerGorm := fromCore(input)
 	var partner Partner
 	var user User
@@ -106,7 +106,7 @@ func (repo *partnerRepository) Update(input partner.Core, id int) error {
 }
 
 // Delete implements user.Repository
-func (repo *partnerRepository) Delete(id int) error {
+func (repo *partnerRepository) Delete(id uint) error {
 	var partner Partner
 	var user User
 	repo.db.Transaction(func(tx *gorm.DB) error {

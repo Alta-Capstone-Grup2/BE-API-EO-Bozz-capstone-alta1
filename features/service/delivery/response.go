@@ -1,6 +1,9 @@
 package delivery
 
-import "capstone-alta1/features/service"
+import (
+	"capstone-alta1/features/service"
+	"time"
+)
 
 type ServiceResponse struct {
 	ID              uint    `json:"id"`
@@ -19,6 +22,24 @@ type ServiceAdditionalResponse struct {
 	AdditionalPrice uint   `json:"additional_price"`
 	PartnerID       uint   `json:"partner_id"`
 	ServiceID       uint   `json:"service_id"`
+}
+
+type ServiceReviewResponse struct {
+	ID        uint    `json:"id"`
+	Review    string  `json:"review"`
+	Rating    float64 `json:"rating"`
+	OrderID   uint    `json:"order_id"`
+	ClientID  uint    `json:"client_id"`
+	ServiceID uint    `json:"service_id"`
+}
+
+type ServiceDiscussionResponse struct {
+	ID        uint      `json:"id"`
+	Comment   string    `json:"comment"`
+	CreatedAt time.Time `json:"created_at"`
+	PartnerID uint      `json:"partner_id"`
+	ClientID  uint      `json:"client_id"`
+	ServiceID uint      `json:"service_id"`
 }
 
 func fromCore(dataCore service.Core) ServiceResponse {
@@ -44,6 +65,28 @@ func fromCoreAdditional(dataCore service.Additional) ServiceAdditionalResponse {
 	}
 }
 
+func fromCoreReview(dataCore service.Review) ServiceReviewResponse {
+	return ServiceReviewResponse{
+		ID:        dataCore.ID,
+		Review:    dataCore.Review,
+		Rating:    dataCore.Rating,
+		OrderID:   dataCore.OrderID,
+		ClientID:  dataCore.ClientID,
+		ServiceID: dataCore.ServiceID,
+	}
+}
+
+func fromCoreDiscussion(dataCore service.Discussion) ServiceDiscussionResponse {
+	return ServiceDiscussionResponse{
+		ID:        dataCore.ID,
+		Comment:   dataCore.Comment,
+		CreatedAt: dataCore.CreatedAt,
+		ClientID:  dataCore.ClientID,
+		PartnerID: dataCore.PartnerID,
+		ServiceID: dataCore.ServiceID,
+	}
+}
+
 func fromCoreList(dataCore []service.Core) []ServiceResponse {
 	var dataResponse []ServiceResponse
 	for _, v := range dataCore {
@@ -56,6 +99,22 @@ func fromCoreListAdditional(dataCore []service.Additional) []ServiceAdditionalRe
 	var dataResponse []ServiceAdditionalResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromCoreAdditional(v))
+	}
+	return dataResponse
+}
+
+func fromCoreListReview(dataCore []service.Review) []ServiceReviewResponse {
+	var dataResponse []ServiceReviewResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromCoreReview(v))
+	}
+	return dataResponse
+}
+
+func fromCoreListDiscussion(dataCore []service.Discussion) []ServiceDiscussionResponse {
+	var dataResponse []ServiceDiscussionResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromCoreDiscussion(v))
 	}
 	return dataResponse
 }

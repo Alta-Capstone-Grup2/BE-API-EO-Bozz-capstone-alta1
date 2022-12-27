@@ -140,3 +140,37 @@ func (repo *serviceRepository) AddAdditionalToService(input service.ServiceAddit
 	}
 	return nil
 }
+
+func (repo *serviceRepository) GetReviewById(id uint) (data []service.Review, err error) {
+	var clientreview []Review
+
+	tx := repo.db.Find(&clientreview, id)
+
+	if tx.Error != nil {
+		return data, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	var dataCore = toCoreListReview(clientreview)
+	return dataCore, nil
+}
+
+func (repo *serviceRepository) GetDiscussionById(id uint) (data []service.Discussion, err error) {
+	var clientdiscussion []Discussion
+
+	tx := repo.db.Find(&clientdiscussion, id)
+
+	if tx.Error != nil {
+		return data, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	var dataCore = toCoreListDiscussion(clientdiscussion)
+	return dataCore, nil
+}

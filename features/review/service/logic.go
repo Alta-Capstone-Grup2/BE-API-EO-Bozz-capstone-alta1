@@ -3,7 +3,6 @@ package service
 import (
 	"capstone-alta1/features/review"
 	"capstone-alta1/utils/helper"
-	"fmt"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -28,8 +27,6 @@ func (service *reviewService) Create(input review.Core, c echo.Context) (err err
 		return errValidate
 	}
 
-	fmt.Println("input service ", input, "\n\n")
-
 	errCreate := service.reviewRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
@@ -52,7 +49,7 @@ func (service *reviewService) GetAll(query string) (data []review.Core, err erro
 	return data, err
 }
 
-func (service *reviewService) GetById(id int) (data review.Core, err error) {
+func (service *reviewService) GetById(id uint) (data review.Core, err error) {
 	data, err = service.reviewRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
@@ -63,7 +60,7 @@ func (service *reviewService) GetById(id int) (data review.Core, err error) {
 
 }
 
-func (service *reviewService) Update(input review.Core, id int, c echo.Context) error {
+func (service *reviewService) Update(input review.Core, id uint, c echo.Context) error {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
@@ -86,7 +83,7 @@ func (service *reviewService) Update(input review.Core, id int, c echo.Context) 
 	return nil
 }
 
-func (service *reviewService) Delete(id int) error {
+func (service *reviewService) Delete(id uint) error {
 	// validasi user dgn id path param, apakah ada datanya di database
 	_, errFindId := service.reviewRepository.GetById(id)
 	if errFindId != nil {

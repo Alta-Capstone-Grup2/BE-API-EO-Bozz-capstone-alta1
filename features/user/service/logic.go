@@ -68,7 +68,7 @@ func (service *userService) GetAll(query string) (data []user.Core, err error) {
 	return data, err
 }
 
-func (service *userService) GetById(id int) (data user.Core, err error) {
+func (service *userService) GetById(id uint) (data user.Core, err error) {
 	data, err = service.userRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
@@ -79,7 +79,7 @@ func (service *userService) GetById(id int) (data user.Core, err error) {
 
 }
 
-func (service *userService) Update(input user.Core, id int) error {
+func (service *userService) Update(input user.Core, id uint) error {
 	if input.Password != "" {
 		generate, _ := bcrypt.GenerateFromPassword([]byte(input.Password), 10)
 		input.Password = string(generate)
@@ -93,7 +93,7 @@ func (service *userService) Update(input user.Core, id int) error {
 	return nil
 }
 
-func (service *userService) Delete(id int) error {
+func (service *userService) Delete(id uint) error {
 	// proses
 	err := service.userRepository.Delete(id)
 	if err != nil {
@@ -103,7 +103,7 @@ func (service *userService) Delete(id int) error {
 	return nil
 }
 
-func (service *userService) UpdatePassword(input user.Core, id int) error {
+func (service *userService) UpdatePassword(input user.Core, id uint) error {
 	err := service.userRepository.Update(input, id)
 	if err != nil {
 		log.Error(err.Error())

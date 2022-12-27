@@ -53,7 +53,7 @@ func (delivery *ReviewDelivery) GetById(c echo.Context) error {
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
-	results, err := delivery.reviewService.GetById(id)
+	results, err := delivery.reviewService.GetById(uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -115,7 +115,7 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 
 	// process
 	dataCore := toCore(userInput, uint(clientID))
-	err := delivery.reviewService.Update(dataCore, id, c)
+	err := delivery.reviewService.Update(dataCore, uint(id), c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -148,7 +148,7 @@ func (delivery *ReviewDelivery) Delete(c echo.Context) error {
 	// }
 
 	// process
-	err := delivery.reviewService.Delete(id)
+	err := delivery.reviewService.Delete(uint(id))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}

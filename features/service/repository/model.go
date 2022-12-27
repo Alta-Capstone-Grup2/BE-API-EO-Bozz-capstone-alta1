@@ -18,7 +18,28 @@ type Service struct {
 	PartnerID          uint
 	Partner            Partner
 	Additional         []Additional
+	Review             []Review
+	Discussion         []Discussion
 	Order              []Order
+}
+
+type Discussion struct {
+	gorm.Model
+	Comment   string
+	PartnerID uint
+	ClientID  uint
+	ServiceID uint
+	Service   Service
+}
+
+type Review struct {
+	gorm.Model
+	Review    string
+	Rating    float64
+	OrderID   uint
+	ClientID  uint
+	ServiceID uint
+	Service   Service
 }
 
 type ServiceAdditional struct {
@@ -34,6 +55,8 @@ type Additional struct {
 	AdditionalName  string
 	AdditionalPrice uint
 	PartnerID       uint
+	ServiceID       uint
+	Service         Service
 }
 
 type Order struct {
@@ -126,6 +149,29 @@ func (dataModel *Additional) toCoreAdditional() service.Additional {
 		AdditionalName:  dataModel.AdditionalName,
 		AdditionalPrice: dataModel.AdditionalPrice,
 		PartnerID:       dataModel.PartnerID,
+		ServiceID:       dataModel.ServiceID,
+	}
+}
+
+func (dataModel *Review) toCoreReview() service.Review {
+	return service.Review{
+		ID:        dataModel.ID,
+		Review:    dataModel.Review,
+		Rating:    dataModel.Rating,
+		OrderID:   dataModel.OrderID,
+		ClientID:  dataModel.ClientID,
+		ServiceID: dataModel.ServiceID,
+	}
+}
+
+func (dataModel *Discussion) toCoreDiscussion() service.Discussion {
+	return service.Discussion{
+		ID:        dataModel.ID,
+		Comment:   dataModel.Comment,
+		CreatedAt: dataModel.CreatedAt,
+		PartnerID: dataModel.PartnerID,
+		ClientID:  dataModel.ClientID,
+		ServiceID: dataModel.ServiceID,
 	}
 }
 
@@ -142,6 +188,22 @@ func toCoreListAdditional(dataModel []Additional) []service.Additional {
 	var dataCore []service.Additional
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCoreAdditional())
+	}
+	return dataCore
+}
+
+func toCoreListReview(dataModel []Review) []service.Review {
+	var dataCore []service.Review
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreReview())
+	}
+	return dataCore
+}
+
+func toCoreListDiscussion(dataModel []Discussion) []service.Discussion {
+	var dataCore []service.Discussion
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreDiscussion())
 	}
 	return dataCore
 }

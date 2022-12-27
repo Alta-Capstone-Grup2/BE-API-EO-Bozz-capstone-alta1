@@ -43,7 +43,7 @@ func (repo *userRepository) GetAll() (data []user.Core, err error) {
 }
 
 // GetById implements user.RepositoryInterface
-func (repo *userRepository) GetById(id int) (data user.Core, err error) {
+func (repo *userRepository) GetById(id uint) (data user.Core, err error) {
 	var user User
 
 	tx := repo.db.First(&user, id)
@@ -61,7 +61,7 @@ func (repo *userRepository) GetById(id int) (data user.Core, err error) {
 }
 
 // Update implements user.Repository
-func (repo *userRepository) Update(input user.Core, id int) error {
+func (repo *userRepository) Update(input user.Core, id uint) error {
 	userGorm := fromCore(input)
 	var user User
 	tx := repo.db.Model(&user).Where("ID = ?", id).Updates(&userGorm) // proses update
@@ -75,7 +75,7 @@ func (repo *userRepository) Update(input user.Core, id int) error {
 }
 
 // Delete implements user.Repository
-func (repo *userRepository) Delete(id int) error {
+func (repo *userRepository) Delete(id uint) error {
 	var user User
 	tx := repo.db.Delete(&user, id) // proses delete
 	if tx.Error != nil {
@@ -100,7 +100,7 @@ func (repo *userRepository) FindUser(email string) (result user.Core, err error)
 }
 
 // Update Password implements user.Repository
-func (repo *userRepository) UpdatePassword(input user.Core, id int) error {
+func (repo *userRepository) UpdatePassword(input user.Core, id uint) error {
 	userGorm := fromCore(input)
 	var user User
 	tx := repo.db.Model(&user).Where("ID = ?", id).Updates(&userGorm.Password) // proses update
