@@ -3,6 +3,7 @@ package service
 import (
 	"capstone-alta1/features/review"
 	"capstone-alta1/utils/helper"
+	"fmt"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -26,6 +27,8 @@ func (service *reviewService) Create(input review.Core, c echo.Context) (err err
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
 	}
+
+	fmt.Println("input service ", input, "\n\n")
 
 	errCreate := service.reviewRepository.Create(input)
 	if errCreate != nil {

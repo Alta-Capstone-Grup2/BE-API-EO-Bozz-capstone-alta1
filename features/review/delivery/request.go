@@ -18,7 +18,7 @@ type UpdateRequest struct {
 	ServiceID uint    `json:"service_id" form:"service"`
 }
 
-func toCore(i interface{}, userId uint) review.Core {
+func toCore(i interface{}, clientID uint) review.Core {
 	switch i.(type) {
 	case InsertRequest:
 		cnv := i.(InsertRequest)
@@ -27,6 +27,7 @@ func toCore(i interface{}, userId uint) review.Core {
 			Rating:    cnv.Rating,
 			OrderID:   cnv.OrderID,
 			ServiceID: cnv.ServiceID,
+			ClientID:  clientID,
 		}
 
 	case UpdateRequest:
@@ -36,6 +37,7 @@ func toCore(i interface{}, userId uint) review.Core {
 			Rating:    cnv.Rating,
 			OrderID:   cnv.OrderID,
 			ServiceID: cnv.ServiceID,
+			ClientID:  clientID,
 		}
 	}
 

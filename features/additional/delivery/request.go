@@ -15,5 +15,5 @@ func toCore(input AdditionalRequest, partnerID uint) additional.Core {
 		AdditionalPrice: input.AdditionalPrice,
 		PartnerID:       partnerID,
 	}
-	return inputData
+	return clientCoredata
 }

@@ -4,6 +4,7 @@ import (
 	"capstone-alta1/features/review"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -63,7 +64,7 @@ func (delivery *ReviewDelivery) GetById(c echo.Context) error {
 
 	dataResponse := fromCore(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
 func (delivery *ReviewDelivery) Create(c echo.Context) error {
@@ -73,8 +74,12 @@ func (delivery *ReviewDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	userId := middlewares.ExtractTokenUserId(c)
-	dataCore := toCore(userInput, uint(userId))
+	clientID := middlewares.ExtractTokenClientID(c)
+	dataCore := toCore(userInput, uint(clientID))
+
+	fmt.Println("datacore ", dataCore, "\n\n")
+	fmt.Println("clientID ", clientID, "\n\n")
+
 	err := delivery.reviewService.Create(dataCore, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
@@ -99,9 +104,9 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 	}
 
 	// validasi data di proses oleh user ybs
-	userId := middlewares.ExtractTokenUserId(c)
-	if userId < 1 {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load user id from JWT token, please check again."))
+	clientID := middlewares.ExtractTokenClientID(c)
+	if clientID < 1 {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load client id from JWT token, please check again."))
 	}
 	// data, errGet := delivery.reviewService.GetById(id)
 	// if errGet != nil {
@@ -113,7 +118,7 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 	// }
 
 	// process
-	dataCore := toCore(userInput, uint(userId))
+	dataCore := toCore(userInput, uint(clientID))
 	err := delivery.reviewService.Update(dataCore, id, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {

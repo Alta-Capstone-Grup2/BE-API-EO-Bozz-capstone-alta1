@@ -62,7 +62,7 @@ func (delivery *DiscussionDelivery) GetById(c echo.Context) error {
 
 	dataResponse := fromCore(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
 func (delivery *DiscussionDelivery) Create(c echo.Context) error {

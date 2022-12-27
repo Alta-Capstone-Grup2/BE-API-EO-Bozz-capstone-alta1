@@ -13,9 +13,6 @@ type Core struct {
 	OrderID   uint    `valiidate:"required"`
 	ClientID  uint    `valiidate:"required"`
 	ServiceID uint    `valiidate:"required"`
-	Order     Order
-	Client    Client
-	Service   Service
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

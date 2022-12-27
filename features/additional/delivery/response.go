@@ -7,7 +7,7 @@ import (
 type AdditionalResponse struct {
 	ID              uint   `json:"id"`
 	AdditionalName  string `json:"additional_name"`
-	AdditionalPrice int    `json:"additional_price"`
+	AdditionalPrice uint   `json:"additional_price"`
 	PartnerID       uint   `json:"partner_id"`
 }
 

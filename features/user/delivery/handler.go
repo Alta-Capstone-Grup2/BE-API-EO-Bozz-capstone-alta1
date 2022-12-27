@@ -45,7 +45,7 @@ func (delivery *UserDelivery) GetMe(c echo.Context) error {
 
 	dataResponse := fromCore(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
 func (delivery *UserDelivery) GetAll(c echo.Context) error {
@@ -80,7 +80,7 @@ func (delivery *UserDelivery) GetById(c echo.Context) error {
 
 	dataResponse := fromCore(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
 func (delivery *UserDelivery) Create(c echo.Context) error {
