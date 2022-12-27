@@ -46,7 +46,7 @@ func fromCore(dataCore client.Core) ClientResponse {
 	}
 }
 
-func fromCoreOrder(dataCore client.OrderCore) ClientOrderResponse {
+func fromCoreOrder(dataCore client.Order) ClientOrderResponse {
 	return ClientOrderResponse{
 		ID:            dataCore.ID,
 		EventName:     dataCore.EventName,
@@ -69,7 +69,7 @@ func fromCoreList(dataCore []client.Core) []ClientResponse {
 	return dataResponse
 }
 
-func fromCoreListOrder(dataCore []client.OrderCore) []ClientOrderResponse {
+func fromCoreListOrder(dataCore []client.Order) []ClientOrderResponse {
 	var dataResponse []ClientOrderResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromCoreOrder(v))

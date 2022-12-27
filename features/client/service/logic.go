@@ -113,7 +113,7 @@ func (service *clientService) Delete(id uint) error {
 	return nil
 }
 
-func (service *clientService) GetOrderById(id uint) (data []client.OrderCore, err error) {
+func (service *clientService) GetOrderById(id uint) (data []client.Order, err error) {
 	data, err = service.clientRepository.GetOrderById(id)
 	if err != nil {
 		log.Error(err.Error())

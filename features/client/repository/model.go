@@ -32,20 +32,16 @@ type User struct {
 
 type Order struct {
 	gorm.Model
-	EventName        string
-	StartDate        time.Time
-	EndDate          time.Time
-	EventLocation    string
-	NotesForPartner  string
-	ServiceName      string
-	ServicePrice     uint
-	GrossAmmount     uint
-	PaymentMethod    string
-	OrderStatus      string
-	PayoutReceiptUrl string
-	PayoutDate       time.Time
-	ServiceID        uint
-	ClientID         uint
+	EventName     string
+	StartDate     time.Time
+	EndDate       time.Time
+	EventLocation string
+	ServiceName   string
+	GrossAmmount  uint
+	OrderStatus   string
+	ServiceID     uint
+	ClientID      uint
+	Client        Client
 }
 
 type Review struct {
@@ -81,7 +77,7 @@ func fromCore(dataCore client.Core) Client {
 // mengubah struct model gorm ke struct core
 func (dataModel *Client) toCore() client.Core {
 	return client.Core{
-		User: client.UserCore{
+		User: client.User{
 			ID:       dataModel.User.ID,
 			Name:     dataModel.User.Name,
 			Email:    dataModel.User.Email,
@@ -98,8 +94,8 @@ func (dataModel *Client) toCore() client.Core {
 	}
 }
 
-func (data *Order) toCoreOrder() client.OrderCore {
-	return client.OrderCore{
+func (data *Order) toCoreOrder() client.Order {
+	return client.Order{
 		ID:            data.ID,
 		EventName:     data.EventName,
 		StartDate:     data.StartDate,
@@ -122,8 +118,8 @@ func toCoreList(dataModel []Client) []client.Core {
 	return dataCore
 }
 
-func toCoreListOrder(dataModel []Order) []client.OrderCore {
-	var dataCore []client.OrderCore
+func toCoreListOrder(dataModel []Order) []client.Order {
+	var dataCore []client.Order
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCoreOrder())
 	}

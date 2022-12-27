@@ -14,11 +14,11 @@ type Core struct {
 	Phone          string
 	ClientImageUrl string
 	UserID         uint
-	User           UserCore
-	Orders         []OrderCore
+	User           User
+	Order          []Order
 }
 
-type UserCore struct {
+type User struct {
 	ID       uint
 	Name     string `validate:"required"`
 	Email    string `validate:"required,email"`
@@ -26,22 +26,18 @@ type UserCore struct {
 	Role     string
 }
 
-type OrderCore struct {
-	ID               uint
-	EventName        string
-	StartDate        time.Time
-	EndDate          time.Time
-	EventLocation    string
-	NotesForPartner  string
-	ServiceName      string
-	ServicePrice     uint
-	GrossAmmount     uint
-	PaymentMethod    string
-	OrderStatus      string
-	PayoutReceiptUrl string
-	PayoutDate       time.Time
-	ServiceID        uint
-	ClientID         uint
+type Order struct {
+	ID            uint
+	EventName     string
+	StartDate     time.Time
+	EndDate       time.Time
+	EventLocation string
+	ServiceName   string
+	GrossAmmount  uint
+	OrderStatus   string
+	ServiceID     uint
+	ClientID      uint
+	Client        Core
 }
 
 type ServiceInterface interface {
@@ -50,7 +46,7 @@ type ServiceInterface interface {
 	Create(input Core, c echo.Context) error
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
-	GetOrderById(id uint) (data []OrderCore, err error)
+	GetOrderById(id uint) (data []Order, err error)
 }
 
 type RepositoryInterface interface {
@@ -61,5 +57,5 @@ type RepositoryInterface interface {
 	Update(input Core, id uint) error
 	Delete(id uint) error
 	FindUser(email string) (data Core, err error)
-	GetOrderById(id uint) (data []OrderCore, err error)
+	GetOrderById(id uint) (data []Order, err error)
 }

@@ -1,6 +1,8 @@
 package delivery
 
-import "capstone-alta1/features/service"
+import (
+	"capstone-alta1/features/service"
+)
 
 type ServiceRequest struct {
 	ServiceName        string  `json:"service_name" form:"service_name"`
@@ -12,7 +14,7 @@ type ServiceRequest struct {
 	City               string  `json:"city" form:"city"`
 }
 
-func toCore(input ServiceRequest, id uint) service.Core {
+func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 	coreInput := service.Core{
 		ServiceName:        input.ServiceName,
 		ServiceDescription: input.ServiceDescription,
@@ -21,6 +23,7 @@ func toCore(input ServiceRequest, id uint) service.Core {
 		AverageRating:      input.AverageRating,
 		ServiceImageUrl:    input.ServiceImageUrl,
 		City:               input.City,
+		PartnerID:          InputPartnerID,
 	}
 	return coreInput
 }

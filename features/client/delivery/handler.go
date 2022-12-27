@@ -105,7 +105,6 @@ func (delivery *ClientDelivery) Create(c echo.Context) error {
 
 func (delivery *ClientDelivery) Update(c echo.Context) error {
 	idUser := middlewares.ExtractTokenUserId(c)
-	idUint := uint(idUser)
 	userInput := ClientRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
@@ -125,7 +124,7 @@ func (delivery *ClientDelivery) Update(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
-	err := delivery.clientService.Update(dataCore, idUint, c)
+	err := delivery.clientService.Update(dataCore, uint(idUser), c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -148,9 +147,8 @@ func (delivery *ClientDelivery) Delete(c echo.Context) error {
 }
 
 func (delivery *ClientDelivery) GetOrderById(c echo.Context) error {
-	clientId := middlewares.ExtractTokenUserId(c)
-	idUint := uint(clientId)
-	results, err := delivery.clientService.GetOrderById(idUint)
+	clientId := middlewares.ExtractTokenClientID(c)
+	results, err := delivery.clientService.GetOrderById(uint(clientId))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))

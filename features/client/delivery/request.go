@@ -17,7 +17,7 @@ type ClientRequest struct {
 
 func toCore(input ClientRequest) client.Core {
 	clientCoredata := client.Core{
-		User: client.UserCore{
+		User: client.User{
 			Name:     input.Name,
 			Email:    input.Email,
 			Password: input.Password,

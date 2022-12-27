@@ -96,8 +96,8 @@ func (delivery *serviceDelivery) Create(c echo.Context) error {
 		serviceInput.ServiceImageUrl = ""
 	}
 
-	userId := middlewares.ExtractTokenUserId(c)
-	dataCore := toCore(serviceInput, uint(userId))
+	InputPartnerID := middlewares.ExtractTokenPartnerID(c)
+	dataCore := toCore(serviceInput, uint(InputPartnerID))
 	err := delivery.serviceService.Create(dataCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
@@ -121,8 +121,8 @@ func (delivery *serviceDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	userId := middlewares.ExtractTokenUserId(c)
-	dataCore := toCore(serviceInput, uint(userId))
+	InputPartnerID := middlewares.ExtractTokenPartnerID(c)
+	dataCore := toCore(serviceInput, uint(InputPartnerID))
 	err := delivery.serviceService.Update(dataCore, uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {

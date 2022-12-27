@@ -73,8 +73,8 @@ func (delivery *additionalDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	userId := middlewares.ExtractTokenUserId(c)
-	dataCore := toCore(userInput, uint(userId))
+	partnerID := middlewares.ExtractTokenPartnerID(c)
+	dataCore := toCore(userInput, uint(partnerID))
 	err := delivery.additionalService.Update(dataCore, uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
