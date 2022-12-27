@@ -1,8 +1,10 @@
 package service
 
 import (
+	cfg "capstone-alta1/config"
 	"capstone-alta1/features/client"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
 	"errors"
 	"strings"
 
@@ -53,6 +55,13 @@ func (service *clientService) Create(input client.Core, c echo.Context) (err err
 
 	input.User.Password = string(bytePass)
 
+	// upload foto
+	var errUpload error
+	input.ClientImageUrl, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+
 	errCreate := service.clientRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
@@ -89,12 +98,20 @@ func (service *clientService) GetById(id uint) (data client.Core, err error) {
 
 }
 
-func (service *clientService) Update(input client.Core, id uint, c echo.Context) error {
+func (service *clientService) Update(input client.Core, clientID uint, userID uint, c echo.Context) error {
 	if input.User.Password != "" {
 		generate, _ := bcrypt.GenerateFromPassword([]byte(input.User.Password), 10)
 		input.User.Password = string(generate)
 	}
-	err := service.clientRepository.Update(input, id)
+
+	// upload file
+	var errUpload error
+	input.ClientImageUrl, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+
+	err := service.clientRepository.Update(input, clientID, userID)
 	if err != nil {
 		log.Error(err.Error())
 		return err

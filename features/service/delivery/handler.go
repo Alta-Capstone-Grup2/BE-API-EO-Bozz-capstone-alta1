@@ -4,9 +4,6 @@ import (
 	"capstone-alta1/features/service"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
-	"capstone-alta1/utils/thirdparty"
-	"errors"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -88,21 +85,9 @@ func (delivery *serviceDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	ServiceImageUrl, _ := c.FormFile("service_image_file")
-	if ServiceImageUrl != nil {
-		urlFile, err := thirdparty.Upload(c)
-		if err != nil {
-			return errors.New("registration failed. cannot upload data")
-		}
-		log.Print(urlFile)
-		serviceInput.ServiceImageUrl = urlFile
-	} else {
-		serviceInput.ServiceImageUrl = ""
-	}
-
 	InputPartnerID := middlewares.ExtractTokenPartnerID(c)
 	dataCore := toCore(serviceInput, uint(InputPartnerID))
-	err := delivery.serviceService.Create(dataCore)
+	err := delivery.serviceService.Create(dataCore, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -127,7 +112,7 @@ func (delivery *serviceDelivery) Update(c echo.Context) error {
 
 	InputPartnerID := middlewares.ExtractTokenPartnerID(c)
 	dataCore := toCore(serviceInput, uint(InputPartnerID))
-	err := delivery.serviceService.Update(dataCore, uint(id))
+	err := delivery.serviceService.Update(dataCore, uint(id), c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -135,7 +120,7 @@ func (delivery *serviceDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
 	}
 
-	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success update data."))
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
 }
 
 func (delivery *serviceDelivery) Delete(c echo.Context) error {
