@@ -25,6 +25,8 @@ func New(service service.ServiceInterface, e *echo.Echo) {
 
 	e.GET("/services", handler.GetAll)
 	e.GET("/services/:id", handler.GetById)
+	e.GET("/services/:id/additionals", handler.GetAdditionalById)
+	e.POST("/services/:id/additionals", handler.AddAdditionalToService, middlewares.JWTMiddleware())
 	e.POST("/services", handler.Create, middlewares.JWTMiddleware())
 	e.PUT("/services/:id", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/services/:id", handler.Delete, middlewares.JWTMiddleware())
@@ -35,7 +37,8 @@ func (delivery *serviceDelivery) GetAll(c echo.Context) error {
 	queryName := c.QueryParam("service_name")
 	queryCategory := c.QueryParam("service_category")
 	queryCity := c.QueryParam("city")
-	queryPrice := c.QueryParam("service_price")
+	queryMinPrice := c.QueryParam("service_price")
+	queryMaxPrice := c.QueryParam("service_price")
 
 	helper.LogDebug("\n\n\nULALA")
 
@@ -43,9 +46,10 @@ func (delivery *serviceDelivery) GetAll(c echo.Context) error {
 	helper.LogDebug("\n isi queryName = ", queryName)
 	helper.LogDebug("\n isi queryCategory= ", queryCategory)
 	helper.LogDebug("\n isi queryCity = ", queryCity)
-	helper.LogDebug("\n isi queryPrice = ", queryPrice)
+	helper.LogDebug("\n isi queryMinPrice = ", queryMinPrice)
+	helper.LogDebug("\n isi queryMaxPrice = ", queryMaxPrice)
 
-	results, err := delivery.serviceService.GetAll(queryName, queryCategory, queryCity, queryPrice)
+	results, err := delivery.serviceService.GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -150,4 +154,47 @@ func (delivery *serviceDelivery) Delete(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success delete data."))
+}
+
+func (delivery *serviceDelivery) GetAdditionalById(c echo.Context) error {
+	idParam := c.Param("id")
+	serviceId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	results, err := delivery.serviceService.GetAdditionalById(uint(serviceId))
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreListAdditional(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
+}
+
+func (delivery *serviceDelivery) AddAdditionalToService(c echo.Context) error {
+	idParam := c.Param("id")
+	serviceId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+
+	serviceInput := ServiceAdditionalRequest{}
+	errBind := c.Bind(&serviceInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	}
+
+	dataCore := toCoreAdditional(serviceInput)
+	err := delivery.serviceService.AddAdditionalToService(dataCore, uint(serviceId))
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
+	}
+	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success create data"))
 }

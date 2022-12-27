@@ -14,6 +14,11 @@ type ServiceRequest struct {
 	City               string  `json:"city" form:"city"`
 }
 
+type ServiceAdditionalRequest struct {
+	ServiceID    uint `json:"service_id" form:"service_id"`
+	AdditionalID uint `json:"additional_id" form:"additional_id"`
+}
+
 func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 	coreInput := service.Core{
 		ServiceName:        input.ServiceName,
@@ -24,6 +29,14 @@ func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 		ServiceImageUrl:    input.ServiceImageUrl,
 		City:               input.City,
 		PartnerID:          InputPartnerID,
+	}
+	return coreInput
+}
+
+func toCoreAdditional(input ServiceAdditionalRequest) service.ServiceAdditional {
+	coreInput := service.ServiceAdditional{
+		ServiceID:    input.ServiceID,
+		AdditionalID: input.AdditionalID,
 	}
 	return coreInput
 }

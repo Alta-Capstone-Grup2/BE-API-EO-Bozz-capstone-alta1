@@ -4,7 +4,6 @@ import (
 	"capstone-alta1/features/review"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -76,9 +75,6 @@ func (delivery *ReviewDelivery) Create(c echo.Context) error {
 
 	clientID := middlewares.ExtractTokenClientID(c)
 	dataCore := toCore(userInput, uint(clientID))
-
-	fmt.Println("datacore ", dataCore, "\n\n")
-	fmt.Println("clientID ", clientID, "\n\n")
 
 	err := delivery.reviewService.Create(dataCore, c)
 	if err != nil {

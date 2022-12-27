@@ -17,7 +17,23 @@ type Service struct {
 	City               string
 	PartnerID          uint
 	Partner            Partner
+	Additional         []Additional
 	Order              []Order
+}
+
+type ServiceAdditional struct {
+	gorm.Model
+	AdditionalID uint
+	Additional   Additional
+	ServiceID    uint
+	Service      Service
+}
+
+type Additional struct {
+	gorm.Model
+	AdditionalName  string
+	AdditionalPrice uint
+	PartnerID       uint
 }
 
 type Order struct {
@@ -81,6 +97,14 @@ func fromCore(dataCore service.Core) Service {
 	return modelData
 }
 
+func fromCoreServiceAdditional(dataCore service.ServiceAdditional) ServiceAdditional {
+	modelData := ServiceAdditional{
+		ServiceID:    dataCore.ServiceID,
+		AdditionalID: dataCore.AdditionalID,
+	}
+	return modelData
+}
+
 // mengubah struct model gorm ke struct core
 func (dataModel *Service) toCore() service.Core {
 	return service.Core{
@@ -96,11 +120,28 @@ func (dataModel *Service) toCore() service.Core {
 	}
 }
 
+func (dataModel *Additional) toCoreAdditional() service.Additional {
+	return service.Additional{
+		ID:              dataModel.ID,
+		AdditionalName:  dataModel.AdditionalName,
+		AdditionalPrice: dataModel.AdditionalPrice,
+		PartnerID:       dataModel.PartnerID,
+	}
+}
+
 // mengubah slice struct model gorm ke slice struct core
 func toCoreList(dataModel []Service) []service.Core {
 	var dataCore []service.Core
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
+
+func toCoreListAdditional(dataModel []Additional) []service.Additional {
+	var dataCore []service.Additional
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreAdditional())
 	}
 	return dataCore
 }

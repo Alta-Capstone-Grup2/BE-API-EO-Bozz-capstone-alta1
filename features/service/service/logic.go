@@ -30,9 +30,9 @@ func (service *serviceService) Create(input _service.Core) (err error) {
 	return nil
 }
 
-func (service *serviceService) GetAll(queryName, queryCategory, queryCity, queryPrice string) (data []_service.Core, err error) {
+func (service *serviceService) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 
-	data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryPrice)
+	data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
 
 	if err != nil {
 		helper.LogDebug(err)
@@ -67,5 +67,26 @@ func (service *serviceService) Delete(id uint) error {
 		log.Error(err.Error())
 		return helper.ServiceErrorMsg(err)
 	}
+	return nil
+}
+
+func (service *serviceService) GetAdditionalById(id uint) (data []_service.Additional, err error) {
+	data, err = service.serviceRepository.GetAdditionalById(id)
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
+	return data, err
+
+}
+
+func (service *serviceService) AddAdditionalToService(input _service.ServiceAdditional, id uint) (err error) {
+	errCreate := service.serviceRepository.AddAdditionalToService(input, id)
+	if errCreate != nil {
+		log.Error(errCreate.Error())
+		return helper.ServiceErrorMsg(err)
+	}
+
 	return nil
 }
