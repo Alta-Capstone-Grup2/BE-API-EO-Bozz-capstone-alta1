@@ -29,7 +29,6 @@ func (service *serviceService) Create(input _service.Core, c echo.Context) (err 
 	if errUpload != nil {
 		return errUpload
 	}
-
 	errCreate := service.serviceRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
@@ -66,13 +65,11 @@ func (service *serviceService) GetById(id uint) (data _service.Core, err error) 
 }
 
 func (service *serviceService) Update(input _service.Core, id uint, c echo.Context) error {
-
 	var errUpload error
 	input.ServiceImageUrl, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-
 	err := service.serviceRepository.Update(input, id)
 	if err != nil {
 		log.Error(err.Error())
