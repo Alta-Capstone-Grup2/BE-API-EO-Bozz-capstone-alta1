@@ -5,6 +5,7 @@ type Core struct {
 	AdditionalName  string
 	AdditionalPrice uint
 	PartnerID       uint
+	Partner         Partner
 }
 
 type Partner struct {

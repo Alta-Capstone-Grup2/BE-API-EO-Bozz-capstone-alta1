@@ -43,21 +43,23 @@ func (repo *serviceRepository) GetAll() (data []service.Core, err error) {
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryPrice string) (data []service.Core, err error) {
+func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []service.Core, err error) {
 	var services, services2 []Service
 
 	helper.LogDebug("\n isi queryName = ", queryName)
 	helper.LogDebug("\n isi queryCategory= ", queryCategory)
 	helper.LogDebug("\n isi queryCity = ", queryCity)
-	helper.LogDebug("\n isi queryPrice = ", queryPrice)
+	helper.LogDebug("\n isi queryMinPrice = ", queryMinPrice)
+	helper.LogDebug("\n isi queryMaxPrice = ", queryMaxPrice)
 
-	intPrice, errConv := strconv.Atoi(queryPrice)
-	if errConv != nil {
+	intMinPrice, errConv1 := strconv.Atoi(queryMinPrice)
+	intMaxPrice, errConv2 := strconv.Atoi(queryMaxPrice)
+	if errConv1 != nil || errConv2 != nil {
 		return nil, errors.New("error conver service price to filter")
 	}
 
 	fmt.Println("\n\nServices 1", services)
-	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{ServiceCategory: queryCategory, City: queryCity, ServicePrice: uint(intPrice)}).Find(&services2)
+	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{ServiceCategory: queryCategory, City: queryCity, ServicePrice: uint(intMinPrice) + uint(intMaxPrice)}).Find(&services2)
 	fmt.Println("\n\nServices 2", services2)
 
 	if tx.Error != nil {
@@ -105,6 +107,36 @@ func (repo *serviceRepository) Delete(id uint) error {
 	}
 	if tx.RowsAffected == 0 {
 		return errors.New("delete failed")
+	}
+	return nil
+}
+
+func (repo *serviceRepository) GetAdditionalById(id uint) (data []service.Additional, err error) {
+	var clientadditional []Additional
+
+	tx := repo.db.Find(&clientadditional, id)
+
+	if tx.Error != nil {
+		return data, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	var dataCore = toCoreListAdditional(clientadditional)
+	return dataCore, nil
+}
+
+func (repo *serviceRepository) AddAdditionalToService(input service.ServiceAdditional, id uint) error {
+	additionalGorm := fromCoreServiceAdditional(input)
+	var service Service
+	tx := repo.db.Model(&service).Where("ID = ?", id).Create(&additionalGorm) // proses insert data
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("insert failed")
 	}
 	return nil
 }

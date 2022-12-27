@@ -37,7 +37,7 @@ type Order struct {
 type Additional struct {
 	gorm.Model
 	AdditionalName  string
-	AdditionalPrice int
+	AdditionalPrice uint
 	PartnerID       uint
 }
 

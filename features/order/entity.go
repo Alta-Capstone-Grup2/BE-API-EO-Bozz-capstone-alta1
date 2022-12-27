@@ -32,7 +32,7 @@ type Core struct {
 type Additional struct {
 	ID              uint
 	AdditionalName  string
-	AdditionalPrice int
+	AdditionalPrice uint
 	PartnerID       uint
 }
 

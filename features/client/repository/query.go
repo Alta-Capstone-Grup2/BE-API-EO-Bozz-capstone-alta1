@@ -146,7 +146,7 @@ func (repo *clientRepository) FindUser(email string) (result client.Core, err er
 func (repo *clientRepository) GetOrderById(id uint) (data []client.Order, err error) {
 	var clientorder []Order
 
-	tx := repo.db.First(&clientorder, id)
+	tx := repo.db.Find(&clientorder, id)
 
 	if tx.Error != nil {
 		return data, tx.Error
