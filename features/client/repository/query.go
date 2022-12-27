@@ -64,7 +64,7 @@ func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core
 func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {
 	var client Client
 
-	tx := repo.db.Where("id", id).Preload("User").First(&client)
+	tx := repo.db.Preload("User").First(&client, id)
 
 	if tx.Error != nil {
 		return data, tx.Error
