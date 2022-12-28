@@ -8,8 +8,6 @@ type Core struct {
 	Email     string `validate:"required,email"`
 	Password  string `validate:"required"`
 	Role      string
-	ClientID  uint
-	PartnerID uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -57,7 +55,7 @@ type PartnerCore struct {
 }
 
 type ServiceInterface interface {
-	Login(input Core) (data Core, token string, err error)
+	Login(input Core) (data Core, token string, clientID uint, partnerID uint, err error)
 }
 
 type RepositoryInterface interface {
