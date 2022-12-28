@@ -208,6 +208,14 @@ func (service *partnerService) GetOrders(partnerID uint) (data []partner.OrderCo
 }
 
 func (service *partnerService) GetAdditionals(partnerID uint) (data []partner.AdditionalCore, err error) {
+
+	data, err = service.partnerRepository.GetAdditionals(partnerID)
+
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
 	return data, err
 }
 func (service *partnerService) GetPartnerRegisterData(partnerID uint) (data []partner.Core, err error) {
