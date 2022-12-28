@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"capstone-alta1/features/partner"
+	"time"
 )
 
 type PartnerResponse struct {
@@ -47,6 +48,20 @@ type ServiceResponse struct {
 	PartnerID        uint    `json:"partner_id"`
 }
 
+type OrderResponse struct {
+	ID               uint      `json:"id"`
+	EventName        string    `json:"event_name"`
+	StartDate        time.Time `json:"start_date"`
+	EndDate          time.Time `json:"end_date"`
+	EventLocation    string    `json:"event_location"`
+	ServiceName      string    `json:"service_name"`
+	GrossAmmount     uint      `json:"gross_ammount"`
+	OrderStatus      string    `json:"order_status"`
+	PayoutRecieptUrl string    `json:"payout_receipt_url"`
+	ServiceID        uint      `json:"service_id"`
+	ClientID         uint      `json:"client_id"`
+}
+
 func fromCore(dataCore partner.Core) PartnerResponse {
 	return PartnerResponse{
 		ID:                 dataCore.ID,
@@ -85,6 +100,30 @@ func fromCoreList(dataCore []partner.Core) []PartnerResponse {
 	var dataResponse []PartnerResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromCore(v))
+	}
+	return dataResponse
+}
+
+func fromOrderCore(dataCore partner.OrderCore) OrderResponse {
+	return OrderResponse{
+		ID:               dataCore.ID,
+		EventName:        dataCore.EventName,
+		StartDate:        dataCore.StartDate,
+		EndDate:          dataCore.EndDate,
+		EventLocation:    dataCore.EventLocation,
+		ServiceName:      dataCore.ServiceName,
+		GrossAmmount:     dataCore.GrossAmmount,
+		OrderStatus:      dataCore.OrderStatus,
+		PayoutRecieptUrl: dataCore.PayoutRecieptFile,
+		ServiceID:        dataCore.ServiceID,
+		ClientID:         dataCore.ClientID,
+	}
+}
+
+func fromOrderCoreList(dataCore []partner.OrderCore) []OrderResponse {
+	var dataResponse []OrderResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromOrderCore(v))
 	}
 	return dataResponse
 }
