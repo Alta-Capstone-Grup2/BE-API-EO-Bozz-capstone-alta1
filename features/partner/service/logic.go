@@ -191,9 +191,22 @@ func (service *partnerService) GetServices(partnerID uint) (data []partner.Servi
 
 	return data, err
 }
+
 func (service *partnerService) GetOrders(partnerID uint) (data []partner.OrderCore, err error) {
+
+	data, err = service.partnerRepository.GetOrders(partnerID)
+
+	helper.LogDebug("Partner - logic - get orders | partner id = ", partnerID)
+	helper.LogDebug("Partner - logic - get orders |  data = ", data)
+
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
 	return data, err
 }
+
 func (service *partnerService) GetAdditionals(partnerID uint) (data []partner.AdditionalCore, err error) {
 	return data, err
 }

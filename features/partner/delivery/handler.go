@@ -4,7 +4,6 @@ import (
 	"capstone-alta1/features/partner"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
-	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -154,7 +153,7 @@ func (delivery *PartnerDelivery) GetPartnerServices(c echo.Context) error {
 
 	partnerID := middlewares.ExtractTokenPartnerID(c)
 	if partnerID < 1 {
-		return c.JSON(http.StatusBadRequest, errors.New("Failed load user id from JWT token, please check again."))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
 	}
 
 	results, err := delivery.partnerService.GetServices(uint(partnerID))
@@ -175,9 +174,19 @@ func (delivery *PartnerDelivery) GetPartnerOrders(c echo.Context) error {
 	// if userRole != "Admin" {
 	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
 	// }
-	query := c.QueryParam("name")
-	helper.LogDebug("isi query = ", query)
-	results, err := delivery.partnerService.GetAll(query)
+
+	partnerID := middlewares.ExtractTokenPartnerID(c)
+
+	helper.LogDebug("Partner - handler - get partnerorders | partner id = ", partnerID)
+
+	if partnerID < 1 {
+		helper.LogDebug("Partner - handler - get partnerorders | validasi id. id = ", partnerID)
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
+	}
+
+	helper.LogDebug("Partner - handler - get partnerorders | mau mamsuk proses =")
+
+	results, err := delivery.partnerService.GetOrders(uint(partnerID))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -185,7 +194,7 @@ func (delivery *PartnerDelivery) GetPartnerOrders(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreList(results)
+	dataResponse := fromOrderCoreList(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
 }

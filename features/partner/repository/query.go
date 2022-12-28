@@ -160,10 +160,28 @@ func (repo *partnerRepository) GetServices(partnerID uint) (data []partner.Servi
 	}
 
 	data = toCoreServiceList(modelData)
-	return data, nil
+	return data, err
 }
 
 func (repo *partnerRepository) GetOrders(partnerID uint) (data []partner.OrderCore, err error) {
+	var modelData []Order
+	// tx := repo.db.Joins("JOIN partners ON services.partner_id = partners.id").Joins("JOIN orders ON orders.service_id = services.id").Find(&modelData)
+	// tx := repo.db.Where("service_name LIKE ?", "%"+queryServiceName+"%").Where(&Service{City: queryCity, ServiceCategory: queryPServiceCategory, ServicePrice: queryServicePrice}).Find(&modelData)
+	tx := repo.db.Raw("SELECT `orders`.`id`,`orders`.`event_name`,`orders`.`start_date`,`orders`.`end_date`,`orders`.`event_location`,`orders`.`event_address`,`orders`.`note_for_partner`,`orders`.`service_name`,`orders`.`service_price`,`orders`.`gross_ammount`,`orders`.`payment_method`,`orders`.`order_status`,`orders`.`payout_reciept_file`,`orders`.`payout_date`,`orders`.`service_id`,`orders`.`client_id` FROM services JOIN partners ON services.partner_id = partners.id JOIN orders ON orders.service_id = services.id").Where("partners.id = ?", partnerID).Scan(&modelData)
+
+	helper.LogDebug("Partner-query-GetOrder | ModelData : ", modelData)
+
+	if tx.Error != nil {
+		helper.LogDebug("Partner-query-GetOrder | Error execute query. Error :", tx.Error)
+		return data, tx.Error
+	}
+
+	helper.LogDebug("Partner-query-GetOrder | Row Affected : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	data = toOrderCoreList(modelData)
 	return data, err
 }
 func (repo *partnerRepository) GetAdditionals(partnerID uint) (data []partner.AdditionalCore, err error) {

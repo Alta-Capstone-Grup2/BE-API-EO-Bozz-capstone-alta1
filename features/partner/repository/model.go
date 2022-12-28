@@ -2,6 +2,7 @@ package repository
 
 import (
 	"capstone-alta1/features/partner"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -96,9 +97,37 @@ type ServiceAdditional struct {
 }
 
 type Order struct {
-	gorm.Model
-	EventName string
-	ServiceID uint
+	ID                uint
+	EventName         string
+	StartDate         time.Time
+	EndDate           time.Time
+	EventLocation     string
+	EventAddress      string
+	NoteForPartner    string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time
+	ServiceID         uint
+	ClientID          uint
+	Reviews           []Review
+}
+
+type Client struct {
+	ID              uint
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
+	User            User
+	Orders          []Order
+	Reviews         []Review
+	Discussions     []Discussion
 }
 
 // mapping
@@ -209,6 +238,52 @@ func toCoreServiceList(dataModel []Service) []partner.ServiceCore {
 	var dataCore []partner.ServiceCore
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCoreService())
+	}
+	return dataCore
+}
+
+func fromOrderCore(dataCore partner.OrderCore) Order {
+	modelData := Order{
+		EventName:         dataCore.EventName,
+		StartDate:         dataCore.StartDate,
+		EndDate:           dataCore.EndDate,
+		EventLocation:     dataCore.EventLocation,
+		ServiceName:       dataCore.ServiceName,
+		GrossAmmount:      dataCore.GrossAmmount,
+		PaymentMethod:     dataCore.PaymentMethod,
+		OrderStatus:       dataCore.OrderStatus,
+		PayoutRecieptFile: dataCore.PayoutRecieptFile,
+		PayoutDate:        dataCore.PayoutDate,
+		ServiceID:         dataCore.ServiceID,
+		ClientID:          dataCore.ClientID,
+	}
+	return modelData
+}
+
+// mengubah struct model gorm ke struct core
+func (dataModel *Order) toOrderCore() partner.OrderCore {
+	return partner.OrderCore{
+		ID:                dataModel.ID,
+		EventName:         dataModel.EventName,
+		StartDate:         dataModel.StartDate,
+		EndDate:           dataModel.EndDate,
+		EventLocation:     dataModel.EventLocation,
+		ServiceName:       dataModel.ServiceName,
+		GrossAmmount:      dataModel.GrossAmmount,
+		PaymentMethod:     dataModel.PaymentMethod,
+		OrderStatus:       dataModel.OrderStatus,
+		PayoutRecieptFile: dataModel.PayoutRecieptFile,
+		PayoutDate:        dataModel.PayoutDate,
+		ServiceID:         dataModel.ServiceID,
+		ClientID:          dataModel.ClientID,
+	}
+}
+
+// mengubah slice struct model gorm ke slice struct core
+func toOrderCoreList(dataModel []Order) []partner.OrderCore {
+	var dataCore []partner.OrderCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toOrderCore())
 	}
 	return dataCore
 }
