@@ -1,6 +1,8 @@
 package partner
 
 import (
+	"time"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -32,14 +34,73 @@ type Core struct {
 	VerificationLog    string
 	UserID             uint
 	User               UserCore
+	Services           []ServiceCore
+	Additionals        []AdditionalCore
+	Discussions        []DiscussionCore
 }
 
 type UserCore struct {
 	ID       uint
-	Name     string `validate:"required"`
-	Email    string `validate:"required,email"`
-	Password string `validate:"required"`
+	Name     string
+	Email    string
+	Password string
 	Role     string
+}
+
+type ServiceCore struct {
+	ID                 uint
+	ServiceName        string
+	ServiceDescription string
+	ServiceIncluded    string
+	ServiceCategory    string
+	ServicePrice       uint
+	AverageRating      float64
+	ServiceImageFile   string
+	City               string
+	PartnerID          uint
+	ServiceAdditionals []ServiceAdditionalCore
+	Review             []ReviewCore
+	Discussion         []DiscussionCore
+	Order              []OrderCore
+}
+
+type AdditionalCore struct {
+	ID                 uint
+	AdditionalName     string
+	AdditionalPrice    uint
+	PartnerID          uint
+	ServiceAdditionals []ServiceAdditionalCore
+}
+
+type DiscussionCore struct {
+	ID        uint
+	Comment   string
+	PartnerID uint
+	ClientID  uint
+	ServiceID uint
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type ReviewCore struct {
+	ID        uint
+	Review    string
+	Rating    float64
+	OrderID   uint
+	ClientID  uint
+	ServiceID uint
+}
+
+type ServiceAdditionalCore struct {
+	ID           uint
+	AdditionalID uint
+	ServiceID    uint
+}
+
+type OrderCore struct {
+	ID        uint
+	EventName string
+	ServiceID uint
 }
 
 type ServiceInterface interface {
@@ -48,6 +109,13 @@ type ServiceInterface interface {
 	Create(input Core, c echo.Context) error
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
+	GetServices(partnerID uint) (data []ServiceCore, err error)
+	GetOrders(partnerID uint) (data []OrderCore, err error)
+	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
+	GetPartnerRegisterData(partnerID uint) (data []Core, err error)
+	GetPartnerRegisterDataByID(partnerID uint) (data Core, err error)
+	UpdatePartnerVerifyStatus(partnerID uint) (data Core, err error)
+	UpdateOrderConfirmStatus(orderID uint) (data Core, err error)
 }
 
 type RepositoryInterface interface {
@@ -58,4 +126,11 @@ type RepositoryInterface interface {
 	Update(input Core, id uint) error
 	Delete(id uint) error
 	FindUser(email string) (data Core, err error)
+	GetServices(partnerID uint) (data []ServiceCore, err error)
+	GetOrders(partnerID uint) (data []OrderCore, err error)
+	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
+	GetPartnerRegisterData(partnerID uint) (data []Core, err error)
+	GetPartnerRegisterDataByID(partnerID uint) (data Core, err error)
+	UpdatePartnerVerifyStatus(partnerID uint) (data Core, err error)
+	UpdateOrderConfirmStatus(orderID uint) (data Core, err error)
 }

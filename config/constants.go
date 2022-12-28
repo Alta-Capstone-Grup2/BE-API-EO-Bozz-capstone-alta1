@@ -1,7 +1,13 @@
 package config
 
 const (
+	// Config Constant
+
+	//Show log
+	SHOW_LOGS = true
+
 	DEFAULT_IMAGE_URL = "https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg"
+
 	// Upload file path
 	CLIENT_FOLDER     = "client"
 	CLIENT_IMAGE_FILE = "client_image_file"

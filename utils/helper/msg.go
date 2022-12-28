@@ -1,8 +1,9 @@
 package helper
 
 import (
+	cfg "capstone-alta1/config"
 	"errors"
-	"log"
+	"fmt"
 	"strings"
 )
 
@@ -30,6 +31,9 @@ func HandlerErrorMsg(errData error) error {
 	}
 }
 
+// Change SHOW_LOGS to false to hide logs accross this app
 func LogDebug(msg ...interface{}) {
-	log.Println(msg)
+	if cfg.SHOW_LOGS {
+		fmt.Println("\n\n", msg, "\n\n")
+	}
 }

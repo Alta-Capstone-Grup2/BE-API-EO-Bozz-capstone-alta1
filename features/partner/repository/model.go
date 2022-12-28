@@ -35,6 +35,9 @@ type Partner struct {
 	VerificationLog    string
 	UserID             uint
 	User               User
+	Services           []Service
+	Additionals        []Additional
+	Discussions        []Discussion
 }
 
 type User struct {
@@ -43,6 +46,59 @@ type User struct {
 	Email    string
 	Password string
 	Role     string
+}
+
+type Service struct {
+	gorm.Model
+	ServiceName        string
+	ServiceDescription string
+	ServiceIncluded    string
+	ServiceCategory    string
+	ServicePrice       uint
+	AverageRating      float64
+	ServiceImageFile   string
+	City               string
+	PartnerID          uint
+	ServiceAdditionals []ServiceAdditional
+	Review             []Review
+	Discussion         []Discussion
+	Order              []Order
+}
+type Additional struct {
+	gorm.Model
+	AdditionalName     string
+	AdditionalPrice    uint
+	PartnerID          uint
+	ServiceAdditionals []ServiceAdditional
+}
+
+type Discussion struct {
+	gorm.Model
+	Comment   string
+	PartnerID uint
+	ClientID  uint
+	ServiceID uint
+}
+
+type Review struct {
+	gorm.Model
+	Review    string
+	Rating    float64
+	OrderID   uint
+	ClientID  uint
+	ServiceID uint
+}
+
+type ServiceAdditional struct {
+	gorm.Model
+	AdditionalID uint
+	ServiceID    uint
+}
+
+type Order struct {
+	gorm.Model
+	EventName string
+	ServiceID uint
 }
 
 // mapping
@@ -129,6 +185,30 @@ func toCoreList(dataModel []Partner) []partner.Core {
 	var dataCore []partner.Core
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
+
+// mengubah struct model gorm ke struct core
+func (dataModel *Service) toCoreService() partner.ServiceCore {
+	return partner.ServiceCore{
+		ID:                 dataModel.ID,
+		ServiceName:        dataModel.ServiceName,
+		ServiceDescription: dataModel.ServiceDescription,
+		ServiceIncluded:    dataModel.ServiceIncluded,
+		ServiceCategory:    dataModel.ServiceCategory,
+		ServicePrice:       dataModel.ServicePrice,
+		AverageRating:      dataModel.AverageRating,
+		ServiceImageFile:   dataModel.ServiceImageFile,
+		City:               dataModel.City,
+		PartnerID:          dataModel.PartnerID,
+	}
+}
+
+func toCoreServiceList(dataModel []Service) []partner.ServiceCore {
+	var dataCore []partner.ServiceCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreService())
 	}
 	return dataCore
 }
