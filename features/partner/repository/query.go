@@ -144,6 +144,18 @@ func (repo *partnerRepository) FindUser(email string) (result partner.Core, err 
 	return result, nil
 }
 
+func (repo *partnerRepository) FindPartner(partnerID uint) (result partner.Core, err error) {
+	var partnerData Partner
+	tx := repo.db.First(&partnerData, partnerID)
+	if tx.Error != nil {
+		return partner.Core{}, tx.Error
+	}
+
+	result = partnerData.toCore()
+
+	return result, nil
+}
+
 func (repo *partnerRepository) GetServices(partnerID uint) (data []partner.ServiceCore, err error) {
 	var modelData []Service
 	tx := repo.db.Where("partner_id = ?", partnerID).Find(&modelData)
@@ -185,6 +197,20 @@ func (repo *partnerRepository) GetOrders(partnerID uint) (data []partner.OrderCo
 	return data, err
 }
 func (repo *partnerRepository) GetAdditionals(partnerID uint) (data []partner.AdditionalCore, err error) {
+	var modelData []Additional
+	tx := repo.db.Where("partner_id = ?", partnerID).Find(&modelData)
+
+	if tx.Error != nil {
+		helper.LogDebug("Partner-query-Get Additional | Error execute query. Error :", tx.Error)
+		return data, tx.Error
+	}
+
+	helper.LogDebug("Partner-query-Gt Additional | Row Affected : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	data = toAdditionalCoreList(modelData)
 	return data, err
 }
 func (repo *partnerRepository) GetPartnerRegisterData(partnerID uint) (data []partner.Core, err error) {
