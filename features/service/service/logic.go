@@ -30,6 +30,7 @@ func (service *serviceService) Create(input _service.Core, c echo.Context) (err 
 	if errUpload != nil {
 		return errUpload
 	}
+
 	errCreate := service.serviceRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
