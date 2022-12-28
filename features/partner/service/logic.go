@@ -179,3 +179,33 @@ func (service *partnerService) Delete(id uint) error {
 	}
 	return nil
 }
+
+func (service *partnerService) GetServices(partnerID uint) (data []partner.ServiceCore, err error) {
+
+	data, err = service.partnerRepository.GetServices(partnerID)
+
+	if err != nil {
+		log.Error(err.Error())
+		return nil, err
+	}
+
+	return data, err
+}
+func (service *partnerService) GetOrders(partnerID uint) (data []partner.OrderCore, err error) {
+	return data, err
+}
+func (service *partnerService) GetAdditionals(partnerID uint) (data []partner.AdditionalCore, err error) {
+	return data, err
+}
+func (service *partnerService) GetPartnerRegisterData(partnerID uint) (data []partner.Core, err error) {
+	return data, err
+}
+func (service *partnerService) GetPartnerRegisterDataByID(partnerID uint) (data partner.Core, err error) {
+	return data, err
+}
+func (service *partnerService) UpdatePartnerVerifyStatus(partnerID uint) (data partner.Core, err error) {
+	return data, err
+}
+func (service *partnerService) UpdateOrderConfirmStatus(orderID uint) (data partner.Core, err error) {
+	return data, err
+}

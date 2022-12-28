@@ -36,6 +36,17 @@ type PartnerResponse struct {
 	UserID             uint   `json:"user_id"`
 }
 
+type ServiceResponse struct {
+	ID               uint    `json:"id"`
+	ServiceName      string  `json:"service_name"`
+	ServiceCategory  string  `json:"service_category"`
+	ServicePrice     uint    `json:"service_price"`
+	AverageRating    float64 `json:"average_rating"`
+	ServiceImageFile string  `json:"service_image_file"`
+	City             string  `json:"city"`
+	PartnerID        uint    `json:"partner_id"`
+}
+
 func fromCore(dataCore partner.Core) PartnerResponse {
 	return PartnerResponse{
 		ID:                 dataCore.ID,
@@ -74,6 +85,27 @@ func fromCoreList(dataCore []partner.Core) []PartnerResponse {
 	var dataResponse []PartnerResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromCore(v))
+	}
+	return dataResponse
+}
+
+func fromCoreService(dataCore partner.ServiceCore) ServiceResponse {
+	return ServiceResponse{
+		ID:               dataCore.ID,
+		ServiceName:      dataCore.ServiceName,
+		ServiceCategory:  dataCore.ServiceCategory,
+		ServicePrice:     dataCore.ServicePrice,
+		AverageRating:    dataCore.AverageRating,
+		ServiceImageFile: dataCore.ServiceImageFile,
+		City:             dataCore.City,
+		PartnerID:        dataCore.PartnerID,
+	}
+}
+
+func fromCoreServiceList(dataCore []partner.ServiceCore) []ServiceResponse {
+	var dataResponse []ServiceResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromCoreService(v))
 	}
 	return dataResponse
 }
