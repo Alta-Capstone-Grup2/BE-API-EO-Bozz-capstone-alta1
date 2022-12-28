@@ -98,9 +98,37 @@ type ServiceAdditionalCore struct {
 }
 
 type OrderCore struct {
-	ID        uint
-	EventName string
-	ServiceID uint
+	ID                uint
+	EventName         string
+	StartDate         time.Time
+	EndDate           time.Time
+	EventLocation     string
+	EventAddress      string
+	NoteForPartner    string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time
+	ServiceID         uint
+	ClientID          uint
+	Reviews           []ReviewCore
+}
+
+type ClientCore struct {
+	ID              uint
+	Gender          string
+	Address         string
+	City            string
+	Phone           string
+	ClientImageFile string
+	UserID          uint
+	User            UserCore
+	Orders          []OrderCore
+	Reviews         []ReviewCore
+	Discussions     []DiscussionCore
 }
 
 type ServiceInterface interface {
