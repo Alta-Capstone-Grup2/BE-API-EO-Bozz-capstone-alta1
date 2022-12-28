@@ -287,3 +287,32 @@ func toOrderCoreList(dataModel []Order) []partner.OrderCore {
 	}
 	return dataCore
 }
+
+// mengubah struct core ke struct model gorm
+func fromAdditionalCore(dataCore partner.AdditionalCore) Additional {
+	modelData := Additional{
+		AdditionalName:  dataCore.AdditionalName,
+		AdditionalPrice: dataCore.AdditionalPrice,
+		PartnerID:       dataCore.PartnerID,
+	}
+	return modelData
+}
+
+// mengubah struct model gorm ke struct core
+func (dataModel *Additional) toCore() partner.AdditionalCore {
+	return partner.AdditionalCore{
+		ID:              dataModel.ID,
+		AdditionalName:  dataModel.AdditionalName,
+		AdditionalPrice: dataModel.AdditionalPrice,
+		PartnerID:       dataModel.PartnerID,
+	}
+}
+
+// mengubah slice struct model gorm ke slice struct core
+func toAdditionalCoreList(dataModel []Additional) []partner.AdditionalCore {
+	var dataCore []partner.AdditionalCore
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
