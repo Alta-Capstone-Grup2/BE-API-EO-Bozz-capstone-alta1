@@ -4,6 +4,7 @@ import (
 	"capstone-alta1/features/partner"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
+	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -25,6 +26,13 @@ func New(service partner.ServiceInterface, e *echo.Echo) {
 	e.POST("/partners", handler.Create)
 	e.PUT("/partners", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/partners", handler.Delete, middlewares.JWTMiddleware())
+	e.PUT("/partners/orders/:id/confirm", handler.ConfirmOrder, middlewares.JWTMiddleware())
+	e.GET("/partners/services", handler.GetPartnerServices, middlewares.JWTMiddleware())
+	e.GET("/partners/orders", handler.GetPartnerOrders, middlewares.JWTMiddleware())
+	e.GET("/partners/additionals", handler.GetPartnerAdditionals, middlewares.JWTMiddleware())
+	e.GET("/partners/register", handler.GetPartnerRegisterData, middlewares.JWTMiddleware())
+	e.GET("/partners/:id/register", handler.GetPartnerRegisterDataByID, middlewares.JWTMiddleware())
+	e.PUT("/partners/verify", handler.VerifyPartner, middlewares.JWTMiddleware())
 
 }
 
@@ -73,6 +81,7 @@ func (delivery *PartnerDelivery) Create(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
+
 	dataCore := toCore(userInput)
 	err := delivery.partnerService.Create(dataCore, c)
 	if err != nil {
@@ -95,6 +104,7 @@ func (delivery *PartnerDelivery) Update(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
+
 	dataCore := toCore(userInput)
 	err := delivery.partnerService.Update(dataCore, partnerID, userID, c)
 	if err != nil {
@@ -116,4 +126,148 @@ func (delivery *PartnerDelivery) Delete(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success delete data."))
+}
+
+func (delivery *PartnerDelivery) ConfirmOrder(c echo.Context) error {
+	idUser := middlewares.ExtractTokenUserId(c)
+	userInput := PartnerRequest{}
+	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	}
+
+	dataCore := toCore(userInput)
+	err := delivery.partnerService.Update(dataCore, uint(idUser), c)
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
+}
+
+func (delivery *PartnerDelivery) GetPartnerServices(c echo.Context) error {
+	// userRole := middlewares.ExtractTokenUserRole(c)
+	// if userRole != "Admin" {
+	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
+	// }
+
+	partnerID := middlewares.ExtractTokenPartnerID(c)
+	if partnerID < 1 {
+		return c.JSON(http.StatusBadRequest, errors.New("Failed load user id from JWT token, please check again."))
+	}
+
+	results, err := delivery.partnerService.GetServices(uint(partnerID))
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreServiceList(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
+}
+
+func (delivery *PartnerDelivery) GetPartnerOrders(c echo.Context) error {
+	// userRole := middlewares.ExtractTokenUserRole(c)
+	// if userRole != "Admin" {
+	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
+	// }
+	query := c.QueryParam("name")
+	helper.LogDebug("isi query = ", query)
+	results, err := delivery.partnerService.GetAll(query)
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreList(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
+}
+
+func (delivery *PartnerDelivery) GetPartnerAdditionals(c echo.Context) error {
+	// userRole := middlewares.ExtractTokenUserRole(c)
+	// if userRole != "Admin" {
+	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
+	// }
+	query := c.QueryParam("name")
+	helper.LogDebug("isi query = ", query)
+	results, err := delivery.partnerService.GetAll(query)
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreList(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
+}
+
+func (delivery *PartnerDelivery) GetPartnerRegisterData(c echo.Context) error {
+	// userRole := middlewares.ExtractTokenUserRole(c)
+	// if userRole != "Admin" {
+	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
+	// }
+	query := c.QueryParam("name")
+	helper.LogDebug("isi query = ", query)
+	results, err := delivery.partnerService.GetAll(query)
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreList(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
+}
+
+func (delivery *PartnerDelivery) GetPartnerRegisterDataByID(c echo.Context) error {
+	// userRole := middlewares.ExtractTokenUserRole(c)
+	// if userRole != "Admin" {
+	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
+	// }
+	query := c.QueryParam("name")
+	helper.LogDebug("isi query = ", query)
+	results, err := delivery.partnerService.GetAll(query)
+	if err != nil {
+		if strings.Contains(err.Error(), "Get data success. No data.") {
+			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
+		}
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+	}
+
+	dataResponse := fromCoreList(results)
+
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
+}
+
+func (delivery *PartnerDelivery) VerifyPartner(c echo.Context) error {
+	idUser := middlewares.ExtractTokenUserId(c)
+	userInput := PartnerRequest{}
+	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	}
+
+	dataCore := toCore(userInput)
+	err := delivery.partnerService.Update(dataCore, uint(idUser), c)
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
 }

@@ -2,6 +2,7 @@ package repository
 
 import (
 	partner "capstone-alta1/features/partner"
+	"capstone-alta1/utils/helper"
 	"errors"
 	"fmt"
 
@@ -120,4 +121,42 @@ func (repo *partnerRepository) FindUser(email string) (result partner.Core, err 
 	result = partnerData.toCore()
 
 	return result, nil
+}
+
+func (repo *partnerRepository) GetServices(partnerID uint) (data []partner.ServiceCore, err error) {
+	var modelData []Service
+	tx := repo.db.Where("partner_id = ?", partnerID).Find(&modelData)
+	// tx := repo.db.Where("service_name LIKE ?", "%"+queryServiceName+"%").Where(&Service{City: queryCity, ServiceCategory: queryPServiceCategory, ServicePrice: queryServicePrice}).Find(&modelData)
+
+	if tx.Error != nil {
+		helper.LogDebug("Partner-query-GetService | Error execute query. Error :", tx.Error)
+		return data, tx.Error
+	}
+
+	helper.LogDebug("Partner-query-GetService | Row Affected : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	data = toCoreServiceList(modelData)
+	return data, nil
+}
+
+func (repo *partnerRepository) GetOrders(partnerID uint) (data []partner.OrderCore, err error) {
+	return data, err
+}
+func (repo *partnerRepository) GetAdditionals(partnerID uint) (data []partner.AdditionalCore, err error) {
+	return data, err
+}
+func (repo *partnerRepository) GetPartnerRegisterData(partnerID uint) (data []partner.Core, err error) {
+	return data, err
+}
+func (repo *partnerRepository) GetPartnerRegisterDataByID(partnerID uint) (data partner.Core, err error) {
+	return data, err
+}
+func (repo *partnerRepository) UpdatePartnerVerifyStatus(partnerID uint) (data partner.Core, err error) {
+	return data, err
+}
+func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint) (data partner.Core, err error) {
+	return data, err
 }
