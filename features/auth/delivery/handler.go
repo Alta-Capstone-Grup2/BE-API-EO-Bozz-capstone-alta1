@@ -28,7 +28,7 @@ func (handler *AuthHandler) Login(c echo.Context) error {
 	}
 
 	dataCore := ToCore(userInput)
-	result, token, err := handler.authService.Login(dataCore)
+	result, token, clientID, partnerID, err := handler.authService.Login(dataCore)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
@@ -36,5 +36,5 @@ func (handler *AuthHandler) Login(c echo.Context) error {
 		}
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to Login. "+err.Error()))
 	}
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Login Success.", FromCore(result, token)))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Login Success.", FromCore(result, token, clientID, partnerID)))
 }

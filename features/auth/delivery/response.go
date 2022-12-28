@@ -40,14 +40,14 @@ type UserResponse struct {
 // 	Token    string `json:"token"`
 // }
 
-func FromCore(dataCore auth.Core, token string) UserResponse {
+func FromCore(dataCore auth.Core, token string, clientID uint, partnerID uint) UserResponse {
 	return UserResponse{
 		ID:        dataCore.ID,
 		Name:      dataCore.Name,
 		Email:     dataCore.Email,
 		Role:      dataCore.Role,
-		ClientID:  dataCore.ClientID,
-		PartnerID: dataCore.PartnerID,
+		ClientID:  clientID,
+		PartnerID: partnerID,
 		Token:     token,
 	}
 }
