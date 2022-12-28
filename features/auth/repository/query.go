@@ -3,7 +3,6 @@ package repository
 import (
 	"capstone-alta1/features/auth"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -21,8 +20,6 @@ func New(db *gorm.DB) auth.RepositoryInterface {
 func (repo *authData) FindUser(email string) (result auth.Core, err error) {
 	var userData User
 	tx := repo.db.Where("email = ?", email).First(&userData)
-
-	fmt.Println("\n\n hasil client query ", userData, "\n\n")
 
 	if tx.Error != nil {
 		return auth.Core{}, tx.Error
@@ -42,8 +39,6 @@ func (repo *authData) FindClient(userID uint) (result auth.ClientCore, err error
 
 	tx := repo.db.Where("user_id", userID).Preload("User").First(&client)
 
-	fmt.Println("\n\n hasil client query ", client, "\n\n")
-
 	if tx.Error != nil {
 		return result, tx.Error
 	}
@@ -60,8 +55,6 @@ func (repo *authData) FindPartner(userID uint) (result auth.PartnerCore, err err
 	var partner Partner
 
 	tx := repo.db.Where("user_id", userID).Preload("User").First(&partner)
-
-	fmt.Println("\n\n hasil client query ", partner, "\n\n")
 
 	if tx.Error != nil {
 		return result, tx.Error

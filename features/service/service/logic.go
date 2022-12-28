@@ -45,7 +45,7 @@ func (service *serviceService) GetAll(queryName, queryCategory, queryCity, query
 			helper.LogDebug(err)
 			return nil, helper.ServiceErrorMsg(err)
 		}
-	} else {
+	} else if queryName == "query" || queryCategory == "query" || queryCity == "query" || queryMinPrice == "query" || queryMaxPrice == "query" {
 		data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
 		if err != nil {
 			helper.LogDebug(err)
