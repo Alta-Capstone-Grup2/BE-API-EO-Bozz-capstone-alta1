@@ -26,7 +26,6 @@ func New(repo user.RepositoryInterface) user.ServiceInterface {
 
 // Create implements user.ServiceInterface
 func (service *userService) Create(input user.Core, c echo.Context) (err error) {
-	input.Role = "Admin"
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
@@ -47,7 +46,7 @@ func (service *userService) Create(input user.Core, c echo.Context) (err error) 
 	}
 
 	input.Password = string(bytePass)
-
+	input.Role = "Admin"
 	errCreate := service.userRepository.Create(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())

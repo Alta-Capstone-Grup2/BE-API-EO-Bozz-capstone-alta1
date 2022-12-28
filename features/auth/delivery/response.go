@@ -2,29 +2,43 @@ package delivery
 
 import "capstone-alta1/features/auth"
 
-type UserResponse struct {
+type UserAdminResponse struct {
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+	Role  string `json:"role"`
+	Token string `json:"token"`
+}
+
+type UserPartnerResponse struct {
 	ID        uint   `json:"id"`
 	Name      string `json:"name"`
 	Email     string `json:"email"`
 	Role      string `json:"role"`
-	ClientID  uint   `json:"client_id"`
 	PartnerID uint   `json:"partner_id"`
 	Token     string `json:"token"`
 }
 
-func FromCore(dataCore auth.Core, token string) UserResponse {
+type UserClientResponse struct {
+	ID       uint   `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Role     string `json:"role"`
+	ClientID uint   `json:"client_id"`
+	Token    string `json:"token"`
+}
+
+func FromCore(dataCore auth.Core, token string) UserAdminResponse {
 	if dataCore.Role == "Partner" {
 		ReturnPartner(dataCore, token)
 	} else if dataCore.Role == "Client" {
 		ReturnClient(dataCore, token)
-	} else if dataCore.Role == "Admin" {
-		ReturnAdmin(dataCore, token)
 	}
-	return UserResponse{}
+	return ReturnAdmin(dataCore, token)
 }
 
-func ReturnPartner(dataCore auth.Core, token string) UserResponse {
-	return UserResponse{
+func ReturnPartner(dataCore auth.Core, token string) UserPartnerResponse {
+	return UserPartnerResponse{
 		ID:        dataCore.ID,
 		Name:      dataCore.Name,
 		Email:     dataCore.Email,
@@ -34,8 +48,8 @@ func ReturnPartner(dataCore auth.Core, token string) UserResponse {
 	}
 }
 
-func ReturnClient(dataCore auth.Core, token string) UserResponse {
-	return UserResponse{
+func ReturnClient(dataCore auth.Core, token string) UserClientResponse {
+	return UserClientResponse{
 		ID:       dataCore.ID,
 		Name:     dataCore.Name,
 		Email:    dataCore.Email,
@@ -45,8 +59,8 @@ func ReturnClient(dataCore auth.Core, token string) UserResponse {
 	}
 }
 
-func ReturnAdmin(dataCore auth.Core, token string) UserResponse {
-	return UserResponse{
+func ReturnAdmin(dataCore auth.Core, token string) UserAdminResponse {
+	return UserAdminResponse{
 		ID:    dataCore.ID,
 		Name:  dataCore.Name,
 		Email: dataCore.Email,
