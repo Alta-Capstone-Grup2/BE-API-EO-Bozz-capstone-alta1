@@ -2,6 +2,7 @@ package repository
 
 import (
 	"capstone-alta1/features/service"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -61,8 +62,11 @@ type Additional struct {
 
 type Order struct {
 	gorm.Model
-	EventName string
-	ServiceID uint
+	EventName   string
+	ServiceName string
+	StartDate   time.Time
+	EndDate     time.Time
+	ServiceID   uint
 }
 
 type Partner struct {
@@ -172,6 +176,24 @@ func (dataModel *Discussion) toCoreDiscussion() service.Discussion {
 		PartnerID: dataModel.PartnerID,
 		ClientID:  dataModel.ClientID,
 		ServiceID: dataModel.ServiceID,
+	}
+}
+
+func (dataModel *Order) toCoreAvailable(Available string) service.Order {
+	return service.Order{
+		ServiceName:        dataModel.ServiceName,
+		StartDate:          dataModel.StartDate,
+		EndDate:            dataModel.EndDate,
+		AvailabilityStatus: Available,
+	}
+}
+
+func (dataModel *Order) toCoreNotAvailable(NotAvailable string) service.Order {
+	return service.Order{
+		ServiceName:        dataModel.ServiceName,
+		StartDate:          dataModel.StartDate,
+		EndDate:            dataModel.EndDate,
+		AvailabilityStatus: NotAvailable,
 	}
 }
 

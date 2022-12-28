@@ -61,9 +61,13 @@ type Additional struct {
 }
 
 type Order struct {
-	ID        uint
-	EventName string
-	ServiceID uint
+	ID                 uint
+	EventName          string
+	ServiceName        string
+	StartDate          time.Time
+	EndDate            time.Time
+	AvailabilityStatus string
+	ServiceID          uint
 }
 
 type Partner struct {
@@ -114,6 +118,7 @@ type ServiceInterface interface {
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input ServiceAdditional) error
+	CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data Order, err error)
 }
 
 type RepositoryInterface interface {
@@ -127,4 +132,5 @@ type RepositoryInterface interface {
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input ServiceAdditional) error
+	CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data Order, err error)
 }

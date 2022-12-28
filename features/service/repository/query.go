@@ -1,11 +1,12 @@
 package repository
 
 import (
-	"capstone-alta1/features/service"
+	_service "capstone-alta1/features/service"
 	"capstone-alta1/utils/helper"
 	"errors"
 	"fmt"
 	"strconv"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -14,13 +15,13 @@ type serviceRepository struct {
 	db *gorm.DB
 }
 
-func New(db *gorm.DB) service.RepositoryInterface {
+func New(db *gorm.DB) _service.RepositoryInterface {
 	return &serviceRepository{
 		db: db,
 	}
 }
 
-func (repo *serviceRepository) Create(input service.Core) error {
+func (repo *serviceRepository) Create(input _service.Core) error {
 	serviceGorm := fromCore(input)
 	tx := repo.db.Create(&serviceGorm) // proses insert data
 	if tx.Error != nil {
@@ -32,7 +33,7 @@ func (repo *serviceRepository) Create(input service.Core) error {
 	return nil
 }
 
-func (repo *serviceRepository) GetAll() (data []service.Core, err error) {
+func (repo *serviceRepository) GetAll() (data []_service.Core, err error) {
 	var results []Service
 
 	tx := repo.db.Find(&results)
@@ -43,7 +44,7 @@ func (repo *serviceRepository) GetAll() (data []service.Core, err error) {
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []service.Core, err error) {
+func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 	var services, services2 []Service
 
 	helper.LogDebug("\n isi queryName = ", queryName)
@@ -69,7 +70,7 @@ func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryC
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) GetById(id uint) (data service.Core, err error) {
+func (repo *serviceRepository) GetById(id uint) (data _service.Core, err error) {
 	var service Service
 
 	tx := repo.db.First(&service, id)
@@ -86,7 +87,7 @@ func (repo *serviceRepository) GetById(id uint) (data service.Core, err error) {
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) Update(input service.Core, id uint) error {
+func (repo *serviceRepository) Update(input _service.Core, id uint) error {
 	resultGorm := fromCore(input)
 	var result Service
 	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm) // proses update
@@ -111,7 +112,7 @@ func (repo *serviceRepository) Delete(id uint) error {
 	return nil
 }
 
-func (repo *serviceRepository) GetAdditionalById(id uint) (data []service.Additional, err error) {
+func (repo *serviceRepository) GetAdditionalById(id uint) (data []_service.Additional, err error) {
 	var clientadditional []Additional
 
 	tx := repo.db.Find(&clientadditional, id)
@@ -128,7 +129,7 @@ func (repo *serviceRepository) GetAdditionalById(id uint) (data []service.Additi
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) AddAdditionalToService(input service.ServiceAdditional) error {
+func (repo *serviceRepository) AddAdditionalToService(input _service.ServiceAdditional) error {
 	additionalGorm := fromCoreServiceAdditional(input)
 	var service Service
 	tx := repo.db.Model(&service).Where("ID = ?", input.ServiceID).Create(&additionalGorm) // proses insert data
@@ -141,7 +142,7 @@ func (repo *serviceRepository) AddAdditionalToService(input service.ServiceAddit
 	return nil
 }
 
-func (repo *serviceRepository) GetReviewById(id uint) (data []service.Review, err error) {
+func (repo *serviceRepository) GetReviewById(id uint) (data []_service.Review, err error) {
 	var clientreview []Review
 
 	tx := repo.db.Find(&clientreview, id)
@@ -158,7 +159,7 @@ func (repo *serviceRepository) GetReviewById(id uint) (data []service.Review, er
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) GetDiscussionById(id uint) (data []service.Discussion, err error) {
+func (repo *serviceRepository) GetDiscussionById(id uint) (data []_service.Discussion, err error) {
 	var clientdiscussion []Discussion
 
 	tx := repo.db.Find(&clientdiscussion, id)
@@ -173,4 +174,28 @@ func (repo *serviceRepository) GetDiscussionById(id uint) (data []service.Discus
 
 	var dataCore = toCoreListDiscussion(clientdiscussion)
 	return dataCore, nil
+}
+
+func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data _service.Order, err error) {
+	var service []Service
+	var order []Order
+	queryBuilder := fmt.Sprintf("SELECT * FROM services WHERE id = %d ", serviceId)
+	queryBuilder2 := fmt.Sprintf("SELECT * FROM orders WHERE ('%s' BETWEEN start_date AND end_date) OR ('%s' BETWEEN start_date AND end_date);", queryStart, queryEnd)
+	fmt.Println("\n\n query ", queryBuilder)
+	fmt.Println("\n\n query ", queryBuilder2)
+
+	tx := repo.db.Raw(queryBuilder).Find(&service)
+	yx := repo.db.Raw(queryBuilder2).Find(&order)
+	if tx.Error != nil && yx.Error != nil {
+		return _service.Order{}, tx.Error
+	}
+
+	statusAvailable := "Available"
+	statusNotvalable := "Not Available"
+	var orders Order
+	if tx.RowsAffected == 0 && yx.RowsAffected == 0 {
+		return orders.toCoreAvailable(statusAvailable), nil
+	}
+
+	return orders.toCoreNotAvailable(statusNotvalable), nil
 }

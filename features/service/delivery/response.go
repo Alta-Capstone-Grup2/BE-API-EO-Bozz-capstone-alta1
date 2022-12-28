@@ -42,6 +42,22 @@ type ServiceDiscussionResponse struct {
 	ServiceID uint      `json:"service_id"`
 }
 
+type ServiceAvailabilityResponse struct {
+	ServiceName        string
+	StartDate          time.Time
+	EndDate            time.Time
+	AvailabilityStatus string
+}
+
+func fromCoreAvailability(dataCore service.Order, queryStart, queryEnd time.Time, data string) ServiceAvailabilityResponse {
+	return ServiceAvailabilityResponse{
+		ServiceName:        dataCore.ServiceName,
+		StartDate:          queryStart,
+		EndDate:            queryEnd,
+		AvailabilityStatus: dataCore.AvailabilityStatus,
+	}
+}
+
 func fromCore(dataCore service.Core) ServiceResponse {
 	return ServiceResponse{
 		ID:               dataCore.ID,

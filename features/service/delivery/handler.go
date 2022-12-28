@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -29,6 +30,7 @@ func New(service service.ServiceInterface, e *echo.Echo) {
 	e.POST("/services", handler.Create, middlewares.JWTMiddleware())
 	e.PUT("/services/:id", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/services/:id", handler.Delete, middlewares.JWTMiddleware())
+	e.POST("/services/:id/availability", handler.CheckAvailability, middlewares.JWTMiddleware())
 
 }
 
@@ -216,4 +218,27 @@ func (delivery *serviceDelivery) GetDiscussionById(c echo.Context) error {
 	dataResponse := fromCoreListDiscussion(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
+}
+
+func (delivery *serviceDelivery) CheckAvailability(c echo.Context) error {
+	idParam := c.Param("id")
+	serviceId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	queryStart := c.QueryParam("start_date")
+	queryEnd := c.QueryParam("end_date")
+	helper.LogDebug("\n isi queryStart = ", queryStart)
+	helper.LogDebug("\n isi queryEnd= ", queryEnd)
+	date, _ := time.Parse(time.RFC3339, queryStart)
+	date2, _ := time.Parse(time.RFC3339, queryEnd)
+
+	data, err := delivery.serviceService.CheckAvailability(uint(serviceId), date, date2)
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
+	}
+	return c.JSON(http.StatusCreated, helper.SuccessWithDataResponse("Success create data", fromCoreAvailability(data, date, date2, "")))
 }
