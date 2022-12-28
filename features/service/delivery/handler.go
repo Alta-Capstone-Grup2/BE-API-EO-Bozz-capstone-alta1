@@ -25,7 +25,7 @@ func New(service service.ServiceInterface, e *echo.Echo) {
 	e.GET("/services/:id/additionals", handler.GetAdditionalById)
 	e.GET("/services/:id/reviews", handler.GetReviewById)
 	e.GET("/services/:id/discussions", handler.GetDiscussionById)
-	e.POST("/services/:id/additionals", handler.AddAdditionalToService, middlewares.JWTMiddleware())
+	e.POST("/services/additionals", handler.AddAdditionalToService, middlewares.JWTMiddleware())
 	e.POST("/services", handler.Create, middlewares.JWTMiddleware())
 	e.PUT("/services/:id", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/services/:id", handler.Delete, middlewares.JWTMiddleware())
@@ -163,12 +163,6 @@ func (delivery *serviceDelivery) GetAdditionalById(c echo.Context) error {
 }
 
 func (delivery *serviceDelivery) AddAdditionalToService(c echo.Context) error {
-	idParam := c.Param("id")
-	serviceId, errConv := strconv.Atoi(idParam)
-	if errConv != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
-	}
-
 	serviceInput := ServiceAdditionalRequest{}
 	errBind := c.Bind(&serviceInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
@@ -176,7 +170,7 @@ func (delivery *serviceDelivery) AddAdditionalToService(c echo.Context) error {
 	}
 
 	dataCore := toCoreAdditional(serviceInput)
-	err := delivery.serviceService.AddAdditionalToService(dataCore, uint(serviceId))
+	err := delivery.serviceService.AddAdditionalToService(dataCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

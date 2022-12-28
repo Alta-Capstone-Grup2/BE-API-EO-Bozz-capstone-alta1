@@ -113,7 +113,7 @@ type ServiceInterface interface {
 	GetAdditionalById(id uint) (data []Additional, err error)
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
-	AddAdditionalToService(input ServiceAdditional, id uint) error
+	AddAdditionalToService(input ServiceAdditional) error
 }
 
 type RepositoryInterface interface {
@@ -126,5 +126,5 @@ type RepositoryInterface interface {
 	GetAdditionalById(id uint) (data []Additional, err error)
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
-	AddAdditionalToService(input ServiceAdditional, id uint) error
+	AddAdditionalToService(input ServiceAdditional) error
 }

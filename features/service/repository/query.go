@@ -128,10 +128,10 @@ func (repo *serviceRepository) GetAdditionalById(id uint) (data []service.Additi
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) AddAdditionalToService(input service.ServiceAdditional, id uint) error {
+func (repo *serviceRepository) AddAdditionalToService(input service.ServiceAdditional) error {
 	additionalGorm := fromCoreServiceAdditional(input)
 	var service Service
-	tx := repo.db.Model(&service).Where("ID = ?", id).Create(&additionalGorm) // proses insert data
+	tx := repo.db.Model(&service).Where("ID = ?", input.ServiceID).Create(&additionalGorm) // proses insert data
 	if tx.Error != nil {
 		return tx.Error
 	}

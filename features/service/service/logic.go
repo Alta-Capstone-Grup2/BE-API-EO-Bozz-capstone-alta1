@@ -99,8 +99,8 @@ func (service *serviceService) GetAdditionalById(id uint) (data []_service.Addit
 
 }
 
-func (service *serviceService) AddAdditionalToService(input _service.ServiceAdditional, id uint) (err error) {
-	errCreate := service.serviceRepository.AddAdditionalToService(input, id)
+func (service *serviceService) AddAdditionalToService(input _service.ServiceAdditional) (err error) {
+	errCreate := service.serviceRepository.AddAdditionalToService(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
 		return helper.ServiceErrorMsg(err)
