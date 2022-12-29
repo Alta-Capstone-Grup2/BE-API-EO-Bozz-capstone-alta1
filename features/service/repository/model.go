@@ -62,11 +62,13 @@ type Additional struct {
 
 type Order struct {
 	gorm.Model
-	EventName   string
-	ServiceName string
-	StartDate   time.Time
-	EndDate     time.Time
-	ServiceID   uint
+	EventName          string
+	ServiceName        string
+	StartDate          time.Time
+	EndDate            time.Time
+	AvailabilityStatus string
+	ServiceID          uint
+	Service            Service
 }
 
 type Partner struct {
@@ -116,7 +118,6 @@ func fromCore(dataCore service.Core) Service {
 		ServiceDescription: dataCore.ServiceDescription,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
-		AverageRating:      dataCore.AverageRating,
 		ServiceImageFile:   dataCore.ServiceImageFile,
 		City:               dataCore.City,
 		PartnerID:          dataCore.PartnerID,
@@ -179,20 +180,20 @@ func (dataModel *Discussion) toCoreDiscussion() service.Discussion {
 	}
 }
 
-func (dataModel *Order) toCoreAvailable(Available string) service.Order {
+func (dataModel *Order) toCoreAvailable(serviceName string, startDate, endDate time.Time, Available string) service.Order {
 	return service.Order{
-		ServiceName:        dataModel.ServiceName,
-		StartDate:          dataModel.StartDate,
-		EndDate:            dataModel.EndDate,
+		ServiceName:        serviceName,
+		StartDate:          startDate,
+		EndDate:            endDate,
 		AvailabilityStatus: Available,
 	}
 }
 
-func (dataModel *Order) toCoreNotAvailable(NotAvailable string) service.Order {
+func (dataModel *Order) toCoreNotAvailable(serviceName string, startDate, endDate time.Time, NotAvailable string) service.Order {
 	return service.Order{
-		ServiceName:        dataModel.ServiceName,
-		StartDate:          dataModel.StartDate,
-		EndDate:            dataModel.EndDate,
+		ServiceName:        serviceName,
+		StartDate:          startDate,
+		EndDate:            endDate,
 		AvailabilityStatus: NotAvailable,
 	}
 }

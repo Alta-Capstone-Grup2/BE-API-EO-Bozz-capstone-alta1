@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -230,15 +229,13 @@ func (delivery *serviceDelivery) CheckAvailability(c echo.Context) error {
 	queryEnd := c.QueryParam("end_date")
 	helper.LogDebug("\n isi queryStart = ", queryStart)
 	helper.LogDebug("\n isi queryEnd= ", queryEnd)
-	date, _ := time.Parse(time.RFC3339, queryStart)
-	date2, _ := time.Parse(time.RFC3339, queryEnd)
 
-	data, err := delivery.serviceService.CheckAvailability(uint(serviceId), date, date2)
+	data, err := delivery.serviceService.CheckAvailability(uint(serviceId), queryStart, queryEnd)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
 		}
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
 	}
-	return c.JSON(http.StatusCreated, helper.SuccessWithDataResponse("Success create data", fromCoreAvailability(data, date, date2, "")))
+	return c.JSON(http.StatusCreated, helper.SuccessWithDataResponse("Success create data", fromCoreAvailability(data)))
 }
