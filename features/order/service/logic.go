@@ -1,10 +1,13 @@
 package service
 
 import (
+	cfg "capstone-alta1/config"
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 )
 
@@ -54,4 +57,31 @@ func (order *orderService) GetById(id uint) (data _order.Core, dataDetail _order
 		return _order.Core{}, _order.DetailOrder{}, err
 	}
 	return data, dataDetail, err
+}
+
+func (order *orderService) UpdateStatusCancel(input _order.Core, id uint) error {
+	err := order.orderRepository.UpdateStatusCancel(input, id)
+	if err != nil {
+		log.Error(err.Error())
+		return helper.ServiceErrorMsg(err)
+	}
+
+	return nil
+}
+
+func (order *orderService) UpdateStatusPayout(id uint, c echo.Context) error {
+	input := _order.Core{}
+	var errUpload error
+	input.PayoutRecieptFile, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
+	if errUpload != nil {
+		return errUpload
+	}
+
+	err := order.orderRepository.UpdateStatusPayout(input, id)
+	if err != nil {
+		log.Error(err.Error())
+		return helper.ServiceErrorMsg(err)
+	}
+
+	return nil
 }

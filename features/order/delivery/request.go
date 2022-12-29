@@ -19,6 +19,10 @@ type OrderRequest struct {
 	Qty                 uint      `json:"qty" form:"qty"`
 }
 
+type OrderStatusRequest struct {
+	OrderStatus string `json:"order_status" form:"order_status"`
+}
+
 func toCore(input OrderRequest, inputClientID uint) order.Core {
 	coreInput := order.Core{
 		EventName:       input.EventName,
@@ -38,6 +42,14 @@ func toDetailOrder(input OrderRequest) order.DetailOrder {
 	coreInput := order.DetailOrder{
 		ServiceAdditionalID: input.ServiceAdditionalID,
 		Qty:                 input.Qty,
+	}
+	return coreInput
+}
+
+func toCoreStatus(input OrderStatusRequest, orderId uint) order.Core {
+	coreInput := order.Core{
+		ID:          orderId,
+		OrderStatus: input.OrderStatus,
 	}
 	return coreInput
 }

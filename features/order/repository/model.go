@@ -117,6 +117,21 @@ func fromDetailOrder(dataCore order.DetailOrder) DetailOrder {
 	return modelData
 }
 
+func fromCoreStatus(dataCore order.Core) Order {
+	modelData := Order{
+		OrderStatus: dataCore.OrderStatus,
+	}
+	return modelData
+}
+
+func fromCorePayout(dataCore order.Core) Order {
+	modelData := Order{
+		PayoutRecieptFile: dataCore.PayoutRecieptFile,
+		PayoutDate:        time.Now(),
+	}
+	return modelData
+}
+
 // mengubah struct model gorm ke struct core
 func (dataModel *Order) toCore() order.Core {
 	return order.Core{
