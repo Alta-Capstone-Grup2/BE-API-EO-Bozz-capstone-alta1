@@ -1,0 +1,2946 @@
+{
+	"info": {
+		"_postman_id": "39bd9f9c-0533-4372-98fd-e6b95540dfce",
+		"name": "Capstone-Alta-1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login User",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"deni@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Dec 2022 11:36:39 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "335"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Deni Setiadi\",\n        \"email\": \"deni@gmail.com\",\n        \"role\": \"Partner\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzE4ODE3OTksIm5hbWUiOiJEZW5pIFNldGlhZGkiLCJyb2xlIjoiUGFydG5lciIsInVzZXJJZCI6Mn0.9KWu2qgO4exdKmAoA8X6jxOmdxCCRvvpUKP_bVwFL40\"\n    },\n    \"message\": \"Login Success.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login Partner",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"hasan8@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login User",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"deni@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Dec 2022 11:36:39 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "335"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Deni Setiadi\",\n        \"email\": \"deni@gmail.com\",\n        \"role\": \"Partner\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzE4ODE3OTksIm5hbWUiOiJEZW5pIFNldGlhZGkiLCJyb2xlIjoiUGFydG5lciIsInVzZXJJZCI6Mn0.9KWu2qgO4exdKmAoA8X6jxOmdxCCRvvpUKP_bVwFL40\"\n    },\n    \"message\": \"Login Success.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"poci7@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Add User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "jojo",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "jojo@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0891239123",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add User",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"full_name\": \"Miki\",\r\n  \"email\": \"miki@gmail.com\",\r\n  \"password\": \"123\",\r\n  \"team\": \"Academic\",\r\n  \"status\": \"Active\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 18:02:30 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success create data\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Add User Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "Dorami",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "dorami@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0891239123",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "full_name",
+									"value": "made gusti",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "made@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0891239123",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/wawabunny/golang/immersive-alta/assets/Max-R_Headshot (1).jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Edit User",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "full_name",
+											"value": "Giant",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "giant@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "0891239123",
+											"type": "text"
+										},
+										{
+											"key": "gender",
+											"value": "Male",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/wawabunny/golang/immersive-alta/assets/Max-R_Headshot (1).jpg"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/users/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"3"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Dec 2022 22:11:03 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success update data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Dec 2022 22:06:32 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "495"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"full_name\": \"Jumadi2\",\n            \"email\": \"jumadi2@gmail.com\",\n            \"phone\": \"0891239123\",\n            \"gender\": \"Male\",\n            \"profile_image_url\": \"https://trialtestbucket.s3.amazonaws.com/profile/f5OaIP2vawBfuZAJoDaP-people19.png\",\n            \"is_hosting\": \"\"\n        },\n        {\n            \"id\": 4,\n            \"full_name\": \"Giant\",\n            \"email\": \"giant@gmail.com\",\n            \"phone\": \"0891239123\",\n            \"gender\": \"Male\",\n            \"profile_image_url\": \"https://trialtestbucket.s3.amazonaws.com/profile/oes2zahVPnyojpGIDTc2-people19.png\",\n            \"is_hosting\": \"\"\n        }\n    ],\n    \"message\": \"Success read all users\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Me by Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User With Search by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/?name=giant",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "giant"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User With Search by Name",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/?name=gia",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "gia"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Dec 2022 22:03:43 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "278"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"full_name\": \"Giant\",\n            \"email\": \"giant@gmail.com\",\n            \"phone\": \"0891239123\",\n            \"gender\": \"Male\",\n            \"profile_image_url\": \"https://trialtestbucket.s3.amazonaws.com/profile/oes2zahVPnyojpGIDTc2-people19.png\",\n            \"is_hosting\": \"\"\n        }\n    ],\n    \"message\": \"Success read all users\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Dec 2022 22:04:31 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "192"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"full_name\": \"Jumadi\",\n        \"email\": \"jumadi@gmail.com\",\n        \"phone\": \"0891239123\",\n        \"gender\": \"Male\",\n        \"profile_image_url\": \"\",\n        \"is_hosting\": \"\"\n    },\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User Properties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/3/properties",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"3",
+								"properties"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User Properties",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/2/properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"2",
+										"properties"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 Dec 2022 05:32:17 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "73"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Failed process data, data must be yours.\",\n    \"status\": \"Failed\"\n}"
+						},
+						{
+							"name": "Get User Properties",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/3/properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"3",
+										"properties"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 Dec 2022 05:32:32 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "680"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"property_name\": \"Aura House 2bds Eco Bamboo House, Pool, River View\",\n            \"price_per_night\": 5614797,\n            \"city\": \"Bali\",\n            \"facilities\": \"4 tamu2 kamar tidur2 tempat tidur2 kamar mandi\",\n            \"rating_average\": 3.25,\n            \"image_thumbnail_url\": \"ttps://a0.muscache.com/im/pictures/0b25f6b3-f215-4938-ac81-581eb3929047.jpg?im_w=1200\"\n        },\n        {\n            \"id\": 2,\n            \"property_name\": \"Aura House 2bds Eco Bamboo House, Pool, River View\",\n            \"price_per_night\": 5000,\n            \"city\": \"Bali\",\n            \"facilities\": \"4 tamu2 kamar tidur2 tempat tidur2 kamar mandi\",\n            \"rating_average\": 0,\n            \"image_thumbnail_url\": \"https://trialtestbucket.s3.amazonaws.com/profile/otoU8HVrSiIadj1mBDfF-Screenshot_3.jpg\"\n        }\n    ],\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete user by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success delete user by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/105",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"105"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 18:05:04 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success delete data.\",\n    \"status\": \"Success\"\n}"
+						},
+						{
+							"name": "Failed delete user by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"2"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Dec 2022 22:03:54 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Error. User unauthorized to access data other user.\",\n    \"status\": \"Failed\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Poci7",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "poci7@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0811-9102-395",
+									"type": "text"
+								},
+								{
+									"key": "client_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Pictures/2020-12-01_183148.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Poci7Update",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "poci7@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "22222222222111144444Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "123Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0811-9102-395",
+									"type": "text"
+								},
+								{
+									"key": "client_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Pictures/88.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get with Filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "property_type",
+									"value": "apartemen",
+									"disabled": true
+								},
+								{
+									"key": "property_name",
+									"value": "karang",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clients/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clients",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 24 Dec 2022 00:31:22 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "332"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Poci\",\n        \"email\": \"poci@gmail.com\",\n        \"role\": \"Client\",\n        \"gender\": \"Male\",\n        \"address\": \"Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830\",\n        \"city\": \"Jakarta\",\n        \"phone\": \"0811-9102-395\",\n        \"client_image_url\": \"\",\n        \"user_id\": 13\n    },\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "service_name",
+									"value": "Intimate Wedding Ballroom",
+									"type": "text"
+								},
+								{
+									"key": "service_description",
+									"value": "1. Main Backdrop\n- Main Backdrop 8x3 or 4 m\n- Main Backdrop Sofa Set\n- Mini garden at front stage\n- Basic Lighting with LED lighting\n\n2. Akad/Blessing Decoration (in one location)\n- Akad/Blessing Table Decor\n- Akad/Blessing Chair Decor ( include chair)\n\n3. Aisle/Pathway Decoration\n- 6pcs Standing Flowers/ 4pcs Standing Flowers with 8pcs aisle centerpiece\n\n4. Entrance Decor\n- Welcome Sign\n- Registry Table and Angpau box include Simply Backdrop\n- Entrance/ Wedding Gate\n\n5. Photo Gallery\n- 3 set of Photo Gallery ( print photos included)\n\n6. Entertainment Backdrop\n- Simply Iron/Arch Gate Backdrop OR mini garden at front Entertainment stage\n\n7. Photobooth\n- Simply Photobooth 2,5x2,5m\n\nBonus Handbouquet and Corsage",
+									"type": "text"
+								},
+								{
+									"key": "service_category",
+									"value": "Wedding Venue",
+									"type": "text"
+								},
+								{
+									"key": "service_price",
+									"value": "36100000",
+									"type": "text"
+								},
+								{
+									"key": "average_rating",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "service_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/upload-XO1OyPrLp.jpg"
+								},
+								{
+									"key": "city",
+									"value": "Jakarta",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/services",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Poci4Update",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "poci4@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "123Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0811-9102-395",
+									"type": "text"
+								},
+								{
+									"key": "client_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Pictures/2020-12-01_183158.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/services",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/services",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get with Filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "property_type",
+									"value": "apartemen",
+									"disabled": true
+								},
+								{
+									"key": "property_name",
+									"value": "karang",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clients/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clients",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 24 Dec 2022 00:31:22 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "332"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Poci\",\n        \"email\": \"poci@gmail.com\",\n        \"role\": \"Client\",\n        \"gender\": \"Male\",\n        \"address\": \"Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830\",\n        \"city\": \"Jakarta\",\n        \"phone\": \"0811-9102-395\",\n        \"client_image_url\": \"\",\n        \"user_id\": 13\n    },\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Partner",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hasan8",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "hasan8@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "pic_position",
+									"value": "8Marketing",
+									"type": "text"
+								},
+								{
+									"key": "pic_phone",
+									"value": "90813-8583-8413",
+									"type": "text"
+								},
+								{
+									"key": "pic_address",
+									"value": "8The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410",
+									"type": "text"
+								},
+								{
+									"key": "company_name",
+									"value": "Groovy Event Organizer (PT Sahabat Pesta Indonesia)",
+									"type": "text"
+								},
+								{
+									"key": "company_phone",
+									"value": "70813-8583-8413",
+									"type": "text"
+								},
+								{
+									"key": "company_city",
+									"value": "7Jakarta Utara",
+									"type": "text"
+								},
+								{
+									"key": "company_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/1200px-Indofood_logo-id.svg.png"
+								},
+								{
+									"key": "company_address",
+									"value": "The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410",
+									"type": "text"
+								},
+								{
+									"key": "link_website",
+									"value": "http://www.groovyeo.com/",
+									"type": "text"
+								},
+								{
+									"key": "nib_number",
+									"value": "982372731",
+									"type": "text"
+								},
+								{
+									"key": "nib_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/NOMOR-INDUK-BERUSAHA-NIB.pdf"
+								},
+								{
+									"key": "siup_number",
+									"value": "83736263",
+									"type": "text"
+								},
+								{
+									"key": "siup_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/SURAT-IZIN-USAHA-PERDAGANGAN-SIUP.pdf"
+								},
+								{
+									"key": "event1_name",
+									"value": "ASEAN Youth Fellowship in Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "event1_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/canola-photo.jpeg"
+								},
+								{
+									"key": "event2_name",
+									"value": "Minitab Customer Roundtable Indonesia",
+									"type": "text"
+								},
+								{
+									"key": "event2_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/upload-XO1OyPrLp.jpg"
+								},
+								{
+									"key": "event3_name",
+									"value": "Indonesia Economic Forum",
+									"type": "text"
+								},
+								{
+									"key": "event3_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/default_image.jpg"
+								},
+								{
+									"key": "bank_name",
+									"value": "BCA",
+									"type": "text"
+								},
+								{
+									"key": "bank_account_number",
+									"value": "Rudi Setiadi",
+									"type": "text"
+								},
+								{
+									"key": "bank_account_name",
+									"value": "3123333",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/partners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"partners"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Deni Setiadi",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "deni123@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123",
+											"type": "text"
+										},
+										{
+											"key": "pic_position",
+											"value": "Marketing",
+											"type": "text"
+										},
+										{
+											"key": "pic_phone",
+											"value": "0813-8583-8413",
+											"type": "text"
+										},
+										{
+											"key": "pic_address",
+											"value": "The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410",
+											"type": "text"
+										},
+										{
+											"key": "company_name",
+											"value": "Groovy Event Organizer (PT Sahabat Pesta Indonesia)",
+											"type": "text"
+										},
+										{
+											"key": "company_phone",
+											"value": "0813-8583-8413",
+											"type": "text"
+										},
+										{
+											"key": "company_city",
+											"value": "Jakarta Utara",
+											"type": "text"
+										},
+										{
+											"key": "company_image_file",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "company_address",
+											"value": "The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410",
+											"type": "text"
+										},
+										{
+											"key": "link_website",
+											"value": "http://www.groovyeo.com/",
+											"type": "text"
+										},
+										{
+											"key": "nib_number",
+											"value": "982372731",
+											"type": "text"
+										},
+										{
+											"key": "nib_image_file",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "siup_number",
+											"value": "83736263",
+											"type": "text"
+										},
+										{
+											"key": "siup_image_fle",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "event_1_name",
+											"value": "ASEAN Youth Fellowship in Jakarta",
+											"type": "text"
+										},
+										{
+											"key": "event_1_image_url",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "event_2_name",
+											"value": "Minitab Customer Roundtable Indonesia",
+											"type": "text"
+										},
+										{
+											"key": "event_2_image_url",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "event_3_name",
+											"value": "Indonesia Economic Forum",
+											"type": "text"
+										},
+										{
+											"key": "event_3_image_url",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "bank_name",
+											"value": "BCA",
+											"type": "text"
+										},
+										{
+											"key": "bank_account_number",
+											"value": "Rudi Setiadi",
+											"type": "text"
+										},
+										{
+											"key": "bank_account_name",
+											"value": "3123333",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/User/Downloads/asset_airbnb/Screenshot_1.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/partners",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"partners"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 Dec 2022 11:13:09 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success create data\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hasan8-eupdate",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "hasan8@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "pic_position",
+									"value": "8Marketing",
+									"type": "text"
+								},
+								{
+									"key": "pic_phone",
+									"value": "80813-8583-8413",
+									"type": "text"
+								},
+								{
+									"key": "pic_address",
+									"value": "The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410",
+									"type": "text"
+								},
+								{
+									"key": "company_name",
+									"value": "Groovy Event Organizer (PT Sahabat Pesta Indonesia)",
+									"type": "text"
+								},
+								{
+									"key": "company_phone",
+									"value": "0813-8583-8413",
+									"type": "text"
+								},
+								{
+									"key": "company_city",
+									"value": "Jakarta Utara",
+									"type": "text"
+								},
+								{
+									"key": "company_image_file",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "company_address",
+									"value": "The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410",
+									"type": "text"
+								},
+								{
+									"key": "link_website",
+									"value": "http://www.groovyeo.com/",
+									"type": "text"
+								},
+								{
+									"key": "nib_number",
+									"value": "982372731",
+									"type": "text"
+								},
+								{
+									"key": "nib_image_file",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "siup_number",
+									"value": "00083736263",
+									"type": "text"
+								},
+								{
+									"key": "siup_image_fle",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "event1_name",
+									"value": "ASEAN Youth Fellowship in Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "event1_image_url",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "event2_name",
+									"value": "Minitab Customer Roundtable Indonesia",
+									"type": "text"
+								},
+								{
+									"key": "event2_image_url",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "event3_name",
+									"value": "Indonesia Economic Forum",
+									"type": "text"
+								},
+								{
+									"key": "event3_image_url",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "bank_name",
+									"value": "BCA",
+									"type": "text"
+								},
+								{
+									"key": "bank_account_number",
+									"value": "Rudi Setiadi",
+									"type": "text"
+								},
+								{
+									"key": "bank_account_name",
+									"value": "3123333",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/partners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"partners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/partners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"partners"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/partners",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"partners"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 Dec 2022 10:59:25 GMT"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"name\": \"Hasan\",\n            \"email\": \"hasan@gmail.com\",\n            \"role\": \"Partner\",\n            \"pic_position\": \"Marketing\",\n            \"pic_phone\": \"0813-8583-8413\",\n            \"pic_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"company_name\": \"Groovy Event Organizer (PT Sahabat Pesta Indonesia)\",\n            \"company_phone\": \"0813-8583-8413\",\n            \"company_city\": \"Jakarta Utara\",\n            \"company_image_file\": \"\",\n            \"company_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"link_website\": \"http://www.groovyeo.com/\",\n            \"nib_number\": \"982372731\",\n            \"nib_image_file\": \"\",\n            \"siup_number\": \"83736263\",\n            \"siup_image_file\": \"\",\n            \"event1_name\": \"ASEAN Youth Fellowship in Jakarta\",\n            \"event1_image_file\": \"\",\n            \"event2_name\": \"Minitab Customer Roundtable Indonesia\",\n            \"event2_image_file\": \"\",\n            \"event3_name\": \"Indonesia Economic Forum\",\n            \"event4_image_file\": \"\",\n            \"bank_name\": \"BCA\",\n            \"bank_account_number\": \"Rudi Setiadi\",\n            \"bank_account_name\": \"BCA\",\n            \"verification_status\": \"Not Verified\",\n            \"verification_log\": \"2022-12-23 18:58:11 Partner Register.\",\n            \"user_id\": 3\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Hasan2\",\n            \"email\": \"hasan2@gmail.com\",\n            \"role\": \"Partner\",\n            \"pic_position\": \"Marketing\",\n            \"pic_phone\": \"0813-8583-8413\",\n            \"pic_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"company_name\": \"Groovy Event Organizer (PT Sahabat Pesta Indonesia)\",\n            \"company_phone\": \"0813-8583-8413\",\n            \"company_city\": \"Jakarta Utara\",\n            \"company_image_file\": \"\",\n            \"company_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"link_website\": \"http://www.groovyeo.com/\",\n            \"nib_number\": \"982372731\",\n            \"nib_image_file\": \"\",\n            \"siup_number\": \"83736263\",\n            \"siup_image_file\": \"\",\n            \"event1_name\": \"ASEAN Youth Fellowship in Jakarta\",\n            \"event1_image_file\": \"\",\n            \"event2_name\": \"Minitab Customer Roundtable Indonesia\",\n            \"event2_image_file\": \"\",\n            \"event3_name\": \"Indonesia Economic Forum\",\n            \"event4_image_file\": \"\",\n            \"bank_name\": \"BCA\",\n            \"bank_account_number\": \"Rudi Setiadi\",\n            \"bank_account_name\": \"BCA\",\n            \"verification_status\": \"Not Verified\",\n            \"verification_log\": \"2022-12-23 19:06:54 Partner Register.\",\n            \"user_id\": 4\n        },\n        {\n            \"id\": 12,\n            \"name\": \"Hasan4\",\n            \"email\": \"hasan4@gmail.com\",\n            \"role\": \"Partner\",\n            \"pic_position\": \"Marketing\",\n            \"pic_phone\": \"0813-8583-8413\",\n            \"pic_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"company_name\": \"Groovy Event Organizer (PT Sahabat Pesta Indonesia)\",\n            \"company_phone\": \"0813-8583-8413\",\n            \"company_city\": \"Jakarta Utara\",\n            \"company_image_file\": \"\",\n            \"company_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"link_website\": \"http://www.groovyeo.com/\",\n            \"nib_number\": \"982372731\",\n            \"nib_image_file\": \"\",\n            \"siup_number\": \"83736263\",\n            \"siup_image_file\": \"\",\n            \"event1_name\": \"ASEAN Youth Fellowship in Jakarta\",\n            \"event1_image_file\": \"\",\n            \"event2_name\": \"Minitab Customer Roundtable Indonesia\",\n            \"event2_image_file\": \"\",\n            \"event3_name\": \"Indonesia Economic Forum\",\n            \"event4_image_file\": \"\",\n            \"bank_name\": \"BCA\",\n            \"bank_account_number\": \"Rudi Setiadi\",\n            \"bank_account_name\": \"BCA\",\n            \"verification_status\": \"Not Verified\",\n            \"verification_log\": \"2022-12-27 06:48:55 Partner Register.\",\n            \"user_id\": 15\n        },\n        {\n            \"id\": 13,\n            \"name\": \"Hasan5\",\n            \"email\": \"hasan5@gmail.com\",\n            \"role\": \"Partner\",\n            \"pic_position\": \"Marketing\",\n            \"pic_phone\": \"0813-8583-8413\",\n            \"pic_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"company_name\": \"Groovy Event Organizer (PT Sahabat Pesta Indonesia)\",\n            \"company_phone\": \"0813-8583-8413\",\n            \"company_city\": \"Jakarta Utara\",\n            \"company_image_file\": \"\",\n            \"company_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"link_website\": \"http://www.groovyeo.com/\",\n            \"nib_number\": \"982372731\",\n            \"nib_image_file\": \"\",\n            \"siup_number\": \"83736263\",\n            \"siup_image_file\": \"\",\n            \"event1_name\": \"ASEAN Youth Fellowship in Jakarta\",\n            \"event1_image_file\": \"\",\n            \"event2_name\": \"Minitab Customer Roundtable Indonesia\",\n            \"event2_image_file\": \"\",\n            \"event3_name\": \"Indonesia Economic Forum\",\n            \"event4_image_file\": \"\",\n            \"bank_name\": \"BCA\",\n            \"bank_account_number\": \"Rudi Setiadi\",\n            \"bank_account_name\": \"BCA\",\n            \"verification_status\": \"Not Verified\",\n            \"verification_log\": \"2022-12-27 11:33:28 Partner Register.\",\n            \"user_id\": 17\n        },\n        {\n            \"id\": 14,\n            \"name\": \"Hasan7\",\n            \"email\": \"hasan7@gmail.com\",\n            \"role\": \"Partner\",\n            \"pic_position\": \"7Marketing\",\n            \"pic_phone\": \"70813-8583-8413\",\n            \"pic_address\": \"7The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"company_name\": \"Groovy Event Organizer (PT Sahabat Pesta Indonesia)\",\n            \"company_phone\": \"70813-8583-8413\",\n            \"company_city\": \"7Jakarta Utara\",\n            \"company_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/omo3B6rQTlImZIFeso6B-1200px-Indofood_logo-id.svg.png\",\n            \"company_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"link_website\": \"http://www.groovyeo.com/\",\n            \"nib_number\": \"982372731\",\n            \"nib_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/ljqJnh42JXpDyhLlnh6T-NOMOR-INDUK-BERUSAHA-NIB.pdf\",\n            \"siup_number\": \"83736263\",\n            \"siup_image_file\": \"https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png\",\n            \"event1_name\": \"ASEAN Youth Fellowship in Jakarta\",\n            \"event1_image_file\": \"https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png\",\n            \"event2_name\": \"Minitab Customer Roundtable Indonesia\",\n            \"event2_image_file\": \"https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png\",\n            \"event3_name\": \"Indonesia Economic Forum\",\n            \"event4_image_file\": \"https://www.hostpapa.com/knowledgebase/wp-content/uploads/2018/04/1-13.png\",\n            \"bank_name\": \"BCA\",\n            \"bank_account_number\": \"Rudi Setiadi\",\n            \"bank_account_name\": \"BCA\",\n            \"verification_status\": \"Not Verified\",\n            \"verification_log\": \"2022-12-27 17:51:52 Partner Register.\",\n            \"user_id\": 22\n        },\n        {\n            \"id\": 15,\n            \"name\": \"Hasan8\",\n            \"email\": \"hasan8@gmail.com\",\n            \"role\": \"Partner\",\n            \"pic_position\": \"8Marketing\",\n            \"pic_phone\": \"90813-8583-8413\",\n            \"pic_address\": \"8The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"company_name\": \"Groovy Event Organizer (PT Sahabat Pesta Indonesia)\",\n            \"company_phone\": \"70813-8583-8413\",\n            \"company_city\": \"7Jakarta Utara\",\n            \"company_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/SGQFQTDN35if4IYyyM5F-1200px-Indofood_logo-id.svg.png\",\n            \"company_address\": \"The Mansion Kemayoran - Tower Fontana BH 33 - Unit 1, Pademangan Tim., Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14410\",\n            \"link_website\": \"http://www.groovyeo.com/\",\n            \"nib_number\": \"982372731\",\n            \"nib_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/MWd1yKUSBPrMBGDPDAI8-NOMOR-INDUK-BERUSAHA-NIB.pdf\",\n            \"siup_number\": \"83736263\",\n            \"siup_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/tcTZOMd0r5Ha1fqILDFI-SURAT-IZIN-USAHA-PERDAGANGAN-SIUP.pdf\",\n            \"event1_name\": \"ASEAN Youth Fellowship in Jakarta\",\n            \"event1_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/A9JPDU1j56dKG21GYwRV-canola-photo.jpeg\",\n            \"event2_name\": \"Minitab Customer Roundtable Indonesia\",\n            \"event2_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/yfstktL8dF2AMD1WsQaj-upload-XO1OyPrLp.jpg\",\n            \"event3_name\": \"Indonesia Economic Forum\",\n            \"event4_image_file\": \"https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg\",\n            \"bank_name\": \"BCA\",\n            \"bank_account_number\": \"Rudi Setiadi\",\n            \"bank_account_name\": \"BCA\",\n            \"verification_status\": \"Not Verified\",\n            \"verification_log\": \"2022-12-27 17:59:22 Partner Register.\",\n            \"user_id\": 23\n        }\n    ],\n    \"message\": \"Success read all data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/partners/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"partners",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/partners/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"partners",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Additional",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"additional_name\": \"Paket tambahan Mic 4 Sound 500watt / 8 hours\",\r\n    \"additional_price\": 2750000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/additionals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"additionals"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Nestled amongst the giant redwoods",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
+										},
+										{
+											"key": "property_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/property_images",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"property_images"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Dec 2022 08:35:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success create data\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"additional_name\": \"Paket tambahan Mic 4 Sound 500watt / 8 hours\",\r\n    \"additional_price\": 3750000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/additionals/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"additionals",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/additionals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"additionals"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 Dec 2022 06:45:50 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "284"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲\",\n            \"rating\": 5,\n            \"order_id\": 1,\n            \"service_id\": 1,\n            \"client_id\": 0\n        }\n    ],\n    \"message\": \"Success read all data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/additionals/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"additionals",
+								"7"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/comments/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comments",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Dec 2022 22:49:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success delete data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Discussion",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"comment\": \"Fotografer sudah termasuk editing belum ya? 4\",\r\n  \"partner_id\": 4,\r\n  \"client_id\": 2,\r\n  \"service_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/discussions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"discussions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Nestled amongst the giant redwoods",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
+										},
+										{
+											"key": "property_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/property_images",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"property_images"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Dec 2022 08:35:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success create data\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/discussions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"discussions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 Dec 2022 06:45:50 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "284"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲\",\n            \"rating\": 5,\n            \"order_id\": 1,\n            \"service_id\": 1,\n            \"client_id\": 0\n        }\n    ],\n    \"message\": \"Success read all data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/discussions/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"discussions",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/comments/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comments",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Dec 2022 22:49:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success delete data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Review",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲 5\",\r\n    \"rating\": 5,\r\n    \"order_id\": 1,\r\n    \"service_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Nestled amongst the giant redwoods",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
+										},
+										{
+											"key": "property_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/property_images",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"property_images"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Dec 2022 08:35:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success create data\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲. edited 7\",\r\n    \"rating\": 5,\r\n    \"order_id\": 1,\r\n    \"service_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reviews"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 Dec 2022 06:45:50 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "284"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲\",\n            \"rating\": 5,\n            \"order_id\": 1,\n            \"service_id\": 1,\n            \"client_id\": 0\n        }\n    ],\n    \"message\": \"Success read all data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reviews/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/reviews/5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"reviews",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 Dec 2022 23:10:41 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "280"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲 4\",\n        \"rating\": 5,\n        \"order_id\": 1,\n        \"service_id\": 1,\n        \"client_id\": 1\n    },\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reviews/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/comments/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comments",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Dec 2022 22:49:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success delete data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "City",
+			"item": [
+				{
+					"name": "GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/city",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"city"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GET",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/city",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"city"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 Dec 2022 00:12:11 GMT"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"city_name\": \"PIDIE JAYA\"\n        },\n        {\n            \"id\": 2,\n            \"city_name\": \"SIMEULUE\"\n        },\n        {\n            \"id\": 3,\n            \"city_name\": \"BIREUEN\"\n        },\n        {\n            \"id\": 4,\n            \"city_name\": \"ACEH TIMUR\"\n        },\n        {\n            \"id\": 5,\n            \"city_name\": \"ACEH UTARA\"\n        },\n        {\n            \"id\": 6,\n            \"city_name\": \"PIDIE\"\n        },\n        {\n            \"id\": 7,\n            \"city_name\": \"ACEH BARAT DAYA\"\n        },\n        {\n            \"id\": 8,\n            \"city_name\": \"GAYO LUES\"\n        },\n        {\n            \"id\": 9,\n            \"city_name\": \"ACEH SELATAN\"\n        },\n        {\n            \"id\": 10,\n            \"city_name\": \"ACEH TAMIANG\"\n        },\n        {\n            \"id\": 11,\n            \"city_name\": \"ACEH BESAR\"\n        },\n        {\n            \"id\": 12,\n            \"city_name\": \"ACEH TENGGARA\"\n        },\n        {\n            \"id\": 13,\n            \"city_name\": \"BENER MERIAH\"\n        },\n        {\n            \"id\": 14,\n            \"city_name\": \"ACEH JAYA\"\n        },\n        {\n            \"id\": 15,\n            \"city_name\": \"LHOKSEUMAWE\"\n        },\n        {\n            \"id\": 16,\n            \"city_name\": \"ACEH BARAT\"\n        },\n        {\n            \"id\": 17,\n            \"city_name\": \"NAGAN RAYA\"\n        },\n        {\n            \"id\": 18,\n            \"city_name\": \"LANGSA\"\n        },\n        {\n            \"id\": 19,\n            \"city_name\": \"BANDA ACEH\"\n        },\n        {\n            \"id\": 20,\n            \"city_name\": \"ACEH SINGKIL\"\n        },\n        {\n            \"id\": 21,\n            \"city_name\": \"SABANG\"\n        },\n        {\n            \"id\": 22,\n            \"city_name\": \"ACEH TENGAH\"\n        },\n        {\n            \"id\": 23,\n            \"city_name\": \"SUBULUSSALAM\"\n        },\n        {\n            \"id\": 24,\n            \"city_name\": \"NIAS SELATAN\"\n        },\n        {\n            \"id\": 25,\n            \"city_name\": \"MANDAILING NATAL\"\n        },\n        {\n            \"id\": 26,\n            \"city_name\": \"DAIRI\"\n        },\n        {\n            \"id\": 27,\n            \"city_name\": \"LABUHAN BATU UTARA\"\n        },\n        {\n            \"id\": 28,\n            \"city_name\": \"TAPANULI UTARA\"\n        },\n        {\n            \"id\": 29,\n            \"city_name\": \"SIMALUNGUN\"\n        },\n        {\n            \"id\": 30,\n            \"city_name\": \"LANGKAT\"\n        },\n        {\n            \"id\": 31,\n            \"city_name\": \"SERDANG BEDAGAI\"\n        },\n        {\n            \"id\": 32,\n            \"city_name\": \"TAPANULI SELATAN\"\n        },\n        {\n            \"id\": 33,\n            \"city_name\": \"ASAHAN\"\n        },\n        {\n            \"id\": 34,\n            \"city_name\": \"PADANG LAWAS UTARA\"\n        },\n        {\n            \"id\": 35,\n            \"city_name\": \"PADANG LAWAS\"\n        },\n        {\n            \"id\": 36,\n            \"city_name\": \"LABUHAN BATU SELATAN\"\n        },\n        {\n            \"id\": 37,\n            \"city_name\": \"PADANG SIDEMPUAN\"\n        },\n        {\n            \"id\": 38,\n            \"city_name\": \"TOBA SAMOSIR\"\n        },\n        {\n            \"id\": 39,\n            \"city_name\": \"TAPANULI TENGAH\"\n        },\n        {\n            \"id\": 40,\n            \"city_name\": \"HUMBANG HASUNDUTAN\"\n        },\n        {\n            \"id\": 41,\n            \"city_name\": \"SIBOLGA\"\n        },\n        {\n            \"id\": 42,\n            \"city_name\": \"BATU BARA\"\n        },\n        {\n            \"id\": 43,\n            \"city_name\": \"SAMOSIR\"\n        },\n        {\n            \"id\": 44,\n            \"city_name\": \"PEMATANG SIANTAR\"\n        },\n        {\n            \"id\": 45,\n            \"city_name\": \"LABUHAN BATU\"\n        },\n        {\n            \"id\": 46,\n            \"city_name\": \"DELI SERDANG\"\n        },\n        {\n            \"id\": 47,\n            \"city_name\": \"GUNUNGSITOLI\"\n        },\n        {\n            \"id\": 48,\n            \"city_name\": \"NIAS UTARA\"\n        },\n        {\n            \"id\": 49,\n            \"city_name\": \"NIAS\"\n        },\n        {\n            \"id\": 50,\n            \"city_name\": \"KARO\"\n        },\n        {\n            \"id\": 51,\n            \"city_name\": \"NIAS BARAT\"\n        },\n        {\n            \"id\": 52,\n            \"city_name\": \"MEDAN\"\n        },\n        {\n            \"id\": 53,\n            \"city_name\": \"PAKPAK BHARAT\"\n        },\n        {\n            \"id\": 54,\n            \"city_name\": \"TEBING TINGGI\"\n        },\n        {\n            \"id\": 55,\n            \"city_name\": \"BINJAI\"\n        },\n        {\n            \"id\": 56,\n            \"city_name\": \"TANJUNG BALAI\"\n        },\n        {\n            \"id\": 57,\n            \"city_name\": \"DHARMASRAYA\"\n        },\n        {\n            \"id\": 58,\n            \"city_name\": \"SOLOK SELATAN\"\n        },\n        {\n            \"id\": 59,\n            \"city_name\": \"SIJUNJUNG (SAWAH LUNTO SIJUNJUNG)\"\n        },\n        {\n            \"id\": 60,\n            \"city_name\": \"PASAMAN BARAT\"\n        },\n        {\n            \"id\": 61,\n            \"city_name\": \"SOLOK\"\n        },\n        {\n            \"id\": 62,\n            \"city_name\": \"PASAMAN\"\n        },\n        {\n            \"id\": 63,\n            \"city_name\": \"PARIAMAN\"\n        },\n        {\n            \"id\": 64,\n            \"city_name\": \"TANAH DATAR\"\n        },\n        {\n            \"id\": 65,\n            \"city_name\": \"PADANG PARIAMAN\"\n        },\n        {\n            \"id\": 66,\n            \"city_name\": \"PESISIR SELATAN\"\n        },\n        {\n            \"id\": 67,\n            \"city_name\": \"PADANG\"\n        },\n        {\n            \"id\": 68,\n            \"city_name\": \"SAWAH LUNTO\"\n        },\n        {\n            \"id\": 69,\n            \"city_name\": \"LIMA PULUH KOTO / KOTA\"\n        },\n        {\n            \"id\": 70,\n            \"city_name\": \"AGAM\"\n        },\n        {\n            \"id\": 71,\n            \"city_name\": \"PAYAKUMBUH\"\n        },\n        {\n            \"id\": 72,\n            \"city_name\": \"BUKITTINGGI\"\n        },\n        {\n            \"id\": 73,\n            \"city_name\": \"PADANG PANJANG\"\n        },\n        {\n            \"id\": 74,\n            \"city_name\": \"KEPULAUAN MENTAWAI\"\n        },\n        {\n            \"id\": 75,\n            \"city_name\": \"INDRAGIRI HILIR\"\n        },\n        {\n            \"id\": 76,\n            \"city_name\": \"KUANTAN SINGINGI\"\n        },\n        {\n            \"id\": 77,\n            \"city_name\": \"PELALAWAN\"\n        },\n        {\n            \"id\": 78,\n            \"city_name\": \"PEKANBARU\"\n        },\n        {\n            \"id\": 79,\n            \"city_name\": \"ROKAN HILIR\"\n        },\n        {\n            \"id\": 80,\n            \"city_name\": \"BENGKALIS\"\n        },\n        {\n            \"id\": 81,\n            \"city_name\": \"INDRAGIRI HULU\"\n        },\n        {\n            \"id\": 82,\n            \"city_name\": \"ROKAN HULU\"\n        },\n        {\n            \"id\": 83,\n            \"city_name\": \"KAMPAR\"\n        },\n        {\n            \"id\": 84,\n            \"city_name\": \"KEPULAUAN MERANTI\"\n        },\n        {\n            \"id\": 85,\n            \"city_name\": \"DUMAI\"\n        },\n        {\n            \"id\": 86,\n            \"city_name\": \"SIAK\"\n        },\n        {\n            \"id\": 87,\n            \"city_name\": \"TEBO\"\n        },\n        {\n            \"id\": 88,\n            \"city_name\": \"TANJUNG JABUNG BARAT\"\n        },\n        {\n            \"id\": 89,\n            \"city_name\": \"MUARO JAMBI\"\n        },\n        {\n            \"id\": 90,\n            \"city_name\": \"KERINCI\"\n        },\n        {\n            \"id\": 91,\n            \"city_name\": \"MERANGIN\"\n        },\n        {\n            \"id\": 92,\n            \"city_name\": \"BUNGO\"\n        },\n        {\n            \"id\": 93,\n            \"city_name\": \"TANJUNG JABUNG TIMUR\"\n        },\n        {\n            \"id\": 94,\n            \"city_name\": \"SUNGAIPENUH\"\n        },\n        {\n            \"id\": 95,\n            \"city_name\": \"BATANG HARI\"\n        },\n        {\n            \"id\": 96,\n            \"city_name\": \"JAMBI\"\n        },\n        {\n            \"id\": 97,\n            \"city_name\": \"SAROLANGUN\"\n        },\n        {\n            \"id\": 98,\n            \"city_name\": \"PALEMBANG\"\n        },\n        {\n            \"id\": 99,\n            \"city_name\": \"LAHAT\"\n        },\n        {\n            \"id\": 100,\n            \"city_name\": \"OGAN KOMERING ULU TIMUR\"\n        },\n        {\n            \"id\": 101,\n            \"city_name\": \"MUSI BANYUASIN\"\n        },\n        {\n            \"id\": 102,\n            \"city_name\": \"PAGAR ALAM\"\n        },\n        {\n            \"id\": 103,\n            \"city_name\": \"OGAN KOMERING ULU SELATAN\"\n        },\n        {\n            \"id\": 104,\n            \"city_name\": \"BANYUASIN\"\n        },\n        {\n            \"id\": 105,\n            \"city_name\": \"MUSI RAWAS\"\n        },\n        {\n            \"id\": 106,\n            \"city_name\": \"MUARA ENIM\"\n        },\n        {\n            \"id\": 107,\n            \"city_name\": \"OGAN KOMERING ULU\"\n        },\n        {\n            \"id\": 108,\n            \"city_name\": \"OGAN KOMERING ILIR\"\n        },\n        {\n            \"id\": 109,\n            \"city_name\": \"EMPAT LAWANG\"\n        },\n        {\n            \"id\": 110,\n            \"city_name\": \"LUBUK LINGGAU\"\n        },\n        {\n            \"id\": 111,\n            \"city_name\": \"PRABUMULIH\"\n        },\n        {\n            \"id\": 112,\n            \"city_name\": \"OGAN ILIR\"\n        },\n        {\n            \"id\": 113,\n            \"city_name\": \"BENGKULU TENGAH\"\n        },\n        {\n            \"id\": 114,\n            \"city_name\": \"REJANG LEBONG\"\n        },\n        {\n            \"id\": 115,\n            \"city_name\": \"MUKO MUKO\"\n        },\n        {\n            \"id\": 116,\n            \"city_name\": \"KAUR\"\n        },\n        {\n            \"id\": 117,\n            \"city_name\": \"BENGKULU UTARA\"\n        },\n        {\n            \"id\": 118,\n            \"city_name\": \"LEBONG\"\n        },\n        {\n            \"id\": 119,\n            \"city_name\": \"KEPAHIANG\"\n        },\n        {\n            \"id\": 120,\n            \"city_name\": \"BENGKULU SELATAN\"\n        },\n        {\n            \"id\": 121,\n            \"city_name\": \"SELUMA\"\n        },\n        {\n            \"id\": 122,\n            \"city_name\": \"BENGKULU\"\n        },\n        {\n            \"id\": 123,\n            \"city_name\": \"LAMPUNG UTARA\"\n        },\n        {\n            \"id\": 124,\n            \"city_name\": \"WAY KANAN\"\n        },\n        {\n            \"id\": 125,\n            \"city_name\": \"LAMPUNG TENGAH\"\n        },\n        {\n            \"id\": 126,\n            \"city_name\": \"MESUJI\"\n        },\n        {\n            \"id\": 127,\n            \"city_name\": \"PRINGSEWU\"\n        },\n        {\n            \"id\": 128,\n            \"city_name\": \"LAMPUNG TIMUR\"\n        },\n        {\n            \"id\": 129,\n            \"city_name\": \"LAMPUNG SELATAN\"\n        },\n        {\n            \"id\": 130,\n            \"city_name\": \"TULANG BAWANG\"\n        },\n        {\n            \"id\": 131,\n            \"city_name\": \"TULANG BAWANG BARAT\"\n        },\n        {\n            \"id\": 132,\n            \"city_name\": \"TANGGAMUS\"\n        },\n        {\n            \"id\": 133,\n            \"city_name\": \"LAMPUNG BARAT\"\n        },\n        {\n            \"id\": 134,\n            \"city_name\": \"PESISIR BARAT\"\n        },\n        {\n            \"id\": 135,\n            \"city_name\": \"PESAWARAN\"\n        },\n        {\n            \"id\": 136,\n            \"city_name\": \"BANDAR LAMPUNG\"\n        },\n        {\n            \"id\": 137,\n            \"city_name\": \"METRO\"\n        },\n        {\n            \"id\": 138,\n            \"city_name\": \"BELITUNG\"\n        },\n        {\n            \"id\": 139,\n            \"city_name\": \"BELITUNG TIMUR\"\n        },\n        {\n            \"id\": 140,\n            \"city_name\": \"BANGKA\"\n        },\n        {\n            \"id\": 141,\n            \"city_name\": \"BANGKA SELATAN\"\n        },\n        {\n            \"id\": 142,\n            \"city_name\": \"BANGKA BARAT\"\n        },\n        {\n            \"id\": 143,\n            \"city_name\": \"PANGKAL PINANG\"\n        },\n        {\n            \"id\": 144,\n            \"city_name\": \"BANGKA TENGAH\"\n        },\n        {\n            \"id\": 145,\n            \"city_name\": \"KEPULAUAN ANAMBAS\"\n        },\n        {\n            \"id\": 146,\n            \"city_name\": \"BINTAN\"\n        },\n        {\n            \"id\": 147,\n            \"city_name\": \"NATUNA\"\n        },\n        {\n            \"id\": 148,\n            \"city_name\": \"BATAM\"\n        },\n        {\n            \"id\": 149,\n            \"city_name\": \"TANJUNG PINANG\"\n        },\n        {\n            \"id\": 150,\n            \"city_name\": \"KARIMUN\"\n        },\n        {\n            \"id\": 151,\n            \"city_name\": \"LINGGA\"\n        },\n        {\n            \"id\": 152,\n            \"city_name\": \"JAKARTA UTARA\"\n        },\n        {\n            \"id\": 153,\n            \"city_name\": \"JAKARTA BARAT\"\n        },\n        {\n            \"id\": 154,\n            \"city_name\": \"JAKARTA TIMUR\"\n        },\n        {\n            \"id\": 155,\n            \"city_name\": \"JAKARTA SELATAN\"\n        },\n        {\n            \"id\": 156,\n            \"city_name\": \"JAKARTA PUSAT\"\n        },\n        {\n            \"id\": 157,\n            \"city_name\": \"KEPULAUAN SERIBU\"\n        },\n        {\n            \"id\": 158,\n            \"city_name\": \"DEPOK\"\n        },\n        {\n            \"id\": 159,\n            \"city_name\": \"KARAWANG\"\n        },\n        {\n            \"id\": 160,\n            \"city_name\": \"CIREBON\"\n        },\n        {\n            \"id\": 161,\n            \"city_name\": \"BANDUNG\"\n        },\n        {\n            \"id\": 162,\n            \"city_name\": \"SUKABUMI\"\n        },\n        {\n            \"id\": 163,\n            \"city_name\": \"SUMEDANG\"\n        },\n        {\n            \"id\": 164,\n            \"city_name\": \"INDRAMAYU\"\n        },\n        {\n            \"id\": 165,\n            \"city_name\": \"MAJALENGKA\"\n        },\n        {\n            \"id\": 166,\n            \"city_name\": \"KUNINGAN\"\n        },\n        {\n            \"id\": 167,\n            \"city_name\": \"TASIKMALAYA\"\n        },\n        {\n            \"id\": 168,\n            \"city_name\": \"CIAMIS\"\n        },\n        {\n            \"id\": 169,\n            \"city_name\": \"SUBANG\"\n        },\n        {\n            \"id\": 170,\n            \"city_name\": \"PURWAKARTA\"\n        },\n        {\n            \"id\": 171,\n            \"city_name\": \"BOGOR\"\n        },\n        {\n            \"id\": 172,\n            \"city_name\": \"BEKASI\"\n        },\n        {\n            \"id\": 173,\n            \"city_name\": \"GARUT\"\n        },\n        {\n            \"id\": 174,\n            \"city_name\": \"PANGANDARAN\"\n        },\n        {\n            \"id\": 175,\n            \"city_name\": \"CIANJUR\"\n        },\n        {\n            \"id\": 176,\n            \"city_name\": \"BANJAR\"\n        },\n        {\n            \"id\": 177,\n            \"city_name\": \"BANDUNG BARAT\"\n        },\n        {\n            \"id\": 178,\n            \"city_name\": \"CIMAHI\"\n        },\n        {\n            \"id\": 179,\n            \"city_name\": \"PURBALINGGA\"\n        },\n        {\n            \"id\": 180,\n            \"city_name\": \"KEBUMEN\"\n        },\n        {\n            \"id\": 181,\n            \"city_name\": \"MAGELANG\"\n        },\n        {\n            \"id\": 182,\n            \"city_name\": \"CILACAP\"\n        },\n        {\n            \"id\": 183,\n            \"city_name\": \"BATANG\"\n        },\n        {\n            \"id\": 184,\n            \"city_name\": \"BANJARNEGARA\"\n        },\n        {\n            \"id\": 185,\n            \"city_name\": \"BLORA\"\n        },\n        {\n            \"id\": 186,\n            \"city_name\": \"BREBES\"\n        },\n        {\n            \"id\": 187,\n            \"city_name\": \"BANYUMAS\"\n        },\n        {\n            \"id\": 188,\n            \"city_name\": \"WONOSOBO\"\n        },\n        {\n            \"id\": 189,\n            \"city_name\": \"TEGAL\"\n        },\n        {\n            \"id\": 190,\n            \"city_name\": \"PURWOREJO\"\n        },\n        {\n            \"id\": 191,\n            \"city_name\": \"PATI\"\n        },\n        {\n            \"id\": 192,\n            \"city_name\": \"SUKOHARJO\"\n        },\n        {\n            \"id\": 193,\n            \"city_name\": \"KARANGANYAR\"\n        },\n        {\n            \"id\": 194,\n            \"city_name\": \"PEKALONGAN\"\n        },\n        {\n            \"id\": 195,\n            \"city_name\": \"PEMALANG\"\n        },\n        {\n            \"id\": 196,\n            \"city_name\": \"BOYOLALI\"\n        },\n        {\n            \"id\": 197,\n            \"city_name\": \"GROBOGAN\"\n        },\n        {\n            \"id\": 198,\n            \"city_name\": \"SEMARANG\"\n        },\n        {\n            \"id\": 199,\n            \"city_name\": \"DEMAK\"\n        },\n        {\n            \"id\": 200,\n            \"city_name\": \"REMBANG\"\n        },\n        {\n            \"id\": 201,\n            \"city_name\": \"KLATEN\"\n        },\n        {\n            \"id\": 202,\n            \"city_name\": \"KUDUS\"\n        },\n        {\n            \"id\": 203,\n            \"city_name\": \"TEMANGGUNG\"\n        },\n        {\n            \"id\": 204,\n            \"city_name\": \"SRAGEN\"\n        },\n        {\n            \"id\": 205,\n            \"city_name\": \"JEPARA\"\n        },\n        {\n            \"id\": 206,\n            \"city_name\": \"WONOGIRI\"\n        },\n        {\n            \"id\": 207,\n            \"city_name\": \"KENDAL\"\n        },\n        {\n            \"id\": 208,\n            \"city_name\": \"SURAKARTA (SOLO)\"\n        },\n        {\n            \"id\": 209,\n            \"city_name\": \"SALATIGA\"\n        },\n        {\n            \"id\": 210,\n            \"city_name\": \"SLEMAN\"\n        },\n        {\n            \"id\": 211,\n            \"city_name\": \"BANTUL\"\n        },\n        {\n            \"id\": 212,\n            \"city_name\": \"YOGYAKARTA\"\n        },\n        {\n            \"id\": 213,\n            \"city_name\": \"GUNUNG KIDUL\"\n        },\n        {\n            \"id\": 214,\n            \"city_name\": \"KULON PROGO\"\n        },\n        {\n            \"id\": 215,\n            \"city_name\": \"GRESIK\"\n        },\n        {\n            \"id\": 216,\n            \"city_name\": \"KEDIRI\"\n        },\n        {\n            \"id\": 217,\n            \"city_name\": \"SAMPANG\"\n        },\n        {\n            \"id\": 218,\n            \"city_name\": \"BANGKALAN\"\n        },\n        {\n            \"id\": 219,\n            \"city_name\": \"SUMENEP\"\n        },\n        {\n            \"id\": 220,\n            \"city_name\": \"SITUBONDO\"\n        },\n        {\n            \"id\": 221,\n            \"city_name\": \"SURABAYA\"\n        },\n        {\n            \"id\": 222,\n            \"city_name\": \"JEMBER\"\n        },\n        {\n            \"id\": 223,\n            \"city_name\": \"PAMEKASAN\"\n        },\n        {\n            \"id\": 224,\n            \"city_name\": \"JOMBANG\"\n        },\n        {\n            \"id\": 225,\n            \"city_name\": \"PROBOLINGGO\"\n        },\n        {\n            \"id\": 226,\n            \"city_name\": \"BANYUWANGI\"\n        },\n        {\n            \"id\": 227,\n            \"city_name\": \"PASURUAN\"\n        },\n        {\n            \"id\": 228,\n            \"city_name\": \"BOJONEGORO\"\n        },\n        {\n            \"id\": 229,\n            \"city_name\": \"BONDOWOSO\"\n        },\n        {\n            \"id\": 230,\n            \"city_name\": \"MAGETAN\"\n        },\n        {\n            \"id\": 231,\n            \"city_name\": \"LUMAJANG\"\n        },\n        {\n            \"id\": 232,\n            \"city_name\": \"MALANG\"\n        },\n        {\n            \"id\": 233,\n            \"city_name\": \"BLITAR\"\n        },\n        {\n            \"id\": 234,\n            \"city_name\": \"SIDOARJO\"\n        },\n        {\n            \"id\": 235,\n            \"city_name\": \"LAMONGAN\"\n        },\n        {\n            \"id\": 236,\n            \"city_name\": \"PACITAN\"\n        },\n        {\n            \"id\": 237,\n            \"city_name\": \"TULUNGAGUNG\"\n        },\n        {\n            \"id\": 238,\n            \"city_name\": \"MOJOKERTO\"\n        },\n        {\n            \"id\": 239,\n            \"city_name\": \"MADIUN\"\n        },\n        {\n            \"id\": 240,\n            \"city_name\": \"PONOROGO\"\n        },\n        {\n            \"id\": 241,\n            \"city_name\": \"NGAWI\"\n        },\n        {\n            \"id\": 242,\n            \"city_name\": \"NGANJUK\"\n        },\n        {\n            \"id\": 243,\n            \"city_name\": \"TUBAN\"\n        },\n        {\n            \"id\": 244,\n            \"city_name\": \"TRENGGALEK\"\n        },\n        {\n            \"id\": 245,\n            \"city_name\": \"BATU\"\n        },\n        {\n            \"id\": 246,\n            \"city_name\": \"TANGERANG\"\n        },\n        {\n            \"id\": 247,\n            \"city_name\": \"SERANG\"\n        },\n        {\n            \"id\": 248,\n            \"city_name\": \"PANDEGLANG\"\n        },\n        {\n            \"id\": 249,\n            \"city_name\": \"LEBAK\"\n        },\n        {\n            \"id\": 250,\n            \"city_name\": \"TANGERANG SELATAN\"\n        },\n        {\n            \"id\": 251,\n            \"city_name\": \"CILEGON\"\n        },\n        {\n            \"id\": 252,\n            \"city_name\": \"KLUNGKUNG\"\n        },\n        {\n            \"id\": 253,\n            \"city_name\": \"KARANGASEM\"\n        },\n        {\n            \"id\": 254,\n            \"city_name\": \"BANGLI\"\n        },\n        {\n            \"id\": 255,\n            \"city_name\": \"TABANAN\"\n        },\n        {\n            \"id\": 256,\n            \"city_name\": \"GIANYAR\"\n        },\n        {\n            \"id\": 257,\n            \"city_name\": \"BADUNG\"\n        },\n        {\n            \"id\": 258,\n            \"city_name\": \"JEMBRANA\"\n        },\n        {\n            \"id\": 259,\n            \"city_name\": \"BULELENG\"\n        },\n        {\n            \"id\": 260,\n            \"city_name\": \"DENPASAR\"\n        },\n        {\n            \"id\": 261,\n            \"city_name\": \"MATARAM\"\n        },\n        {\n            \"id\": 262,\n            \"city_name\": \"DOMPU\"\n        },\n        {\n            \"id\": 263,\n            \"city_name\": \"SUMBAWA BARAT\"\n        },\n        {\n            \"id\": 264,\n            \"city_name\": \"SUMBAWA\"\n        },\n        {\n            \"id\": 265,\n            \"city_name\": \"LOMBOK TENGAH\"\n        },\n        {\n            \"id\": 266,\n            \"city_name\": \"LOMBOK TIMUR\"\n        },\n        {\n            \"id\": 267,\n            \"city_name\": \"LOMBOK UTARA\"\n        },\n        {\n            \"id\": 268,\n            \"city_name\": \"LOMBOK BARAT\"\n        },\n        {\n            \"id\": 269,\n            \"city_name\": \"BIMA\"\n        },\n        {\n            \"id\": 270,\n            \"city_name\": \"TIMOR TENGAH SELATAN\"\n        },\n        {\n            \"id\": 271,\n            \"city_name\": \"FLORES TIMUR\"\n        },\n        {\n            \"id\": 272,\n            \"city_name\": \"ALOR\"\n        },\n        {\n            \"id\": 273,\n            \"city_name\": \"ENDE\"\n        },\n        {\n            \"id\": 274,\n            \"city_name\": \"NAGEKEO\"\n        },\n        {\n            \"id\": 275,\n            \"city_name\": \"KUPANG\"\n        },\n        {\n            \"id\": 276,\n            \"city_name\": \"SIKKA\"\n        },\n        {\n            \"id\": 277,\n            \"city_name\": \"NGADA\"\n        },\n        {\n            \"id\": 278,\n            \"city_name\": \"TIMOR TENGAH UTARA\"\n        },\n        {\n            \"id\": 279,\n            \"city_name\": \"BELU\"\n        },\n        {\n            \"id\": 280,\n            \"city_name\": \"LEMBATA\"\n        },\n        {\n            \"id\": 281,\n            \"city_name\": \"SUMBA BARAT DAYA\"\n        },\n        {\n            \"id\": 282,\n            \"city_name\": \"SUMBA BARAT\"\n        },\n        {\n            \"id\": 283,\n            \"city_name\": \"SUMBA TENGAH\"\n        },\n        {\n            \"id\": 284,\n            \"city_name\": \"SUMBA TIMUR\"\n        },\n        {\n            \"id\": 285,\n            \"city_name\": \"ROTE NDAO\"\n        },\n        {\n            \"id\": 286,\n            \"city_name\": \"MANGGARAI TIMUR\"\n        },\n        {\n            \"id\": 287,\n            \"city_name\": \"MANGGARAI\"\n        },\n        {\n            \"id\": 288,\n            \"city_name\": \"SABU RAIJUA\"\n        },\n        {\n            \"id\": 289,\n            \"city_name\": \"MANGGARAI BARAT\"\n        },\n        {\n            \"id\": 290,\n            \"city_name\": \"LANDAK\"\n        },\n        {\n            \"id\": 291,\n            \"city_name\": \"KETAPANG\"\n        },\n        {\n            \"id\": 292,\n            \"city_name\": \"SINTANG\"\n        },\n        {\n            \"id\": 293,\n            \"city_name\": \"KUBU RAYA\"\n        },\n        {\n            \"id\": 294,\n            \"city_name\": \"PONTIANAK\"\n        },\n        {\n            \"id\": 295,\n            \"city_name\": \"KAYONG UTARA\"\n        },\n        {\n            \"id\": 296,\n            \"city_name\": \"BENGKAYANG\"\n        },\n        {\n            \"id\": 297,\n            \"city_name\": \"KAPUAS HULU\"\n        },\n        {\n            \"id\": 298,\n            \"city_name\": \"SAMBAS\"\n        },\n        {\n            \"id\": 299,\n            \"city_name\": \"SINGKAWANG\"\n        },\n        {\n            \"id\": 300,\n            \"city_name\": \"SANGGAU\"\n        },\n        {\n            \"id\": 301,\n            \"city_name\": \"MELAWI\"\n        },\n        {\n            \"id\": 302,\n            \"city_name\": \"SEKADAU\"\n        },\n        {\n            \"id\": 303,\n            \"city_name\": \"KOTAWARINGIN TIMUR\"\n        },\n        {\n            \"id\": 304,\n            \"city_name\": \"SUKAMARA\"\n        },\n        {\n            \"id\": 305,\n            \"city_name\": \"KOTAWARINGIN BARAT\"\n        },\n        {\n            \"id\": 306,\n            \"city_name\": \"BARITO TIMUR\"\n        },\n        {\n            \"id\": 307,\n            \"city_name\": \"KAPUAS\"\n        },\n        {\n            \"id\": 308,\n            \"city_name\": \"PULANG PISAU\"\n        },\n        {\n            \"id\": 309,\n            \"city_name\": \"LAMANDAU\"\n        },\n        {\n            \"id\": 310,\n            \"city_name\": \"SERUYAN\"\n        },\n        {\n            \"id\": 311,\n            \"city_name\": \"KATINGAN\"\n        },\n        {\n            \"id\": 312,\n            \"city_name\": \"BARITO SELATAN\"\n        },\n        {\n            \"id\": 313,\n            \"city_name\": \"MURUNG RAYA\"\n        },\n        {\n            \"id\": 314,\n            \"city_name\": \"BARITO UTARA\"\n        },\n        {\n            \"id\": 315,\n            \"city_name\": \"GUNUNG MAS\"\n        },\n        {\n            \"id\": 316,\n            \"city_name\": \"PALANGKA RAYA\"\n        },\n        {\n            \"id\": 317,\n            \"city_name\": \"TAPIN\"\n        },\n        {\n            \"id\": 318,\n            \"city_name\": \"BANJAR\"\n        },\n        {\n            \"id\": 319,\n            \"city_name\": \"HULU SUNGAI TENGAH\"\n        },\n        {\n            \"id\": 320,\n            \"city_name\": \"TABALONG\"\n        },\n        {\n            \"id\": 321,\n            \"city_name\": \"HULU SUNGAI UTARA\"\n        },\n        {\n            \"id\": 322,\n            \"city_name\": \"BALANGAN\"\n        },\n        {\n            \"id\": 323,\n            \"city_name\": \"TANAH BUMBU\"\n        },\n        {\n            \"id\": 324,\n            \"city_name\": \"BANJARMASIN\"\n        },\n        {\n            \"id\": 325,\n            \"city_name\": \"KOTABARU\"\n        },\n        {\n            \"id\": 326,\n            \"city_name\": \"TANAH LAUT\"\n        },\n        {\n            \"id\": 327,\n            \"city_name\": \"HULU SUNGAI SELATAN\"\n        },\n        {\n            \"id\": 328,\n            \"city_name\": \"BARITO KUALA\"\n        },\n        {\n            \"id\": 329,\n            \"city_name\": \"BANJARBARU\"\n        },\n        {\n            \"id\": 330,\n            \"city_name\": \"KUTAI BARAT\"\n        },\n        {\n            \"id\": 331,\n            \"city_name\": \"SAMARINDA\"\n        },\n        {\n            \"id\": 332,\n            \"city_name\": \"PASER\"\n        },\n        {\n            \"id\": 333,\n            \"city_name\": \"KUTAI KARTANEGARA\"\n        },\n        {\n            \"id\": 334,\n            \"city_name\": \"BERAU\"\n        },\n        {\n            \"id\": 335,\n            \"city_name\": \"PENAJAM PASER UTARA\"\n        },\n        {\n            \"id\": 336,\n            \"city_name\": \"BONTANG\"\n        },\n        {\n            \"id\": 337,\n            \"city_name\": \"KUTAI TIMUR\"\n        },\n        {\n            \"id\": 338,\n            \"city_name\": \"BALIKPAPAN\"\n        },\n        {\n            \"id\": 339,\n            \"city_name\": \"MALINAU\"\n        },\n        {\n            \"id\": 340,\n            \"city_name\": \"NUNUKAN\"\n        },\n        {\n            \"id\": 341,\n            \"city_name\": \"BULUNGAN (BULONGAN)\"\n        },\n        {\n            \"id\": 342,\n            \"city_name\": \"TANA TIDUNG\"\n        },\n        {\n            \"id\": 343,\n            \"city_name\": \"TARAKAN\"\n        },\n        {\n            \"id\": 344,\n            \"city_name\": \"BOLAANG MONGONDOW (BOLMONG)\"\n        },\n        {\n            \"id\": 345,\n            \"city_name\": \"BOLAANG MONGONDOW SELATAN\"\n        },\n        {\n            \"id\": 346,\n            \"city_name\": \"MINAHASA SELATAN\"\n        },\n        {\n            \"id\": 347,\n            \"city_name\": \"BITUNG\"\n        },\n        {\n            \"id\": 348,\n            \"city_name\": \"MINAHASA\"\n        },\n        {\n            \"id\": 349,\n            \"city_name\": \"KEPULAUAN SANGIHE\"\n        },\n        {\n            \"id\": 350,\n            \"city_name\": \"MINAHASA UTARA\"\n        },\n        {\n            \"id\": 351,\n            \"city_name\": \"KEPULAUAN TALAUD\"\n        },\n        {\n            \"id\": 352,\n            \"city_name\": \"KEPULAUAN SIAU TAGULANDANG BIARO (SITARO)\"\n        },\n        {\n            \"id\": 353,\n            \"city_name\": \"MANADO\"\n        },\n        {\n            \"id\": 354,\n            \"city_name\": \"BOLAANG MONGONDOW UTARA\"\n        },\n        {\n            \"id\": 355,\n            \"city_name\": \"BOLAANG MONGONDOW TIMUR\"\n        },\n        {\n            \"id\": 356,\n            \"city_name\": \"MINAHASA TENGGARA\"\n        },\n        {\n            \"id\": 357,\n            \"city_name\": \"KOTAMOBAGU\"\n        },\n        {\n            \"id\": 358,\n            \"city_name\": \"TOMOHON\"\n        },\n        {\n            \"id\": 359,\n            \"city_name\": \"BANGGAI KEPULAUAN\"\n        },\n        {\n            \"id\": 360,\n            \"city_name\": \"TOLI-TOLI\"\n        },\n        {\n            \"id\": 361,\n            \"city_name\": \"PARIGI MOUTONG\"\n        },\n        {\n            \"id\": 362,\n            \"city_name\": \"BUOL\"\n        },\n        {\n            \"id\": 363,\n            \"city_name\": \"DONGGALA\"\n        },\n        {\n            \"id\": 364,\n            \"city_name\": \"POSO\"\n        },\n        {\n            \"id\": 365,\n            \"city_name\": \"MOROWALI\"\n        },\n        {\n            \"id\": 366,\n            \"city_name\": \"TOJO UNA-UNA\"\n        },\n        {\n            \"id\": 367,\n            \"city_name\": \"BANGGAI\"\n        },\n        {\n            \"id\": 368,\n            \"city_name\": \"SIGI\"\n        },\n        {\n            \"id\": 369,\n            \"city_name\": \"PALU\"\n        },\n        {\n            \"id\": 370,\n            \"city_name\": \"MAROS\"\n        },\n        {\n            \"id\": 371,\n            \"city_name\": \"WAJO\"\n        },\n        {\n            \"id\": 372,\n            \"city_name\": \"BONE\"\n        },\n        {\n            \"id\": 373,\n            \"city_name\": \"SOPPENG\"\n        },\n        {\n            \"id\": 374,\n            \"city_name\": \"SIDENRENG RAPPANG / RAPANG\"\n        },\n        {\n            \"id\": 375,\n            \"city_name\": \"TAKALAR\"\n        },\n        {\n            \"id\": 376,\n            \"city_name\": \"BARRU\"\n        },\n        {\n            \"id\": 377,\n            \"city_name\": \"LUWU TIMUR\"\n        },\n        {\n            \"id\": 378,\n            \"city_name\": \"SINJAI\"\n        },\n        {\n            \"id\": 379,\n            \"city_name\": \"PANGKAJENE KEPULAUAN\"\n        },\n        {\n            \"id\": 380,\n            \"city_name\": \"PINRANG\"\n        },\n        {\n            \"id\": 381,\n            \"city_name\": \"JENEPONTO\"\n        },\n        {\n            \"id\": 382,\n            \"city_name\": \"PALOPO\"\n        },\n        {\n            \"id\": 383,\n            \"city_name\": \"TORAJA UTARA\"\n        },\n        {\n            \"id\": 384,\n            \"city_name\": \"LUWU\"\n        },\n        {\n            \"id\": 385,\n            \"city_name\": \"BULUKUMBA\"\n        },\n        {\n            \"id\": 386,\n            \"city_name\": \"MAKASSAR\"\n        },\n        {\n            \"id\": 387,\n            \"city_name\": \"SELAYAR (KEPULAUAN SELAYAR)\"\n        },\n        {\n            \"id\": 388,\n            \"city_name\": \"TANA TORAJA\"\n        },\n        {\n            \"id\": 389,\n            \"city_name\": \"LUWU UTARA\"\n        },\n        {\n            \"id\": 390,\n            \"city_name\": \"BANTAENG\"\n        },\n        {\n            \"id\": 391,\n            \"city_name\": \"GOWA\"\n        },\n        {\n            \"id\": 392,\n            \"city_name\": \"ENREKANG\"\n        },\n        {\n            \"id\": 393,\n            \"city_name\": \"PAREPARE\"\n        },\n        {\n            \"id\": 394,\n            \"city_name\": \"KOLAKA\"\n        },\n        {\n            \"id\": 395,\n            \"city_name\": \"MUNA\"\n        },\n        {\n            \"id\": 396,\n            \"city_name\": \"KONAWE SELATAN\"\n        },\n        {\n            \"id\": 397,\n            \"city_name\": \"KENDARI\"\n        },\n        {\n            \"id\": 398,\n            \"city_name\": \"KONAWE\"\n        },\n        {\n            \"id\": 399,\n            \"city_name\": \"KONAWE UTARA\"\n        },\n        {\n            \"id\": 400,\n            \"city_name\": \"KOLAKA UTARA\"\n        },\n        {\n            \"id\": 401,\n            \"city_name\": \"BUTON\"\n        },\n        {\n            \"id\": 402,\n            \"city_name\": \"BOMBANA\"\n        },\n        {\n            \"id\": 403,\n            \"city_name\": \"WAKATOBI\"\n        },\n        {\n            \"id\": 404,\n            \"city_name\": \"BAU-BAU\"\n        },\n        {\n            \"id\": 405,\n            \"city_name\": \"BUTON UTARA\"\n        },\n        {\n            \"id\": 406,\n            \"city_name\": \"GORONTALO UTARA\"\n        },\n        {\n            \"id\": 407,\n            \"city_name\": \"BONE BOLANGO\"\n        },\n        {\n            \"id\": 408,\n            \"city_name\": \"GORONTALO\"\n        },\n        {\n            \"id\": 409,\n            \"city_name\": \"BOALEMO\"\n        },\n        {\n            \"id\": 410,\n            \"city_name\": \"POHUWATO\"\n        },\n        {\n            \"id\": 411,\n            \"city_name\": \"MAJENE\"\n        },\n        {\n            \"id\": 412,\n            \"city_name\": \"MAMUJU\"\n        },\n        {\n            \"id\": 413,\n            \"city_name\": \"MAMUJU UTARA\"\n        },\n        {\n            \"id\": 414,\n            \"city_name\": \"POLEWALI MANDAR\"\n        },\n        {\n            \"id\": 415,\n            \"city_name\": \"MAMASA\"\n        },\n        {\n            \"id\": 416,\n            \"city_name\": \"MALUKU TENGGARA BARAT\"\n        },\n        {\n            \"id\": 417,\n            \"city_name\": \"MALUKU TENGGARA\"\n        },\n        {\n            \"id\": 418,\n            \"city_name\": \"SERAM BAGIAN BARAT\"\n        },\n        {\n            \"id\": 419,\n            \"city_name\": \"MALUKU TENGAH\"\n        },\n        {\n            \"id\": 420,\n            \"city_name\": \"SERAM BAGIAN TIMUR\"\n        },\n        {\n            \"id\": 421,\n            \"city_name\": \"MALUKU BARAT DAYA\"\n        },\n        {\n            \"id\": 422,\n            \"city_name\": \"AMBON\"\n        },\n        {\n            \"id\": 423,\n            \"city_name\": \"BURU\"\n        },\n        {\n            \"id\": 424,\n            \"city_name\": \"BURU SELATAN\"\n        },\n        {\n            \"id\": 425,\n            \"city_name\": \"KEPULAUAN ARU\"\n        },\n        {\n            \"id\": 426,\n            \"city_name\": \"TUAL\"\n        },\n        {\n            \"id\": 427,\n            \"city_name\": \"HALMAHERA BARAT\"\n        },\n        {\n            \"id\": 428,\n            \"city_name\": \"TIDORE KEPULAUAN\"\n        },\n        {\n            \"id\": 429,\n            \"city_name\": \"TERNATE\"\n        },\n        {\n            \"id\": 430,\n            \"city_name\": \"PULAU MOROTAI\"\n        },\n        {\n            \"id\": 431,\n            \"city_name\": \"KEPULAUAN SULA\"\n        },\n        {\n            \"id\": 432,\n            \"city_name\": \"HALMAHERA SELATAN\"\n        },\n        {\n            \"id\": 433,\n            \"city_name\": \"HALMAHERA TENGAH\"\n        },\n        {\n            \"id\": 434,\n            \"city_name\": \"HALMAHERA TIMUR\"\n        },\n        {\n            \"id\": 435,\n            \"city_name\": \"HALMAHERA UTARA\"\n        },\n        {\n            \"id\": 436,\n            \"city_name\": \"YALIMO\"\n        },\n        {\n            \"id\": 437,\n            \"city_name\": \"DOGIYAI\"\n        },\n        {\n            \"id\": 438,\n            \"city_name\": \"ASMAT\"\n        },\n        {\n            \"id\": 439,\n            \"city_name\": \"JAYAPURA\"\n        },\n        {\n            \"id\": 440,\n            \"city_name\": \"PANIAI\"\n        },\n        {\n            \"id\": 441,\n            \"city_name\": \"MAPPI\"\n        },\n        {\n            \"id\": 442,\n            \"city_name\": \"TOLIKARA\"\n        },\n        {\n            \"id\": 443,\n            \"city_name\": \"PUNCAK JAYA\"\n        },\n        {\n            \"id\": 444,\n            \"city_name\": \"PEGUNUNGAN BINTANG\"\n        },\n        {\n            \"id\": 445,\n            \"city_name\": \"JAYAWIJAYA\"\n        },\n        {\n            \"id\": 446,\n            \"city_name\": \"LANNY JAYA\"\n        },\n        {\n            \"id\": 447,\n            \"city_name\": \"NDUGA\"\n        },\n        {\n            \"id\": 448,\n            \"city_name\": \"BIAK NUMFOR\"\n        },\n        {\n            \"id\": 449,\n            \"city_name\": \"KEPULAUAN YAPEN (YAPEN WAROPEN)\"\n        },\n        {\n            \"id\": 450,\n            \"city_name\": \"PUNCAK\"\n        },\n        {\n            \"id\": 451,\n            \"city_name\": \"INTAN JAYA\"\n        },\n        {\n            \"id\": 452,\n            \"city_name\": \"WAROPEN\"\n        },\n        {\n            \"id\": 453,\n            \"city_name\": \"NABIRE\"\n        },\n        {\n            \"id\": 454,\n            \"city_name\": \"MIMIKA\"\n        },\n        {\n            \"id\": 455,\n            \"city_name\": \"BOVEN DIGOEL\"\n        },\n        {\n            \"id\": 456,\n            \"city_name\": \"YAHUKIMO\"\n        },\n        {\n            \"id\": 457,\n            \"city_name\": \"SARMI\"\n        },\n        {\n            \"id\": 458,\n            \"city_name\": \"MERAUKE\"\n        },\n        {\n            \"id\": 459,\n            \"city_name\": \"DEIYAI (DELIYAI)\"\n        },\n        {\n            \"id\": 460,\n            \"city_name\": \"KEEROM\"\n        },\n        {\n            \"id\": 461,\n            \"city_name\": \"SUPIORI\"\n        },\n        {\n            \"id\": 462,\n            \"city_name\": \"MAMBERAMO RAYA\"\n        },\n        {\n            \"id\": 463,\n            \"city_name\": \"MAMBERAMO TENGAH\"\n        },\n        {\n            \"id\": 464,\n            \"city_name\": \"RAJA AMPAT\"\n        },\n        {\n            \"id\": 465,\n            \"city_name\": \"MANOKWARI SELATAN\"\n        },\n        {\n            \"id\": 466,\n            \"city_name\": \"MANOKWARI\"\n        },\n        {\n            \"id\": 467,\n            \"city_name\": \"KAIMANA\"\n        },\n        {\n            \"id\": 468,\n            \"city_name\": \"MAYBRAT\"\n        },\n        {\n            \"id\": 469,\n            \"city_name\": \"SORONG SELATAN\"\n        },\n        {\n            \"id\": 470,\n            \"city_name\": \"FAKFAK\"\n        },\n        {\n            \"id\": 471,\n            \"city_name\": \"PEGUNUNGAN ARFAK\"\n        },\n        {\n            \"id\": 472,\n            \"city_name\": \"TAMBRAUW\"\n        },\n        {\n            \"id\": 473,\n            \"city_name\": \"SORONG\"\n        },\n        {\n            \"id\": 474,\n            \"city_name\": \"TELUK WONDAMA\"\n        },\n        {\n            \"id\": 475,\n            \"city_name\": \"TELUK BINTUNI\"\n        }\n    ],\n    \"message\": \"Success read all data.\",\n    \"status\": \"Success\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

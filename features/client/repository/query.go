@@ -86,43 +86,53 @@ func (repo *clientRepository) Update(input client.Core, clientID uint, userID ui
 	fmt.Println("\n\nInput update client ", input)
 	fmt.Println("\n\nclientID ", clientID, " --- ", "userID", userID)
 
-	return repo.db.Transaction(func(tx *gorm.DB) (err error) {
-		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+	tx := repo.db.Model(&client).Where("user_id = ?", userID).Updates(&clientGorm)
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
+	return nil
+	// return repo.db.Transaction(func(tx *gorm.DB) (err error) {
+	// 	// do some database operations in the transaction (use 'tx' from this point, not 'db')
 
-		fmt.Println("\n\ntx = ", tx)
-		fmt.Println("\n\nerr = ", err)
+	// 	fmt.Println("\n\ntx = ", tx)
+	// 	fmt.Println("\n\nerr = ", err)
 
-		err = tx.Where("id = ?", 0).Updates(&clientGorm.User).Error
-		if err != nil {
-			fmt.Println("\n\nFailed Update. Query data user failed. Error : ", err)
-			return err
-		}
+	// 	err = tx.Model(&client).Where("user_id = ?", userID).Updates(&clientGorm).Error
+	// 	if err != nil {
+	// 		fmt.Println("\n\nFailed Update. Query data user failed. Error : ", err)
+	// 		return err
+	// 	}
 
-		fmt.Println("\n\ntx2 = ", tx)
-		fmt.Println("\n\nerr2 = ", err)
+	// 	fmt.Println("\n\ntx2 = ", tx)
+	// 	fmt.Println("\n\nerr2 = ", err)
 
-		// if tx.RowsAffected == 0 {
-		// 	fmt.Println("\n\nUpdate user failed row affected ", tx.RowsAffected)
-		// 	return errors.New("Update failed")
-		// }
-		fmt.Println("\n\nUpdate user succes  row affected = ", tx.RowsAffected, " hasil = ", clientGorm)
+	// 	// if tx.RowsAffected == 0 {
+	// 	// 	fmt.Println("\n\nUpdate user failed row affected ", tx.RowsAffected)
+	// 	// 	return errors.New("Update failed")
+	// 	// }
+	// 	fmt.Println("\n\nUpdate user succes  row affected = ", tx.RowsAffected, " hasil = ", clientGorm)
 
-		if err = tx.Model(&client).Where("ID = ?", clientID).Updates(&clientGorm).Error; err != nil {
-			// return any error will rollback
-			fmt.Println("\n\nFailed Update. Query data client failed. Error : ", err)
-			return err
-		}
+	// 	if err = tx.Model(&client).Where("ID = ?", clientID).Updates(&clientGorm).Error; err != nil {
+	// 		// return any error will rollback
+	// 		fmt.Println("\n\nFailed Update. Query data client failed. Error : ", err)
+	// 		return err
+	// 	}
 
-		fmt.Println("\n\nUpdate client succes  row affected = ", tx.RowsAffected, " hasil = ", clientGorm)
+	// 	fmt.Println("\n\nUpdate client succes  row affected = ", tx.RowsAffected, " hasil = ", clientGorm)
 
-		// if tx.RowsAffected == 0 {
-		// 	return errors.New("Update failed")
-		// }
+	// 	// if tx.RowsAffected == 0 {
+	// 	// 	return errors.New("Update failed")
+	// 	// }
 
-		// return nil will commit the whole transaction
-		return err
-	})
+	// 	// return nil will commit the whole transaction
+	// return
 }
+
+// })
+// }
 
 // Delete implements user.Repository
 func (repo *clientRepository) Delete(id uint) error {
