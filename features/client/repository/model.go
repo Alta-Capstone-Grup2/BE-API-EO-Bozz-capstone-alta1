@@ -62,7 +62,6 @@ func fromCore(dataCore client.Core) Client {
 			Name:     dataCore.User.Name,
 			Email:    dataCore.User.Email,
 			Password: dataCore.User.Password,
-			Role:     dataCore.User.Role,
 		},
 		Gender:          dataCore.Gender,
 		Address:         dataCore.Address,
