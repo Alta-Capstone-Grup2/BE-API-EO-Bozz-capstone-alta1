@@ -28,17 +28,35 @@ type Order struct {
 	Service           Service
 	ClientID          uint
 	Client            Client
-	AdditionalID      uint
-	Additional        Additional
-	Qty               uint
-	DetailOrderTotal  string
+	DetailOrder       []DetailOrder
+}
+
+type DetailOrder struct {
+	gorm.Model
+	ServiceAdditionalID uint
+	ServiceAdditional   ServiceAdditional
+	AdditionalName      string
+	AdditionalPrice     uint
+	Qty                 uint
+	DetailOrderTotal    uint
+	OrderID             uint
+	Order               Order
+}
+
+type ServiceAdditional struct {
+	gorm.Model
+	AdditionalID uint
+	Additional   Additional
+	ServiceID    uint
+	Service      Service
 }
 
 type Additional struct {
 	gorm.Model
-	AdditionalName  string
-	AdditionalPrice uint
-	PartnerID       uint
+	AdditionalName    string
+	AdditionalPrice   uint
+	PartnerID         uint
+	ServiceAdditional []ServiceAdditional
 }
 
 type Client struct {
@@ -70,6 +88,7 @@ type Service struct {
 	ServiceImageFile   string
 	City               string
 	PartnerID          uint
+	ServiceAdditional  []ServiceAdditional
 }
 
 // mapping
@@ -77,32 +96,53 @@ type Service struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore order.Core) Order {
 	modelData := Order{
-		EventName:         dataCore.EventName,
-		StartDate:         dataCore.StartDate,
-		StartTime:         dataCore.StartTime,
-		EndDate:           dataCore.EndDate,
-		EndTime:           dataCore.EndTime,
-		EventLocation:     dataCore.EventLocation,
-		EventAddress:      dataCore.EventAddress,
-		NotesForPartner:   dataCore.NotesForPartner,
-		ServiceName:       dataCore.ServiceName,
-		ServicePrice:      dataCore.ServicePrice,
-		GrossAmmount:      dataCore.GrossAmmount,
-		PaymentMethod:     dataCore.PaymentMethod,
-		OrderStatus:       dataCore.OrderStatus,
-		PayoutRecieptFile: dataCore.PayoutRecieptFile,
-		PayoutDate:        dataCore.PayoutDate,
-		ServiceID:         dataCore.ServiceID,
-		ClientID:          dataCore.ClientID,
-		AdditionalID:      dataCore.AdditionalID,
-		Qty:               dataCore.Qty,
-		DetailOrderTotal:  dataCore.DetailOrderTotal,
+		EventName:       dataCore.EventName,
+		StartDate:       dataCore.StartDate,
+		EndDate:         dataCore.EndDate,
+		EventLocation:   dataCore.EventLocation,
+		EventAddress:    dataCore.EventAddress,
+		NotesForPartner: dataCore.NotesForPartner,
+		PaymentMethod:   dataCore.PaymentMethod,
+		ServiceID:       dataCore.ServiceID,
+		ClientID:        dataCore.ClientID,
+	}
+	return modelData
+}
+
+func fromDetailOrder(dataCore order.DetailOrder) DetailOrder {
+	modelData := DetailOrder{
+		ServiceAdditionalID: dataCore.ServiceAdditionalID,
+		Qty:                 dataCore.Qty,
 	}
 	return modelData
 }
 
 // mengubah struct model gorm ke struct core
 func (dataModel *Order) toCore() order.Core {
+	return order.Core{
+		ID:            dataModel.ID,
+		EventName:     dataModel.EventName,
+		StartDate:     dataModel.StartDate,
+		EndDate:       dataModel.EndDate,
+		EventLocation: dataModel.EventLocation,
+		ServiceName:   dataModel.ServiceName,
+		GrossAmmount:  dataModel.GrossAmmount,
+		OrderStatus:   dataModel.OrderStatus,
+		ServiceID:     dataModel.ServiceID,
+		ClientID:      dataModel.ClientID,
+	}
+}
+
+// mengubah slice struct model gorm ke slice struct core
+func toCoreList(dataModel []Order) []order.Core {
+	var dataCore []order.Core
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
+
+func (dataModel *Order) toCoreOrder() order.Core {
 	return order.Core{
 		ID:                dataModel.ID,
 		EventName:         dataModel.EventName,
@@ -122,17 +162,16 @@ func (dataModel *Order) toCore() order.Core {
 		PayoutDate:        dataModel.PayoutDate,
 		ServiceID:         dataModel.ServiceID,
 		ClientID:          dataModel.ClientID,
-		AdditionalID:      dataModel.AdditionalID,
-		Qty:               dataModel.Qty,
-		DetailOrderTotal:  dataModel.DetailOrderTotal,
 	}
 }
 
-// mengubah slice struct model gorm ke slice struct core
-func toCoreList(dataModel []Order) []order.Core {
-	var dataCore []order.Core
-	for _, v := range dataModel {
-		dataCore = append(dataCore, v.toCore())
+func (dataModel *DetailOrder) toCoreDetailOrder() order.DetailOrder {
+	return order.DetailOrder{
+		ServiceAdditionalID: dataModel.ServiceAdditionalID,
+		AdditionalName:      dataModel.AdditionalName,
+		AdditionalPrice:     dataModel.AdditionalPrice,
+		Qty:                 dataModel.Qty,
+		DetailOrderTotal:    dataModel.DetailOrderTotal,
+		OrderID:             dataModel.OrderID,
 	}
-	return dataCore
 }

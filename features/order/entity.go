@@ -23,17 +23,35 @@ type Core struct {
 	Service           Service
 	ClientID          uint
 	Client            Client
-	AdditionalID      uint
-	Additional        Additional
-	Qty               uint
-	DetailOrderTotal  string
+	DetailOrder       []DetailOrder
+}
+
+type DetailOrder struct {
+	ID                  uint
+	ServiceAdditionalID uint
+	ServiceAdditional   ServiceAdditional
+	AdditionalName      string
+	AdditionalPrice     uint
+	Qty                 uint
+	DetailOrderTotal    uint
+	OrderID             uint
+	Order               Core
+}
+
+type ServiceAdditional struct {
+	ID           uint
+	AdditionalID uint
+	Additional   Additional
+	ServiceID    uint
+	Service      Service
 }
 
 type Additional struct {
-	ID              uint
-	AdditionalName  string
-	AdditionalPrice uint
-	PartnerID       uint
+	ID                uint
+	AdditionalName    string
+	AdditionalPrice   uint
+	PartnerID         uint
+	ServiceAdditional []ServiceAdditional
 }
 
 type Client struct {
@@ -56,20 +74,18 @@ type Service struct {
 	ServiceImageFile   string
 	City               string
 	PartnerID          uint
+	ServiceAdditional  []ServiceAdditional
 }
 
 type ServiceInterface interface {
-	GetAll() (data []Core, err error)
-	GetById(id uint) (data Core, err error)
-	Create(input Core) error
-	Update(input Core, id uint) error
-	Delete(id uint) error
+	Create(input Core, inputDetail DetailOrder) error
+	GetAll(query string) (data []Core, err error)
+	GetById(id uint) (data Core, dataDetail DetailOrder, err error)
 }
 
 type RepositoryInterface interface {
+	Create(input Core, inputDetail DetailOrder) error
 	GetAll() (data []Core, err error)
-	GetById(id uint) (data Core, err error)
-	Create(input Core) error
-	Update(input Core, id uint) error
-	Delete(id uint) error
+	GetAllWithSearch(query string) (data []Core, err error)
+	GetById(id uint) (data Core, dataDetail DetailOrder, err error)
 }
