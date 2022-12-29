@@ -81,12 +81,13 @@ func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {
 // Update implements user.Repository
 func (repo *clientRepository) Update(input client.Core, clientID uint, userID uint) error {
 	clientGorm := fromCore(input)
+	// userGorm:=fromCore(input.User)
 	var client Client
 	var user User
 	fmt.Println("\n\nInput update client ", input)
 	fmt.Println("\n\nclientID ", clientID, " --- ", "userID", userID)
 
-	tx := repo.db.Model(&user).Where("ID = ?", userID).Updates(&clientGorm)
+	tx := repo.db.Model(&user).Where("ID = ?", userID).Updates(&clientGorm.User)
 	yx := repo.db.Model(&client).Where("ID = ?", clientID).Updates(&clientGorm)
 	if tx.Error != nil && yx.Error != nil {
 		return errors.New("failed update client")
