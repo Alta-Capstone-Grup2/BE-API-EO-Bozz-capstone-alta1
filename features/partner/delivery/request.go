@@ -32,6 +32,16 @@ type PartnerRequest struct {
 	BankAccountName   string `json:"bank_account_name" form:"bank_account_name"`
 }
 
+type VerifyPartnerRequest struct {
+	VerifyLog string `json:"verify_log" form:"verify_log"`
+	Status    string `json:"status" form:"status"`
+	PartnerID uint   `json:"partner_id" form:"partner_id"`
+}
+
+type ConfirmOrderRequest struct {
+	OrderStatus string `json:"order_status" form:"order_status"`
+}
+
 func toCore(input PartnerRequest) partner.Core {
 	partnerCoredata := partner.Core{
 		PICPosition:       input.PICPosition,
