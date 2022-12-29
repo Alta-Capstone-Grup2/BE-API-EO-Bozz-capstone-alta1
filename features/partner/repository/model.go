@@ -199,6 +199,8 @@ func (dataModel *Partner) toCore() partner.Core {
 		VerificationStatus: dataModel.VerificationStatus,
 		VerificationLog:    dataModel.VerificationLog,
 		UserID:             dataModel.UserID,
+		CreatedAt:          dataModel.CreatedAt,
+		UpdatedAt:          dataModel.UpdatedAt,
 		User: partner.UserCore{
 			ID:       dataModel.User.ID,
 			Name:     dataModel.User.Name,

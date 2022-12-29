@@ -213,7 +213,26 @@ func (repo *partnerRepository) GetAdditionals(partnerID uint) (data []partner.Ad
 	data = toAdditionalCoreList(modelData)
 	return data, err
 }
-func (repo *partnerRepository) GetPartnerRegisterData(partnerID uint) (data []partner.Core, err error) {
+func (repo *partnerRepository) GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus string) (data []partner.Core, err error) {
+	var tx *gorm.DB
+	var modelData []Partner
+	if queryCompanyName == "" && queryPICName == "" && queryPartnerStatus == "" {
+		tx = repo.db.Preload("User").Find(&modelData)
+	} else {
+		tx = repo.db.Preload("User").Where("company_name LIKE ?", "%"+queryCompanyName+"%").Where(&Partner{User: User{Name: queryPICName}, VerificationStatus: queryPartnerStatus}).Find(&modelData)
+	}
+
+	if tx.Error != nil {
+		helper.LogDebug("Partner-query-GetPartnerRegisterData | Error execute query. Error :", tx.Error)
+		return data, tx.Error
+	}
+
+	helper.LogDebug("Partner-query-GetPartnerRegisterData | Row Affected : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return data, tx.Error
+	}
+
+	data = toCoreList(modelData)
 	return data, err
 }
 func (repo *partnerRepository) GetPartnerRegisterDataByID(partnerID uint) (data partner.Core, err error) {

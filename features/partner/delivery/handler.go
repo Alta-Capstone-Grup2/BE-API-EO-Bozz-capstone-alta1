@@ -50,7 +50,7 @@ func (delivery *PartnerDelivery) GetAll(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreList(results)
+	dataResponse := fromListCoreList(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
 }
@@ -233,9 +233,14 @@ func (delivery *PartnerDelivery) GetPartnerRegisterData(c echo.Context) error {
 	// if userRole != "Admin" {
 	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
 	// }
-	query := c.QueryParam("name")
-	helper.LogDebug("isi query = ", query)
-	results, err := delivery.partnerService.GetAll(query)
+	queryCompanyName := c.QueryParam("company_name")
+	queryPICName := c.QueryParam("pic_name")
+	queryPartnerStatus := c.QueryParam("partner_status")
+	helper.LogDebug("Partner Handler - GetPartnerRegisterData | queryCompanyName = ", queryCompanyName)
+	helper.LogDebug("Partner Handler - GetPartnerRegisterData | queryPICName = ", queryPICName)
+	helper.LogDebug("Partner Handler - GetPartnerRegisterData | queryPartnerStatus = ", queryPartnerStatus)
+
+	results, err := delivery.partnerService.GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus)
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -243,7 +248,7 @@ func (delivery *PartnerDelivery) GetPartnerRegisterData(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreList(results)
+	dataResponse := fromListCoreList(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
 }
