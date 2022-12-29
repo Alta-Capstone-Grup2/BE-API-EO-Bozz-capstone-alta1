@@ -8,6 +8,7 @@ import (
 type ServiceResponse struct {
 	ID               uint    `json:"id"`
 	ServiceName      string  `json:"service_name"`
+	ServiceInclude   string  `json:"service_include"`
 	ServiceCategory  string  `json:"service_category"`
 	ServicePrice     uint    `json:"service_price"`
 	AverageRating    float64 `json:"average_rating"`
@@ -53,6 +54,7 @@ func fromCore(dataCore service.Core) ServiceResponse {
 	return ServiceResponse{
 		ID:               dataCore.ID,
 		ServiceName:      dataCore.ServiceName,
+		ServiceInclude:   dataCore.ServiceInclude,
 		ServiceCategory:  dataCore.ServiceCategory,
 		ServicePrice:     dataCore.ServicePrice,
 		AverageRating:    dataCore.AverageRating,

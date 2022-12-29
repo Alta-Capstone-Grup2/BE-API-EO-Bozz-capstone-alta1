@@ -178,7 +178,7 @@ func (repo *serviceRepository) GetDiscussionById(id uint) (data []_service.Discu
 
 func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 	//convert string to format time
-	layoutFormat := "2006-01-02 15:04:05"
+	layoutFormat := "2006-01-02"
 	timeStart, _ := time.Parse(layoutFormat, queryStart)
 	timeEnd, _ := time.Parse(layoutFormat, queryEnd)
 
@@ -189,8 +189,9 @@ func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, que
 	tx := repo.db.Raw(queryBuilder).Find(&service)
 
 	//create return
+	var services Service
 	var orders Order
-	nameService := orders.ServiceName
+	nameService := services.ServiceName
 	statusAvailable := "Available"
 	statusNotvalable := "Not Available"
 

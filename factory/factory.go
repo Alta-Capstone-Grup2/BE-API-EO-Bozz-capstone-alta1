@@ -37,9 +37,9 @@ import (
 	serviceRepo "capstone-alta1/features/service/repository"
 	serviceService "capstone-alta1/features/service/service"
 
-	// orderDelivery "capstone-alta1/features/order/delivery"
-	// orderRepo "capstone-alta1/features/order/repository"
-	// orderService "capstone-alta1/features/order/service"
+	orderDelivery "capstone-alta1/features/order/delivery"
+	orderRepo "capstone-alta1/features/order/repository"
+	orderService "capstone-alta1/features/order/service"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -82,7 +82,7 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	serviceServiceFactory := serviceService.New(serviceRepoFactory)
 	serviceDelivery.New(serviceServiceFactory, e)
 
-	// orderRepoFactory := orderRepo.New(db)
-	// orderServiceFactory := orderService.New(orderRepoFactory)
-	// orderDelivery.New(orderServiceFactory, e)
+	orderRepoFactory := orderRepo.New(db)
+	orderServiceFactory := orderService.New(orderRepoFactory)
+	orderDelivery.New(orderServiceFactory, e)
 }

@@ -10,6 +10,7 @@ import (
 type Service struct {
 	gorm.Model
 	ServiceName        string
+	ServiceInclude     string
 	ServiceDescription string
 	ServiceCategory    string
 	ServicePrice       uint
@@ -115,12 +116,13 @@ type User struct {
 func fromCore(dataCore service.Core) Service {
 	modelData := Service{
 		ServiceName:        dataCore.ServiceName,
+		ServiceInclude:     dataCore.ServiceInclude,
 		ServiceDescription: dataCore.ServiceDescription,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
-		ServiceImageFile:   dataCore.ServiceImageFile,
-		City:               dataCore.City,
-		PartnerID:          dataCore.PartnerID,
+		// ServiceImageFile:   dataCore.ServiceImageFile,
+		City:      dataCore.City,
+		PartnerID: dataCore.PartnerID,
 	}
 	return modelData
 }
@@ -138,6 +140,7 @@ func (dataModel *Service) toCore() service.Core {
 	return service.Core{
 		ID:                 dataModel.ID,
 		ServiceName:        dataModel.ServiceName,
+		ServiceInclude:     dataModel.ServiceInclude,
 		ServiceDescription: dataModel.ServiceDescription,
 		ServiceCategory:    dataModel.ServiceCategory,
 		ServicePrice:       dataModel.ServicePrice,
