@@ -237,11 +237,29 @@ func (service *partnerService) GetPartnerRegisterData(queryCompanyName, queryPIC
 	return data, err
 }
 func (service *partnerService) GetPartnerRegisterDataByID(partnerID uint) (data partner.Core, err error) {
+	data, err = service.partnerRepository.GetPartnerRegisterDataByID(partnerID)
+	if err != nil {
+		log.Error(err.Error())
+		return partner.Core{}, err
+	}
+
 	return data, err
 }
-func (service *partnerService) UpdatePartnerVerifyStatus(partnerID uint) (data partner.Core, err error) {
-	return data, err
+func (service *partnerService) UpdatePartnerVerifyStatus(verificationLog, verificationStatus string, partnerID uint) (err error) {
+	err = service.partnerRepository.UpdatePartnerVerifyStatus(verificationLog, verificationStatus, partnerID)
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+
+	return err
 }
-func (service *partnerService) UpdateOrderConfirmStatus(orderID uint) (data partner.Core, err error) {
-	return data, err
+func (service *partnerService) UpdateOrderConfirmStatus(orderID uint, partnerID uint) (err error) {
+	err = service.partnerRepository.UpdateOrderConfirmStatus(orderID, partnerID)
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+
+	return err
 }

@@ -3,6 +3,12 @@ package config
 const (
 	// Config Constant
 
+	// Order Constant
+	ORDER_STATUS_WAITING_CONFIRMATION = "waiting confirmation"
+	ORDER_STATUS_ORDER_CONFIRMED      = "order confirmed"
+	ORDER_STATUS_COMPLETE_ORDER       = "complete order"
+	ORDER_STATUS_PAID_OFF             = "paid off"
+
 	//Show log
 	SHOW_LOGS = true
 

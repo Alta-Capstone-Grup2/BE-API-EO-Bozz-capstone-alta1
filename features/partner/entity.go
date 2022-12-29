@@ -144,8 +144,8 @@ type ServiceInterface interface {
 	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
 	GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus string) (data []Core, err error)
 	GetPartnerRegisterDataByID(partnerID uint) (data Core, err error)
-	UpdatePartnerVerifyStatus(partnerID uint) (data Core, err error)
-	UpdateOrderConfirmStatus(orderID uint) (data Core, err error)
+	UpdatePartnerVerifyStatus(verificationLog, verificationStatus string, partnerID uint) (err error)
+	UpdateOrderConfirmStatus(orderID uint, partnerID uint) (err error)
 }
 
 type RepositoryInterface interface {
@@ -161,6 +161,6 @@ type RepositoryInterface interface {
 	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
 	GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus string) (data []Core, err error)
 	GetPartnerRegisterDataByID(partnerID uint) (data Core, err error)
-	UpdatePartnerVerifyStatus(partnerID uint) (data Core, err error)
-	UpdateOrderConfirmStatus(orderID uint) (data Core, err error)
+	UpdatePartnerVerifyStatus(verificationLog, verificationStatus string, partnerID uint) (err error)
+	UpdateOrderConfirmStatus(orderID uint, partnerID uint) (err error)
 }
