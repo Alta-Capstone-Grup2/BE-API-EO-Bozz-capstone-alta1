@@ -3,6 +3,11 @@ package config
 const (
 	// Config Constant
 
+	// Partner verification constant
+	PARTNER_VERIFICATION_STATUS_NOT_VERIFIED = "Not Verified"
+	PARTNER_VERIFICATION_STATUS_REVISION     = "Revision"
+	PARTNER_VERIFICATION_STATUS_VERIFIED     = "Verified"
+
 	// Order Constant
 	ORDER_STATUS_WAITING_CONFIRMATION = "waiting confirmation"
 	ORDER_STATUS_ORDER_CONFIRMED      = "order confirmed"

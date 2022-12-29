@@ -306,22 +306,29 @@ func (delivery *PartnerDelivery) VerifyPartner(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
+	if (userInput.Status == cfg.PARTNER_VERIFICATION_STATUS_NOT_VERIFIED) || (userInput.Status == cfg.PARTNER_VERIFICATION_STATUS_REVISION) || (userInput.Status == cfg.PARTNER_VERIFICATION_STATUS_VERIFIED) {
+		helper.LogDebug("Partner - handler - VerifyPartner | userInput = ", userInput)
+		helper.LogDebug("Partner - handler - VerifyPartner | partner id = ", userInput.PartnerID)
 
-	helper.LogDebug("Partner - handler - VerifyPartner | userInput = ", userInput)
-	helper.LogDebug("Partner - handler - VerifyPartner | partner id = ", userInput.PartnerID)
+		if userInput.PartnerID < 1 {
+			helper.LogDebug("Partner - handler - VerifyPartner | validasi id. id = ", userInput.PartnerID)
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
+		}
 
-	if userInput.PartnerID < 1 {
-		helper.LogDebug("Partner - handler - VerifyPartner | validasi id. id = ", userInput.PartnerID)
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
+		helper.LogDebug("Partner - handler - VerifyPartner | mau masuk proses =")
+
+		err := delivery.partnerService.UpdatePartnerVerifyStatus(userInput.VerifyLog, userInput.Status, uint(userInput.PartnerID))
+		if err != nil {
+			helper.LogDebug(err.Error())
+			if strings.Contains(err.Error(), "Failed. Cannot update status that already Verified.") {
+				return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed. Cannot update status that already Verified."))
+			}
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to update partner status. Please try again."))
+		}
+
+		return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data status partner to "+userInput.Status+"."))
+
+	} else {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed. Incorrect status. Please input either Not Verified, Revision or Verified."))
 	}
-
-	helper.LogDebug("Partner - handler - VerifyPartner | mau masuk proses =")
-
-	err := delivery.partnerService.UpdatePartnerVerifyStatus(userInput.VerifyLog, userInput.Status, uint(userInput.PartnerID))
-	if err != nil {
-		helper.LogDebug(err.Error())
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to update partner status. Please try again."))
-	}
-
-	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data status partner to Verified."))
 }

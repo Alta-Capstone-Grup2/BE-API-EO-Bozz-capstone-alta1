@@ -256,7 +256,7 @@ func (repo *partnerRepository) UpdatePartnerVerifyStatus(verificationLog, verifi
 	var modelData Partner
 	// proses update
 	// tx := repo.db.Model(&modelData).Where("ID = ?", partnerID).Updates(Partner{VerificationLog: gorm.Expr("verification_log "), VerificationStatus: verificationStatus})
-	tx := repo.db.Raw("UPDATE `partners` SET `verification_log` = CONCAT(`verification_log`, '\n', ?), `verification_status` = ? WHERE id = ? AND `partners`.`deleted_at` IS NULL", verificationLog, verificationStatus).Scan(&modelData)
+	tx := repo.db.Raw("UPDATE `partners` SET `verification_log` = CONCAT(`verification_log`, '\n', ?), `verification_status` = ? WHERE id = ? AND `partners`.`deleted_at` IS NULL", verificationLog, verificationStatus, partnerID).Scan(&modelData)
 
 	if tx.Error != nil {
 		helper.LogDebug("Partner-query-UpdatePartnerVerifyStatus | Error execute query. Error :", tx.Error)
