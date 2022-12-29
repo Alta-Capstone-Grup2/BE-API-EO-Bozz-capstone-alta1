@@ -45,7 +45,7 @@ type ServiceInterface interface {
 	GetById(id uint) (data Core, err error)
 	Create(input Core, c echo.Context) error
 	Update(input Core, clientID uint, userID uint, c echo.Context) error
-	Delete(id uint) error
+	Delete(clientID uint, userID uint) error
 	GetOrderById(id uint) (data []Order, err error)
 }
 
@@ -55,7 +55,7 @@ type RepositoryInterface interface {
 	GetById(id uint) (data Core, err error)
 	Create(input Core) error
 	Update(input Core, clientID uint, userID uint) error
-	Delete(id uint) error
+	Delete(clientID uint, userID uint) error
 	FindUser(email string) (data Core, err error)
 	GetOrderById(id uint) (data []Order, err error)
 }

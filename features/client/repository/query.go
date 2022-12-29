@@ -81,11 +81,8 @@ func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {
 // Update implements user.Repository
 func (repo *clientRepository) Update(input client.Core, clientID uint, userID uint) error {
 	clientGorm := fromCore(input)
-	// userGorm:=fromCore(input.User)
 	var client Client
 	var user User
-	fmt.Println("\n\nInput update client ", input)
-	fmt.Println("\n\nclientID ", clientID, " --- ", "userID", userID)
 
 	tx := repo.db.Model(&user).Where("ID = ?", userID).Updates(&clientGorm.User)
 	yx := repo.db.Model(&client).Where("ID = ?", clientID).Updates(&clientGorm)
@@ -96,72 +93,20 @@ func (repo *clientRepository) Update(input client.Core, clientID uint, userID ui
 		return errors.New("update failed")
 	}
 	return nil
-	// return repo.db.Transaction(func(tx *gorm.DB) (err error) {
-	// 	// do some database operations in the transaction (use 'tx' from this point, not 'db')
-
-	// 	fmt.Println("\n\ntx = ", tx)
-	// 	fmt.Println("\n\nerr = ", err)
-
-	// 	err = tx.Model(&client).Where("user_id = ?", userID).Updates(&clientGorm).Error
-	// 	if err != nil {
-	// 		fmt.Println("\n\nFailed Update. Query data user failed. Error : ", err)
-	// 		return err
-	// 	}
-
-	// 	fmt.Println("\n\ntx2 = ", tx)
-	// 	fmt.Println("\n\nerr2 = ", err)
-
-	// 	// if tx.RowsAffected == 0 {
-	// 	// 	fmt.Println("\n\nUpdate user failed row affected ", tx.RowsAffected)
-	// 	// 	return errors.New("Update failed")
-	// 	// }
-	// 	fmt.Println("\n\nUpdate user succes  row affected = ", tx.RowsAffected, " hasil = ", clientGorm)
-
-	// 	if err = tx.Model(&client).Where("ID = ?", clientID).Updates(&clientGorm).Error; err != nil {
-	// 		// return any error will rollback
-	// 		fmt.Println("\n\nFailed Update. Query data client failed. Error : ", err)
-	// 		return err
-	// 	}
-
-	// 	fmt.Println("\n\nUpdate client succes  row affected = ", tx.RowsAffected, " hasil = ", clientGorm)
-
-	// 	// if tx.RowsAffected == 0 {
-	// 	// 	return errors.New("Update failed")
-	// 	// }
-
-	// 	// return nil will commit the whole transaction
-	// return
 }
 
-// })
-// }
-
 // Delete implements user.Repository
-func (repo *clientRepository) Delete(id uint) error {
+func (repo *clientRepository) Delete(clientID uint, userID uint) error {
 	var client Client
 	var user User
-	repo.db.Transaction(func(tx *gorm.DB) error {
-		// do some database operations in the transaction (use 'tx' from this point, not 'db')
-		if err := tx.Delete(&client, id).Error; err != nil {
-			// return any error will rollback
-			fmt.Println("\n\nFailed Delete. Query data client failed. Error : ", err)
-			return err
-		}
-
-		if err := tx.Delete(&user, id).Error; err != nil {
-			fmt.Println("\n\nFailed Update. Query data user failed. Error : ", err)
-			return err
-		}
-
-		if tx.RowsAffected == 0 {
-			fmt.Println("\n\nUpdate failed row affected ", tx.RowsAffected)
-			return errors.New("update failed")
-		}
-
-		// return nil will commit the whole transaction
-		return nil
-	})
-
+	tx := repo.db.Delete(&client, clientID)
+	yx := repo.db.Delete(&user, userID)
+	if tx.Error != nil && yx.Error != nil {
+		return errors.New("failed update client")
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
 	return nil
 }
 

@@ -73,79 +73,6 @@ func (delivery *PartnerDelivery) Create(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
-
-	// CompanyImageUrl, _ := c.FormFile("company_image_file")
-	// if CompanyImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.CompanyImageUrl = urlFile
-	// } else {
-	// 	userInput.CompanyImageUrl = ""
-	// }
-
-	// NIBImageUrl, _ := c.FormFile("nib_image_file")
-	// if NIBImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.NIBImageUrl = urlFile
-	// } else {
-	// 	userInput.NIBImageUrl = ""
-	// }
-
-	// SIUPImageUrl, _ := c.FormFile("siup_image_file")
-	// if SIUPImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.SIUPImageUrl = urlFile
-	// } else {
-	// 	userInput.SIUPImageUrl = ""
-	// }
-
-	// Event1ImageUrl, _ := c.FormFile("event1_image_file")
-	// if Event1ImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.Event1ImageUrl = urlFile
-	// } else {
-	// 	userInput.Event1ImageUrl = ""
-	// }
-
-	// Event2ImageUrl, _ := c.FormFile("event2_image_file")
-	// if Event2ImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.Event2ImageUrl = urlFile
-	// } else {
-	// 	userInput.Event2ImageUrl = ""
-	// }
-
-	// Event3ImageUrl, _ := c.FormFile("event3_image_file")
-	// if Event3ImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.Event3ImageUrl = urlFile
-	// } else {
-	// 	userInput.Event3ImageUrl = ""
-	// }
-
 	dataCore := toCore(userInput)
 	err := delivery.partnerService.Create(dataCore, c)
 	if err != nil {
@@ -161,87 +88,15 @@ func (delivery *PartnerDelivery) Create(c echo.Context) error {
 }
 
 func (delivery *PartnerDelivery) Update(c echo.Context) error {
-	idUser := middlewares.ExtractTokenUserId(c)
+	partnerID := uint(middlewares.ExtractTokenPartnerID(c))
+	userID := uint(middlewares.ExtractTokenUserId(c))
 	userInput := PartnerRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
-
-	// CompanyImageUrl, _ := c.FormFile("company_image_file")
-	// if CompanyImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.CompanyImageUrl = urlFile
-	// } else {
-	// 	userInput.CompanyImageUrl = ""
-	// }
-
-	// NIBImageUrl, _ := c.FormFile("nib_image_file")
-	// if NIBImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.NIBImageUrl = urlFile
-	// } else {
-	// 	userInput.NIBImageUrl = ""
-	// }
-
-	// SIUPImageUrl, _ := c.FormFile("siup_image_file")
-	// if SIUPImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.SIUPImageUrl = urlFile
-	// } else {
-	// 	userInput.SIUPImageUrl = ""
-	// }
-
-	// Event1ImageUrl, _ := c.FormFile("event1_image_file")
-	// if Event1ImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.Event1ImageUrl = urlFile
-	// } else {
-	// 	userInput.Event1ImageUrl = ""
-	// }
-
-	// Event2ImageUrl, _ := c.FormFile("event2_image_file")
-	// if Event2ImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.Event2ImageUrl = urlFile
-	// } else {
-	// 	userInput.Event2ImageUrl = ""
-	// }
-
-	// Event3ImageUrl, _ := c.FormFile("event3_image_file")
-	// if Event3ImageUrl != nil {
-	// 	urlFile, err := thirdparty.Upload(c)
-	// 	if err != nil {
-	// 		return errors.New("registration failed. cannot upload data")
-	// 	}
-	// 	log.Print(urlFile)
-	// 	userInput.Event3ImageUrl = urlFile
-	// } else {
-	// 	userInput.Event3ImageUrl = ""
-	// }
-
 	dataCore := toCore(userInput)
-	err := delivery.partnerService.Update(dataCore, uint(idUser), c)
+	err := delivery.partnerService.Update(dataCore, partnerID, userID, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -253,8 +108,9 @@ func (delivery *PartnerDelivery) Update(c echo.Context) error {
 }
 
 func (delivery *PartnerDelivery) Delete(c echo.Context) error {
-	idUser := middlewares.ExtractTokenUserId(c)
-	err := delivery.partnerService.Delete(uint(idUser))
+	partnerID := uint(middlewares.ExtractTokenPartnerID(c))
+	userID := uint(middlewares.ExtractTokenUserId(c))
+	err := delivery.partnerService.Delete(partnerID, userID)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}

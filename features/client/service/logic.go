@@ -120,9 +120,9 @@ func (service *clientService) Update(input client.Core, clientID uint, userID ui
 	return nil
 }
 
-func (service *clientService) Delete(id uint) error {
+func (service *clientService) Delete(clientID uint, userID uint) error {
 	// proses
-	err := service.clientRepository.Delete(id)
+	err := service.clientRepository.Delete(clientID, userID)
 	if err != nil {
 		log.Error(err.Error())
 		return helper.ServiceErrorMsg(err)

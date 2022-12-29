@@ -79,55 +79,34 @@ func (repo *partnerRepository) GetById(id uint) (data partner.Core, err error) {
 }
 
 // Update implements user.Repository
-func (repo *partnerRepository) Update(input partner.Core, id uint) error {
+func (repo *partnerRepository) Update(input partner.Core, partnerId, userId uint) error {
 	partnerGorm := fromCore(input)
 	var partner Partner
 	var user User
-	repo.db.Transaction(func(tx *gorm.DB) error {
-		// do some database operations in the transaction (use 'tx' from this point, not 'db')
-		if err := tx.Model(&partner).Where("ID = ?", id).Updates(&partnerGorm).Error; err != nil {
-			// return any error will rollback
-			return err
-		}
 
-		if err := tx.Model(&user).Where("ID = ?", id).Updates(&partnerGorm).Error; err != nil {
-			return err
-		}
-
-		if tx.RowsAffected == 0 {
-			return errors.New("update failed")
-		}
-
-		// return nil will commit the whole transaction
-		return nil
-	})
-
+	tx := repo.db.Model(&user).Where("ID = ?", userId).Updates(&partnerGorm.User)
+	yx := repo.db.Model(&partner).Where("ID = ?", partnerId).Updates(&partnerGorm)
+	if tx.Error != nil && yx.Error != nil {
+		return errors.New("failed update client")
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
 	return nil
 }
 
 // Delete implements user.Repository
-func (repo *partnerRepository) Delete(id uint) error {
+func (repo *partnerRepository) Delete(partnerId, userId uint) error {
 	var partner Partner
 	var user User
-	repo.db.Transaction(func(tx *gorm.DB) error {
-		// do some database operations in the transaction (use 'tx' from this point, not 'db')
-		if err := tx.Delete(&partner, id).Error; err != nil {
-			// return any error will rollback
-			return err
-		}
-
-		if err := tx.Delete(&user, id).Error; err != nil {
-			return err
-		}
-
-		if tx.RowsAffected == 0 {
-			return errors.New("update failed")
-		}
-
-		// return nil will commit the whole transaction
-		return nil
-	})
-
+	tx := repo.db.Delete(&partner, partnerId)
+	yx := repo.db.Delete(&user, userId)
+	if tx.Error != nil && yx.Error != nil {
+		return errors.New("failed update client")
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
 	return nil
 }
 
