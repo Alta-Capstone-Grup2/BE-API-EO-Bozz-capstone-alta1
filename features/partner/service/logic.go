@@ -239,16 +239,37 @@ func (service *partnerService) GetPartnerRegisterData(queryCompanyName, queryPIC
 func (service *partnerService) GetPartnerRegisterDataByID(partnerID uint) (data partner.Core, err error) {
 	data, err = service.partnerRepository.GetPartnerRegisterDataByID(partnerID)
 	if err != nil {
-		log.Error(err.Error())
+		helper.LogDebug(err.Error())
 		return partner.Core{}, err
 	}
 
 	return data, err
 }
 func (service *partnerService) UpdatePartnerVerifyStatus(verificationLog, verificationStatus string, partnerID uint) (err error) {
+	// datetime layout
+	layoutDefault := "2006-01-02 15:04:05"
+	//init the loc
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	//set timezone,
+	now := time.Now().In(loc).Format(layoutDefault)
+
+	verificationLog = now + " " + verificationLog
+
+	// validasi status tidak bisa diubah jika sudah confirmed
+	dataResult, err := service.partnerRepository.GetById(partnerID)
+	if err != nil {
+		helper.LogDebug(err.Error())
+		return err
+	}
+
+	if verificationStatus == cfg.PARTNER_VERIFICATION_STATUS_VERIFIED && dataResult.VerificationStatus == cfg.PARTNER_VERIFICATION_STATUS_VERIFIED {
+		return errors.New("Failed. Cannot update status that already Verified.")
+	}
+
+	// proses
 	err = service.partnerRepository.UpdatePartnerVerifyStatus(verificationLog, verificationStatus, partnerID)
 	if err != nil {
-		log.Error(err.Error())
+		helper.LogDebug(err.Error())
 		return err
 	}
 
