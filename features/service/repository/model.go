@@ -120,9 +120,9 @@ func fromCore(dataCore service.Core) Service {
 		ServiceDescription: dataCore.ServiceDescription,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
-		// ServiceImageFile:   dataCore.ServiceImageFile,
-		City:      dataCore.City,
-		PartnerID: dataCore.PartnerID,
+		ServiceImageFile:   dataCore.ServiceImageFile,
+		City:               dataCore.City,
+		PartnerID:          dataCore.PartnerID,
 	}
 	return modelData
 }
