@@ -49,15 +49,6 @@ type ServiceAvailabilityResponse struct {
 	AvailabilityStatus string
 }
 
-func fromCoreAvailability(dataCore service.Order, queryStart, queryEnd time.Time, data string) ServiceAvailabilityResponse {
-	return ServiceAvailabilityResponse{
-		ServiceName:        dataCore.ServiceName,
-		StartDate:          queryStart,
-		EndDate:            queryEnd,
-		AvailabilityStatus: dataCore.AvailabilityStatus,
-	}
-}
-
 func fromCore(dataCore service.Core) ServiceResponse {
 	return ServiceResponse{
 		ID:               dataCore.ID,
@@ -100,6 +91,15 @@ func fromCoreDiscussion(dataCore service.Discussion) ServiceDiscussionResponse {
 		ClientID:  dataCore.ClientID,
 		PartnerID: dataCore.PartnerID,
 		ServiceID: dataCore.ServiceID,
+	}
+}
+
+func fromCoreAvailability(dataCore service.Order) ServiceAvailabilityResponse {
+	return ServiceAvailabilityResponse{
+		ServiceName:        dataCore.ServiceName,
+		StartDate:          dataCore.StartDate,
+		EndDate:            dataCore.EndDate,
+		AvailabilityStatus: dataCore.AvailabilityStatus,
 	}
 }
 

@@ -176,26 +176,34 @@ func (repo *serviceRepository) GetDiscussionById(id uint) (data []_service.Discu
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data _service.Order, err error) {
+func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
+	//convert string to format time
+	layoutFormat := "2006-01-02 15:04:05"
+	timeStart, _ := time.Parse(layoutFormat, queryStart)
+	timeEnd, _ := time.Parse(layoutFormat, queryEnd)
+
+	//check available
 	var service []Service
-	var order []Order
-	queryBuilder := fmt.Sprintf("SELECT * FROM services WHERE id = %d ", serviceId)
-	queryBuilder2 := fmt.Sprintf("SELECT * FROM orders WHERE ('%s' BETWEEN start_date AND end_date) OR ('%s' BETWEEN start_date AND end_date);", queryStart, queryEnd)
+	queryBuilder := fmt.Sprintf("SELECT * FROM orders WHERE service_id = %d AND (('%s' BETWEEN start_date AND end_date) OR ('%s' BETWEEN start_date AND end_date));", serviceId, timeStart, timeEnd)
 	fmt.Println("\n\n query ", queryBuilder)
-	fmt.Println("\n\n query ", queryBuilder2)
-
 	tx := repo.db.Raw(queryBuilder).Find(&service)
-	yx := repo.db.Raw(queryBuilder2).Find(&order)
-	if tx.Error != nil && yx.Error != nil {
-		return _service.Order{}, tx.Error
-	}
 
+	//create return
+	var orders Order
+	nameService := orders.ServiceName
 	statusAvailable := "Available"
 	statusNotvalable := "Not Available"
-	var orders Order
-	if tx.RowsAffected == 0 && yx.RowsAffected == 0 {
-		return orders.toCoreAvailable(statusAvailable), nil
+
+	if tx.Error != nil {
+		return orders.toCoreNotAvailable(nameService, timeStart, timeEnd, statusNotvalable), tx.Error
 	}
 
-	return orders.toCoreNotAvailable(statusNotvalable), nil
+	affectedRow := tx.RowsAffected
+	fmt.Println("\n\nHasil check availbility, \n Checkin date = ", timeStart, " \n Checkout date = ", timeEnd, " \n Hasil Row = ", affectedRow)
+
+	if affectedRow == 0 {
+		return orders.toCoreAvailable(nameService, timeStart, timeEnd, statusAvailable), nil
+	}
+
+	return orders.toCoreNotAvailable(nameService, timeStart, timeEnd, statusNotvalable), nil
 }
