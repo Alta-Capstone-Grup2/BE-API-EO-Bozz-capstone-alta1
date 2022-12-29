@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	cfg "capstone-alta1/config"
 	"capstone-alta1/features/partner"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
@@ -126,23 +127,45 @@ func (delivery *PartnerDelivery) Delete(c echo.Context) error {
 }
 
 func (delivery *PartnerDelivery) ConfirmOrder(c echo.Context) error {
-	idUser := middlewares.ExtractTokenUserId(c)
-	userInput := PartnerRequest{}
+	idParam := c.Param("id")
+	orderID, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+
+	if orderID < 1 {
+		helper.LogDebug("Partner - handler - ConfirmOrder | order id  = ", orderID)
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load order id from parameter, please check again."))
+	}
+
+	partnerID := middlewares.ExtractTokenPartnerID(c)
+	helper.LogDebug("Partner - handler - ConfirmOrder | partner id = ", partnerID)
+	if partnerID < 1 {
+		helper.LogDebug("Partner - handler - ConfirmOrder | validasi id. id = ", partnerID)
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
+	}
+
+	userInput := ConfirmOrderRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
-
-	dataCore := toCore(userInput)
-	err := delivery.partnerService.Update(dataCore, uint(idUser), c)
-	if err != nil {
-		if strings.Contains(err.Error(), "Error:Field validation") {
-			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
-		}
-		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	if userInput.OrderStatus != cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed. Incorrect status."))
 	}
 
-	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
+	helper.LogDebug("Partner - handler - ConfirmOrder | order id = ", orderID)
+	helper.LogDebug("Partner - handler - ConfirmOrder | userInput = ", userInput)
+	helper.LogDebug("Partner - handler - ConfirmOrder | partner id = ", partnerID)
+	helper.LogDebug("Partner - handler - ConfirmOrder | mau masuk proses =")
+
+	err := delivery.partnerService.UpdateOrderConfirmStatus(uint(orderID), uint(partnerID))
+	if err != nil {
+		helper.LogDebug(err.Error())
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to update partner status. Please try again."))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data status partner to Verified."))
 }
 
 func (delivery *PartnerDelivery) GetPartnerServices(c echo.Context) error {
@@ -258,9 +281,12 @@ func (delivery *PartnerDelivery) GetPartnerRegisterDataByID(c echo.Context) erro
 	// if userRole != "Admin" {
 	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
 	// }
-	query := c.QueryParam("name")
-	helper.LogDebug("isi query = ", query)
-	results, err := delivery.partnerService.GetAll(query)
+	idParam := c.Param("id")
+	id, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	results, err := delivery.partnerService.GetPartnerRegisterDataByID(uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -268,27 +294,34 @@ func (delivery *PartnerDelivery) GetPartnerRegisterDataByID(c echo.Context) erro
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreList(results)
+	dataResponse := fromCore(results)
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }
 
 func (delivery *PartnerDelivery) VerifyPartner(c echo.Context) error {
-	idUser := middlewares.ExtractTokenUserId(c)
-	userInput := PartnerRequest{}
+
+	userInput := VerifyPartnerRequest{}
 	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	dataCore := toCore(userInput)
-	err := delivery.partnerService.Update(dataCore, uint(idUser), c)
-	if err != nil {
-		if strings.Contains(err.Error(), "Error:Field validation") {
-			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
-		}
-		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	helper.LogDebug("Partner - handler - VerifyPartner | userInput = ", userInput)
+	helper.LogDebug("Partner - handler - VerifyPartner | partner id = ", userInput.PartnerID)
+
+	if userInput.PartnerID < 1 {
+		helper.LogDebug("Partner - handler - VerifyPartner | validasi id. id = ", userInput.PartnerID)
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
 	}
 
-	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
+	helper.LogDebug("Partner - handler - VerifyPartner | mau masuk proses =")
+
+	err := delivery.partnerService.UpdatePartnerVerifyStatus(userInput.VerifyLog, userInput.Status, uint(userInput.PartnerID))
+	if err != nil {
+		helper.LogDebug(err.Error())
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to update partner status. Please try again."))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data status partner to Verified."))
 }
