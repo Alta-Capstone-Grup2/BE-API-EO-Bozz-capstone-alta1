@@ -82,3 +82,29 @@ func (repo *orderRepository) GetById(id uint) (data _order.Core, dataDetail _ord
 	var dataCoreDetail = detail.toCoreDetailOrder()
 	return dataCore, dataCoreDetail, nil
 }
+
+func (repo *orderRepository) UpdateStatusCancel(input _order.Core, id uint) error {
+	resultGorm := fromCoreStatus(input)
+	var result Order
+	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm.OrderStatus) // proses update
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
+	return nil
+}
+
+func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) error {
+	resultGorm := fromCorePayout(input)
+	var result Order
+	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm) // proses update
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
+	return nil
+}

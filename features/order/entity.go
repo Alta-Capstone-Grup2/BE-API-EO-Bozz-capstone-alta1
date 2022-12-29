@@ -1,6 +1,10 @@
 package order
 
-import "time"
+import (
+	"time"
+
+	"github.com/labstack/echo/v4"
+)
 
 type Core struct {
 	ID                uint
@@ -81,6 +85,8 @@ type ServiceInterface interface {
 	Create(input Core, inputDetail DetailOrder) error
 	GetAll(query string) (data []Core, err error)
 	GetById(id uint) (data Core, dataDetail DetailOrder, err error)
+	UpdateStatusCancel(input Core, id uint) error
+	UpdateStatusPayout(id uint, c echo.Context) error
 }
 
 type RepositoryInterface interface {
@@ -88,4 +94,6 @@ type RepositoryInterface interface {
 	GetAll() (data []Core, err error)
 	GetAllWithSearch(query string) (data []Core, err error)
 	GetById(id uint) (data Core, dataDetail DetailOrder, err error)
+	UpdateStatusCancel(input Core, id uint) error
+	UpdateStatusPayout(input Core, id uint) error
 }

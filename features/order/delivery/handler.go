@@ -23,6 +23,8 @@ func New(order order.ServiceInterface, e *echo.Echo) {
 	e.POST("/orders", handler.Create, middlewares.JWTMiddleware())
 	e.GET("/orders", handler.GetAll, middlewares.JWTMiddleware())
 	e.GET("/orders/:id", handler.GetById, middlewares.JWTMiddleware())
+	e.PUT("/orders/:id", handler.UpdateStatusCancel, middlewares.JWTMiddleware())
+	e.PUT("/orders/:id/payout", handler.UpdateStatusPayout, middlewares.JWTMiddleware())
 }
 
 func (delivery *orderDelivery) Create(c echo.Context) error {
@@ -79,4 +81,47 @@ func (delivery *orderDelivery) GetById(c echo.Context) error {
 	dataResponse := fromCoreDetail(results, results2)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
+}
+
+func (delivery *orderDelivery) UpdateStatusCancel(c echo.Context) error {
+	idParam := c.Param("id")
+	orderId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+
+	orderInput := OrderStatusRequest{}
+	errBind := c.Bind(&orderInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	}
+
+	dataCore := toCoreStatus(orderInput, uint(orderId))
+	err := delivery.orderService.UpdateStatusCancel(dataCore, uint(orderId))
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
+}
+
+func (delivery *orderDelivery) UpdateStatusPayout(c echo.Context) error {
+	idParam := c.Param("id")
+	id, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+
+	err := delivery.orderService.UpdateStatusPayout(uint(id), c)
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
 }
