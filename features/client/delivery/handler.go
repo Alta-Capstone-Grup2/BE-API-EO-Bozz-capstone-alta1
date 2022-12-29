@@ -115,9 +115,9 @@ func (delivery *ClientDelivery) Update(c echo.Context) error {
 }
 
 func (delivery *ClientDelivery) Delete(c echo.Context) error {
-	idUser := middlewares.ExtractTokenUserId(c)
-	idUint := uint(idUser)
-	err := delivery.clientService.Delete(idUint)
+	clientID := uint(middlewares.ExtractTokenClientID(c))
+	userId := middlewares.ExtractTokenUserId(c)
+	err := delivery.clientService.Delete(clientID, uint(userId))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}

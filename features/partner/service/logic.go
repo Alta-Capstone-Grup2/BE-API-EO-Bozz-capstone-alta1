@@ -132,7 +132,7 @@ func (service *partnerService) GetById(id uint) (data partner.Core, err error) {
 
 }
 
-func (service *partnerService) Update(input partner.Core, id uint, c echo.Context) error {
+func (service *partnerService) Update(input partner.Core, partnerId, userId uint, c echo.Context) error {
 
 	// upload file
 	var errUpload error
@@ -161,7 +161,7 @@ func (service *partnerService) Update(input partner.Core, id uint, c echo.Contex
 		return errUpload
 	}
 
-	err := service.partnerRepository.Update(input, id)
+	err := service.partnerRepository.Update(input, partnerId, userId)
 	if err != nil {
 		log.Error(err.Error())
 		return err
@@ -170,9 +170,9 @@ func (service *partnerService) Update(input partner.Core, id uint, c echo.Contex
 	return nil
 }
 
-func (service *partnerService) Delete(id uint) error {
+func (service *partnerService) Delete(partnerId, userId uint) error {
 	// proses
-	err := service.partnerRepository.Delete(id)
+	err := service.partnerRepository.Delete(partnerId, userId)
 	if err != nil {
 		log.Error(err.Error())
 		return helper.ServiceErrorMsg(err)
