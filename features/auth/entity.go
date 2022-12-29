@@ -21,7 +21,6 @@ type ClientCore struct {
 	ClientImageFile string
 	UserID          uint
 	User            Core
-	// Orders         []OrderCore // krn ga dipake di comment
 }
 
 type PartnerCore struct {

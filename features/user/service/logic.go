@@ -56,7 +56,6 @@ func (service *userService) Create(input user.Core, c echo.Context) (err error) 
 	return nil
 }
 
-// GetAll implements user.ServiceInterface
 func (service *userService) GetAll(query string) (data []user.Core, err error) {
 	data, err = service.userRepository.GetAll()
 	if err != nil {
@@ -93,7 +92,6 @@ func (service *userService) Update(input user.Core, id uint) error {
 }
 
 func (service *userService) Delete(id uint) error {
-	// proses
 	err := service.userRepository.Delete(id)
 	if err != nil {
 		log.Error(err.Error())

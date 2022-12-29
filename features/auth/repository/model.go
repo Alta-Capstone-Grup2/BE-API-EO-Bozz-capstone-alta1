@@ -57,7 +57,6 @@ type Client struct {
 	ClientImageFile string
 	UserID          uint
 	User            User
-	// Orders         []Order // krn ga di pake di comment
 }
 
 //DTO
