@@ -218,7 +218,22 @@ func (service *partnerService) GetAdditionals(partnerID uint) (data []partner.Ad
 
 	return data, err
 }
-func (service *partnerService) GetPartnerRegisterData(partnerID uint) (data []partner.Core, err error) {
+func (service *partnerService) GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus string) (data []partner.Core, err error) {
+
+	data, err = service.partnerRepository.GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus)
+
+	if err != nil {
+		helper.LogDebug(err)
+		return nil, helper.ServiceErrorMsg(err)
+	}
+
+	// helper.LogDebug("Partnre Service - GetPartnerRegisterData", data)
+
+	if len(data) == 0 {
+		helper.LogDebug("Get data success. No data.")
+		return nil, errors.New("Get data success. No data.")
+	}
+
 	return data, err
 }
 func (service *partnerService) GetPartnerRegisterDataByID(partnerID uint) (data partner.Core, err error) {

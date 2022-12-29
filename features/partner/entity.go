@@ -32,6 +32,8 @@ type Core struct {
 	BankAccountName    string
 	VerificationStatus string
 	VerificationLog    string
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
 	UserID             uint
 	User               UserCore
 	Services           []ServiceCore
@@ -140,7 +142,7 @@ type ServiceInterface interface {
 	GetServices(partnerID uint) (data []ServiceCore, err error)
 	GetOrders(partnerID uint) (data []OrderCore, err error)
 	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
-	GetPartnerRegisterData(partnerID uint) (data []Core, err error)
+	GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus string) (data []Core, err error)
 	GetPartnerRegisterDataByID(partnerID uint) (data Core, err error)
 	UpdatePartnerVerifyStatus(partnerID uint) (data Core, err error)
 	UpdateOrderConfirmStatus(orderID uint) (data Core, err error)
@@ -157,7 +159,7 @@ type RepositoryInterface interface {
 	GetServices(partnerID uint) (data []ServiceCore, err error)
 	GetOrders(partnerID uint) (data []OrderCore, err error)
 	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
-	GetPartnerRegisterData(partnerID uint) (data []Core, err error)
+	GetPartnerRegisterData(queryCompanyName, queryPICName, queryPartnerStatus string) (data []Core, err error)
 	GetPartnerRegisterDataByID(partnerID uint) (data Core, err error)
 	UpdatePartnerVerifyStatus(partnerID uint) (data Core, err error)
 	UpdateOrderConfirmStatus(orderID uint) (data Core, err error)
