@@ -2,8 +2,14 @@ package mysql
 
 import (
 	"capstone-alta1/config"
+	additional "capstone-alta1/features/additional/repository"
 	city "capstone-alta1/features/city/repository"
+	client "capstone-alta1/features/client/repository"
+	discussion "capstone-alta1/features/discussion/repository"
+	order "capstone-alta1/features/order/repository"
 	partner "capstone-alta1/features/partner/repository"
+	review "capstone-alta1/features/review/repository"
+	service "capstone-alta1/features/service/repository"
 	user "capstone-alta1/features/user/repository"
 	"fmt"
 	"log"
@@ -29,12 +35,14 @@ func InitDB(cfg *config.AppConfig) *gorm.DB {
 
 func migrateDB(db *gorm.DB) {
 	db.AutoMigrate(&user.User{})
-	db.AutoMigrate(&partner.Client{})
+	db.AutoMigrate(&client.Client{})
 	db.AutoMigrate(&partner.Partner{})
-	db.AutoMigrate(&partner.Review{})
-	db.AutoMigrate(&partner.Service{})
-	db.AutoMigrate(&partner.Order{})
-	db.AutoMigrate(&partner.Additional{})
-	db.AutoMigrate(&partner.Discussion{})
+	db.AutoMigrate(&review.Review{})
+	db.AutoMigrate(&service.Service{})
+	db.AutoMigrate(&order.Order{})
+	db.AutoMigrate(&additional.Additional{})
+	db.AutoMigrate(&discussion.Discussion{})
 	db.AutoMigrate(&city.City{})
+	db.AutoMigrate(&service.ServiceAdditional{})
+	db.AutoMigrate(&order.DetailOrder{})
 }
