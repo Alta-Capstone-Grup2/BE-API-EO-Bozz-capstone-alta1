@@ -24,30 +24,25 @@ type Core struct {
 	PayoutRecieptFile string
 	PayoutDate        time.Time
 	ServiceID         uint
-	Service           Service
 	ClientID          uint
-	Client            Client
 	DetailOrder       []DetailOrder
 }
 
 type DetailOrder struct {
 	ID                  uint
-	ServiceAdditionalID uint
-	ServiceAdditional   ServiceAdditional
 	AdditionalName      string
 	AdditionalPrice     uint
 	Qty                 uint
 	DetailOrderTotal    uint
+	ServiceAdditionalID uint
 	OrderID             uint
-	Order               Core
 }
 
 type ServiceAdditional struct {
 	ID           uint
 	AdditionalID uint
-	Additional   Additional
 	ServiceID    uint
-	Service      Service
+	DetailOrders []DetailOrder
 }
 
 type Additional struct {
@@ -66,6 +61,16 @@ type Client struct {
 	Phone           string
 	ClientImageFile string
 	UserID          uint
+	User            User
+	Core            []Core
+}
+
+type User struct {
+	ID       uint
+	Name     string
+	Email    string
+	Password string
+	Role     string
 }
 
 type Service struct {

@@ -25,30 +25,25 @@ type Order struct {
 	PayoutRecieptFile string
 	PayoutDate        time.Time
 	ServiceID         uint
-	Service           Service
 	ClientID          uint
-	Client            Client
 	DetailOrder       []DetailOrder
 }
 
 type DetailOrder struct {
 	gorm.Model
-	ServiceAdditionalID uint
-	ServiceAdditional   ServiceAdditional
 	AdditionalName      string
 	AdditionalPrice     uint
 	Qty                 uint
 	DetailOrderTotal    uint
+	ServiceAdditionalID uint
 	OrderID             uint
-	Order               Order
 }
 
 type ServiceAdditional struct {
 	gorm.Model
 	AdditionalID uint
-	Additional   Additional
 	ServiceID    uint
-	Service      Service
+	DetailOrders []DetailOrder
 }
 
 type Additional struct {

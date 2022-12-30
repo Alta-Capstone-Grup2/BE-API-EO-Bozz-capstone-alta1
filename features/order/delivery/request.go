@@ -7,26 +7,24 @@ import (
 )
 
 type OrderRequest struct {
-	EventName           string    `json:"event_name" form:"event_name"`
-	StartDate           time.Time `json:"start_date" form:"start_date"`
-	EndDate             time.Time `json:"end_date" form:"end_date"`
-	EventLocation       string    `json:"event_location" form:"event_location"`
-	EventAddress        string    `json:"event_address" form:"event_address"`
-	NotesForPartner     string    `json:"notes_for_partner" form:"notes_for_partner"`
-	PaymentMethod       string    `json:"payment_method" form:"payment_method"`
-	ServiceID           uint      `json:"service_id" form:"service_id"`
-	ServiceAdditionalID uint      `json:"service_additional_id" form:"service_additional_id"`
-	Qty                 uint      `json:"qty" form:"qty"`
-	// Additionals         []ServiceAdditionalRequest
+	EventName       string    `json:"event_name" form:"event_name"`
+	StartDate       time.Time `json:"start_date" form:"start_date"`
+	EndDate         time.Time `json:"end_date" form:"end_date"`
+	EventLocation   string    `json:"event_location" form:"event_location"`
+	EventAddress    string    `json:"event_address" form:"event_address"`
+	NotesForPartner string    `json:"notes_for_partner" form:"notes_for_partner"`
+	PaymentMethod   string    `json:"payment_method" form:"payment_method"`
+	ServiceID       uint      `json:"service_id" form:"service_id"`
+	OrderDetails    []OrderDetailRequest
 }
 
 type OrderStatusRequest struct {
 	OrderStatus string `json:"order_status" form:"order_status"`
 }
 
-type ServiceAdditionalRequest struct {
-	ID  uint `json:"id" form:"id"`
-	Qty uint `json:"qty" form:"qty"`
+type OrderDetailRequest struct {
+	ServiceAdditionalID uint `json:"service_additional_id" form:"service_additional_id"`
+	Qty                 uint `json:"qty" form:"qty"`
 }
 
 func toCore(input OrderRequest, inputClientID uint) order.Core {
@@ -40,17 +38,25 @@ func toCore(input OrderRequest, inputClientID uint) order.Core {
 		PaymentMethod:   input.PaymentMethod,
 		ServiceID:       input.ServiceID,
 		ClientID:        inputClientID,
-		// ServiceAdditionals: order.ServiceAdditional{},
+		DetailOrder:     toDetailOrderList(input.OrderDetails),
 	}
 	return coreInput
 }
 
-func toDetailOrder(input OrderRequest) order.DetailOrder {
+func toDetailOrder(input OrderDetailRequest) order.DetailOrder {
 	coreInput := order.DetailOrder{
 		ServiceAdditionalID: input.ServiceAdditionalID,
 		Qty:                 input.Qty,
 	}
 	return coreInput
+}
+
+func toDetailOrderList(requestData []OrderDetailRequest) []order.DetailOrder {
+	var dataCore []order.DetailOrder
+	for _, v := range requestData {
+		dataCore = append(dataCore, toDetailOrder(v))
+	}
+	return dataCore
 }
 
 func toCoreStatus(input OrderStatusRequest, orderId uint) order.Core {
