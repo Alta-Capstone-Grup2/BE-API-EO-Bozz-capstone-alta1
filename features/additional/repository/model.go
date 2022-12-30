@@ -9,9 +9,16 @@ import (
 // struct gorm model
 type Additional struct {
 	gorm.Model
-	AdditionalName  string
-	AdditionalPrice uint
-	PartnerID       uint
+	AdditionalName    string
+	AdditionalPrice   uint
+	PartnerID         uint
+	ServiceAdditional []ServiceAdditional
+}
+
+type ServiceAdditional struct {
+	gorm.Model
+	AdditionalID uint
+	ServiceID    uint
 }
 
 type Partner struct {
@@ -42,6 +49,7 @@ type Partner struct {
 	VerificationLog    string
 	UserID             uint
 	User               User
+	Additional         []Additional
 }
 
 type User struct {

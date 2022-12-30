@@ -1,11 +1,17 @@
 package additional
 
 type Core struct {
-	ID              uint
-	AdditionalName  string
-	AdditionalPrice uint
-	PartnerID       uint
-	Partner         Partner
+	ID                uint
+	AdditionalName    string
+	AdditionalPrice   uint
+	PartnerID         uint
+	ServiceAdditional []ServiceAdditional
+}
+
+type ServiceAdditional struct {
+	ID           uint
+	AdditionalID uint
+	ServiceID    uint
 }
 
 type Partner struct {
@@ -36,6 +42,7 @@ type Partner struct {
 	VerificationLog    string
 	UserID             uint
 	User               User
+	Additional         []Core
 }
 
 type User struct {

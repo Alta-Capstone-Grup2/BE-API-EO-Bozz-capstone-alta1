@@ -67,14 +67,14 @@ func (delivery *additionalDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
 
-	userInput := AdditionalRequest{}
-	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	additionalInput := AdditionalRequest{}
+	errBind := c.Bind(&additionalInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
 	partnerID := middlewares.ExtractTokenPartnerID(c)
-	dataCore := toCore(userInput, uint(partnerID))
+	dataCore := toCore(additionalInput, uint(partnerID))
 	err := delivery.additionalService.Update(dataCore, uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
