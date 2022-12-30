@@ -2,11 +2,12 @@ package delivery
 
 import (
 	"capstone-alta1/features/partner"
+	"time"
 )
 
 type PartnerResponse struct {
 	ID                 uint   `json:"id"`
-	Name               string `json:"name"`
+	PICName            string `json:"pic_name"`
 	Email              string `json:"email"`
 	Role               string `json:"role"`
 	PICPosition        string `json:"pic_position"`
@@ -36,10 +37,51 @@ type PartnerResponse struct {
 	UserID             uint   `json:"user_id"`
 }
 
+type PartnerListResponse struct {
+	ID                 uint      `json:"id"`
+	CompanyName        string    `json:"company_name"`
+	PICName            string    `json:"pic_name"`
+	VerificationStatus string    `json:"verification_status"`
+	RegisterDate       time.Time `json:"register_date"`
+	UserID             uint      `json:"user_id"`
+}
+
+type ServiceResponse struct {
+	ID               uint    `json:"id"`
+	ServiceName      string  `json:"service_name"`
+	ServiceCategory  string  `json:"service_category"`
+	ServicePrice     uint    `json:"service_price"`
+	AverageRating    float64 `json:"average_rating"`
+	ServiceImageFile string  `json:"service_image_file"`
+	City             string  `json:"city"`
+	PartnerID        uint    `json:"partner_id"`
+}
+
+type OrderResponse struct {
+	ID               uint      `json:"id"`
+	EventName        string    `json:"event_name"`
+	StartDate        time.Time `json:"start_date"`
+	EndDate          time.Time `json:"end_date"`
+	EventLocation    string    `json:"event_location"`
+	ServiceName      string    `json:"service_name"`
+	GrossAmmount     uint      `json:"gross_ammount"`
+	OrderStatus      string    `json:"order_status"`
+	PayoutRecieptUrl string    `json:"payout_receipt_url"`
+	ServiceID        uint      `json:"service_id"`
+	ClientID         uint      `json:"client_id"`
+}
+
+type AdditionalResponse struct {
+	ID              uint   `json:"id"`
+	AdditionalName  string `json:"additional_name"`
+	AdditionalPrice uint   `json:"additional_price"`
+	PartnerID       uint   `json:"partner_id"`
+}
+
 func fromCore(dataCore partner.Core) PartnerResponse {
 	return PartnerResponse{
 		ID:                 dataCore.ID,
-		Name:               dataCore.User.Name,
+		PICName:            dataCore.User.Name,
 		Email:              dataCore.User.Email,
 		Role:               dataCore.User.Role,
 		PICPosition:        dataCore.PICPosition,
@@ -70,10 +112,91 @@ func fromCore(dataCore partner.Core) PartnerResponse {
 	}
 }
 
+func fromListCore(dataCore partner.Core) PartnerListResponse {
+	return PartnerListResponse{
+		ID:                 dataCore.ID,
+		CompanyName:        dataCore.CompanyName,
+		PICName:            dataCore.User.Name,
+		RegisterDate:       dataCore.CreatedAt,
+		VerificationStatus: dataCore.VerificationStatus,
+		UserID:             dataCore.UserID,
+	}
+}
+
 func fromCoreList(dataCore []partner.Core) []PartnerResponse {
 	var dataResponse []PartnerResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromCore(v))
+	}
+	return dataResponse
+}
+
+func fromListCoreList(dataCore []partner.Core) []PartnerListResponse {
+	var dataResponse []PartnerListResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromListCore(v))
+	}
+	return dataResponse
+}
+
+func fromOrderCore(dataCore partner.OrderCore) OrderResponse {
+	return OrderResponse{
+		ID:               dataCore.ID,
+		EventName:        dataCore.EventName,
+		StartDate:        dataCore.StartDate,
+		EndDate:          dataCore.EndDate,
+		EventLocation:    dataCore.EventLocation,
+		ServiceName:      dataCore.ServiceName,
+		GrossAmmount:     dataCore.GrossAmmount,
+		OrderStatus:      dataCore.OrderStatus,
+		PayoutRecieptUrl: dataCore.PayoutRecieptFile,
+		ServiceID:        dataCore.ServiceID,
+		ClientID:         dataCore.ClientID,
+	}
+}
+
+func fromOrderCoreList(dataCore []partner.OrderCore) []OrderResponse {
+	var dataResponse []OrderResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromOrderCore(v))
+	}
+	return dataResponse
+}
+
+func fromCoreService(dataCore partner.ServiceCore) ServiceResponse {
+	return ServiceResponse{
+		ID:               dataCore.ID,
+		ServiceName:      dataCore.ServiceName,
+		ServiceCategory:  dataCore.ServiceCategory,
+		ServicePrice:     dataCore.ServicePrice,
+		AverageRating:    dataCore.AverageRating,
+		ServiceImageFile: dataCore.ServiceImageFile,
+		City:             dataCore.City,
+		PartnerID:        dataCore.PartnerID,
+	}
+}
+
+func fromCoreServiceList(dataCore []partner.ServiceCore) []ServiceResponse {
+	var dataResponse []ServiceResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromCoreService(v))
+	}
+	return dataResponse
+}
+
+func fromAdditonalCore(dataCore partner.AdditionalCore) AdditionalResponse {
+	return AdditionalResponse{
+		ID:              dataCore.ID,
+		AdditionalName:  dataCore.AdditionalName,
+		AdditionalPrice: dataCore.AdditionalPrice,
+		PartnerID:       dataCore.PartnerID,
+	}
+}
+
+func fromAdditionalCoreList(dataCore []partner.AdditionalCore) []AdditionalResponse {
+	var dataResponse []AdditionalResponse
+	for _, v := range dataCore {
+		dataResponse = append(dataResponse, fromAdditonalCore(v))
 	}
 	return dataResponse
 }

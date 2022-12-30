@@ -1,7 +1,24 @@
 package config
 
 const (
+	// Config Constant
+
+	// Partner verification constant
+	PARTNER_VERIFICATION_STATUS_NOT_VERIFIED = "Not Verified"
+	PARTNER_VERIFICATION_STATUS_REVISION     = "Revision"
+	PARTNER_VERIFICATION_STATUS_VERIFIED     = "Verified"
+
+	// Order Constant
+	ORDER_STATUS_WAITING_CONFIRMATION = "waiting confirmation"
+	ORDER_STATUS_ORDER_CONFIRMED      = "order confirmed"
+	ORDER_STATUS_COMPLETE_ORDER       = "complete order"
+	ORDER_STATUS_PAID_OFF             = "paid off"
+
+	//Show log
+	SHOW_LOGS = true
+
 	DEFAULT_IMAGE_URL = "https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg"
+
 	// Upload file path
 	CLIENT_FOLDER     = "client"
 	CLIENT_IMAGE_FILE = "client_image_file"
