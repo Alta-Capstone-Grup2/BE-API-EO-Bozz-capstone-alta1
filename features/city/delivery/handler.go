@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"capstone-alta1/features/city"
-	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
 	"net/http"
 	"strings"
@@ -19,7 +18,7 @@ func New(service city.ServiceInterface, e *echo.Echo) {
 		cityService: service,
 	}
 
-	e.GET("/city", handler.GetAll, middlewares.JWTMiddleware())
+	e.GET("/city", handler.GetAll)
 
 }
 

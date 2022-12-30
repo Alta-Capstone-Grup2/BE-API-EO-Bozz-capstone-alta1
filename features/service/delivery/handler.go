@@ -76,7 +76,7 @@ func (delivery *serviceDelivery) GetById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCore(results)
+	dataResponse := fromCoreGetById(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
@@ -107,14 +107,14 @@ func (delivery *serviceDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
 
-	serviceInput := ServiceRequest{}
+	serviceInput := ServiceUpdateRequest{}
 	errBind := c.Bind(&serviceInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
 	InputPartnerID := middlewares.ExtractTokenPartnerID(c)
-	dataCore := toCore(serviceInput, uint(InputPartnerID))
+	dataCore := toCoreUpdate(serviceInput, uint(InputPartnerID))
 	err := delivery.serviceService.Update(dataCore, uint(id), c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {

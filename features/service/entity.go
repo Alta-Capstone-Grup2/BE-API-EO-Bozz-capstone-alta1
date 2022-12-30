@@ -17,8 +17,7 @@ type Core struct {
 	ServiceImageFile   string
 	City               string
 	PartnerID          uint
-	Partner            Partner
-	Additional         []Additional
+	ServiceAdditional  []ServiceAdditional
 	Review             []Review
 	Discussion         []Discussion
 	Order              []Order
@@ -31,7 +30,6 @@ type Discussion struct {
 	PartnerID uint
 	ClientID  uint
 	ServiceID uint
-	Service   Core
 }
 
 type Review struct {
@@ -41,24 +39,20 @@ type Review struct {
 	OrderID   uint
 	ClientID  uint
 	ServiceID uint
-	Service   Core
 }
 
 type ServiceAdditional struct {
 	ID           uint
 	AdditionalID uint
-	Additional   Additional
 	ServiceID    uint
-	Service      Core
 }
 
 type Additional struct {
-	ID              uint
-	AdditionalName  string
-	AdditionalPrice uint
-	PartnerID       uint
-	ServiceID       uint
-	Service         Core
+	ID                uint
+	AdditionalName    string
+	AdditionalPrice   uint
+	PartnerID         uint
+	ServiceAdditional []ServiceAdditional
 }
 
 type Order struct {
@@ -69,7 +63,6 @@ type Order struct {
 	EndDate            time.Time
 	AvailabilityStatus string
 	ServiceID          uint
-	Service            Core
 }
 
 type Partner struct {
@@ -100,6 +93,8 @@ type Partner struct {
 	VerificationLog    string
 	UserID             uint
 	User               User
+	Additional         []Additional
+	Service            []Core
 }
 
 type User struct {

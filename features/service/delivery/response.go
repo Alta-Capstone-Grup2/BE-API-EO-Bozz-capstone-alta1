@@ -5,10 +5,9 @@ import (
 	"time"
 )
 
-type ServiceResponse struct {
+type ServiceGetAllResponse struct {
 	ID               uint    `json:"id"`
 	ServiceName      string  `json:"service_name"`
-	ServiceInclude   string  `json:"service_include"`
 	ServiceCategory  string  `json:"service_category"`
 	ServicePrice     uint    `json:"service_price"`
 	AverageRating    float64 `json:"average_rating"`
@@ -17,12 +16,24 @@ type ServiceResponse struct {
 	PartnerID        uint    `json:"partner_id"`
 }
 
+type ServiceGetByIdResponse struct {
+	ID                 uint    `json:"id"`
+	ServiceName        string  `json:"service_name"`
+	ServiceDescription string  `json:"service_description"`
+	ServiceInclude     string  `json:"service_include"`
+	ServiceCategory    string  `json:"service_category"`
+	ServicePrice       uint    `json:"service_price"`
+	AverageRating      float64 `json:"average_rating"`
+	ServiceImageFile   string  `json:"service_image_file"`
+	City               string  `json:"city"`
+	PartnerID          uint    `json:"partner_id"`
+}
+
 type ServiceAdditionalResponse struct {
 	ID              uint   `json:"id"`
 	AdditionalName  string `json:"additional_name"`
 	AdditionalPrice uint   `json:"additional_price"`
 	PartnerID       uint   `json:"partner_id"`
-	ServiceID       uint   `json:"service_id"`
 }
 
 type ServiceReviewResponse struct {
@@ -50,11 +61,10 @@ type ServiceAvailabilityResponse struct {
 	AvailabilityStatus string
 }
 
-func fromCore(dataCore service.Core) ServiceResponse {
-	return ServiceResponse{
+func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
+	return ServiceGetAllResponse{
 		ID:               dataCore.ID,
 		ServiceName:      dataCore.ServiceName,
-		ServiceInclude:   dataCore.ServiceInclude,
 		ServiceCategory:  dataCore.ServiceCategory,
 		ServicePrice:     dataCore.ServicePrice,
 		AverageRating:    dataCore.AverageRating,
@@ -64,13 +74,27 @@ func fromCore(dataCore service.Core) ServiceResponse {
 	}
 }
 
+func fromCoreGetById(dataCore service.Core) ServiceGetByIdResponse {
+	return ServiceGetByIdResponse{
+		ID:                 dataCore.ID,
+		ServiceName:        dataCore.ServiceName,
+		ServiceDescription: dataCore.ServiceDescription,
+		ServiceInclude:     dataCore.ServiceInclude,
+		ServiceCategory:    dataCore.ServiceCategory,
+		ServicePrice:       dataCore.ServicePrice,
+		AverageRating:      dataCore.AverageRating,
+		ServiceImageFile:   dataCore.ServiceImageFile,
+		City:               dataCore.City,
+		PartnerID:          dataCore.PartnerID,
+	}
+}
+
 func fromCoreAdditional(dataCore service.Additional) ServiceAdditionalResponse {
 	return ServiceAdditionalResponse{
 		ID:              dataCore.ID,
 		AdditionalName:  dataCore.AdditionalName,
 		AdditionalPrice: dataCore.AdditionalPrice,
 		PartnerID:       dataCore.PartnerID,
-		ServiceID:       dataCore.ServiceID,
 	}
 }
 
@@ -105,10 +129,10 @@ func fromCoreAvailability(dataCore service.Order) ServiceAvailabilityResponse {
 	}
 }
 
-func fromCoreList(dataCore []service.Core) []ServiceResponse {
-	var dataResponse []ServiceResponse
+func fromCoreList(dataCore []service.Core) []ServiceGetAllResponse {
+	var dataResponse []ServiceGetAllResponse
 	for _, v := range dataCore {
-		dataResponse = append(dataResponse, fromCore(v))
+		dataResponse = append(dataResponse, fromCoreGetAll(v))
 	}
 	return dataResponse
 }

@@ -3,17 +3,18 @@ package repository
 import (
 	_discussion "capstone-alta1/features/discussion"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 // struct gorm model
 type Discussion struct {
-	ID        uint
+	gorm.Model
 	Comment   string
 	PartnerID uint
 	ClientID  uint
 	ServiceID uint
 	CreatedAt time.Time
-	UpdatedAt time.Time
 }
 
 // mapping
@@ -38,7 +39,6 @@ func (dataModel *Discussion) toCore() _discussion.Core {
 		ClientID:  dataModel.ClientID,
 		ServiceID: dataModel.ServiceID,
 		CreatedAt: dataModel.CreatedAt,
-		UpdatedAt: dataModel.UpdatedAt,
 	}
 }
 
