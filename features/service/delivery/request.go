@@ -24,7 +24,10 @@ type ServiceUpdateRequest struct {
 }
 
 type ServiceAdditionalRequest struct {
-	ServiceID    uint `json:"service_id" form:"service_id"`
+	ServiceID         uint `json:"service_id" form:"service_id"`
+	AdditionalRequest []AdditionalRequest
+}
+type AdditionalRequest struct {
 	AdditionalID uint `json:"additional_id" form:"additional_id"`
 }
 
@@ -58,9 +61,10 @@ func toCoreUpdate(input ServiceUpdateRequest, InputPartnerID uint) service.Core 
 }
 
 func toCoreAdditional(input ServiceAdditionalRequest) service.ServiceAdditional {
+	inputAdditional := AdditionalRequest{}
 	coreInput := service.ServiceAdditional{
 		ServiceID:    input.ServiceID,
-		AdditionalID: input.AdditionalID,
+		AdditionalID: inputAdditional.AdditionalID,
 	}
 	return coreInput
 }

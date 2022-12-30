@@ -172,35 +172,35 @@ func (repo *serviceRepository) GetDiscussionById(serviceId uint) (data []_servic
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
-	//convert string to format time
-	layoutFormat := "2006-01-02"
-	timeStart, _ := time.Parse(layoutFormat, queryStart)
-	timeEnd, _ := time.Parse(layoutFormat, queryEnd)
-
+func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data _service.Order, err error) {
 	//check available
-	var service []Service
-	queryBuilder := fmt.Sprintf("SELECT * FROM orders WHERE service_id = %d AND (('%s' BETWEEN start_date AND end_date) OR ('%s' BETWEEN start_date AND end_date));", serviceId, timeStart, timeEnd)
-	fmt.Println("\n\n query ", queryBuilder)
-	tx := repo.db.Raw(queryBuilder).Find(&service)
+	var services []Service
+	var service Service
+	queryBuilder := fmt.Sprintf("SELECT * FROM orders WHERE service_id = %d AND (('%s' BETWEEN start_date AND end_date) OR ('%s' BETWEEN start_date AND end_date));", serviceId, queryStart, queryEnd)
+	tx := repo.db.Raw(queryBuilder).Find(&services)
+
+	//get data service
+	yx := repo.db.First(&service, serviceId)
+	if yx.Error != nil {
+		return _service.Order{}, err
+	}
 
 	//create return
-	var services Service
 	var orders Order
-	nameService := services.ServiceName
+	serviceName := service.ServiceName
 	statusAvailable := "Available"
 	statusNotvalable := "Not Available"
 
 	if tx.Error != nil {
-		return orders.toCoreNotAvailable(nameService, timeStart, timeEnd, statusNotvalable), tx.Error
+		return orders.toCoreNotAvailable(serviceName, queryStart, queryEnd, statusNotvalable), tx.Error
 	}
 
 	affectedRow := tx.RowsAffected
-	fmt.Println("\n\nHasil check availbility, \n Checkin date = ", timeStart, " \n Checkout date = ", timeEnd, " \n Hasil Row = ", affectedRow)
+	fmt.Println("\n\nHasil check availbility, \n Checkin date = ", queryStart, " \n Checkout date = ", queryEnd, " \n Hasil Row = ", affectedRow)
 
 	if affectedRow == 0 {
-		return orders.toCoreAvailable(nameService, timeStart, timeEnd, statusAvailable), nil
+		return orders.toCoreAvailable(serviceName, queryStart, queryEnd, statusAvailable), nil
 	}
 
-	return orders.toCoreNotAvailable(nameService, timeStart, timeEnd, statusNotvalable), nil
+	return orders.toCoreNotAvailable(serviceName, queryStart, queryEnd, statusNotvalable), nil
 }
