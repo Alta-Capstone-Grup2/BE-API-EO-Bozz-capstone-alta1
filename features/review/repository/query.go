@@ -39,7 +39,7 @@ func (repo *reviewRepository) Create(input review.Core) error {
 	} else {
 		avg = (service.AverageRating + input.Rating) / 2
 	}
-	tx2 := repo.db.Model(&service).Where("id = ?", input.ServiceID).Update("rating_average", avg)
+	tx2 := repo.db.Model(&service).Where("id = ?", input.ServiceID).Update("average_rating", avg)
 	if tx2.Error != nil {
 		return tx.Error
 	}

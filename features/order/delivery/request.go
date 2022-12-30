@@ -17,10 +17,16 @@ type OrderRequest struct {
 	ServiceID           uint      `json:"service_id" form:"service_id"`
 	ServiceAdditionalID uint      `json:"service_additional_id" form:"service_additional_id"`
 	Qty                 uint      `json:"qty" form:"qty"`
+	// Additionals         []ServiceAdditionalRequest
 }
 
 type OrderStatusRequest struct {
 	OrderStatus string `json:"order_status" form:"order_status"`
+}
+
+type ServiceAdditionalRequest struct {
+	ID  uint `json:"id" form:"id"`
+	Qty uint `json:"qty" form:"qty"`
 }
 
 func toCore(input OrderRequest, inputClientID uint) order.Core {
@@ -34,6 +40,7 @@ func toCore(input OrderRequest, inputClientID uint) order.Core {
 		PaymentMethod:   input.PaymentMethod,
 		ServiceID:       input.ServiceID,
 		ClientID:        inputClientID,
+		// ServiceAdditionals: order.ServiceAdditional{},
 	}
 	return coreInput
 }
