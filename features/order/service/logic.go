@@ -23,7 +23,7 @@ func New(repo _order.RepositoryInterface) _order.ServiceInterface {
 	}
 }
 
-func (order *orderService) Create(inputOrder _order.Core, inputDetail _order.DetailOrder) (err error) {
+func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (err error) {
 	errCreate := order.orderRepository.Create(inputOrder, inputDetail)
 	if errCreate != nil {
 		log.Error(errCreate.Error())

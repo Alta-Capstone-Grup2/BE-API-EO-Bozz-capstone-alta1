@@ -36,7 +36,7 @@ func (delivery *orderDelivery) Create(c echo.Context) error {
 
 	inputClientID := middlewares.ExtractTokenClientID(c)
 	dataCore := toCore(orderInput, uint(inputClientID))
-	dataDetailOrder := toDetailOrder(orderInput)
+	dataDetailOrder := toDetailOrderList(orderInput.OrderDetails)
 	err := delivery.orderService.Create(dataCore, dataDetailOrder)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {

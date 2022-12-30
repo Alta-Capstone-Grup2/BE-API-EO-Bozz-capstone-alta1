@@ -112,6 +112,14 @@ func fromDetailOrder(dataCore order.DetailOrder) DetailOrder {
 	return modelData
 }
 
+func fromDetailOrderList(dataCore []order.DetailOrder) []DetailOrder {
+	var dataModel []DetailOrder
+	for _, v := range dataCore {
+		dataModel = append(dataModel, fromDetailOrder(v))
+	}
+	return dataModel
+}
+
 func fromCoreStatus(dataCore order.Core) Order {
 	modelData := Order{
 		OrderStatus: dataCore.OrderStatus,
@@ -184,4 +192,13 @@ func (dataModel *DetailOrder) toCoreDetailOrder() order.DetailOrder {
 		DetailOrderTotal:    dataModel.DetailOrderTotal,
 		OrderID:             dataModel.OrderID,
 	}
+}
+
+// mengubah slice struct model gorm ke slice struct core
+func toCoreDetaiOrderList(dataModel []DetailOrder) []order.DetailOrder {
+	var dataCore []order.DetailOrder
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreDetailOrder())
+	}
+	return dataCore
 }
