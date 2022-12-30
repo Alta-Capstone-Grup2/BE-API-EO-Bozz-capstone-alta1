@@ -46,14 +46,11 @@ func (repo *serviceRepository) GetAll() (data []_service.Core, err error) {
 
 func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 	var services []Service
+	var service Service
+	minInt, _ := strconv.Atoi(queryMinPrice)
+	maxInt, _ := strconv.Atoi(queryMaxPrice)
 
-	intMinPrice, errConv1 := strconv.Atoi(queryMinPrice)
-	intMaxPrice, errConv2 := strconv.Atoi(queryMaxPrice)
-	if errConv1 != nil || errConv2 != nil {
-		return nil, errors.New("error conver service price to filter")
-	}
-
-	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{ServiceCategory: queryCategory, City: queryCity, ServicePrice: uint(intMinPrice) & uint(intMaxPrice)}).Find(&services)
+	tx := repo.db.Model(&service).Where("service_name = ?", queryName).Where(&Service{ServiceCategory: queryCategory, City: queryCity}).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&services)
 
 	if tx.Error != nil {
 		return nil, tx.Error

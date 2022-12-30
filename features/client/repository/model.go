@@ -18,8 +18,8 @@ type Client struct {
 	ClientImageFile string
 	UserID          uint
 	User            User
-	Orders          []Order
-	Reviews         []Review
+	Order           []Order
+	Review          []Review
 }
 
 type User struct {
@@ -41,7 +41,6 @@ type Order struct {
 	OrderStatus   string
 	ServiceID     uint
 	ClientID      uint
-	Client        Client
 }
 
 type Review struct {
