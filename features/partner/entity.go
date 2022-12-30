@@ -137,8 +137,8 @@ type ServiceInterface interface {
 	GetAll(query string) (data []Core, err error)
 	GetById(id uint) (data Core, err error)
 	Create(input Core, c echo.Context) error
-	Update(input Core, id uint, c echo.Context) error
-	Delete(id uint) error
+	Update(input Core, partnerID uint, userID uint, c echo.Context) error
+	Delete(partnerId, userId uint) error
 	GetServices(partnerID uint) (data []ServiceCore, err error)
 	GetOrders(partnerID uint) (data []OrderCore, err error)
 	GetAdditionals(partnerID uint) (data []AdditionalCore, err error)
