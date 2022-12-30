@@ -11,8 +11,16 @@ type ServiceRequest struct {
 	ServiceDescription string `json:"service_description" form:"service_description"`
 	ServiceCategory    string `json:"service_category" form:"service_category"`
 	ServicePrice       string `json:"service_price" form:"service_price"`
-	// ServiceImageFile   string `json:"service_image_file" form:"service_image_file"`
-	City string `json:"city" form:"city"`
+	City               string `json:"city" form:"city"`
+}
+
+type ServiceUpdateRequest struct {
+	ServiceName        string `json:"service_name" form:"service_name"`
+	ServiceDescription string `json:"service_description" form:"service_description"`
+	ServiceCategory    string `json:"service_category" form:"service_category"`
+	ServicePrice       string `json:"service_price" form:"service_price"`
+	AverageRating      string `json:"average_rating" form:"average_rating"`
+	City               string `json:"city" form:"city"`
 }
 
 type ServiceAdditionalRequest struct {
@@ -28,9 +36,23 @@ func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 		ServiceDescription: input.ServiceDescription,
 		ServiceCategory:    input.ServiceCategory,
 		ServicePrice:       uint(priceInt),
-		// ServiceImageFile:   input.ServiceImageFile,
-		City:      input.City,
-		PartnerID: InputPartnerID,
+		City:               input.City,
+		PartnerID:          InputPartnerID,
+	}
+	return coreInput
+}
+
+func toCoreUpdate(input ServiceUpdateRequest, InputPartnerID uint) service.Core {
+	priceInt, _ := strconv.Atoi(input.ServicePrice)
+	ratingInt, _ := strconv.Atoi(input.AverageRating)
+	coreInput := service.Core{
+		ServiceName:        input.ServiceName,
+		ServiceDescription: input.ServiceDescription,
+		ServiceCategory:    input.ServiceCategory,
+		ServicePrice:       uint(priceInt),
+		AverageRating:      float64(ratingInt),
+		City:               input.City,
+		PartnerID:          InputPartnerID,
 	}
 	return coreInput
 }

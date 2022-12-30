@@ -40,7 +40,7 @@ func (repo *serviceRepository) GetAll() (data []_service.Core, err error) {
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	var dataCore = toCoreList(results)
+	var dataCore = toCoreListGetAll(results)
 	return dataCore, nil
 }
 
@@ -66,7 +66,7 @@ func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryC
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	var dataCore = toCoreList(services2)
+	var dataCore = toCoreListGetAll(services2)
 	return dataCore, nil
 }
 
@@ -83,7 +83,7 @@ func (repo *serviceRepository) GetById(id uint) (data _service.Core, err error) 
 		return data, tx.Error
 	}
 
-	var dataCore = service.toCore()
+	var dataCore = service.toCoreGetById()
 	return dataCore, nil
 }
 
@@ -112,20 +112,23 @@ func (repo *serviceRepository) Delete(id uint) error {
 	return nil
 }
 
-func (repo *serviceRepository) GetAdditionalById(id uint) (data []_service.Additional, err error) {
-	var clientadditional []Additional
+func (repo *serviceRepository) GetAdditionalById(serviceId uint) (data []_service.Additional, err error) {
+	var modelData []Additional
 
-	tx := repo.db.Find(&clientadditional, id)
+	// tx := repo.db.Model(&serviceAdditional).Where("service_id = ?", serviceId).Find(&additional, serviceAdditionalId.AdditionalID)
+	tx := repo.db.Raw("SELECT `additionals`.`id`,`additionals`.`additional_name`,`additionals`.`additional_price`,`additionals`.`partner_id` FROM `additionals` JOIN `partners` ON `additionals`.`partner_id` = `partners`.`id` JOIN `services` ON `services`.`partner_id` = `partners`.`id`;").Where("`services.id` = ?", serviceId).Scan(&modelData)
 
 	if tx.Error != nil {
+		helper.LogDebug("service-query-GetAdditional | Error execute query. Error :", tx.Error)
 		return data, tx.Error
 	}
 
+	helper.LogDebug("service-query-GetAdditional  | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return data, tx.Error
 	}
 
-	var dataCore = toCoreListAdditional(clientadditional)
+	var dataCore = toCoreListAdditional(modelData)
 	return dataCore, nil
 }
 
@@ -142,15 +145,17 @@ func (repo *serviceRepository) AddAdditionalToService(input _service.ServiceAddi
 	return nil
 }
 
-func (repo *serviceRepository) GetReviewById(id uint) (data []_service.Review, err error) {
+func (repo *serviceRepository) GetReviewById(serviceId uint) (data []_service.Review, err error) {
 	var clientreview []Review
 
-	tx := repo.db.Find(&clientreview, id)
+	tx := repo.db.Where("service_id = ?", serviceId).Find(&clientreview)
 
 	if tx.Error != nil {
+		helper.LogDebug("service-query-Getreview | Error execute query. Error :", tx.Error)
 		return data, tx.Error
 	}
 
+	helper.LogDebug("service-query-Getreview  | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return data, tx.Error
 	}
@@ -159,15 +164,17 @@ func (repo *serviceRepository) GetReviewById(id uint) (data []_service.Review, e
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) GetDiscussionById(id uint) (data []_service.Discussion, err error) {
+func (repo *serviceRepository) GetDiscussionById(serviceId uint) (data []_service.Discussion, err error) {
 	var clientdiscussion []Discussion
 
-	tx := repo.db.Find(&clientdiscussion, id)
+	tx := repo.db.Where("service_id = ?", serviceId).Find(&clientdiscussion)
 
 	if tx.Error != nil {
+		helper.LogDebug("service-query-Getdiscussion | Error execute query. Error :", tx.Error)
 		return data, tx.Error
 	}
 
+	helper.LogDebug("service-query-Getdiscussion  | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return data, tx.Error
 	}

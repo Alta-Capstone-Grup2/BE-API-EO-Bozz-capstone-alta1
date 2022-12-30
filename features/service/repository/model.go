@@ -18,8 +18,7 @@ type Service struct {
 	ServiceImageFile   string
 	City               string
 	PartnerID          uint
-	Partner            Partner
-	Additional         []Additional
+	ServiceAdditional  []ServiceAdditional
 	Review             []Review
 	Discussion         []Discussion
 	Order              []Order
@@ -28,10 +27,10 @@ type Service struct {
 type Discussion struct {
 	gorm.Model
 	Comment   string
+	CreatedAt time.Time
 	PartnerID uint
 	ClientID  uint
 	ServiceID uint
-	Service   Service
 }
 
 type Review struct {
@@ -41,24 +40,20 @@ type Review struct {
 	OrderID   uint
 	ClientID  uint
 	ServiceID uint
-	Service   Service
 }
 
 type ServiceAdditional struct {
 	gorm.Model
 	AdditionalID uint
-	Additional   Additional
 	ServiceID    uint
-	Service      Service
 }
 
 type Additional struct {
 	gorm.Model
-	AdditionalName  string
-	AdditionalPrice uint
-	PartnerID       uint
-	ServiceID       uint
-	Service         Service
+	AdditionalName    string
+	AdditionalPrice   uint
+	PartnerID         uint
+	ServiceAdditional []ServiceAdditional
 }
 
 type Order struct {
@@ -69,7 +64,6 @@ type Order struct {
 	EndDate            time.Time
 	AvailabilityStatus string
 	ServiceID          uint
-	Service            Service
 }
 
 type Partner struct {
@@ -100,6 +94,8 @@ type Partner struct {
 	VerificationLog    string
 	UserID             uint
 	User               User
+	Additional         []Additional
+	Service            []Service
 }
 
 type User struct {
@@ -116,10 +112,10 @@ type User struct {
 func fromCore(dataCore service.Core) Service {
 	modelData := Service{
 		ServiceName:        dataCore.ServiceName,
-		ServiceInclude:     dataCore.ServiceInclude,
 		ServiceDescription: dataCore.ServiceDescription,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
+		AverageRating:      dataCore.AverageRating,
 		ServiceImageFile:   dataCore.ServiceImageFile,
 		City:               dataCore.City,
 		PartnerID:          dataCore.PartnerID,
@@ -136,12 +132,25 @@ func fromCoreServiceAdditional(dataCore service.ServiceAdditional) ServiceAdditi
 }
 
 // mengubah struct model gorm ke struct core
-func (dataModel *Service) toCore() service.Core {
+func (dataModel *Service) toCoreGetAll() service.Core {
+	return service.Core{
+		ID:               dataModel.ID,
+		ServiceName:      dataModel.ServiceName,
+		ServiceCategory:  dataModel.ServiceCategory,
+		ServicePrice:     dataModel.ServicePrice,
+		AverageRating:    dataModel.AverageRating,
+		ServiceImageFile: dataModel.ServiceImageFile,
+		City:             dataModel.City,
+		PartnerID:        dataModel.PartnerID,
+	}
+}
+
+func (dataModel *Service) toCoreGetById() service.Core {
 	return service.Core{
 		ID:                 dataModel.ID,
 		ServiceName:        dataModel.ServiceName,
-		ServiceInclude:     dataModel.ServiceInclude,
 		ServiceDescription: dataModel.ServiceDescription,
+		ServiceInclude:     dataModel.ServiceInclude,
 		ServiceCategory:    dataModel.ServiceCategory,
 		ServicePrice:       dataModel.ServicePrice,
 		AverageRating:      dataModel.AverageRating,
@@ -157,7 +166,6 @@ func (dataModel *Additional) toCoreAdditional() service.Additional {
 		AdditionalName:  dataModel.AdditionalName,
 		AdditionalPrice: dataModel.AdditionalPrice,
 		PartnerID:       dataModel.PartnerID,
-		ServiceID:       dataModel.ServiceID,
 	}
 }
 
@@ -202,10 +210,10 @@ func (dataModel *Order) toCoreNotAvailable(serviceName string, startDate, endDat
 }
 
 // mengubah slice struct model gorm ke slice struct core
-func toCoreList(dataModel []Service) []service.Core {
+func toCoreListGetAll(dataModel []Service) []service.Core {
 	var dataCore []service.Core
 	for _, v := range dataModel {
-		dataCore = append(dataCore, v.toCore())
+		dataCore = append(dataCore, v.toCoreGetAll())
 	}
 	return dataCore
 }

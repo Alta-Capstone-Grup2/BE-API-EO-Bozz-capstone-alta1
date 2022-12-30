@@ -13,7 +13,6 @@ type Core struct {
 	ClientID  uint
 	ServiceID uint
 	CreatedAt time.Time
-	UpdatedAt time.Time
 }
 
 type ServiceInterface interface {
