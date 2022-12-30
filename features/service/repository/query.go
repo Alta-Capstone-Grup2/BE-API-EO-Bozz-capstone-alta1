@@ -45,13 +45,7 @@ func (repo *serviceRepository) GetAll() (data []_service.Core, err error) {
 }
 
 func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
-	var services, services2 []Service
-
-	helper.LogDebug("\n isi queryName = ", queryName)
-	helper.LogDebug("\n isi queryCategory= ", queryCategory)
-	helper.LogDebug("\n isi queryCity = ", queryCity)
-	helper.LogDebug("\n isi queryMinPrice = ", queryMinPrice)
-	helper.LogDebug("\n isi queryMaxPrice = ", queryMaxPrice)
+	var services []Service
 
 	intMinPrice, errConv1 := strconv.Atoi(queryMinPrice)
 	intMaxPrice, errConv2 := strconv.Atoi(queryMaxPrice)
@@ -59,14 +53,12 @@ func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryC
 		return nil, errors.New("error conver service price to filter")
 	}
 
-	fmt.Println("\n\nServices 1", services)
-	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{ServiceCategory: queryCategory, City: queryCity, ServicePrice: uint(intMinPrice) + uint(intMaxPrice)}).Find(&services2)
-	fmt.Println("\n\nServices 2", services2)
+	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{ServiceCategory: queryCategory, City: queryCity, ServicePrice: uint(intMinPrice) & uint(intMaxPrice)}).Find(&services)
 
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	var dataCore = toCoreListGetAll(services2)
+	var dataCore = toCoreListGetAll(services)
 	return dataCore, nil
 }
 

@@ -37,8 +37,8 @@ func (delivery *serviceDelivery) GetAll(c echo.Context) error {
 	queryName := c.QueryParam("service_name")
 	queryCategory := c.QueryParam("service_category")
 	queryCity := c.QueryParam("city")
-	queryMinPrice := c.QueryParam("service_price")
-	queryMaxPrice := c.QueryParam("service_price")
+	queryMinPrice := c.QueryParam("min_price")
+	queryMaxPrice := c.QueryParam("min_price")
 
 	helper.LogDebug("\n\n\nULALA")
 
