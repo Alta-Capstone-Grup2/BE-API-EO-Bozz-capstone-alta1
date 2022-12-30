@@ -55,10 +55,10 @@ type ServiceDiscussionResponse struct {
 }
 
 type ServiceAvailabilityResponse struct {
-	ServiceName        string
-	StartDate          time.Time
-	EndDate            time.Time
-	AvailabilityStatus string
+	ServiceName        string    `json:"service_name"`
+	StartDate          time.Time `json:"start_date"`
+	EndDate            time.Time `json:"end_date"`
+	AvailabilityStatus string    `json:"availability_status"`
 }
 
 func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
