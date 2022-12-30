@@ -5,6 +5,7 @@ import (
 	_service "capstone-alta1/features/service"
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
+	"errors"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -42,16 +43,16 @@ func (service *serviceService) Create(input _service.Core, c echo.Context) (err 
 func (service *serviceService) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 	if queryName == "" && queryCategory == "" && queryCity == "" && queryMinPrice == "" && queryMaxPrice == "" {
 		data, err = service.serviceRepository.GetAll()
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
-	} else if queryName == "query" || queryCategory == "query" || queryCity == "query" || queryMinPrice == "query" || queryMaxPrice == "query" {
+	} else {
 		data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
+	}
+	if err != nil {
+		helper.LogDebug(err)
+		return nil, helper.ServiceErrorMsg(err)
+	}
+	if len(data) == 0 {
+		helper.LogDebug("Get data success. No data.")
+		return nil, errors.New("Get data success. No data.")
 	}
 	return data, err
 }
