@@ -37,7 +37,6 @@ type Order struct {
 	OrderStatus   string
 	ServiceID     uint
 	ClientID      uint
-	Client        Core
 }
 
 type ServiceInterface interface {

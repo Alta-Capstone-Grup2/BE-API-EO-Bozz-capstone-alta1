@@ -2,6 +2,7 @@ package repository
 
 import (
 	client "capstone-alta1/features/client"
+	"capstone-alta1/utils/helper"
 	"errors"
 	"fmt"
 
@@ -122,15 +123,17 @@ func (repo *clientRepository) FindUser(email string) (result client.Core, err er
 	return result, nil
 }
 
-func (repo *clientRepository) GetOrderById(id uint) (data []client.Order, err error) {
+func (repo *clientRepository) GetOrderById(clientId uint) (data []client.Order, err error) {
 	var clientorder []Order
 
-	tx := repo.db.Find(&clientorder, id)
+	tx := repo.db.Where("client_id = ?", clientId).Find(&clientorder)
 
 	if tx.Error != nil {
+		helper.LogDebug("client-query-Getorder | Error execute query. Error :", tx.Error)
 		return data, tx.Error
 	}
 
+	helper.LogDebug("client-query-Getorder  | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return data, tx.Error
 	}
