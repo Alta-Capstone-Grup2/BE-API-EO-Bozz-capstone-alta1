@@ -58,12 +58,34 @@ type Additional struct {
 
 type Order struct {
 	gorm.Model
-	EventName          string
-	ServiceName        string
-	StartDate          time.Time
-	EndDate            time.Time
-	AvailabilityStatus string
-	ServiceID          uint
+	EventName         string
+	StartDate         time.Time
+	StartTime         time.Duration
+	EndDate           time.Time
+	EndTime           time.Duration
+	EventLocation     string
+	EventAddress      string
+	NotesForPartner   string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time `gorm:"default:null"`
+	ServiceID         uint
+	ClientID          uint
+	DetailOrder       []DetailOrder
+}
+
+type DetailOrder struct {
+	gorm.Model
+	AdditionalName      string
+	AdditionalPrice     uint
+	Qty                 uint
+	DetailOrderTotal    uint
+	ServiceAdditionalID uint
+	OrderID             uint
 }
 
 type Partner struct {

@@ -143,14 +143,22 @@ func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-func (repo *orderRepository) GetAll() (data []_order.Core, err error) {
-	var results []Order
+func (repo *orderRepository) GetAll() (data []_order.OrderJoinPartner, err error) {
+	var results []OrderJoinPartner
 
-	tx := repo.db.Find(&results)
+	tx := repo.db.Raw("SELECT `orders`.*, `partners`.`id` AS `partner_id`, `partners`.`company_name`, `partners`.`bank_name`, `partners`.`bank_account_number`, `partners`.`bank_account_name` FROM `partners` JOIN `services` ON `partners`.`id` = `services`.`partner_id` JOIN `orders` ON `orders`.`service_id` = `services`.`id`;").Scan(&results)
 	if tx.Error != nil {
+		helper.LogDebug("Order - query - GetAll | Error Query Find = ", tx.Error)
 		return nil, tx.Error
 	}
-	var dataCore = toCoreList(results)
+
+	helper.LogDebug("Order - query - GetAll | Resukt data : ", results)
+	helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return nil, tx.Error
+	}
+
+	var dataCore = toOrderJoinPartnerCoreList(results)
 	return dataCore, nil
 }
 

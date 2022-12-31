@@ -83,7 +83,66 @@ type Service struct {
 	ServiceImageFile   string
 	City               string
 	PartnerID          uint
+	Orders             []Order
 	ServiceAdditional  []ServiceAdditional
+}
+
+type Partner struct {
+	gorm.Model
+	PICPosition        string
+	PICPhone           string
+	PICAddress         string
+	CompanyName        string
+	CompanyPhone       string
+	CompanyCity        string
+	CompanyImageFile   string
+	CompanyAddress     string
+	LinkWebsite        string
+	NIBNumber          string
+	NIBImageFile       string
+	SIUPNumber         string
+	SIUPImageFile      string
+	Event1Name         string
+	Event1ImageFile    string
+	Event2Name         string
+	Event2ImageFile    string
+	Event3Name         string
+	Event3ImageFile    string
+	BankName           string
+	BankAccountNumber  string
+	BankAccountName    string
+	VerificationStatus string
+	VerificationLog    string
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
+	UserID             uint
+	User               User
+	Services           []Service
+	Additionals        []Additional
+}
+
+type OrderJoinPartner struct {
+	ID                uint
+	EventName         string
+	StartDate         time.Time
+	EndDate           time.Time
+	EventLocation     string
+	EventAddress      string
+	NoteForPartner    string
+	ServiceName       string
+	ServicePrice      uint
+	GrossAmmount      uint
+	PaymentMethod     string
+	OrderStatus       string
+	PayoutRecieptFile string
+	PayoutDate        time.Time `gorm:"default:null"`
+	ServiceID         uint
+	ClientID          uint
+	PartnerID         uint
+	CompanyName       string
+	BankName          string
+	BankAccountNumber string
+	BankAccountName   string
 }
 
 // mapping
@@ -157,6 +216,35 @@ func toCoreList(dataModel []Order) []order.Core {
 	var dataCore []order.Core
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCore())
+	}
+	return dataCore
+}
+
+func (dataModel *OrderJoinPartner) toOrderJoinPartnerCore() order.OrderJoinPartner {
+	return order.OrderJoinPartner{
+		ID:                dataModel.ID,
+		EventName:         dataModel.EventName,
+		StartDate:         dataModel.StartDate,
+		EndDate:           dataModel.EndDate,
+		EventLocation:     dataModel.EventLocation,
+		ServiceName:       dataModel.ServiceName,
+		GrossAmmount:      dataModel.GrossAmmount,
+		OrderStatus:       dataModel.OrderStatus,
+		ServiceID:         dataModel.ServiceID,
+		ClientID:          dataModel.ClientID,
+		PartnerID:         dataModel.PartnerID,
+		CompanyName:       dataModel.CompanyName,
+		BankName:          dataModel.BankName,
+		BankAccountNumber: dataModel.BankAccountNumber,
+		BankAccountName:   dataModel.BankAccountName,
+	}
+}
+
+// mengubah slice struct model gorm ke slice struct core
+func toOrderJoinPartnerCoreList(dataModel []OrderJoinPartner) []order.OrderJoinPartner {
+	var dataCore []order.OrderJoinPartner
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toOrderJoinPartnerCore())
 	}
 	return dataCore
 }

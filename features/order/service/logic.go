@@ -35,20 +35,20 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	return nil
 }
 
-func (order *orderService) GetAll(query string) (data []_order.Core, err error) {
-	if query == "" {
-		data, err = order.orderRepository.GetAll()
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
-	} else if query == "query" {
-		data, err = order.orderRepository.GetAllWithSearch(query)
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
+func (order *orderService) GetAll(query string) (data []_order.OrderJoinPartner, err error) {
+	// if query == "" {
+	data, err = order.orderRepository.GetAll()
+	if err != nil {
+		helper.LogDebug(err)
+		return nil, helper.ServiceErrorMsg(err)
 	}
+	// } else if query == "query" {
+	// 	data, err = order.orderRepository.GetAllWithSearch(query)
+	// 	if err != nil {
+	// 		helper.LogDebug(err)
+	// 		return nil, helper.ServiceErrorMsg(err)
+	// 	}
+	// }
 	return data, err
 }
 
