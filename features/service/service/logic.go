@@ -127,9 +127,8 @@ func (service *serviceService) GetDiscussionById(id uint) (data []_service.Discu
 
 func (service *serviceService) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 
-	layoutFormat := "02/01/2006 MST"
-	dateStart, _ := time.Parse(layoutFormat, queryStart)
-	dateEnd, _ := time.Parse(layoutFormat, queryEnd)
+	dateStart, _ := time.Parse(time.RFC3339, queryStart)
+	dateEnd, _ := time.Parse(time.RFC3339, queryEnd)
 
 	data, err = service.serviceRepository.CheckAvailability(serviceId, dateStart, dateEnd)
 	if err != nil {
