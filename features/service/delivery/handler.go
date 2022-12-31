@@ -170,8 +170,9 @@ func (delivery *serviceDelivery) AddAdditionalToService(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	dataCore := toCoreAdditional(serviceInput)
-	err := delivery.serviceService.AddAdditionalToService(dataCore)
+	dataCore := toCoreServiceAdditional(serviceInput)
+	dataCoreAdditional := toAdditionalList(serviceInput.Additionals)
+	err := delivery.serviceService.AddAdditionalToService(dataCore, dataCoreAdditional)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

@@ -125,10 +125,24 @@ func fromCore(dataCore service.Core) Service {
 
 func fromCoreServiceAdditional(dataCore service.ServiceAdditional) ServiceAdditional {
 	modelData := ServiceAdditional{
-		ServiceID:    dataCore.ServiceID,
+		ServiceID: dataCore.ServiceID,
+	}
+	return modelData
+}
+
+func fromCoreAdditional(dataCore service.ServiceAdditional) ServiceAdditional {
+	modelData := ServiceAdditional{
 		AdditionalID: dataCore.AdditionalID,
 	}
 	return modelData
+}
+
+func fromCoreAdditionalList(dataCore []service.ServiceAdditional) []ServiceAdditional {
+	var dataModel []ServiceAdditional
+	for _, v := range dataCore {
+		dataModel = append(dataModel, fromCoreAdditional(v))
+	}
+	return dataModel
 }
 
 // mengubah struct model gorm ke struct core
