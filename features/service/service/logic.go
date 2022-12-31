@@ -5,7 +5,6 @@ import (
 	_service "capstone-alta1/features/service"
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
-	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -127,10 +126,7 @@ func (service *serviceService) GetDiscussionById(id uint) (data []_service.Discu
 
 func (service *serviceService) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 
-	dateStart, _ := time.Parse(time.RFC3339, queryStart)
-	dateEnd, _ := time.Parse(time.RFC3339, queryEnd)
-
-	data, err = service.serviceRepository.CheckAvailability(serviceId, dateStart, dateEnd)
+	data, err = service.serviceRepository.CheckAvailability(serviceId, queryStart, queryEnd)
 	if err != nil {
 		return _service.Order{}, helper.ServiceErrorMsg(err)
 	}
