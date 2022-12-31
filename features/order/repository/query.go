@@ -1,6 +1,7 @@
 package repository
 
 import (
+	cfg "capstone-alta1/config"
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
 	"errors"
@@ -48,7 +49,51 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 
 		return errors.New("insert detail order failed")
 	}
+
+	var grossAmmout uint
+	for _, val := range detailorderGorm {
+		grossAmmout += val.DetailOrderTotal
+	}
+
+	grossAmmout += orderGorm.ServicePrice
+	orderGorm.OrderStatus = cfg.ORDER_STATUS_WAITING_CONFIRMATION
+
+	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: grossAmmout, OrderStatus: orderGorm.OrderStatus}) // proses insert data
+	if zx.Error != nil {
+		helper.LogDebug("Order - query - Create | Error execute query update gross amount. Error  = ", zx.Error)
+		return zx.Error
+	}
+	helper.LogDebug("Order - query - Create | Row Affected query update gross amount : ", zx.RowsAffected)
+	if yx.RowsAffected == 0 {
+
+		return errors.New("update gross ammount failed")
+	}
+
 	return nil
+}
+
+func (o *Order) BeforeCreate(tx *gorm.DB) (err error) {
+	var serviceData Service
+	txBeforeCreate := tx.Find(&serviceData, o.ServiceID)
+
+	if txBeforeCreate.Error != nil {
+		helper.LogDebug("Order - query - BeforeCreate Order | Error execute query. Error  = ", txBeforeCreate.Error)
+		return txBeforeCreate.Error
+	}
+
+	helper.LogDebug("Order - query - BeforeCreate Order | Row Affected query get additional data : ", txBeforeCreate.RowsAffected)
+	if txBeforeCreate.RowsAffected == 0 {
+		return txBeforeCreate.Error
+	}
+
+	helper.LogDebug("Order - query - BeforeCreate Order | serviceData = ", serviceData)
+
+	o.ServiceName = serviceData.ServiceName
+	o.ServicePrice = serviceData.ServicePrice
+
+	helper.LogDebug("Order - query - BeforeCreate Order | order data = ", o)
+
+	return
 }
 
 func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
@@ -56,16 +101,16 @@ func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
 	txBeforeCreate := tx.Raw("SELECT `additionals`.`additional_name`, `additionals`.`additional_price`  FROM `additionals` JOIN `service_additionals` ON `additionals`.`id` = `service_additionals`.`additional_id` WHERE `service_additionals`.`id` = ?;", do.ServiceAdditionalID).Find(&additionalData)
 
 	if txBeforeCreate.Error != nil {
-		helper.LogDebug("Order - query - BeforeCreate | Error execute query. Error  = ", txBeforeCreate.Error)
+		helper.LogDebug("Order - query - BeforeCreate Order Detail | Error execute query. Error  = ", txBeforeCreate.Error)
 		return txBeforeCreate.Error
 	}
 
-	helper.LogDebug("Order - query - BeforeCreate | Row Affected query get additional data : ", txBeforeCreate.RowsAffected)
+	helper.LogDebug("Order - query - BeforeCreate Order Detail | Row Affected query get additional data : ", txBeforeCreate.RowsAffected)
 	if txBeforeCreate.RowsAffected == 0 {
 		return txBeforeCreate.Error
 	}
 
-	helper.LogDebug("Order - query - BeforeCreate | additionalData = ", additionalData)
+	helper.LogDebug("Order - query - BeforeCreate Order Detail| additionalData = ", additionalData)
 
 	do.AdditionalName = additionalData.AdditionalName
 	do.AdditionalPrice = additionalData.AdditionalPrice
