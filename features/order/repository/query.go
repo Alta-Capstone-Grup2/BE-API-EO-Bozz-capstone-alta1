@@ -5,6 +5,8 @@ import (
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
 	"errors"
+	"strings"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -23,9 +25,28 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	orderGorm := fromCore(inputOrder)
 	detailorderGorm := fromDetailOrderList(inputDetail)
 
+	// // datetime layout
+	// layoutDefault := "2006-01-02 15:04:05"
+	// // //init the loc
+	// // loc, _ := time.LoadLocation("Asia/Jakarta")
+	// // //set timezone,
+	// // // now := time.Now().In(loc).Format(layoutDefault)
+
+	// var errParse error
+	// orderGorm.PayoutDate, errParse = time.Parse(layoutDefault, "0000-00-00 00:00:00.000")
+	// if errParse != nil {
+	// 	helper.LogDebug("Order - query - Create | Error parse = ", errParse)
+	// 	return errors.New("Failed insert. Parse payoutdate failed.")
+	// }
+
+	orderGorm.PayoutDate = time.Time{}
+
 	tx := repo.db.Create(&orderGorm) // proses insert data
 	if tx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query order. Error  = ", tx.Error)
+		if strings.Contains(tx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
+			return errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+		}
 		return tx.Error
 	}
 	helper.LogDebug("Order - query - create | Row Affected query order : ", tx.RowsAffected)
@@ -42,6 +63,9 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	yx := repo.db.Create(&detailorderGorm) // proses insert data
 	if yx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query detail order. Error  = ", yx.Error)
+		if strings.Contains(yx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
+			return errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+		}
 		return yx.Error
 	}
 	helper.LogDebug("Order - query - Create | Row Affected query detail order : ", yx.RowsAffected)
