@@ -50,11 +50,11 @@ func (order *orderService) GetAll(query string) (data []_order.Core, err error) 
 	return data, err
 }
 
-func (order *orderService) GetById(id uint) (data _order.Core, dataDetail _order.DetailOrder, err error) {
+func (order *orderService) GetById(id uint) (data _order.Core, dataDetail []_order.DetailOrder, err error) {
 	data, dataDetail, err = order.orderRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
-		return _order.Core{}, _order.DetailOrder{}, err
+		return _order.Core{}, nil, err
 	}
 	return data, dataDetail, err
 }

@@ -59,7 +59,7 @@ func (delivery *orderDelivery) GetAll(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreList(results)
+	dataResponse := fromViewCoreList(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data.", dataResponse))
 }
@@ -78,7 +78,7 @@ func (delivery *orderDelivery) GetById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreDetail(results, results2)
+	dataResponse := fromCore(results, results2)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
