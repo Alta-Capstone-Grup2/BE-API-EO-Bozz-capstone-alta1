@@ -23,7 +23,7 @@ func (repo *reviewRepository) Create(input review.Core) error {
 	userGorm := fromCore(input)
 	tx := repo.db.Create(&userGorm) // proses insert data
 	if tx.Error != nil {
-		return tx.Error
+		return tx.Rollback().Error
 	}
 	if tx.RowsAffected == 0 {
 		return errors.New("insert failed")
@@ -94,7 +94,7 @@ func (repo *reviewRepository) Update(input review.Core, id uint) error {
 	var result Review
 	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm) // proses update
 	if tx.Error != nil {
-		return tx.Error
+		return tx.Rollback().Error
 	}
 	if tx.RowsAffected == 0 {
 		return errors.New("update failed")
