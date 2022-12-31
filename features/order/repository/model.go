@@ -25,30 +25,25 @@ type Order struct {
 	PayoutRecieptFile string
 	PayoutDate        time.Time
 	ServiceID         uint
-	Service           Service
 	ClientID          uint
-	Client            Client
 	DetailOrder       []DetailOrder
 }
 
 type DetailOrder struct {
 	gorm.Model
-	ServiceAdditionalID uint
-	ServiceAdditional   ServiceAdditional
 	AdditionalName      string
 	AdditionalPrice     uint
 	Qty                 uint
 	DetailOrderTotal    uint
+	ServiceAdditionalID uint
 	OrderID             uint
-	Order               Order
 }
 
 type ServiceAdditional struct {
 	gorm.Model
 	AdditionalID uint
-	Additional   Additional
 	ServiceID    uint
-	Service      Service
+	DetailOrders []DetailOrder
 }
 
 type Additional struct {
@@ -115,6 +110,14 @@ func fromDetailOrder(dataCore order.DetailOrder) DetailOrder {
 		Qty:                 dataCore.Qty,
 	}
 	return modelData
+}
+
+func fromDetailOrderList(dataCore []order.DetailOrder) []DetailOrder {
+	var dataModel []DetailOrder
+	for _, v := range dataCore {
+		dataModel = append(dataModel, fromDetailOrder(v))
+	}
+	return dataModel
 }
 
 func fromCoreStatus(dataCore order.Core) Order {
@@ -189,4 +192,13 @@ func (dataModel *DetailOrder) toCoreDetailOrder() order.DetailOrder {
 		DetailOrderTotal:    dataModel.DetailOrderTotal,
 		OrderID:             dataModel.OrderID,
 	}
+}
+
+// mengubah slice struct model gorm ke slice struct core
+func toCoreDetaiOrderList(dataModel []DetailOrder) []order.DetailOrder {
+	var dataCore []order.DetailOrder
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreDetailOrder())
+	}
+	return dataCore
 }
