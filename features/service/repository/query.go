@@ -41,18 +41,17 @@ func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, query
 		}
 		var dataCore = toCoreListGetAll(results)
 		return dataCore, nil
-	} else if queryName == "ada" || queryCategory == "ada" || queryCity == "ada" || queryMinPrice == "ada" || queryMaxPrice == "ada" {
+	} else {
 		minInt, _ := strconv.Atoi(queryMinPrice)
 		maxInt, _ := strconv.Atoi(queryMaxPrice)
 
-		tx := repo.db.Where("service_name = ?", queryName).Where("service_category=?", queryCategory).Where("city=?", queryCity).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&results)
+		tx := repo.db.Where("service_name LIKE ?", queryName).Where("service_category LIKE ?", queryCategory).Where("city LIKE ?", queryCity).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&results)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}
 		var dataCore = toCoreListGetAll(results)
 		return dataCore, nil
 	}
-	return data, nil
 }
 
 func (repo *serviceRepository) GetById(id uint) (data _service.Core, err error) {
