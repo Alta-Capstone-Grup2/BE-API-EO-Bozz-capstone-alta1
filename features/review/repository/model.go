@@ -2,7 +2,6 @@ package repository
 
 import (
 	_review "capstone-alta1/features/review"
-	"database/sql"
 	"time"
 
 	"gorm.io/gorm"
@@ -52,7 +51,7 @@ type Order struct {
 	PaymentMethod     string
 	OrderStatus       string
 	PayoutRecieptFile string
-	PayoutDate        sql.NullTime
+	PayoutDate        time.Time `gorm:"default:null"`
 	ServiceID         uint
 	ClientID          uint
 }
