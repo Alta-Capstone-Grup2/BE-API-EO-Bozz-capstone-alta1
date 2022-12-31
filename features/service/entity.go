@@ -119,8 +119,7 @@ type ServiceInterface interface {
 }
 
 type RepositoryInterface interface {
-	GetAll() (data []Core, err error)
-	GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []Core, err error)
+	GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []Core, err error)
 	GetById(id uint) (data Core, err error)
 	Create(input Core) error
 	Update(input Core, id uint) error
