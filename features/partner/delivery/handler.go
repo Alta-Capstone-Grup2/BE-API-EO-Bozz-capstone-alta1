@@ -147,19 +147,12 @@ func (delivery *PartnerDelivery) ConfirmOrder(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
 	}
 
-	userInput := ConfirmOrderRequest{}
-	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
-	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
-	}
-	if userInput.OrderStatus != cfg.ORDER_STATUS_ORDER_CONFIRMED {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed. Incorrect status."))
-	}
+	// userInput := "Order Confirmed"
 
-	helper.LogDebug("Partner - handler - ConfirmOrder | order id = ", orderID)
-	helper.LogDebug("Partner - handler - ConfirmOrder | userInput = ", userInput)
-	helper.LogDebug("Partner - handler - ConfirmOrder | partner id = ", partnerID)
-	helper.LogDebug("Partner - handler - ConfirmOrder | mau masuk proses =")
+	// helper.LogDebug("Partner - handler - ConfirmOrder | order id = ", orderID)
+	// helper.LogDebug("Partner - handler - ConfirmOrder | userInput = ", userInput)
+	// helper.LogDebug("Partner - handler - ConfirmOrder | partner id = ", partnerID)
+	// helper.LogDebug("Partner - handler - ConfirmOrder | mau masuk proses =")
 
 	err := delivery.partnerService.UpdateOrderConfirmStatus(uint(orderID), uint(partnerID))
 	if err != nil {

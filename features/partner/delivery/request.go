@@ -38,9 +38,9 @@ type VerifyPartnerRequest struct {
 	PartnerID uint   `json:"partner_id" form:"partner_id"`
 }
 
-type ConfirmOrderRequest struct {
-	OrderStatus string `json:"order_status" form:"order_status"`
-}
+// type ConfirmOrderRequest struct {
+// 	OrderStatus string `json:"order_status" form:"order_status"`
+// }
 
 func toCore(input PartnerRequest) partner.Core {
 	partnerCoredata := partner.Core{
