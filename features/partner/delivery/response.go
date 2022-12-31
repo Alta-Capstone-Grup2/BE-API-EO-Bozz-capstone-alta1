@@ -123,13 +123,13 @@ func fromListCore(dataCore partner.Core) PartnerListResponse {
 	}
 }
 
-func fromCoreList(dataCore []partner.Core) []PartnerResponse {
-	var dataResponse []PartnerResponse
-	for _, v := range dataCore {
-		dataResponse = append(dataResponse, fromCore(v))
-	}
-	return dataResponse
-}
+// func fromCoreList(dataCore []partner.Core) []PartnerResponse {
+// 	var dataResponse []PartnerResponse
+// 	for _, v := range dataCore {
+// 		dataResponse = append(dataResponse, fromCore(v))
+// 	}
+// 	return dataResponse
+// }
 
 func fromListCoreList(dataCore []partner.Core) []PartnerListResponse {
 	var dataResponse []PartnerListResponse

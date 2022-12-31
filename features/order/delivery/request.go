@@ -18,9 +18,9 @@ type OrderRequest struct {
 	OrderDetails    []OrderDetailRequest `json:"order_details" form:"order_details"`
 }
 
-type OrderStatusRequest struct {
-	OrderStatus string `json:"order_status" form:"order_status"`
-}
+// type OrderStatusRequest struct {
+// 	OrderStatus string `json:"order_status" form:"order_status"`
+// }
 
 type OrderDetailRequest struct {
 	ServiceAdditionalID uint `json:"service_additional_id" form:"service_additional_id"`
@@ -58,10 +58,10 @@ func toDetailOrderList(requestData []OrderDetailRequest) []order.DetailOrder {
 	return dataCore
 }
 
-func toCoreStatus(input OrderStatusRequest, orderId uint) order.Core {
+func toCoreStatus(inputCancel string, orderId uint) order.Core {
 	coreInput := order.Core{
 		ID:          orderId,
-		OrderStatus: input.OrderStatus,
+		OrderStatus: inputCancel,
 	}
 	return coreInput
 }

@@ -90,12 +90,12 @@ func (delivery *orderDelivery) UpdateStatusCancel(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
 
-	orderInput := OrderStatusRequest{}
-	errBind := c.Bind(&orderInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
-	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
-	}
-
+	// orderInput := OrderStatusRequest{}
+	// errBind := c.Bind(&orderInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	// if errBind != nil {
+	// 	return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+	// }
+	orderInput := "Cancel Order"
 	dataCore := toCoreStatus(orderInput, uint(orderId))
 	err := delivery.orderService.UpdateStatusCancel(dataCore, uint(orderId))
 	if err != nil {
