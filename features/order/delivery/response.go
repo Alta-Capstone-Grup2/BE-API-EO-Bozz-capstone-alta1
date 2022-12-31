@@ -6,19 +6,28 @@ import (
 )
 
 type OrderViewResponse struct {
-	ID            uint      `json:"id"`
-	EventName     string    `json:"event_name"`
-	StartDate     time.Time `json:"start_date"`
-	EndDate       time.Time `json:"end_date"`
-	EventLocation string    `json:"event_location"`
-	ServiceName   string    `json:"service_name"`
-	GrossAmmount  uint      `json:"gross_ammount"`
-	OrderStatus   string    `json:"order_status"`
-	ServiceID     uint      `json:"service_id"`
-	ClientID      uint      `json:"client_id"`
+	ID            uint                     `json:"id"`
+	EventName     string                   `json:"event_name"`
+	StartDate     time.Time                `json:"start_date"`
+	EndDate       time.Time                `json:"end_date"`
+	EventLocation string                   `json:"event_location"`
+	ServiceName   string                   `json:"service_name"`
+	GrossAmmount  uint                     `json:"gross_ammount"`
+	OrderStatus   string                   `json:"order_status"`
+	ServiceID     uint                     `json:"service_id"`
+	ClientID      uint                     `json:"client_id"`
+	Partner       PartnerOrderViewResponse `json:"parnter"`
 }
 
-func fromViewCore(dataCore order.Core) OrderViewResponse {
+type PartnerOrderViewResponse struct {
+	ID                uint   `json:"id"`
+	CompanyName       string `json:"company_name"`
+	BankName          string `json:"bank_name"`
+	BankAccountNumber string `json:"bank_account_number"`
+	BankAccountName   string `json:"bank_account_name"`
+}
+
+func fromViewCore(dataCore order.OrderJoinPartner) OrderViewResponse {
 	return OrderViewResponse{
 		ID:            dataCore.ID,
 		EventName:     dataCore.EventName,
@@ -30,10 +39,17 @@ func fromViewCore(dataCore order.Core) OrderViewResponse {
 		OrderStatus:   dataCore.OrderStatus,
 		ServiceID:     dataCore.ServiceID,
 		ClientID:      dataCore.ClientID,
+		Partner: PartnerOrderViewResponse{
+			ID:                dataCore.PartnerID,
+			CompanyName:       dataCore.CompanyName,
+			BankName:          dataCore.BankName,
+			BankAccountNumber: dataCore.BankAccountNumber,
+			BankAccountName:   dataCore.BankAccountName,
+		},
 	}
 }
 
-func fromViewCoreList(dataCore []order.Core) []OrderViewResponse {
+func fromViewCoreList(dataCore []order.OrderJoinPartner) []OrderViewResponse {
 	var dataResponse []OrderViewResponse
 	for _, v := range dataCore {
 		dataResponse = append(dataResponse, fromViewCore(v))
