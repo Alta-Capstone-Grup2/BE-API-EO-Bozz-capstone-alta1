@@ -73,10 +73,20 @@ func (delivery *ReviewDelivery) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
 	}
 
-	clientID := middlewares.ExtractTokenClientID(c)
-	dataCore := toCore(userInput, uint(clientID))
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "Client" {
+		return c.JSON(http.StatusNotAcceptable, helper.FailedResponse("other than a user with a client role can't give a review"))
+	}
 
-	err := delivery.reviewService.Create(dataCore, c)
+	clientID := middlewares.ExtractTokenClientID(c)
+	var review review.Core
+	//validasi client have one review on one order
+	if clientID == int(review.ClientID) && userInput.OrderID == review.OrderID {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("This Client has already given a review to this order, please input other order id"))
+	}
+
+	dataCore := toCore(userInput, uint(clientID))
+	err := delivery.reviewService.Create(dataCore, uint(clientID), c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

@@ -21,7 +21,7 @@ func New(repo review.RepositoryInterface) review.ServiceInterface {
 	}
 }
 
-func (service *reviewService) Create(input review.Core, c echo.Context) (err error) {
+func (service *reviewService) Create(input review.Core, clientId uint, c echo.Context) (err error) {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate

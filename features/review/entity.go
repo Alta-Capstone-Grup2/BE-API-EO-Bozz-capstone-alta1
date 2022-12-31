@@ -68,7 +68,7 @@ type Service struct {
 
 type ServiceInterface interface {
 	GetAll(query string) (data []Core, err error)
-	Create(input Core, c echo.Context) error
+	Create(input Core, id uint, c echo.Context) error
 	GetById(id uint) (data Core, err error)
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error

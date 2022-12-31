@@ -133,30 +133,48 @@ func (service *partnerService) GetById(id uint) (data partner.Core, err error) {
 }
 
 func (service *partnerService) Update(input partner.Core, partnerId, userId uint, c echo.Context) error {
-
+	var partnerData partner.Core
 	// upload file
 	var errUpload error
 	input.CompanyImageFile, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if input.CompanyImageFile == "" {
+		input.CompanyImageFile = partnerData.CompanyImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}
 	input.NIBImageFile, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if input.NIBImageFile == "" {
+		input.NIBImageFile = partnerData.NIBImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}
 	input.SIUPImageFile, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if input.SIUPImageFile == "" {
+		input.SIUPImageFile = partnerData.SIUPImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}
 	input.Event1ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if input.Event1ImageFile == "" {
+		input.Event1ImageFile = partnerData.Event1ImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}
 	input.Event2ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if input.Event2ImageFile == "" {
+		input.Event2ImageFile = partnerData.Event2ImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}
 	input.Event3ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
+	if input.Event3ImageFile == "" {
+		input.Event3ImageFile = partnerData.Event3ImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}

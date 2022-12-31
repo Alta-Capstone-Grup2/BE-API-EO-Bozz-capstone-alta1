@@ -227,24 +227,20 @@ func (dataModel *Discussion) toCoreDiscussion() service.Discussion {
 	}
 }
 
-func (dataModel *Order) toCoreAvailable(serviceName, startDate, endDate, Available string) service.Order {
-	dateStart, _ := time.Parse(time.RFC3339, startDate)
-	dateEnd, _ := time.Parse(time.RFC3339, endDate)
+func (dataModel *Order) toCoreAvailable(serviceName string, startDate, endDate time.Time, Available string) service.Order {
 	return service.Order{
 		ServiceName:        serviceName,
-		StartDate:          dateStart,
-		EndDate:            dateEnd,
+		StartDate:          startDate,
+		EndDate:            endDate,
 		AvailabilityStatus: Available,
 	}
 }
 
-func (dataModel *Order) toCoreNotAvailable(serviceName, startDate, endDate, NotAvailable string) service.Order {
-	dateStart, _ := time.Parse(time.RFC3339, startDate)
-	dateEnd, _ := time.Parse(time.RFC3339, endDate)
+func (dataModel *Order) toCoreNotAvailable(serviceName string, startDate, endDate time.Time, NotAvailable string) service.Order {
 	return service.Order{
 		ServiceName:        serviceName,
-		StartDate:          dateStart,
-		EndDate:            dateEnd,
+		StartDate:          startDate,
+		EndDate:            endDate,
 		AvailabilityStatus: NotAvailable,
 	}
 }

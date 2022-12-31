@@ -105,8 +105,12 @@ func (service *clientService) Update(input client.Core, clientID uint, userID ui
 	}
 
 	// upload file
+	var clientData client.Core
 	var errUpload error
 	input.ClientImageFile, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
+	if input.ClientImageFile == "" {
+		input.ClientImageFile = clientData.ClientImageFile
+	}
 	if errUpload != nil {
 		return errUpload
 	}
