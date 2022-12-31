@@ -169,12 +169,12 @@ func (repo *orderRepository) GetAllWithSearch(query string) (data []_order.Core,
 	return dataCore, nil
 }
 
-func (repo *orderRepository) GetById(id uint) (data _order.Core, dataDetail _order.DetailOrder, err error) {
+func (repo *orderRepository) GetById(id uint) (data _order.Core, dataDetail []_order.DetailOrder, err error) {
 	var order Order
-	var detail DetailOrder
+	var detail []DetailOrder
 
 	tx := repo.db.First(&order, id)
-	yx := repo.db.First(&detail)
+	yx := repo.db.Where("order_id = ?", id).Find(&detail)
 
 	if tx.Error != nil && yx.Error != nil {
 		return data, dataDetail, tx.Error
@@ -185,7 +185,7 @@ func (repo *orderRepository) GetById(id uint) (data _order.Core, dataDetail _ord
 	}
 
 	var dataCore = order.toCoreOrder()
-	var dataCoreDetail = detail.toCoreDetailOrder()
+	var dataCoreDetail = toCoreDetailOrderList(detail)
 	return dataCore, dataCoreDetail, nil
 }
 

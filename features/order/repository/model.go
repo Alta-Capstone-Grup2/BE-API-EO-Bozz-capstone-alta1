@@ -185,6 +185,7 @@ func (dataModel *Order) toCoreOrder() order.Core {
 
 func (dataModel *DetailOrder) toCoreDetailOrder() order.DetailOrder {
 	return order.DetailOrder{
+		ID:                  dataModel.ID,
 		ServiceAdditionalID: dataModel.ServiceAdditionalID,
 		AdditionalName:      dataModel.AdditionalName,
 		AdditionalPrice:     dataModel.AdditionalPrice,
@@ -195,7 +196,7 @@ func (dataModel *DetailOrder) toCoreDetailOrder() order.DetailOrder {
 }
 
 // mengubah slice struct model gorm ke slice struct core
-func toCoreDetaiOrderList(dataModel []DetailOrder) []order.DetailOrder {
+func toCoreDetailOrderList(dataModel []DetailOrder) []order.DetailOrder {
 	var dataCore []order.DetailOrder
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCoreDetailOrder())
