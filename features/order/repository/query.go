@@ -6,7 +6,6 @@ import (
 	"capstone-alta1/utils/helper"
 	"errors"
 	"strings"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -39,7 +38,7 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	// 	return errors.New("Failed insert. Parse payoutdate failed.")
 	// }
 
-	orderGorm.PayoutDate = time.Time{}
+	// orderGorm.PayoutDate = time.Time{}
 
 	tx := repo.db.Create(&orderGorm) // proses insert data
 	if tx.Error != nil {
