@@ -55,10 +55,10 @@ type ServiceDiscussionResponse struct {
 }
 
 type ServiceAvailabilityResponse struct {
-	ServiceName        string `json:"service_name"`
-	StartDate          string `json:"start_date"`
-	EndDate            string `json:"end_date"`
-	AvailabilityStatus string `json:"availability_status"`
+	ServiceName        string    `json:"service_name"`
+	StartDate          time.Time `json:"start_date"`
+	EndDate            time.Time `json:"end_date"`
+	AvailabilityStatus string    `json:"availability_status"`
 }
 
 func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
@@ -123,8 +123,8 @@ func fromCoreDiscussion(dataCore service.Discussion) ServiceDiscussionResponse {
 func fromCoreAvailability(dataCore service.Order) ServiceAvailabilityResponse {
 	return ServiceAvailabilityResponse{
 		ServiceName:        dataCore.ServiceName,
-		StartDate:          dataCore.StartDate.String(),
-		EndDate:            dataCore.EndDate.String(),
+		StartDate:          dataCore.StartDate,
+		EndDate:            dataCore.EndDate,
 		AvailabilityStatus: dataCore.AvailabilityStatus,
 	}
 }
