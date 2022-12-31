@@ -5,6 +5,8 @@ import (
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
+	"errors"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -70,17 +72,37 @@ func (order *orderService) UpdateStatusCancel(input _order.Core, id uint) error 
 }
 
 func (order *orderService) UpdateStatusPayout(id uint, c echo.Context) error {
-	input := _order.Core{}
+	dataOrder, _, errFindOrder := order.orderRepository.GetById(id)
+	if errFindOrder != nil {
+		helper.LogDebug("Order - UpdateStatusPayout. Find Order Failed.Erro = ", errFindOrder)
+		return helper.ServiceErrorMsg(errFindOrder)
+	}
+
+	// convert status to pascal case
+	dataOrder.OrderStatus = strings.Title(strings.ToLower(dataOrder.OrderStatus))
+
+	helper.LogDebug("Order - UpdateStatusPayout. DataOrder = ", dataOrder)
+
+	if dataOrder.OrderStatus == cfg.ORDER_STATUS_PAID_OFF {
+		return errors.New("Order Status already Paid Off. Please check again.")
+	}
+
+	if dataOrder.OrderStatus != cfg.ORDER_STATUS_COMPLETE_ORDER {
+		return errors.New("Order Status not Complete yet. Please check again.")
+	}
+
+	dataOrder.OrderStatus = cfg.ORDER_STATUS_PAID_OFF
+
 	var errUpload error
-	input.PayoutRecieptFile, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
+	dataOrder.PayoutRecieptFile, errUpload = thirdparty.Upload(c, cfg.ORDER_PAYOUT_RECEIPT_FILE, cfg.ORDER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
 
-	err := order.orderRepository.UpdateStatusPayout(input, id)
-	if err != nil {
-		log.Error(err.Error())
-		return helper.ServiceErrorMsg(err)
+	errUpdateStatus := order.orderRepository.UpdateStatusPayout(dataOrder, id)
+	if errUpdateStatus != nil {
+		helper.LogDebug("Order - UpdateStatusPayout. Update Failed. Error = ", errUpdateStatus.Error())
+		return helper.ServiceErrorMsg(errUpdateStatus)
 	}
 
 	return nil

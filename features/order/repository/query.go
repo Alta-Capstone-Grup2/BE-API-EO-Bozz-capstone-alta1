@@ -207,10 +207,16 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 	var result Order
 	tx := repo.db.Model(&result).Where("ID = ?", id).Updates(&resultGorm) // proses update
 	if tx.Error != nil {
+		helper.LogDebug("Order - query - UpdateStatusPayout | Error execute query. Error  = ", tx.Error)
 		return tx.Error
 	}
+
+	helper.LogDebug("Order - query - BeforeCreate Order Detail | Row Affected query get additional data : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return errors.New("update failed")
 	}
+
+	helper.LogDebug("Order - query -  UpdateStatusPayout | Order data : ", result)
+
 	return nil
 }

@@ -9,10 +9,10 @@ const (
 	PARTNER_VERIFICATION_STATUS_VERIFIED     = "Verified"
 
 	// Order Constant
-	ORDER_STATUS_WAITING_CONFIRMATION = "waiting confirmation"
-	ORDER_STATUS_ORDER_CONFIRMED      = "order confirmed"
-	ORDER_STATUS_COMPLETE_ORDER       = "complete order"
-	ORDER_STATUS_PAID_OFF             = "paid off"
+	ORDER_STATUS_WAITING_CONFIRMATION = "Waiting Confirmation"
+	ORDER_STATUS_ORDER_CONFIRMED      = "Order Confirmed"
+	ORDER_STATUS_COMPLETE_ORDER       = "Complete Order"
+	ORDER_STATUS_PAID_OFF             = "Paid Off"
 
 	//Show log
 	SHOW_LOGS = true
@@ -34,5 +34,6 @@ const (
 	SERVICE_FOLDER     = "service"
 	SERVICE_IMAGE_FILE = "service_image_file"
 
+	ORDER_FOLDER              = "order"
 	ORDER_PAYOUT_RECEIPT_FILE = "payout_receipt_file"
 )

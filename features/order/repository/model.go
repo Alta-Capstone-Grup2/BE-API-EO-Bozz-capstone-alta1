@@ -131,6 +131,7 @@ func fromCorePayout(dataCore order.Core) Order {
 	modelData := Order{
 		PayoutRecieptFile: dataCore.PayoutRecieptFile,
 		PayoutDate:        time.Now(),
+		OrderStatus:       dataCore.OrderStatus,
 	}
 	return modelData
 }
