@@ -33,29 +33,16 @@ func (repo *serviceRepository) Create(input _service.Core) error {
 	return nil
 }
 
-func (repo *serviceRepository) GetAll() (data []_service.Core, err error) {
+func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 	var results []Service
+	minInt, _ := strconv.Atoi(queryMinPrice)
+	maxInt, _ := strconv.Atoi(queryMaxPrice)
+	tx := repo.db.Where(&Service{ServiceName: queryName, ServiceCategory: queryCategory, City: queryCity}).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&results)
 
-	tx := repo.db.Find(&results)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 	var dataCore = toCoreListGetAll(results)
-	return dataCore, nil
-}
-
-func (repo *serviceRepository) GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
-	var services []Service
-	var service Service
-	minInt, _ := strconv.Atoi(queryMinPrice)
-	maxInt, _ := strconv.Atoi(queryMaxPrice)
-
-	tx := repo.db.Model(&service).Where("service_name = ?", queryName).Where(&Service{ServiceCategory: queryCategory, City: queryCity}).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&services)
-
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	var dataCore = toCoreListGetAll(services)
 	return dataCore, nil
 }
 

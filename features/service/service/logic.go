@@ -41,24 +41,12 @@ func (service *serviceService) Create(input _service.Core, c echo.Context) (err 
 }
 
 func (service *serviceService) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
-	if queryName == "" && queryCategory == "" && queryCity == "" && queryMinPrice == "" && queryMaxPrice == "" {
-		data, err = service.serviceRepository.GetAll()
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
-		return data, err
-	} else if queryName != "" || queryCategory != "" || queryCity != "" || queryMinPrice != "" || queryMaxPrice != "" {
-		data, err = service.serviceRepository.GetAllWithSearch(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
-		return data, err
-	} else {
+	data, err = service.serviceRepository.GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice)
+	if err != nil {
 		helper.LogDebug(err)
 		return nil, helper.ServiceErrorMsg(err)
 	}
+	return data, err
 }
 
 func (service *serviceService) GetById(id uint) (data _service.Core, err error) {
