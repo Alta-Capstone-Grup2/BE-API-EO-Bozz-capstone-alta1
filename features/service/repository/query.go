@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -42,11 +41,11 @@ func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, query
 		}
 		var dataCore = toCoreListGetAll(results)
 		return dataCore, nil
-	} else if queryName == "ada isinya" || queryCategory == "ada isinya" || queryCity == "ada" || queryMinPrice == "ada" || queryMaxPrice == "ada" {
+	} else if queryName == "ada" || queryCategory == "ada" || queryCity == "ada" || queryMinPrice == "ada" || queryMaxPrice == "ada" {
 		minInt, _ := strconv.Atoi(queryMinPrice)
 		maxInt, _ := strconv.Atoi(queryMaxPrice)
 
-		tx := repo.db.Where(&Service{ServiceName: queryName, ServiceCategory: queryCategory, City: queryCity}).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&results)
+		tx := repo.db.Where("service_name = ?", queryName).Where("service_category=?", queryCategory).Where("city=?", queryCity).Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&results)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}
@@ -180,7 +179,7 @@ func (repo *serviceRepository) GetDiscussionById(serviceId uint) (data []_servic
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data _service.Order, err error) {
+func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 	//check available
 	var services []Service
 	var service Service
