@@ -23,7 +23,7 @@ type Order struct {
 	PaymentMethod     string
 	OrderStatus       string
 	PayoutRecieptFile string
-	PayoutDate        time.Time
+	PayoutDate        time.Time `gorm:"default:null"`
 	ServiceID         uint
 	ClientID          uint
 	DetailOrder       []DetailOrder
