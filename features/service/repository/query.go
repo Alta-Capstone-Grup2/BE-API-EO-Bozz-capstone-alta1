@@ -121,14 +121,25 @@ func (repo *serviceRepository) GetAdditionalById(serviceId uint) (data []_servic
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) AddAdditionalToService(input _service.ServiceAdditional) error {
-	additionalGorm := fromCoreServiceAdditional(input)
+func (repo *serviceRepository) AddAdditionalToService(input _service.ServiceAdditional, inputAdditional []_service.ServiceAdditional) error {
+	serviceadditionalGorm := fromCoreServiceAdditional(input)
+	additionallistGorm := fromCoreAdditionalList(inputAdditional)
 	var service Service
-	tx := repo.db.Model(&service).Where("ID = ?", input.ServiceID).Create(&additionalGorm) // proses insert data
+	tx := repo.db.Model(&service).Where("ID = ?", input.ServiceID).Create(&serviceadditionalGorm) // proses insert data
 	if tx.Error != nil {
 		return tx.Error
 	}
 	if tx.RowsAffected == 0 {
+		return errors.New("insert failed")
+	}
+	for index := range additionallistGorm {
+		additionallistGorm[index].AdditionalID = serviceadditionalGorm.AdditionalID
+	}
+	yx := repo.db.Create(&additionallistGorm) // proses insert data
+	if yx.Error != nil {
+		return tx.Error
+	}
+	if yx.RowsAffected == 0 {
 		return errors.New("insert failed")
 	}
 	return nil

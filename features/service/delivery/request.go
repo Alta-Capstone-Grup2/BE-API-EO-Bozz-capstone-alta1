@@ -24,8 +24,8 @@ type ServiceUpdateRequest struct {
 }
 
 type ServiceAdditionalRequest struct {
-	ServiceID         uint `json:"service_id" form:"service_id"`
-	AdditionalRequest []AdditionalRequest
+	ServiceID   uint                `json:"service_id" form:"service_id"`
+	Additionals []AdditionalRequest `json:"additionals" form:"additionals"`
 }
 type AdditionalRequest struct {
 	AdditionalID uint `json:"additional_id" form:"additional_id"`
@@ -60,11 +60,24 @@ func toCoreUpdate(input ServiceUpdateRequest, InputPartnerID uint) service.Core 
 	return coreInput
 }
 
-func toCoreAdditional(input ServiceAdditionalRequest) service.ServiceAdditional {
-	inputAdditional := AdditionalRequest{}
+func toCoreServiceAdditional(input ServiceAdditionalRequest) service.ServiceAdditional {
 	coreInput := service.ServiceAdditional{
-		ServiceID:    input.ServiceID,
-		AdditionalID: inputAdditional.AdditionalID,
+		ServiceID: input.ServiceID,
 	}
 	return coreInput
+}
+
+func toCoreAdditional(input AdditionalRequest) service.ServiceAdditional {
+	coreInput := service.ServiceAdditional{
+		AdditionalID: input.AdditionalID,
+	}
+	return coreInput
+}
+
+func toAdditionalList(requestData []AdditionalRequest) []service.ServiceAdditional {
+	var dataCore []service.ServiceAdditional
+	for _, v := range requestData {
+		dataCore = append(dataCore, toCoreAdditional(v))
+	}
+	return dataCore
 }
