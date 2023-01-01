@@ -4,6 +4,7 @@ import (
 	cfg "capstone-alta1/config"
 	partner "capstone-alta1/features/partner"
 	"capstone-alta1/utils/helper"
+	sendEmail "capstone-alta1/utils/thirdparty"
 	"errors"
 	"fmt"
 
@@ -250,10 +251,10 @@ func (repo *partnerRepository) UpdatePartnerVerifyStatus(verificationLog, verifi
 	return tx.Error
 }
 func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID uint) (err error) {
-	var modelData Order
+	var ModelDataOrder Order
 
 	// check status yang ada
-	tx := repo.db.First(&modelData, orderID)
+	tx := repo.db.First(&ModelDataOrder, orderID)
 	if tx.Error != nil {
 		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Error execute query check order. Error :", tx.Error)
 		return tx.Error
@@ -264,9 +265,9 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 		return tx.Error
 	}
 
-	if modelData.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
+	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
 		// proses update
-		tx2 := repo.db.Model(&modelData).Where("ID = ?", orderID).Updates(Order{OrderStatus: cfg.ORDER_STATUS_ORDER_CONFIRMED})
+		tx2 := repo.db.Model(&ModelDataOrder).Where("ID = ?", orderID).Updates(Order{OrderStatus: cfg.ORDER_STATUS_ORDER_CONFIRMED})
 
 		if tx2.Error != nil {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Error execute query update status. Error :", tx2.Error)
@@ -278,8 +279,20 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 			return tx.Error
 		}
 	} else {
-		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | modelData.OrderStatus : ", modelData.OrderStatus)
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | modelData.OrderStatus : ", ModelDataOrder.OrderStatus)
 		return errors.New("Order data no need partner confirmation.")
+	}
+
+	//get client email for send email
+	var client Client
+	yx := repo.db.First(&client, ModelDataOrder.ClientID)
+	if yx.Error != nil {
+		return yx.Error
+	}
+
+	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		clientEmail := client.User.Email
+		sendEmail.SendMail(clientEmail)
 	}
 
 	return nil
