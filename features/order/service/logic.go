@@ -29,7 +29,7 @@ func New(repo _order.RepositoryInterface) _order.ServiceInterface {
 
 func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (err error) {
 	strUuid := uuid.New()
-	transactionID := "INV-" + helper.GetDateTimeNow() + "-" + strUuid.String()
+	transactionID := "INV-" + helper.GetDateNowShort() + "-" + strUuid.String()
 
 	serviceData, errGetServiceData := order.orderRepository.GetServiceByID(inputOrder.ServiceID)
 	if errGetServiceData != nil {
@@ -37,12 +37,29 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 		return helper.ServiceErrorMsg(err)
 	}
 
+	helper.LogDebug("Order - logic - GetServiceByID | Service Data  = ", serviceData)
+	helper.LogDebug("Order - logic - GetServiceByID | Transaction ID  = ", transactionID)
 	inputOrder.MidtransTransactionID = transactionID
 	inputOrder.ServiceName = serviceData.ServiceName
 	inputOrder.ServicePrice = serviceData.ServicePrice
 
+	var grossAmmout uint
+	for _, val := range inputDetail {
+		grossAmmout += val.DetailOrderTotal
+	}
+	grossAmmout += inputOrder.ServicePrice
+
+	inputOrder.GrossAmmount = grossAmmout
+	inputOrder.OrderStatus = cfg.ORDER_STATUS_WAITING_CONFIRMATION
+	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
+
 	midtransObj := thirdparty.OrderMidtrans(transactionID, int64(inputOrder.GrossAmmount))
 	inputOrder.MidtransLink = midtransObj.RedirectURL
+	if inputOrder.MidtransLink == "" {
+		helper.LogDebug("Order - logic - Failed get Midtrans link.")
+		return errors.New("Payment Failed. Please try again later.")
+	}
+	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", inputOrder)
 
 	errCreate := order.orderRepository.Create(inputOrder, inputDetail)
 	if errCreate != nil {

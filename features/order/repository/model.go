@@ -154,15 +154,26 @@ type OrderJoinPartner struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore order.Core) Order {
 	modelData := Order{
-		EventName:       dataCore.EventName,
-		StartDate:       dataCore.StartDate,
-		EndDate:         dataCore.EndDate,
-		EventLocation:   dataCore.EventLocation,
-		EventAddress:    dataCore.EventAddress,
-		NotesForPartner: dataCore.NotesForPartner,
-		PaymentMethod:   dataCore.PaymentMethod,
-		ServiceID:       dataCore.ServiceID,
-		ClientID:        dataCore.ClientID,
+		EventName:             dataCore.EventName,
+		StartDate:             dataCore.StartDate,
+		EndDate:               dataCore.EndDate,
+		StartTime:             dataCore.StartTime,
+		EndTime:               dataCore.EndTime,
+		EventLocation:         dataCore.EventLocation,
+		EventAddress:          dataCore.EventAddress,
+		NotesForPartner:       dataCore.NotesForPartner,
+		ServiceName:           dataCore.ServiceName,
+		ServicePrice:          dataCore.ServicePrice,
+		GrossAmmount:          dataCore.GrossAmmount,
+		PaymentMethod:         dataCore.PaymentMethod,
+		OrderStatus:           dataCore.OrderStatus,
+		PayoutDate:            dataCore.PayoutDate,
+		PayoutRecieptFile:     dataCore.PayoutRecieptFile,
+		MidtransTransactionID: dataCore.MidtransTransactionID,
+		MidtransLink:          dataCore.MidtransLink,
+		MidtransToken:         dataCore.MidtransToken,
+		ServiceID:             dataCore.ServiceID,
+		ClientID:              dataCore.ClientID,
 	}
 	return modelData
 }

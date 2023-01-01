@@ -2,6 +2,7 @@ package helper
 
 import (
 	cfg "capstone-alta1/config"
+	"strings"
 	"time"
 )
 
@@ -23,5 +24,8 @@ func GetDateTimeFormated(dateTimeStr string) string {
 	}
 
 	return dateTimeData.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
+}
 
+func GetDateNowShort() string {
+	return strings.Replace(GetDateNow(), "-", "", -1)
 }

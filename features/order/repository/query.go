@@ -1,7 +1,6 @@
 package repository
 
 import (
-	cfg "capstone-alta1/config"
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
 	"errors"
@@ -40,6 +39,7 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 
 	// orderGorm.PayoutDate = time.Time{}
 
+	helper.LogDebug("Order - query - create | Row Affected query order : ", helper.ConvToJson(orderGorm))
 	tx := repo.db.Create(&orderGorm) // proses insert data
 	if tx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query order. Error  = ", tx.Error)
@@ -57,7 +57,7 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 		detailorderGorm[idx].OrderID = orderGorm.ID
 	}
 
-	helper.LogDebug("Order - query - create | Add order id to order detail slice. []Detail Order : ", detailorderGorm)
+	helper.LogDebug("Order - query - create | Add order id to order detail slice. []Detail Order : ", helper.ConvToJson(detailorderGorm))
 
 	yx := repo.db.Create(&detailorderGorm) // proses insert data
 	if yx.Error != nil {
@@ -73,15 +73,7 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 		return errors.New("insert detail order failed")
 	}
 
-	var grossAmmout uint
-	for _, val := range detailorderGorm {
-		grossAmmout += val.DetailOrderTotal
-	}
-
-	grossAmmout += orderGorm.ServicePrice
-	orderGorm.OrderStatus = cfg.ORDER_STATUS_WAITING_CONFIRMATION
-
-	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: grossAmmout, OrderStatus: orderGorm.OrderStatus}) // proses insert data
+	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: orderGorm.GrossAmmount, OrderStatus: orderGorm.OrderStatus}) // proses insert data
 	if zx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query update gross amount. Error  = ", zx.Error)
 		return zx.Error
