@@ -16,7 +16,7 @@ type OrderViewResponse struct {
 	OrderStatus   string                   `json:"order_status"`
 	ServiceID     uint                     `json:"service_id"`
 	ClientID      uint                     `json:"client_id"`
-	Partner       PartnerOrderViewResponse `json:"parnter"`
+	Partner       PartnerOrderViewResponse `json:"partner"`
 }
 
 type PartnerOrderViewResponse struct {
@@ -58,25 +58,25 @@ func fromViewCoreList(dataCore []order.OrderJoinPartner) []OrderViewResponse {
 }
 
 type OrderResponse struct {
-	ID                uint          `json:"id"`
-	EventName         string        `json:"event_name"`
-	StartDate         time.Time     `json:"start_date"`
-	EndDate           time.Time     `json:"end_date"`
-	StartTime         time.Duration `json:"start_time"`
-	EndTime           time.Duration `json:"end_time"`
-	EventLocation     string        `json:"event_location"`
-	EventAddress      string        `json:"event_address"`
-	NotesForPartner   string        `json:"notes_for_partner"`
-	ServiceName       string        `json:"service_name"`
-	ServicePrice      uint          `json:"service_price"`
-	GrossAmmount      uint          `json:"gross_ammount"`
-	PaymentMethod     string        `json:"payment_method"`
-	OrderStatus       string        `json:"order_status"`
-	PayoutDate        time.Time     `json:"payout_date"`
-	PayoutRecieptFile string        `json:"payout_reciept_file"`
-	ServiceID         uint          `json:"service_id"`
-	ClientID          uint          `json:"client_id"`
-	DetailOrders      []DetailOrderResponse
+	ID                uint                  `json:"id"`
+	EventName         string                `json:"event_name"`
+	StartDate         time.Time             `json:"start_date"`
+	EndDate           time.Time             `json:"end_date"`
+	StartTime         time.Duration         `json:"start_time"`
+	EndTime           time.Duration         `json:"end_time"`
+	EventLocation     string                `json:"event_location"`
+	EventAddress      string                `json:"event_address"`
+	NotesForPartner   string                `json:"notes_for_partner"`
+	ServiceName       string                `json:"service_name"`
+	ServicePrice      uint                  `json:"service_price"`
+	GrossAmmount      uint                  `json:"gross_ammount"`
+	PaymentMethod     string                `json:"payment_method"`
+	OrderStatus       string                `json:"order_status"`
+	PayoutDate        time.Time             `json:"payout_date"`
+	PayoutRecieptFile string                `json:"payout_reciept_file"`
+	ServiceID         uint                  `json:"service_id"`
+	ClientID          uint                  `json:"client_id"`
+	DetailOrders      []DetailOrderResponse `json:"detail_orders"`
 }
 
 type DetailOrderResponse struct {

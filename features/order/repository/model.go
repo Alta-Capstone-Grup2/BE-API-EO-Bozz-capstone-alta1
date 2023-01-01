@@ -9,24 +9,27 @@ import (
 
 type Order struct {
 	gorm.Model
-	EventName         string
-	StartDate         time.Time
-	StartTime         time.Duration
-	EndDate           time.Time
-	EndTime           time.Duration
-	EventLocation     string
-	EventAddress      string
-	NotesForPartner   string
-	ServiceName       string
-	ServicePrice      uint
-	GrossAmmount      uint
-	PaymentMethod     string
-	OrderStatus       string
-	PayoutRecieptFile string
-	PayoutDate        time.Time `gorm:"default:null"`
-	ServiceID         uint
-	ClientID          uint
-	DetailOrder       []DetailOrder
+	EventName             string
+	StartDate             time.Time
+	StartTime             time.Duration
+	EndDate               time.Time
+	EndTime               time.Duration
+	EventLocation         string
+	EventAddress          string
+	NotesForPartner       string
+	ServiceName           string
+	ServicePrice          uint
+	GrossAmmount          uint
+	PaymentMethod         string
+	OrderStatus           string
+	PayoutRecieptFile     string
+	PayoutDate            time.Time `gorm:"default:null"`
+	MidtransTransactionID string
+	MidtransToken         string
+	MidtransLink          string
+	ServiceID             uint
+	ClientID              uint
+	DetailOrder           []DetailOrder
 }
 
 type DetailOrder struct {
@@ -78,6 +81,7 @@ type Service struct {
 	ServiceName        string
 	ServiceDescription string
 	ServiceCategory    string
+	ServiceIncluded    string
 	ServicePrice       uint
 	AverageRating      float64
 	ServiceImageFile   string
@@ -291,4 +295,33 @@ func toCoreDetailOrderList(dataModel []DetailOrder) []order.DetailOrder {
 		dataCore = append(dataCore, v.toCoreDetailOrder())
 	}
 	return dataCore
+}
+
+func fromServiceCore(dataCore order.Service) Service {
+	modelData := Service{
+		ServiceName:        dataCore.ServiceName,
+		ServiceDescription: dataCore.ServiceDescription,
+		ServiceCategory:    dataCore.ServiceCategory,
+		ServicePrice:       dataCore.ServicePrice,
+		AverageRating:      dataCore.AverageRating,
+		ServiceImageFile:   dataCore.ServiceImageFile,
+		City:               dataCore.City,
+		PartnerID:          dataCore.PartnerID,
+	}
+	return modelData
+}
+
+func (dataModel *Service) toCoreGetById() order.Service {
+	return order.Service{
+		ID:                 dataModel.ID,
+		ServiceName:        dataModel.ServiceName,
+		ServiceDescription: dataModel.ServiceDescription,
+		ServiceIncluded:    dataModel.ServiceIncluded,
+		ServiceCategory:    dataModel.ServiceCategory,
+		ServicePrice:       dataModel.ServicePrice,
+		AverageRating:      dataModel.AverageRating,
+		ServiceImageFile:   dataModel.ServiceImageFile,
+		City:               dataModel.City,
+		PartnerID:          dataModel.PartnerID,
+	}
 }

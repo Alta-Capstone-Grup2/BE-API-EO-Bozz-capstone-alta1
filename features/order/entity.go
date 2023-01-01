@@ -7,25 +7,28 @@ import (
 )
 
 type Core struct {
-	ID                uint
-	EventName         string
-	StartDate         time.Time
-	StartTime         time.Duration
-	EndDate           time.Time
-	EndTime           time.Duration
-	EventLocation     string
-	EventAddress      string
-	NotesForPartner   string
-	ServiceName       string
-	ServicePrice      uint
-	GrossAmmount      uint
-	PaymentMethod     string
-	OrderStatus       string
-	PayoutRecieptFile string
-	PayoutDate        time.Time
-	ServiceID         uint
-	ClientID          uint
-	DetailOrder       []DetailOrder
+	ID                    uint
+	EventName             string
+	StartDate             time.Time
+	StartTime             time.Duration
+	EndDate               time.Time
+	EndTime               time.Duration
+	EventLocation         string
+	EventAddress          string
+	NotesForPartner       string
+	ServiceName           string
+	ServicePrice          uint
+	GrossAmmount          uint
+	PaymentMethod         string
+	OrderStatus           string
+	PayoutRecieptFile     string
+	PayoutDate            time.Time
+	MidtransTransactionID string
+	MidtransToken         string
+	MidtransLink          string
+	ServiceID             uint
+	ClientID              uint
+	DetailOrder           []DetailOrder
 }
 
 type DetailOrder struct {
@@ -78,6 +81,7 @@ type Service struct {
 	ServiceName        string
 	ServiceDescription string
 	ServiceCategory    string
+	ServiceIncluded    string
 	ServicePrice       uint
 	AverageRating      float64
 	ServiceImageFile   string
@@ -150,6 +154,7 @@ type ServiceInterface interface {
 	GetById(id uint) (data Core, dataDetail []DetailOrder, err error)
 	UpdateStatusCancel(input Core, id uint) error
 	UpdateStatusPayout(id uint, c echo.Context) error
+	UpdateMidtrans(input Core) error
 }
 
 type RepositoryInterface interface {
@@ -159,4 +164,6 @@ type RepositoryInterface interface {
 	GetById(id uint) (data Core, dataDetail []DetailOrder, err error)
 	UpdateStatusCancel(input Core, id uint) error
 	UpdateStatusPayout(input Core, id uint) error
+	UpdateMidtrans(input Core) error
+	GetServiceByID(serviceID uint) (data Service, err error)
 }

@@ -95,28 +95,24 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	return nil
 }
 
-func (o *Order) BeforeCreate(tx *gorm.DB) (err error) {
+func (repo *orderRepository) GetServiceByID(serviceID uint) (data _order.Service, err error) {
 	var serviceData Service
-	txBeforeCreate := tx.Find(&serviceData, o.ServiceID)
+	tx := repo.db.Find(&serviceData, serviceID)
 
-	if txBeforeCreate.Error != nil {
-		helper.LogDebug("Order - query - BeforeCreate Order | Error execute query. Error  = ", txBeforeCreate.Error)
-		return txBeforeCreate.Error
+	if tx.Error != nil {
+		helper.LogDebug("Order - query - GetServiceID | Error execute query. Error  = ", tx.Error)
+		return _order.Service{}, tx.Error
 	}
 
-	helper.LogDebug("Order - query - BeforeCreate Order | Row Affected query get additional data : ", txBeforeCreate.RowsAffected)
-	if txBeforeCreate.RowsAffected == 0 {
-		return txBeforeCreate.Error
+	helper.LogDebug("Order - query - GetServiceID | Row Affected query get additional data : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return _order.Service{}, tx.Error
 	}
 
-	helper.LogDebug("Order - query - BeforeCreate Order | serviceData = ", serviceData)
+	helper.LogDebug("Order - query - GetServiceID | serviceData = ", serviceData)
+	data = serviceData.toCoreGetById()
 
-	o.ServiceName = serviceData.ServiceName
-	o.ServicePrice = serviceData.ServicePrice
-
-	helper.LogDebug("Order - query - BeforeCreate Order | order data = ", o)
-
-	return
+	return data, tx.Error
 }
 
 func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
@@ -225,6 +221,16 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 	}
 
 	helper.LogDebug("Order - query -  UpdateStatusPayout | Order data : ", result)
+
+	return nil
+}
+
+// UPDATE STATUS ORDER AFTER PAYMENT MIDTRANS
+func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
+	orderGorm := fromCore(input)
+	if err := rq.db.Where("id = ?", orderGorm.ID).Updates(&orderGorm).Error; err != nil {
+		return err
+	}
 
 	return nil
 }

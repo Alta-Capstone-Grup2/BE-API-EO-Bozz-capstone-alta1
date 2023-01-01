@@ -14,7 +14,6 @@ func OrderMidtrans(orderId string, price int64) *snap.Response {
 	midtrans.Environment = midtrans.Sandbox
 	c := coreapi.Client{}
 	c.New(os.Getenv("MIDTRANS_SERVER"), midtrans.Sandbox)
-	// orderId := "ORDER-103"
 
 	req := &snap.Request{
 		TransactionDetails: midtrans.TransactionDetails{

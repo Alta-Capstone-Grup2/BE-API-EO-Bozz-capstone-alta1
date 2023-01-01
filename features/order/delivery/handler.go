@@ -37,6 +37,7 @@ func (delivery *orderDelivery) Create(c echo.Context) error {
 	inputClientID := middlewares.ExtractTokenClientID(c)
 	dataCore := toCore(orderInput, uint(inputClientID))
 	dataDetailOrder := toDetailOrderList(orderInput.OrderDetails)
+
 	err := delivery.orderService.Create(dataCore, dataDetailOrder)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
@@ -124,4 +125,19 @@ func (delivery *orderDelivery) UpdateStatusPayout(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
+}
+
+// CALLBACK MIDTRANS
+func (delivery *orderDelivery) UpdateMidtrans() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var input UpdateMidtransRequest
+		errBind := c.Bind(&input)
+		if errBind != nil {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+		}
+
+		res := toUpdateMidtrans(input)
+		delivery.orderService.UpdateMidtrans(res)
+		return c.JSON(http.StatusAccepted, helper.SuccessResponse("Success update order data."))
+	}
 }
