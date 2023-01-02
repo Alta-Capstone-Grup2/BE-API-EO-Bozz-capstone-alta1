@@ -30,10 +30,13 @@ type ServiceGetByIdResponse struct {
 }
 
 type ServiceAdditionalResponse struct {
-	ID              uint   `json:"id"`
-	AdditionalName  string `json:"additional_name"`
-	AdditionalPrice uint   `json:"additional_price"`
-	PartnerID       uint   `json:"partner_id"`
+	ServiceAdditionalID uint   `json:"service_additional_id"`
+	AdditionalName      string `json:"additional_name"`
+	AdditionalPrice     uint   `json:"additional_price"`
+	ServiceName         string `json:"service_name"`
+	ServiceID           uint   `json:"service_id"`
+	AdditionalID        uint   `json:"additional_id"`
+	PartnerID           uint   `json:"partner_id"`
 }
 
 type ServiceReviewResponse struct {
@@ -89,12 +92,15 @@ func fromCoreGetById(dataCore service.Core) ServiceGetByIdResponse {
 	}
 }
 
-func fromCoreAdditional(dataCore service.Additional) ServiceAdditionalResponse {
+func fromCoreJoinServiceAdditional(dataCore service.JoinServiceAdditional) ServiceAdditionalResponse {
 	return ServiceAdditionalResponse{
-		ID:              dataCore.ID,
-		AdditionalName:  dataCore.AdditionalName,
-		AdditionalPrice: dataCore.AdditionalPrice,
-		PartnerID:       dataCore.PartnerID,
+		ServiceAdditionalID: dataCore.ServiceAdditionalID,
+		AdditionalName:      dataCore.AdditionalName,
+		AdditionalPrice:     dataCore.AdditionalPrice,
+		ServiceName:         dataCore.ServiceName,
+		AdditionalID:        dataCore.AdditionalID,
+		ServiceID:           dataCore.ServiceID,
+		PartnerID:           dataCore.PartnerID,
 	}
 }
 
@@ -137,10 +143,10 @@ func fromCoreList(dataCore []service.Core) []ServiceGetAllResponse {
 	return dataResponse
 }
 
-func fromCoreListAdditional(dataCore []service.Additional) []ServiceAdditionalResponse {
+func fromCoreListJoinServiceAdditional(dataCore []service.JoinServiceAdditional) []ServiceAdditionalResponse {
 	var dataResponse []ServiceAdditionalResponse
 	for _, v := range dataCore {
-		dataResponse = append(dataResponse, fromCoreAdditional(v))
+		dataResponse = append(dataResponse, fromCoreJoinServiceAdditional(v))
 	}
 	return dataResponse
 }

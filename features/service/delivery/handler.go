@@ -22,7 +22,7 @@ func New(service service.ServiceInterface, e *echo.Echo) {
 
 	e.GET("/services", handler.GetAll)
 	e.GET("/services/:id", handler.GetById)
-	e.GET("/services/:id/additionals", handler.GetAdditionalById)
+	e.GET("/services/:id/additionals", handler.GetServiceAdditionalById)
 	e.GET("/services/:id/reviews", handler.GetReviewById)
 	e.GET("/services/:id/discussions", handler.GetDiscussionById)
 	e.POST("/services/additionals", handler.AddAdditionalToService, middlewares.JWTMiddleware())
@@ -144,13 +144,13 @@ func (delivery *serviceDelivery) Delete(c echo.Context) error {
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success delete data."))
 }
 
-func (delivery *serviceDelivery) GetAdditionalById(c echo.Context) error {
+func (delivery *serviceDelivery) GetServiceAdditionalById(c echo.Context) error {
 	idParam := c.Param("id")
 	serviceId, errConv := strconv.Atoi(idParam)
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
-	results, err := delivery.serviceService.GetAdditionalById(uint(serviceId))
+	results, err := delivery.serviceService.GetServiceAdditionalById(uint(serviceId))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {
 			return c.JSON(http.StatusOK, helper.SuccessWithDataResponse(err.Error(), results))
@@ -158,7 +158,7 @@ func (delivery *serviceDelivery) GetAdditionalById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreListAdditional(results)
+	dataResponse := fromCoreListJoinServiceAdditional(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
 }

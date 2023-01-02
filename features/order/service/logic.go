@@ -6,6 +6,7 @@ import (
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
 	"errors"
+	"reflect"
 	"strconv"
 	"strings"
 
@@ -35,6 +36,10 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	if errGetServiceData != nil {
 		helper.LogDebug("Order - logic - GetServiceByID | Error execute GetServiceByID. Error  = ", errGetServiceData.Error())
 		return _order.Core{}, helper.ServiceErrorMsg(err)
+	}
+
+	if reflect.DeepEqual(serviceData, _order.Service{}) {
+		return _order.Core{}, errors.New("Service not found. Please check input again.")
 	}
 
 	helper.LogDebug("Order - logic - GetServiceByID | Service Data  = ", serviceData)
@@ -69,7 +74,7 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	data, errCreate := order.orderRepository.Create(inputOrder, inputDetail)
 	if errCreate != nil {
 		helper.LogDebug("Order - logic - Create | Error execute create order. Error  = ", errCreate.Error())
-		return _order.Core{}, helper.ServiceErrorMsg(err)
+		return _order.Core{}, helper.ServiceErrorMsg(errCreate)
 	}
 
 	return data, nil

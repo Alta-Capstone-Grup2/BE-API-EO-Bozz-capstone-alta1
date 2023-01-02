@@ -55,6 +55,16 @@ type Additional struct {
 	ServiceAdditional []ServiceAdditional
 }
 
+type JoinServiceAdditional struct {
+	ServiceAdditionalID uint
+	AdditionalName      string
+	AdditionalPrice     uint
+	ServiceName         string
+	ServiceID           uint
+	AdditionalID        uint
+	PartnerID           uint
+}
+
 type Order struct {
 	ID                 uint
 	EventName          string
@@ -111,7 +121,7 @@ type ServiceInterface interface {
 	Create(input Core, c echo.Context) error
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
-	GetAdditionalById(id uint) (data []Additional, err error)
+	GetServiceAdditionalById(id uint) (data []JoinServiceAdditional, err error)
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input []ServiceAdditional) error
@@ -124,7 +134,7 @@ type RepositoryInterface interface {
 	Create(input Core) error
 	Update(input Core, id uint) error
 	Delete(id uint) error
-	GetAdditionalById(id uint) (data []Additional, err error)
+	GetServiceAdditionalById(id uint) (data []JoinServiceAdditional, err error)
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input []ServiceAdditional) error

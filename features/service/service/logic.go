@@ -82,8 +82,8 @@ func (service *serviceService) Delete(id uint) error {
 	return nil
 }
 
-func (service *serviceService) GetAdditionalById(id uint) (data []_service.Additional, err error) {
-	data, err = service.serviceRepository.GetAdditionalById(id)
+func (service *serviceService) GetServiceAdditionalById(id uint) (data []_service.JoinServiceAdditional, err error) {
+	data, err = service.serviceRepository.GetServiceAdditionalById(id)
 	if err != nil {
 		log.Error(err.Error())
 		return nil, err
