@@ -7,7 +7,6 @@ import (
 	"capstone-alta1/utils/thirdparty"
 	"errors"
 	"reflect"
-	"strconv"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -29,7 +28,7 @@ func New(repo _order.RepositoryInterface) _order.ServiceInterface {
 }
 
 func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (data _order.Core, err error) {
-	helper.LogDebug("Order - logic - GetServiceByID | Input Detail  = ", inputDetail)
+	helper.LogDebug("Order - logic - Create | Input Detail  = ", inputDetail)
 
 	strUuid := uuid.New()
 	transactionID := "INV-" + helper.GetDateNowShort() + "-" + strUuid.String()
@@ -57,22 +56,30 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	grossAmmout += inputOrder.ServicePrice
 
 	inputOrder.GrossAmmount = grossAmmout
-	inputOrder.OrderStatus = cfg.ORDER_STATUS_WAITING_CONFIRMATION
 	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
 
-	midtransObj := thirdparty.OrderMidtrans(transactionID, int64(inputOrder.GrossAmmount))
-	if midtransObj.ErrorMessages != nil {
+	// snap url
+	// midtransObj := thirdparty.OrderMidtrans(transactionID, int64(inputOrder.GrossAmmount))
+	// if midtransObj.ErrorMessages != nil {
+	// 	helper.LogDebug("Order - logic - Failed process to midtrans")
+	// 	return _order.Core{}, errors.New("Payment Failed. Please try again later.")
+	// }
+
+	// core
+	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), thirdparty.GetVABank(inputOrder.PaymentMethod))
+	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
+	if midtransResp.TransactionStatus != "pending" {
 		helper.LogDebug("Order - logic - Failed process to midtrans")
 		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	}
-	inputOrder.MidtransLink = midtransObj.RedirectURL
-	inputOrder.MidtransToken = midtransObj.Token
-	if inputOrder.MidtransLink == "" {
-		helper.LogDebug("Order - logic - Failed get Midtrans link.")
-		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
-	}
-	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", inputOrder)
 
+	inputOrder.MidtransVaNumber = midtransResp.VaNumbers[0].VANumber
+	inputOrder.MidtransExpiredTime = "After 12 Hours from " + midtransResp.TransactionTime
+	inputOrder.OrderStatus = "Waiting For Payment"
+
+	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
+
+	// proses
 	data, errCreate := order.orderRepository.Create(inputOrder, inputDetail)
 	if errCreate != nil {
 		helper.LogDebug("Order - logic - Create | Error execute create order. Error  = ", errCreate.Error())
@@ -157,11 +164,15 @@ func (order *orderService) UpdateStatusPayout(id uint, c echo.Context) error {
 
 // SERVICE TO UPDATE BOOKING DATA AFTER PAYMENT MIDTRANS
 func (order *orderService) UpdateMidtrans(input _order.Core) error {
-	inputMidtrans := thirdparty.CheckMidtrans(strconv.Itoa(int(input.ID)))
+	inputMidtrans := thirdparty.CheckMidtrans(input.MidtransTransactionID)
 
 	helper.LogDebug("Midtrans data, ", inputMidtrans)
 
-	input.OrderStatus = inputMidtrans.TransactionStatus
+	if inputMidtrans.TransactionStatus != "settlement" {
+		return errors.New("Payment status not settlement. Please check again")
+	}
+
+	input.OrderStatus = cfg.ORDER_STATUS_WAITING_CONFIRMATION
 	err := order.orderRepository.UpdateMidtrans(input)
 
 	if err != nil {

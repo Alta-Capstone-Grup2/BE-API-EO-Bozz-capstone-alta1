@@ -90,17 +90,17 @@ type DetailOrderResponse struct {
 }
 
 type OrderPaymentResponse struct {
-	ID               uint      `json:"id"`
-	EventName        string    `json:"event_name"`
-	StartDate        time.Time `json:"start_date"`
-	EndDate          time.Time `json:"end_date"`
-	ServiceName      string    `json:"service_name"`
-	GrossAmmount     uint      `json:"gross_ammount"`
-	PaymentMethod    string    `json:"payment_method"`
-	OrderStatus      string    `json:"order_status"`
-	TransactionID    string    `json:"transaction_id"`
-	TransactionToken string    `json:"transaction_token"`
-	PaymentLink      string    `json:"payment_link"`
+	ID                 uint      `json:"id"`
+	EventName          string    `json:"event_name"`
+	StartDate          time.Time `json:"start_date"`
+	EndDate            time.Time `json:"end_date"`
+	ServiceName        string    `json:"service_name"`
+	GrossAmmount       uint      `json:"gross_ammount"`
+	PaymentMethod      string    `json:"payment_method"`
+	OrderStatus        string    `json:"order_status"`
+	TransactionID      string    `json:"transaction_id"`
+	VANumber           string    `json:"va_number"`
+	PaymentExpiredTime string    `json:"payment_expired_time"`
 }
 
 func fromCore(dataCore order.Core, dataCoreDetailOrder []order.DetailOrder) OrderResponse {
@@ -148,16 +148,16 @@ func fromCoreDetailOrderList(requestData []order.DetailOrder) []DetailOrderRespo
 
 func fromCoreToPayment(dataCore order.Core) OrderPaymentResponse {
 	return OrderPaymentResponse{
-		ID:               dataCore.ID,
-		EventName:        dataCore.EventName,
-		StartDate:        dataCore.StartDate,
-		EndDate:          dataCore.EndDate,
-		ServiceName:      dataCore.ServiceName,
-		GrossAmmount:     dataCore.GrossAmmount,
-		PaymentMethod:    dataCore.PaymentMethod,
-		OrderStatus:      dataCore.OrderStatus,
-		TransactionID:    dataCore.MidtransTransactionID,
-		TransactionToken: dataCore.MidtransToken,
-		PaymentLink:      dataCore.MidtransLink,
+		ID:                 dataCore.ID,
+		EventName:          dataCore.EventName,
+		StartDate:          dataCore.StartDate,
+		EndDate:            dataCore.EndDate,
+		ServiceName:        dataCore.ServiceName,
+		GrossAmmount:       dataCore.GrossAmmount,
+		PaymentMethod:      dataCore.PaymentMethod,
+		OrderStatus:        dataCore.OrderStatus,
+		TransactionID:      dataCore.MidtransTransactionID,
+		VANumber:           dataCore.MidtransVaNumber,
+		PaymentExpiredTime: dataCore.MidtransExpiredTime,
 	}
 }
