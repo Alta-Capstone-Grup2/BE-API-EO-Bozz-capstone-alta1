@@ -31,12 +31,17 @@ func (delivery *orderDelivery) Create(c echo.Context) error {
 	orderInput := OrderRequest{}
 	errBind := c.Bind(&orderInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+		helper.LogDebug("Order - handler - Create | Error binding data. Error  = ", errBind.Error)
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. Please check again."))
 	}
 
 	inputClientID := middlewares.ExtractTokenClientID(c)
 	dataCore := toCore(orderInput, uint(inputClientID))
 	dataDetailOrder := toDetailOrderList(orderInput.OrderDetails)
+
+	helper.LogDebug("Order - handler - Create | Data bind  = ", helper.ConvToJson(orderInput))
+	helper.LogDebug("Order - handler - Create | Data core order  = ", helper.ConvToJson(dataCore))
+	helper.LogDebug("Order - handler - Create | Data detail order  = ", helper.ConvToJson(dataDetailOrder))
 
 	result, err := delivery.orderService.Create(dataCore, dataDetailOrder)
 	if err != nil {

@@ -157,7 +157,10 @@ func (delivery *PartnerDelivery) ConfirmOrder(c echo.Context) error {
 	err := delivery.partnerService.UpdateOrderConfirmStatus(uint(orderID), uint(partnerID))
 	if err != nil {
 		helper.LogDebug(err.Error())
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed to update partner status. Please try again."))
+		if strings.Contains(err.Error(), "Order data no need partner confirmation.") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Order data no need partner confirmation."))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed to update partner status. Please try again."))
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data status partner to Verified."))

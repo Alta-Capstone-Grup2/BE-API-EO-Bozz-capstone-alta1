@@ -29,6 +29,8 @@ func New(repo _order.RepositoryInterface) _order.ServiceInterface {
 }
 
 func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (data _order.Core, err error) {
+	helper.LogDebug("Order - logic - GetServiceByID | Input Detail  = ", inputDetail)
+
 	strUuid := uuid.New()
 	transactionID := "INV-" + helper.GetDateNowShort() + "-" + strUuid.String()
 

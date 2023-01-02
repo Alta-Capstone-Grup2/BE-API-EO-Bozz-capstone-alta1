@@ -285,14 +285,20 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 
 	//get client email for send email
 	var client Client
-	yx := repo.db.First(&client, ModelDataOrder.ClientID)
+	yx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
 	if yx.Error != nil {
 		return yx.Error
 	}
 
+	helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | client data : ", client)
+
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
-		clientEmail := client.User.Email
-		sendEmail.SendMail(clientEmail)
+		if client.User.Email != "" {
+			clientEmail := client.User.Email
+			sendEmail.SendMail(clientEmail)
+		} else {
+			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
+		}
 	}
 
 	return nil
