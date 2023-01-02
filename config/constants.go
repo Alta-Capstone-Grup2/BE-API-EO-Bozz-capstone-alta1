@@ -12,6 +12,7 @@ const (
 	PARTNER_VERIFICATION_STATUS_VERIFIED     = "Verified"
 
 	// Order Constant
+	ORDER_STATUS_WAITING_FOR_PAYMENT  = "Waiting For Payment"
 	ORDER_STATUS_WAITING_CONFIRMATION = "Waiting Confirmation"
 	ORDER_STATUS_ORDER_CONFIRMED      = "Order Confirmed"
 	ORDER_STATUS_COMPLETE_ORDER       = "Complete Order"
@@ -39,4 +40,33 @@ const (
 
 	ORDER_FOLDER              = "order"
 	ORDER_PAYOUT_RECEIPT_FILE = "payout_receipt_file"
+)
+
+// Midtrans
+type PaymentMethod string
+
+const (
+	//VABni : bni
+	VABNI PaymentMethod = "va bni"
+
+	//VAMandiri : mandiri
+	VAMandiri PaymentMethod = "va mandiri"
+
+	//VACimb : cimb
+	VACimb PaymentMethod = "va cimb"
+
+	//VABca : bca
+	VABca PaymentMethod = "va bca"
+
+	//VABri : bri
+	VABri PaymentMethod = "va bri"
+
+	//VAMaybank : maybank
+	VAMaybank PaymentMethod = "va maybank"
+
+	//VAPermata : permata
+	VAPermata PaymentMethod = "va permata"
+
+	//VAMega : mega
+	VAMega PaymentMethod = "va mega"
 )

@@ -26,6 +26,8 @@ type Core struct {
 	MidtransTransactionID string
 	MidtransToken         string
 	MidtransLink          string
+	MidtransVaNumber      string
+	MidtransExpiredTime   string
 	ServiceID             uint
 	ClientID              uint
 	DetailOrder           []DetailOrder

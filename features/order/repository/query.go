@@ -244,7 +244,7 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 // UPDATE STATUS ORDER AFTER PAYMENT MIDTRANS
 func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
 	orderGorm := fromCore(input)
-	if err := rq.db.Where("id = ?", orderGorm.ID).Updates(&orderGorm).Error; err != nil {
+	if err := rq.db.Where("midtrans_transaction_id = ?", orderGorm.MidtransTransactionID).Updates(&orderGorm).Error; err != nil {
 		return err
 	}
 

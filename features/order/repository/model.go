@@ -27,6 +27,8 @@ type Order struct {
 	MidtransTransactionID string
 	MidtransToken         string
 	MidtransLink          string
+	MidtransVaNumber      string
+	MidtransExpiredTime   string
 	ServiceID             uint
 	ClientID              uint
 	DetailOrder           []DetailOrder
@@ -172,6 +174,8 @@ func fromCore(dataCore order.Core) Order {
 		MidtransTransactionID: dataCore.MidtransTransactionID,
 		MidtransLink:          dataCore.MidtransLink,
 		MidtransToken:         dataCore.MidtransToken,
+		MidtransVaNumber:      dataCore.MidtransVaNumber,
+		MidtransExpiredTime:   dataCore.MidtransExpiredTime,
 		ServiceID:             dataCore.ServiceID,
 		ClientID:              dataCore.ClientID,
 	}
@@ -232,6 +236,8 @@ func (dataModel *Order) toCore() order.Core {
 		MidtransTransactionID: dataModel.MidtransTransactionID,
 		MidtransLink:          dataModel.MidtransLink,
 		MidtransToken:         dataModel.MidtransToken,
+		MidtransVaNumber:      dataModel.MidtransVaNumber,
+		MidtransExpiredTime:   dataModel.MidtransExpiredTime,
 		ServiceID:             dataModel.ServiceID,
 		ClientID:              dataModel.ClientID,
 	}
