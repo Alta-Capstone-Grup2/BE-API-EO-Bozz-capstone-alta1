@@ -164,7 +164,7 @@ func (repo *orderRepository) GetAll() (data []_order.OrderJoinPartner, err error
 
 func (repo *orderRepository) GetAllWithSearch(query string) (data []_order.Core, err error) {
 	var order []Order
-	tx := repo.db.Where("name LIKE ?", "%"+query+"%").Find(&order)
+	tx := repo.db.Where("event_name LIKE ?", "%"+query+"%").Find(&order)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

@@ -60,7 +60,7 @@ func (service *serviceService) GetById(id uint) (data _service.Core, err error) 
 
 func (service *serviceService) Update(input _service.Core, id uint, c echo.Context) error {
 	var errUpload error
-	input.ServiceImageFile, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
+	input.ServiceImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
@@ -128,8 +128,8 @@ func (service *serviceService) GetDiscussionById(id uint) (data []_service.Discu
 func (service *serviceService) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 	// datetime layout
 	layoutDefault := "2006-01-02 15:04:05"
-	startDate,_:= time.Parse(layoutDefault,queryStart)
-	endtDate,_:= time.Parse(layoutDefault,queryEnd)
+	startDate, _ := time.Parse(layoutDefault, queryStart)
+	endtDate, _ := time.Parse(layoutDefault, queryEnd)
 	data, err = service.serviceRepository.CheckAvailability(serviceId, startDate, endtDate)
 	if err != nil {
 		return _service.Order{}, helper.ServiceErrorMsg(err)

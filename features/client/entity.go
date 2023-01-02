@@ -49,8 +49,7 @@ type ServiceInterface interface {
 }
 
 type RepositoryInterface interface {
-	GetAll() (data []Core, err error)
-	GetAllWithSearch(query string) (data []Core, err error)
+	GetAll(query string) (data []Core, err error)
 	GetById(id uint) (data Core, err error)
 	Create(input Core) error
 	Update(input Core, clientID uint, userID uint) error

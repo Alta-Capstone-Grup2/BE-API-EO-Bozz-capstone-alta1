@@ -107,11 +107,7 @@ func (service *partnerService) Create(input partner.Core, c echo.Context) (err e
 
 // GetAll implements user.ServiceInterface
 func (service *partnerService) GetAll(query string) (data []partner.Core, err error) {
-	if query == "" {
-		data, err = service.partnerRepository.GetAll()
-	} else {
-		data, err = service.partnerRepository.GetAllWithSearch(query)
-	}
+	data, err = service.partnerRepository.GetAll(query)
 
 	if err != nil {
 		log.Error(err.Error())
@@ -133,48 +129,29 @@ func (service *partnerService) GetById(id uint) (data partner.Core, err error) {
 }
 
 func (service *partnerService) Update(input partner.Core, partnerId, userId uint, c echo.Context) error {
-	var partnerData partner.Core
 	// upload file
 	var errUpload error
-	input.CompanyImageFile, errUpload = thirdparty.Upload(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
-	if input.CompanyImageFile == "" {
-		input.CompanyImageFile = partnerData.CompanyImageFile
-	}
+	input.CompanyImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.COMPANY_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.NIBImageFile, errUpload = thirdparty.Upload(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
-	if input.NIBImageFile == "" {
-		input.NIBImageFile = partnerData.NIBImageFile
-	}
+	input.NIBImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.NIB_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.SIUPImageFile, errUpload = thirdparty.Upload(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
-	if input.SIUPImageFile == "" {
-		input.SIUPImageFile = partnerData.SIUPImageFile
-	}
+	input.SIUPImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.SIUP_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event1ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
-	if input.Event1ImageFile == "" {
-		input.Event1ImageFile = partnerData.Event1ImageFile
-	}
+	input.Event1ImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.EVENT1_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event2ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
-	if input.Event2ImageFile == "" {
-		input.Event2ImageFile = partnerData.Event2ImageFile
-	}
+	input.Event2ImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.EVENT2_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
-	input.Event3ImageFile, errUpload = thirdparty.Upload(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
-	if input.Event3ImageFile == "" {
-		input.Event3ImageFile = partnerData.Event3ImageFile
-	}
+	input.Event3ImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.EVENT3_IMAGE_FILE, cfg.PARTNER_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
