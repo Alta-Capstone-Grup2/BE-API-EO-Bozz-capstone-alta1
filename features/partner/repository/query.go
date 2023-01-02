@@ -6,7 +6,6 @@ import (
 	"capstone-alta1/utils/helper"
 	sendEmail "capstone-alta1/utils/thirdparty"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -35,32 +34,24 @@ func (repo *partnerRepository) Create(input partner.Core) error {
 }
 
 // GetAll implements user.Repository
-func (repo *partnerRepository) GetAll() (data []partner.Core, err error) {
-	var partner []Partner
-
-	tx := repo.db.Order("created_at DESC, verification_status ASC").Preload("User").Find(&partner)
-	if tx.Error != nil {
-		return nil, tx.Error
+func (repo *partnerRepository) GetAll(query string) (data []partner.Core, err error) {
+	var partners []Partner
+	var users []User
+	if query != "" {
+		tx := repo.db.Where("users.name LIKE ?", query).Find(&users).Find(&partners)
+		if tx.Error != nil {
+			return nil, tx.Error
+		}
+		var dataCore = toCoreList(partners)
+		return dataCore, nil
+	} else {
+		tx := repo.db.Preload("User").Find(&partners)
+		if tx.Error != nil {
+			return nil, tx.Error
+		}
+		var dataCore = toCoreList(partners)
+		return dataCore, nil
 	}
-	var dataCore = toCoreList(partner)
-	return dataCore, nil
-}
-
-func (repo *partnerRepository) GetAllWithSearch(query string) (data []partner.Core, err error) {
-	var partner []Partner
-	tx := repo.db.Preload("User").Where("name LIKE ?", "%"+query+"%").Find(&partner)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-
-	if tx.RowsAffected == 0 {
-		return data, tx.Error
-	}
-
-	fmt.Println("\n\n 2 getall partner = ", partner)
-
-	var dataCore = toCoreList(partner)
-	return dataCore, nil
 }
 
 // GetById implements user.RepositoryInterface

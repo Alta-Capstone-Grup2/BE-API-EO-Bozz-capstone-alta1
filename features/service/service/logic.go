@@ -60,7 +60,7 @@ func (service *serviceService) GetById(id uint) (data _service.Core, err error) 
 
 func (service *serviceService) Update(input _service.Core, id uint, c echo.Context) error {
 	var errUpload error
-	input.ServiceImageFile, errUpload = thirdparty.Upload(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
+	input.ServiceImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.SERVICE_IMAGE_FILE, cfg.SERVICE_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}

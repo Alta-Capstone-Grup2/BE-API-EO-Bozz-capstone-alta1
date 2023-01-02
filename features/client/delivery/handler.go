@@ -31,10 +31,6 @@ func New(service client.ServiceInterface, e *echo.Echo) {
 }
 
 func (delivery *ClientDelivery) GetAll(c echo.Context) error {
-	// userRole := middlewares.ExtractTokenUserRole(c)
-	// if userRole != "Admin" {
-	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("Error. User unauthorized to access."))
-	// }
 	query := c.QueryParam("name")
 	helper.LogDebug("isi query = ", query)
 	results, err := delivery.clientService.GetAll(query)

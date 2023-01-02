@@ -4,7 +4,6 @@ import (
 	client "capstone-alta1/features/client"
 	"capstone-alta1/utils/helper"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -33,33 +32,42 @@ func (repo *clientRepository) Create(input client.Core) error {
 }
 
 // GetAll implements user.Repository
-func (repo *clientRepository) GetAll() (data []client.Core, err error) {
-	var client []Client
-
-	tx := repo.db.Preload("User").Find(&client)
-	if tx.Error != nil {
-		return nil, tx.Error
+func (repo *clientRepository) GetAll(query string) (data []client.Core, err error) {
+	var clients []Client
+	var users []User
+	if query != "" {
+		tx := repo.db.Where("users.name LIKE ?", query).Find(&users).Find(&clients)
+		if tx.Error != nil {
+			return nil, tx.Error
+		}
+		var dataCore = toCoreList(clients)
+		return dataCore, nil
+	} else {
+		tx := repo.db.Preload("User").Find(&clients)
+		if tx.Error != nil {
+			return nil, tx.Error
+		}
+		var dataCore = toCoreList(clients)
+		return dataCore, nil
 	}
-	var dataCore = toCoreList(client)
-	return dataCore, nil
 }
 
-func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core, err error) {
-	var client []Client
-	tx := repo.db.Preload("User").Where("name LIKE ?", "%"+query+"%").Find(&client)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
+// func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core, err error) {
+// 	var client []Client
+// 	tx := repo.db.Preload("User").Where("name LIKE ?", "%"+query+"%").Find(&client)
+// 	if tx.Error != nil {
+// 		return nil, tx.Error
+// 	}
 
-	if tx.RowsAffected == 0 {
-		return data, tx.Error
-	}
+// 	if tx.RowsAffected == 0 {
+// 		return data, tx.Error
+// 	}
 
-	fmt.Println("\n\n 2 getall client = ", client)
+// 	fmt.Println("\n\n 2 getall client = ", client)
 
-	var dataCore = toCoreList(client)
-	return dataCore, nil
-}
+// 	var dataCore = toCoreList(client)
+// 	return dataCore, nil
+// }
 
 // GetById implements user.RepositoryInterface
 func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {

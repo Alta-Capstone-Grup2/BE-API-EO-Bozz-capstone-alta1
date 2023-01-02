@@ -73,11 +73,7 @@ func (service *clientService) Create(input client.Core, c echo.Context) (err err
 
 // GetAll implements user.ServiceInterface
 func (service *clientService) GetAll(query string) (data []client.Core, err error) {
-	if query == "" {
-		data, err = service.clientRepository.GetAll()
-	} else {
-		data, err = service.clientRepository.GetAllWithSearch(query)
-	}
+	data, err = service.clientRepository.GetAll(query)
 
 	if err != nil {
 		log.Error(err.Error())
@@ -105,12 +101,8 @@ func (service *clientService) Update(input client.Core, clientID uint, userID ui
 	}
 
 	// upload file
-	var clientData client.Core
 	var errUpload error
-	input.ClientImageFile, errUpload = thirdparty.Upload(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
-	if input.ClientImageFile == "" {
-		input.ClientImageFile = clientData.ClientImageFile
-	}
+	input.ClientImageFile, errUpload = thirdparty.UploadForUpdate(c, cfg.CLIENT_IMAGE_FILE, cfg.CLIENT_FOLDER)
 	if errUpload != nil {
 		return errUpload
 	}
