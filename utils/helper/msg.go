@@ -18,6 +18,8 @@ func ServiceErrorMsg(errData error) error {
 		return errors.New("Failed. Reference ID not found. Please check input again.")
 	} else if strings.Contains(errData.Error(), "Service Data or Additional Data Not Found. Please Check your input") {
 		return errors.New("Service Data or Service-Additional Data Not Found. Please Check your input.")
+	} else if strings.Contains(errData.Error(), "Service at Detail Order didn't match with service at Order") {
+		return errors.New("Service at Detail Order didn't match with service at Order. Please check input again.gitggg")
 	} else {
 		return errors.New("Failed. Other Error. Please contact your administrator.")
 	}

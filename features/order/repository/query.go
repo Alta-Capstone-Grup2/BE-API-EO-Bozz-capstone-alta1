@@ -39,7 +39,14 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 
 	// orderGorm.PayoutDate = time.Time{}
 
-	helper.LogDebug("Order - query - create | Row Affected query order : ", helper.ConvToJson(orderGorm))
+	//Check Service is exist
+	cx := repo.db.Find(&Service{}, orderGorm.ServiceID)
+	if cx.Error != nil {
+		helper.LogDebug("Order - query - Create | Check Service is exist. Error  = ", cx.Error)
+		return _order.Core{}, cx.Error
+	}
+
+	// Insert Order Process
 	tx := repo.db.Create(&orderGorm) // proses insert data
 	if tx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query order. Error  = ", tx.Error)
@@ -53,6 +60,7 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 		return _order.Core{}, errors.New("insert order failed")
 	}
 
+	// Insert order id to detail id struct model
 	for idx := range detailorderGorm {
 		detailorderGorm[idx].OrderID = orderGorm.ID
 	}
@@ -110,6 +118,20 @@ func (repo *orderRepository) GetServiceByID(serviceID uint) (data _order.Service
 }
 
 func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
+	// Check service_additional_id is connected to service_id in order
+	var serviceAdditionalData ServiceAdditional
+	txCheckService := tx.Raw("SELECT service_id FROM service_additionals WHERE id = ? AND service_id IN (SELECT service_id FROM orders WHERE id = ?);", do.ServiceAdditionalID, do.OrderID).Find(&serviceAdditionalData)
+
+	if txCheckService.Error != nil {
+		helper.LogDebug("Order - query - BeforeCreate Order Detail | Error execute check service connected. Error  = ", txCheckService.Error)
+		return txCheckService.Error
+	}
+
+	helper.LogDebug("Order - query - BeforeCreate Order Detail | Row Affected querycheck service connected: ", txCheckService.RowsAffected)
+	if txCheckService.RowsAffected == 0 {
+		return errors.New("Service at Detail Order didn't match with service at Order. Please check input again.")
+	}
+
 	var additionalData Additional
 	txBeforeCreate := tx.Raw("SELECT `additionals`.`additional_name`, `additionals`.`additional_price`  FROM `additionals` JOIN `service_additionals` ON `additionals`.`id` = `service_additionals`.`additional_id` WHERE `service_additionals`.`id` = ?;", do.ServiceAdditionalID).Find(&additionalData)
 
