@@ -27,7 +27,7 @@ func New(service partner.ServiceInterface, e *echo.Echo) {
 	e.PUT("/partners", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/partners", handler.Delete, middlewares.JWTMiddleware())
 	e.PUT("/partners/orders/:id/confirm", handler.ConfirmOrder, middlewares.JWTMiddleware())
-	e.GET("/partners/services", handler.GetPartnerServices, middlewares.JWTMiddleware())
+	e.GET("/partners/:id/services", handler.GetPartnerServices)
 	e.GET("/partners/orders", handler.GetPartnerOrders, middlewares.JWTMiddleware())
 	e.GET("/partners/additionals", handler.GetPartnerAdditionals, middlewares.JWTMiddleware())
 	e.GET("/partners/register", handler.GetPartnerRegisterData, middlewares.JWTMiddleware())
@@ -164,14 +164,15 @@ func (delivery *PartnerDelivery) ConfirmOrder(c echo.Context) error {
 }
 
 func (delivery *PartnerDelivery) GetPartnerServices(c echo.Context) error {
-	// userRole := middlewares.ExtractTokenUserRole(c)
-	// if userRole != "Admin" {
-	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("this action only admin"))
-	// }
+	idParam := c.Param("id")
+	partnerID, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
 
-	partnerID := middlewares.ExtractTokenPartnerID(c)
 	if partnerID < 1 {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from JWT token, please check again."))
+		helper.LogDebug("Partner - handler - GetPartnerServices | partner id  = ", partnerID)
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed load id from parameter, please check again."))
 	}
 
 	results, err := delivery.partnerService.GetServices(uint(partnerID))
