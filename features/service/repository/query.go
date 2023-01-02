@@ -97,11 +97,13 @@ func (repo *serviceRepository) Delete(id uint) error {
 	return nil
 }
 
-func (repo *serviceRepository) GetAdditionalById(serviceId uint) (data []_service.Additional, err error) {
-	var modelData []Additional
+func (repo *serviceRepository) GetServiceAdditionalById(serviceId uint) (data []_service.JoinServiceAdditional, err error) {
+	var modelData []JoinServiceAdditional
 
 	// tx := repo.db.Model(&serviceAdditional).Where("service_id = ?", serviceId).Find(&additional, serviceAdditionalId.AdditionalID)
-	tx := repo.db.Raw("SELECT `additionals`.`id`,`additionals`.`additional_name`,`additionals`.`additional_price`,`additionals`.`partner_id` FROM `additionals` JOIN `service_additionals` ON `service_additionals`.`additional_id` = `additionals`.`id` WHERE `service_additionals`.`service_id` = ?", serviceId).Scan(&modelData)
+	tx := repo.db.Raw("SELECT `service_additionals`.`id` AS `service_additional_id`, `additionals`.`additional_name`, `additionals`.`additional_price`, `services`.`service_name`, `service_additionals`.`service_id`, `service_additionals`.`additional_id`, `services`.`partner_id`  FROM `additionals` JOIN `service_additionals` ON `additionals`.`id` = `service_additionals`.`additional_id` JOIN `services` ON `services`.`id` = `service_additionals`.`service_id` WHERE `services`.`id` = ?", serviceId).Scan(&modelData)
+
+	helper.LogDebug("service-query-GetAdditional | Data ServiceAdditional Model Data :", modelData)
 
 	if tx.Error != nil {
 		helper.LogDebug("service-query-GetAdditional | Error execute query. Error :", tx.Error)
@@ -113,7 +115,8 @@ func (repo *serviceRepository) GetAdditionalById(serviceId uint) (data []_servic
 		return data, tx.Error
 	}
 
-	var dataCore = toCoreListAdditional(modelData)
+	var dataCore = toCoreJoinServiceAdditionalsList(modelData)
+	helper.LogDebug("service-query-GetAdditional | Data ServiceAdditional DataCore :", dataCore)
 	return dataCore, nil
 }
 

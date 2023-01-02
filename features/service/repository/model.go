@@ -56,6 +56,16 @@ type Additional struct {
 	ServiceAdditional []ServiceAdditional
 }
 
+type JoinServiceAdditional struct {
+	ServiceAdditionalID uint
+	AdditionalName      string
+	AdditionalPrice     uint
+	ServiceName         string
+	ServiceID           uint
+	AdditionalID        uint
+	PartnerID           uint
+}
+
 type Order struct {
 	gorm.Model
 	EventName         string
@@ -226,6 +236,7 @@ func (dataModel *Review) toCoreReview() service.Review {
 }
 
 func (dataModel *Discussion) toCoreDiscussion() service.Discussion {
+	// Join ServiceAdditional Service Additional
 	return service.Discussion{
 		ID:        dataModel.ID,
 		Comment:   dataModel.Comment,
@@ -283,6 +294,25 @@ func toCoreListDiscussion(dataModel []Discussion) []service.Discussion {
 	var dataCore []service.Discussion
 	for _, v := range dataModel {
 		dataCore = append(dataCore, v.toCoreDiscussion())
+	}
+	return dataCore
+}
+
+func (dataModel *JoinServiceAdditional) toCoreJoinServiceAdditionals() service.JoinServiceAdditional {
+	return service.JoinServiceAdditional{
+		ServiceAdditionalID: dataModel.ServiceAdditionalID,
+		AdditionalName:      dataModel.AdditionalName,
+		AdditionalPrice:     dataModel.AdditionalPrice,
+		ServiceName:         dataModel.ServiceName,
+		ServiceID:           dataModel.ServiceID,
+		AdditionalID:        dataModel.AdditionalID,
+		PartnerID:           dataModel.PartnerID,
+	}
+}
+func toCoreJoinServiceAdditionalsList(dataModel []JoinServiceAdditional) []service.JoinServiceAdditional {
+	var dataCore []service.JoinServiceAdditional
+	for _, v := range dataModel {
+		dataCore = append(dataCore, v.toCoreJoinServiceAdditionals())
 	}
 	return dataCore
 }
