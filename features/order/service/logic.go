@@ -69,7 +69,7 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	data, errCreate := order.orderRepository.Create(inputOrder, inputDetail)
 	if errCreate != nil {
 		helper.LogDebug("Order - logic - Create | Error execute create order. Error  = ", errCreate.Error())
-		return _order.Core{}, helper.ServiceErrorMsg(err)
+		return _order.Core{}, helper.ServiceErrorMsg(errCreate)
 	}
 
 	return data, nil

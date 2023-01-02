@@ -130,7 +130,7 @@ func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
 	do.DetailOrderTotal = do.Qty * do.AdditionalPrice
 
 	helper.LogDebug("Order - query - BeforeCreate | additionalData = ", additionalData)
-	return
+	return txBeforeCreate.Error
 }
 
 func (repo *orderRepository) GetAll() (data []_order.OrderJoinPartner, err error) {

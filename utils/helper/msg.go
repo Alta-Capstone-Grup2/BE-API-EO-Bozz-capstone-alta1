@@ -16,6 +16,8 @@ func ServiceErrorMsg(errData error) error {
 		return errors.New("Failed. Required field is empty. Please check input again.")
 	} else if strings.Contains(errData.Error(), "foreign key constraint fails ") {
 		return errors.New("Failed. Reference ID not found. Please check input again.")
+	} else if strings.Contains(errData.Error(), "Service Data or Additional Data Not Found. Please Check your input") {
+		return errors.New("Service Data or Service-Additional Data Not Found. Please Check your input.")
 	} else {
 		return errors.New("Failed. Other Error. Please contact your administrator.")
 	}
