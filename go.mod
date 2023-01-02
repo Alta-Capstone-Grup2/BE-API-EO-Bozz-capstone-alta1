@@ -40,7 +40,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/net v0.3.0 // indirect
-	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
+	golang.org/x/oauth2 v0.3.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
