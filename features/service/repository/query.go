@@ -101,7 +101,7 @@ func (repo *serviceRepository) GetAdditionalById(serviceId uint) (data []_servic
 	var modelData []Additional
 
 	// tx := repo.db.Model(&serviceAdditional).Where("service_id = ?", serviceId).Find(&additional, serviceAdditionalId.AdditionalID)
-	tx := repo.db.Raw("SELECT `additionals`.`id`,`additionals`.`additional_name`,`additionals`.`additional_price`,`additionals`.`partner_id` FROM `additionals` JOIN `partners` ON `additionals`.`partner_id` = `partners`.`id` JOIN `services` ON `services`.`partner_id` = `partners`.`id`;").Where("`services.id` = ?", serviceId).Scan(&modelData)
+	tx := repo.db.Raw("SELECT `additionals`.`id`,`additionals`.`additional_name`,`additionals`.`additional_price`,`additionals`.`partner_id` FROM `additionals` JOIN `service_additionals` ON `service_additionals`.`additional_id` = `additionals`.`id`").Where("`services.id` = ?", serviceId).Scan(&modelData)
 
 	if tx.Error != nil {
 		helper.LogDebug("service-query-GetAdditional | Error execute query. Error :", tx.Error)

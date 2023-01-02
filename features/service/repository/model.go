@@ -147,7 +147,8 @@ func fromCore(dataCore service.Core) Service {
 
 func fromCoreServiceAdditional(dataCore service.ServiceAdditional) ServiceAdditional {
 	modelData := ServiceAdditional{
-		ServiceID: dataCore.ServiceID,
+		ServiceID:    dataCore.ServiceID,
+		AdditionalID: dataCore.AdditionalID,
 	}
 	return modelData
 }
@@ -157,6 +158,14 @@ func fromCoreAdditional(dataCore service.ServiceAdditional) ServiceAdditional {
 		AdditionalID: dataCore.AdditionalID,
 	}
 	return modelData
+}
+
+func fromCoreServiceAdditionalList(dataCore []service.ServiceAdditional) []ServiceAdditional {
+	var dataModel []ServiceAdditional
+	for _, v := range dataCore {
+		dataModel = append(dataModel, fromCoreServiceAdditional(v))
+	}
+	return dataModel
 }
 
 func fromCoreAdditionalList(dataCore []service.ServiceAdditional) []ServiceAdditional {
