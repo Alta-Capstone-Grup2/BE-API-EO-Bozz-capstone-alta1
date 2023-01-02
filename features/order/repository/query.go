@@ -1,7 +1,6 @@
 package repository
 
 import (
-	cfg "capstone-alta1/config"
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
 	"errors"
@@ -20,7 +19,7 @@ func New(db *gorm.DB) _order.RepositoryInterface {
 	}
 }
 
-func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) error {
+func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (data _order.Core, err error) {
 	orderGorm := fromCore(inputOrder)
 	detailorderGorm := fromDetailOrderList(inputDetail)
 
@@ -40,83 +39,74 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 
 	// orderGorm.PayoutDate = time.Time{}
 
+	helper.LogDebug("Order - query - create | Row Affected query order : ", helper.ConvToJson(orderGorm))
 	tx := repo.db.Create(&orderGorm) // proses insert data
 	if tx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query order. Error  = ", tx.Error)
 		if strings.Contains(tx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
-			return errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+			return _order.Core{}, errors.New("Service Data or Additional Data Not Found. Please Check your input.")
 		}
-		return tx.Error
+		return _order.Core{}, tx.Error
 	}
 	helper.LogDebug("Order - query - create | Row Affected query order : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		return errors.New("insert order failed")
+		return _order.Core{}, errors.New("insert order failed")
 	}
 
 	for idx := range detailorderGorm {
 		detailorderGorm[idx].OrderID = orderGorm.ID
 	}
 
-	helper.LogDebug("Order - query - create | Add order id to order detail slice. []Detail Order : ", detailorderGorm)
+	helper.LogDebug("Order - query - create | Add order id to order detail slice. []Detail Order : ", helper.ConvToJson(detailorderGorm))
 
 	yx := repo.db.Create(&detailorderGorm) // proses insert data
 	if yx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query detail order. Error  = ", yx.Error)
 		if strings.Contains(yx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
-			return errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+			return _order.Core{}, errors.New("Service Data or Additional Data Not Found. Please Check your input.")
 		}
-		return yx.Error
+		return _order.Core{}, yx.Error
 	}
 	helper.LogDebug("Order - query - Create | Row Affected query detail order : ", yx.RowsAffected)
 	if yx.RowsAffected == 0 {
 
-		return errors.New("insert detail order failed")
+		return _order.Core{}, errors.New("insert detail order failed")
 	}
 
-	var grossAmmout uint
-	for _, val := range detailorderGorm {
-		grossAmmout += val.DetailOrderTotal
-	}
-
-	grossAmmout += orderGorm.ServicePrice
-	orderGorm.OrderStatus = cfg.ORDER_STATUS_WAITING_CONFIRMATION
-
-	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: grossAmmout, OrderStatus: orderGorm.OrderStatus}) // proses insert data
+	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: orderGorm.GrossAmmount, OrderStatus: orderGorm.OrderStatus}) // proses insert data
 	if zx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query update gross amount. Error  = ", zx.Error)
-		return zx.Error
+		return _order.Core{}, zx.Error
 	}
 	helper.LogDebug("Order - query - Create | Row Affected query update gross amount : ", zx.RowsAffected)
 	if yx.RowsAffected == 0 {
 
-		return errors.New("update gross ammount failed")
+		return _order.Core{}, errors.New("update gross ammount failed")
 	}
 
-	return nil
+	data = orderGorm.toCore()
+
+	return data, nil
 }
 
-func (o *Order) BeforeCreate(tx *gorm.DB) (err error) {
+func (repo *orderRepository) GetServiceByID(serviceID uint) (data _order.Service, err error) {
 	var serviceData Service
-	txBeforeCreate := tx.Find(&serviceData, o.ServiceID)
+	tx := repo.db.Find(&serviceData, serviceID)
 
-	if txBeforeCreate.Error != nil {
-		helper.LogDebug("Order - query - BeforeCreate Order | Error execute query. Error  = ", txBeforeCreate.Error)
-		return txBeforeCreate.Error
+	if tx.Error != nil {
+		helper.LogDebug("Order - query - GetServiceID | Error execute query. Error  = ", tx.Error)
+		return _order.Service{}, tx.Error
 	}
 
-	helper.LogDebug("Order - query - BeforeCreate Order | Row Affected query get additional data : ", txBeforeCreate.RowsAffected)
-	if txBeforeCreate.RowsAffected == 0 {
-		return txBeforeCreate.Error
+	helper.LogDebug("Order - query - GetServiceID | Row Affected query get additional data : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return _order.Service{}, tx.Error
 	}
 
-	helper.LogDebug("Order - query - BeforeCreate Order | serviceData = ", serviceData)
+	helper.LogDebug("Order - query - GetServiceID | serviceData = ", serviceData)
+	data = serviceData.toCoreGetById()
 
-	o.ServiceName = serviceData.ServiceName
-	o.ServicePrice = serviceData.ServicePrice
-
-	helper.LogDebug("Order - query - BeforeCreate Order | order data = ", o)
-
-	return
+	return data, tx.Error
 }
 
 func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
@@ -225,6 +215,16 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 	}
 
 	helper.LogDebug("Order - query -  UpdateStatusPayout | Order data : ", result)
+
+	return nil
+}
+
+// UPDATE STATUS ORDER AFTER PAYMENT MIDTRANS
+func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
+	orderGorm := fromCore(input)
+	if err := rq.db.Where("id = ?", orderGorm.ID).Updates(&orderGorm).Error; err != nil {
+		return err
+	}
 
 	return nil
 }

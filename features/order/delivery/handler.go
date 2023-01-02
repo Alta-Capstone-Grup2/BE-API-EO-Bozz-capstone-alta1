@@ -37,14 +37,18 @@ func (delivery *orderDelivery) Create(c echo.Context) error {
 	inputClientID := middlewares.ExtractTokenClientID(c)
 	dataCore := toCore(orderInput, uint(inputClientID))
 	dataDetailOrder := toDetailOrderList(orderInput.OrderDetails)
-	err := delivery.orderService.Create(dataCore, dataDetailOrder)
+
+	result, err := delivery.orderService.Create(dataCore, dataDetailOrder)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
 		}
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
 	}
-	return c.JSON(http.StatusCreated, helper.SuccessResponse("Success create data"))
+
+	dataResponse := fromCoreToPayment(result)
+
+	return c.JSON(http.StatusCreated, helper.SuccessWithDataResponse("Success create data", dataResponse))
 }
 
 func (delivery *orderDelivery) GetAll(c echo.Context) error {
@@ -124,4 +128,19 @@ func (delivery *orderDelivery) UpdateStatusPayout(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
+}
+
+// CALLBACK MIDTRANS
+func (delivery *orderDelivery) UpdateMidtrans() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var input UpdateMidtransRequest
+		errBind := c.Bind(&input)
+		if errBind != nil {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+		}
+
+		res := toUpdateMidtrans(input)
+		delivery.orderService.UpdateMidtrans(res)
+		return c.JSON(http.StatusAccepted, helper.SuccessResponse("Success update order data."))
+	}
 }

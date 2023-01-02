@@ -16,7 +16,7 @@ type OrderViewResponse struct {
 	OrderStatus   string                   `json:"order_status"`
 	ServiceID     uint                     `json:"service_id"`
 	ClientID      uint                     `json:"client_id"`
-	Partner       PartnerOrderViewResponse `json:"parnter"`
+	Partner       PartnerOrderViewResponse `json:"partner"`
 }
 
 type PartnerOrderViewResponse struct {
@@ -58,25 +58,25 @@ func fromViewCoreList(dataCore []order.OrderJoinPartner) []OrderViewResponse {
 }
 
 type OrderResponse struct {
-	ID                uint          `json:"id"`
-	EventName         string        `json:"event_name"`
-	StartDate         time.Time     `json:"start_date"`
-	EndDate           time.Time     `json:"end_date"`
-	StartTime         time.Duration `json:"start_time"`
-	EndTime           time.Duration `json:"end_time"`
-	EventLocation     string        `json:"event_location"`
-	EventAddress      string        `json:"event_address"`
-	NotesForPartner   string        `json:"notes_for_partner"`
-	ServiceName       string        `json:"service_name"`
-	ServicePrice      uint          `json:"service_price"`
-	GrossAmmount      uint          `json:"gross_ammount"`
-	PaymentMethod     string        `json:"payment_method"`
-	OrderStatus       string        `json:"order_status"`
-	PayoutDate        time.Time     `json:"payout_date"`
-	PayoutRecieptFile string        `json:"payout_reciept_file"`
-	ServiceID         uint          `json:"service_id"`
-	ClientID          uint          `json:"client_id"`
-	DetailOrders      []DetailOrderResponse
+	ID                uint                  `json:"id"`
+	EventName         string                `json:"event_name"`
+	StartDate         time.Time             `json:"start_date"`
+	EndDate           time.Time             `json:"end_date"`
+	StartTime         time.Duration         `json:"start_time"`
+	EndTime           time.Duration         `json:"end_time"`
+	EventLocation     string                `json:"event_location"`
+	EventAddress      string                `json:"event_address"`
+	NotesForPartner   string                `json:"notes_for_partner"`
+	ServiceName       string                `json:"service_name"`
+	ServicePrice      uint                  `json:"service_price"`
+	GrossAmmount      uint                  `json:"gross_ammount"`
+	PaymentMethod     string                `json:"payment_method"`
+	OrderStatus       string                `json:"order_status"`
+	PayoutDate        time.Time             `json:"payout_date"`
+	PayoutRecieptFile string                `json:"payout_reciept_file"`
+	ServiceID         uint                  `json:"service_id"`
+	ClientID          uint                  `json:"client_id"`
+	DetailOrders      []DetailOrderResponse `json:"detail_orders"`
 }
 
 type DetailOrderResponse struct {
@@ -86,6 +86,21 @@ type DetailOrderResponse struct {
 	Qty                 uint   `json:"qty"`
 	DetailOrderTotal    uint   `json:"detail_order_total"`
 	ServiceAdditionalID uint   `json:"service_additional_id"`
+	GrossAmmount        uint   `json:"gross_ammount"`
+}
+
+type OrderPaymentResponse struct {
+	ID               uint      `json:"id"`
+	EventName        string    `json:"event_name"`
+	StartDate        time.Time `json:"start_date"`
+	EndDate          time.Time `json:"end_date"`
+	ServiceName      string    `json:"service_name"`
+	GrossAmmount     uint      `json:"gross_ammount"`
+	PaymentMethod    string    `json:"payment_method"`
+	OrderStatus      string    `json:"order_status"`
+	TransactionID    string    `json:"transaction_id"`
+	TransactionToken string    `json:"transaction_token"`
+	PaymentLink      string    `json:"payment_link"`
 }
 
 func fromCore(dataCore order.Core, dataCoreDetailOrder []order.DetailOrder) OrderResponse {
@@ -129,4 +144,20 @@ func fromCoreDetailOrderList(requestData []order.DetailOrder) []DetailOrderRespo
 		dataCore = append(dataCore, fromCoreDetailOrder(v))
 	}
 	return dataCore
+}
+
+func fromCoreToPayment(dataCore order.Core) OrderPaymentResponse {
+	return OrderPaymentResponse{
+		ID:               dataCore.ID,
+		EventName:        dataCore.EventName,
+		StartDate:        dataCore.StartDate,
+		EndDate:          dataCore.EndDate,
+		ServiceName:      dataCore.ServiceName,
+		GrossAmmount:     dataCore.GrossAmmount,
+		PaymentMethod:    dataCore.PaymentMethod,
+		OrderStatus:      dataCore.OrderStatus,
+		TransactionID:    dataCore.MidtransTransactionID,
+		TransactionToken: dataCore.MidtransToken,
+		PaymentLink:      dataCore.MidtransLink,
+	}
 }

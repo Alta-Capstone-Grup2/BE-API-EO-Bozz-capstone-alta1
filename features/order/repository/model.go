@@ -9,24 +9,27 @@ import (
 
 type Order struct {
 	gorm.Model
-	EventName         string
-	StartDate         time.Time
-	StartTime         time.Duration
-	EndDate           time.Time
-	EndTime           time.Duration
-	EventLocation     string
-	EventAddress      string
-	NotesForPartner   string
-	ServiceName       string
-	ServicePrice      uint
-	GrossAmmount      uint
-	PaymentMethod     string
-	OrderStatus       string
-	PayoutRecieptFile string
-	PayoutDate        time.Time `gorm:"default:null"`
-	ServiceID         uint
-	ClientID          uint
-	DetailOrder       []DetailOrder
+	EventName             string
+	StartDate             time.Time
+	StartTime             time.Duration
+	EndDate               time.Time
+	EndTime               time.Duration
+	EventLocation         string
+	EventAddress          string
+	NotesForPartner       string
+	ServiceName           string
+	ServicePrice          uint
+	GrossAmmount          uint
+	PaymentMethod         string
+	OrderStatus           string
+	PayoutRecieptFile     string
+	PayoutDate            time.Time `gorm:"default:null"`
+	MidtransTransactionID string
+	MidtransToken         string
+	MidtransLink          string
+	ServiceID             uint
+	ClientID              uint
+	DetailOrder           []DetailOrder
 }
 
 type DetailOrder struct {
@@ -78,6 +81,7 @@ type Service struct {
 	ServiceName        string
 	ServiceDescription string
 	ServiceCategory    string
+	ServiceIncluded    string
 	ServicePrice       uint
 	AverageRating      float64
 	ServiceImageFile   string
@@ -150,15 +154,26 @@ type OrderJoinPartner struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore order.Core) Order {
 	modelData := Order{
-		EventName:       dataCore.EventName,
-		StartDate:       dataCore.StartDate,
-		EndDate:         dataCore.EndDate,
-		EventLocation:   dataCore.EventLocation,
-		EventAddress:    dataCore.EventAddress,
-		NotesForPartner: dataCore.NotesForPartner,
-		PaymentMethod:   dataCore.PaymentMethod,
-		ServiceID:       dataCore.ServiceID,
-		ClientID:        dataCore.ClientID,
+		EventName:             dataCore.EventName,
+		StartDate:             dataCore.StartDate,
+		EndDate:               dataCore.EndDate,
+		StartTime:             dataCore.StartTime,
+		EndTime:               dataCore.EndTime,
+		EventLocation:         dataCore.EventLocation,
+		EventAddress:          dataCore.EventAddress,
+		NotesForPartner:       dataCore.NotesForPartner,
+		ServiceName:           dataCore.ServiceName,
+		ServicePrice:          dataCore.ServicePrice,
+		GrossAmmount:          dataCore.GrossAmmount,
+		PaymentMethod:         dataCore.PaymentMethod,
+		OrderStatus:           dataCore.OrderStatus,
+		PayoutDate:            dataCore.PayoutDate,
+		PayoutRecieptFile:     dataCore.PayoutRecieptFile,
+		MidtransTransactionID: dataCore.MidtransTransactionID,
+		MidtransLink:          dataCore.MidtransLink,
+		MidtransToken:         dataCore.MidtransToken,
+		ServiceID:             dataCore.ServiceID,
+		ClientID:              dataCore.ClientID,
 	}
 	return modelData
 }
@@ -198,16 +213,27 @@ func fromCorePayout(dataCore order.Core) Order {
 // mengubah struct model gorm ke struct core
 func (dataModel *Order) toCore() order.Core {
 	return order.Core{
-		ID:            dataModel.ID,
-		EventName:     dataModel.EventName,
-		StartDate:     dataModel.StartDate,
-		EndDate:       dataModel.EndDate,
-		EventLocation: dataModel.EventLocation,
-		ServiceName:   dataModel.ServiceName,
-		GrossAmmount:  dataModel.GrossAmmount,
-		OrderStatus:   dataModel.OrderStatus,
-		ServiceID:     dataModel.ServiceID,
-		ClientID:      dataModel.ClientID,
+		ID:                    dataModel.ID,
+		EventName:             dataModel.EventName,
+		StartDate:             dataModel.StartDate,
+		EndDate:               dataModel.EndDate,
+		StartTime:             dataModel.StartTime,
+		EndTime:               dataModel.EndTime,
+		EventLocation:         dataModel.EventLocation,
+		EventAddress:          dataModel.EventAddress,
+		NotesForPartner:       dataModel.NotesForPartner,
+		ServiceName:           dataModel.ServiceName,
+		ServicePrice:          dataModel.ServicePrice,
+		GrossAmmount:          dataModel.GrossAmmount,
+		PaymentMethod:         dataModel.PaymentMethod,
+		OrderStatus:           dataModel.OrderStatus,
+		PayoutDate:            dataModel.PayoutDate,
+		PayoutRecieptFile:     dataModel.PayoutRecieptFile,
+		MidtransTransactionID: dataModel.MidtransTransactionID,
+		MidtransLink:          dataModel.MidtransLink,
+		MidtransToken:         dataModel.MidtransToken,
+		ServiceID:             dataModel.ServiceID,
+		ClientID:              dataModel.ClientID,
 	}
 }
 
@@ -291,4 +317,33 @@ func toCoreDetailOrderList(dataModel []DetailOrder) []order.DetailOrder {
 		dataCore = append(dataCore, v.toCoreDetailOrder())
 	}
 	return dataCore
+}
+
+func fromServiceCore(dataCore order.Service) Service {
+	modelData := Service{
+		ServiceName:        dataCore.ServiceName,
+		ServiceDescription: dataCore.ServiceDescription,
+		ServiceCategory:    dataCore.ServiceCategory,
+		ServicePrice:       dataCore.ServicePrice,
+		AverageRating:      dataCore.AverageRating,
+		ServiceImageFile:   dataCore.ServiceImageFile,
+		City:               dataCore.City,
+		PartnerID:          dataCore.PartnerID,
+	}
+	return modelData
+}
+
+func (dataModel *Service) toCoreGetById() order.Service {
+	return order.Service{
+		ID:                 dataModel.ID,
+		ServiceName:        dataModel.ServiceName,
+		ServiceDescription: dataModel.ServiceDescription,
+		ServiceIncluded:    dataModel.ServiceIncluded,
+		ServiceCategory:    dataModel.ServiceCategory,
+		ServicePrice:       dataModel.ServicePrice,
+		AverageRating:      dataModel.AverageRating,
+		ServiceImageFile:   dataModel.ServiceImageFile,
+		City:               dataModel.City,
+		PartnerID:          dataModel.PartnerID,
+	}
 }

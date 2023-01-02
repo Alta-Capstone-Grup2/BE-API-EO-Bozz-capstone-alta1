@@ -2,6 +2,9 @@ package config
 
 const (
 	// Config Constant
+	DEFAULT_DATE_LAYOUT       = "2006-01-02"
+	DEFAULT_DATETIME_LAYOUT   = "2006-01-02 15:04:05"
+	DEFAULT_DATETIME_LOCATION = "Asia/Jakarta"
 
 	// Partner verification constant
 	PARTNER_VERIFICATION_STATUS_NOT_VERIFIED = "Not Verified"
