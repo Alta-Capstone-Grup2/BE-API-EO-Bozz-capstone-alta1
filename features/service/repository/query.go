@@ -117,25 +117,18 @@ func (repo *serviceRepository) GetAdditionalById(serviceId uint) (data []_servic
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) AddAdditionalToService(input _service.ServiceAdditional, inputAdditional []_service.ServiceAdditional) error {
-	serviceadditionalGorm := fromCoreServiceAdditional(input)
-	additionallistGorm := fromCoreAdditionalList(inputAdditional)
-	var service Service
-	tx := repo.db.Model(&service).Where("ID = ?", input.ServiceID).Create(&serviceadditionalGorm) // proses insert data
+func (repo *serviceRepository) AddAdditionalToService(input []_service.ServiceAdditional) error {
+	serviceadditionalGorm := fromCoreServiceAdditionalList(input)
+
+	helper.LogDebug("service-query-AddAdditionalToService | Service Additionals Data :", helper.ConvToJson(serviceadditionalGorm))
+	tx := repo.db.Save(&serviceadditionalGorm) // proses insert data
 	if tx.Error != nil {
+		helper.LogDebug("service-query-AddAdditionalToService | Error execute query. Error :", tx.Error)
 		return tx.Error
 	}
+
+	helper.LogDebug("service-query-AddAdditionalToService | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		return errors.New("insert failed")
-	}
-	for index := range additionallistGorm {
-		additionallistGorm[index].AdditionalID = serviceadditionalGorm.AdditionalID
-	}
-	yx := repo.db.Create(&additionallistGorm) // proses insert data
-	if yx.Error != nil {
-		return tx.Error
-	}
-	if yx.RowsAffected == 0 {
 		return errors.New("insert failed")
 	}
 	return nil
@@ -151,7 +144,7 @@ func (repo *serviceRepository) GetReviewById(serviceId uint) (data []_service.Re
 		return data, tx.Error
 	}
 
-	helper.LogDebug("service-query-Getreview  | Row Affected : ", tx.RowsAffected)
+	helper.LogDebug("service-query-Getreview   | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return data, tx.Error
 	}

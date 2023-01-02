@@ -164,15 +164,16 @@ func (delivery *serviceDelivery) GetAdditionalById(c echo.Context) error {
 }
 
 func (delivery *serviceDelivery) AddAdditionalToService(c echo.Context) error {
-	serviceInput := ServiceAdditionalRequest{}
-	errBind := c.Bind(&serviceInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	serviceAdditionalInput := ServiceAdditionalRequest{}
+	errBind := c.Bind(&serviceAdditionalInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+		helper.LogDebug("handler - AddAdditionalToService | Error Bidning. Error :" + errBind.Error())
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. Please check again."))
 	}
 
-	dataCore := toCoreServiceAdditional(serviceInput)
-	dataCoreAdditional := toAdditionalList(serviceInput.Additionals)
-	err := delivery.serviceService.AddAdditionalToService(dataCore, dataCoreAdditional)
+	helper.LogDebug("handler - AddAdditionalToService | Request Data :", helper.ConvToJson(serviceAdditionalInput))
+	dataCore := toServiceAdditionalList(serviceAdditionalInput)
+	err := delivery.serviceService.AddAdditionalToService(dataCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

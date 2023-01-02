@@ -44,8 +44,8 @@ type Review struct {
 
 type ServiceAdditional struct {
 	gorm.Model
-	AdditionalID uint
-	ServiceID    uint
+	AdditionalID uint `gorm:"index:idx_service_additional,unique"`
+	ServiceID    uint `gorm:"index:idx_service_additional,unique"`
 }
 
 type Additional struct {
