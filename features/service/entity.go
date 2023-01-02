@@ -114,7 +114,7 @@ type ServiceInterface interface {
 	GetAdditionalById(id uint) (data []Additional, err error)
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
-	AddAdditionalToService(input ServiceAdditional, inputAdditional []ServiceAdditional) error
+	AddAdditionalToService(input []ServiceAdditional) error
 	CheckAvailability(serviceId uint, queryStart, queryEnd string) (data Order, err error)
 }
 
@@ -127,6 +127,6 @@ type RepositoryInterface interface {
 	GetAdditionalById(id uint) (data []Additional, err error)
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
-	AddAdditionalToService(input ServiceAdditional, inputAdditional []ServiceAdditional) error
+	AddAdditionalToService(input []ServiceAdditional) error
 	CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data Order, err error)
 }

@@ -93,8 +93,8 @@ func (service *serviceService) GetAdditionalById(id uint) (data []_service.Addit
 
 }
 
-func (service *serviceService) AddAdditionalToService(input _service.ServiceAdditional, inputAdditoonal []_service.ServiceAdditional) (err error) {
-	errCreate := service.serviceRepository.AddAdditionalToService(input, inputAdditoonal)
+func (service *serviceService) AddAdditionalToService(input []_service.ServiceAdditional) (err error) {
+	errCreate := service.serviceRepository.AddAdditionalToService(input)
 	if errCreate != nil {
 		log.Error(errCreate.Error())
 		return helper.ServiceErrorMsg(err)
@@ -128,8 +128,8 @@ func (service *serviceService) GetDiscussionById(id uint) (data []_service.Discu
 func (service *serviceService) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 	// datetime layout
 	layoutDefault := "2006-01-02 15:04:05"
-	startDate,_:= time.Parse(layoutDefault,queryStart)
-	endtDate,_:= time.Parse(layoutDefault,queryEnd)
+	startDate, _ := time.Parse(layoutDefault, queryStart)
+	endtDate, _ := time.Parse(layoutDefault, queryEnd)
 	data, err = service.serviceRepository.CheckAvailability(serviceId, startDate, endtDate)
 	if err != nil {
 		return _service.Order{}, helper.ServiceErrorMsg(err)
