@@ -27,14 +27,14 @@ func New(repo _order.RepositoryInterface) _order.ServiceInterface {
 	}
 }
 
-func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (err error) {
+func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (data _order.Core, err error) {
 	strUuid := uuid.New()
 	transactionID := "INV-" + helper.GetDateNowShort() + "-" + strUuid.String()
 
 	serviceData, errGetServiceData := order.orderRepository.GetServiceByID(inputOrder.ServiceID)
 	if errGetServiceData != nil {
 		helper.LogDebug("Order - logic - GetServiceByID | Error execute GetServiceByID. Error  = ", errGetServiceData.Error())
-		return helper.ServiceErrorMsg(err)
+		return _order.Core{}, helper.ServiceErrorMsg(err)
 	}
 
 	helper.LogDebug("Order - logic - GetServiceByID | Service Data  = ", serviceData)
@@ -54,20 +54,25 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
 
 	midtransObj := thirdparty.OrderMidtrans(transactionID, int64(inputOrder.GrossAmmount))
+	if midtransObj.ErrorMessages != nil {
+		helper.LogDebug("Order - logic - Failed process to midtrans")
+		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
+	}
 	inputOrder.MidtransLink = midtransObj.RedirectURL
+	inputOrder.MidtransToken = midtransObj.Token
 	if inputOrder.MidtransLink == "" {
 		helper.LogDebug("Order - logic - Failed get Midtrans link.")
-		return errors.New("Payment Failed. Please try again later.")
+		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	}
 	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", inputOrder)
 
-	errCreate := order.orderRepository.Create(inputOrder, inputDetail)
+	data, errCreate := order.orderRepository.Create(inputOrder, inputDetail)
 	if errCreate != nil {
 		helper.LogDebug("Order - logic - Create | Error execute create order. Error  = ", errCreate.Error())
-		return helper.ServiceErrorMsg(err)
+		return _order.Core{}, helper.ServiceErrorMsg(err)
 	}
 
-	return nil
+	return data, nil
 }
 
 func (order *orderService) GetAll(query string) (data []_order.OrderJoinPartner, err error) {

@@ -213,16 +213,27 @@ func fromCorePayout(dataCore order.Core) Order {
 // mengubah struct model gorm ke struct core
 func (dataModel *Order) toCore() order.Core {
 	return order.Core{
-		ID:            dataModel.ID,
-		EventName:     dataModel.EventName,
-		StartDate:     dataModel.StartDate,
-		EndDate:       dataModel.EndDate,
-		EventLocation: dataModel.EventLocation,
-		ServiceName:   dataModel.ServiceName,
-		GrossAmmount:  dataModel.GrossAmmount,
-		OrderStatus:   dataModel.OrderStatus,
-		ServiceID:     dataModel.ServiceID,
-		ClientID:      dataModel.ClientID,
+		ID:                    dataModel.ID,
+		EventName:             dataModel.EventName,
+		StartDate:             dataModel.StartDate,
+		EndDate:               dataModel.EndDate,
+		StartTime:             dataModel.StartTime,
+		EndTime:               dataModel.EndTime,
+		EventLocation:         dataModel.EventLocation,
+		EventAddress:          dataModel.EventAddress,
+		NotesForPartner:       dataModel.NotesForPartner,
+		ServiceName:           dataModel.ServiceName,
+		ServicePrice:          dataModel.ServicePrice,
+		GrossAmmount:          dataModel.GrossAmmount,
+		PaymentMethod:         dataModel.PaymentMethod,
+		OrderStatus:           dataModel.OrderStatus,
+		PayoutDate:            dataModel.PayoutDate,
+		PayoutRecieptFile:     dataModel.PayoutRecieptFile,
+		MidtransTransactionID: dataModel.MidtransTransactionID,
+		MidtransLink:          dataModel.MidtransLink,
+		MidtransToken:         dataModel.MidtransToken,
+		ServiceID:             dataModel.ServiceID,
+		ClientID:              dataModel.ClientID,
 	}
 }
 

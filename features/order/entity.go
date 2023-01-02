@@ -149,7 +149,7 @@ type OrderJoinPartner struct {
 }
 
 type ServiceInterface interface {
-	Create(input Core, inputDetail []DetailOrder) error
+	Create(input Core, inputDetail []DetailOrder) (data Core, err error)
 	GetAll(query string) (data []OrderJoinPartner, err error)
 	GetById(id uint) (data Core, dataDetail []DetailOrder, err error)
 	UpdateStatusCancel(input Core, id uint) error
@@ -158,7 +158,7 @@ type ServiceInterface interface {
 }
 
 type RepositoryInterface interface {
-	Create(input Core, inputDetail []DetailOrder) error
+	Create(input Core, inputDetail []DetailOrder) (data Core, err error)
 	GetAll() (data []OrderJoinPartner, err error)
 	GetAllWithSearch(query string) (data []Core, err error)
 	GetById(id uint) (data Core, dataDetail []DetailOrder, err error)

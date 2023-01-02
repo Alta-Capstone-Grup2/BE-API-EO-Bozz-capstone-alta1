@@ -19,7 +19,7 @@ func New(db *gorm.DB) _order.RepositoryInterface {
 	}
 }
 
-func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) error {
+func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order.DetailOrder) (data _order.Core, err error) {
 	orderGorm := fromCore(inputOrder)
 	detailorderGorm := fromDetailOrderList(inputDetail)
 
@@ -44,13 +44,13 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	if tx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query order. Error  = ", tx.Error)
 		if strings.Contains(tx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
-			return errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+			return _order.Core{}, errors.New("Service Data or Additional Data Not Found. Please Check your input.")
 		}
-		return tx.Error
+		return _order.Core{}, tx.Error
 	}
 	helper.LogDebug("Order - query - create | Row Affected query order : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		return errors.New("insert order failed")
+		return _order.Core{}, errors.New("insert order failed")
 	}
 
 	for idx := range detailorderGorm {
@@ -63,28 +63,30 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	if yx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query detail order. Error  = ", yx.Error)
 		if strings.Contains(yx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
-			return errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+			return _order.Core{}, errors.New("Service Data or Additional Data Not Found. Please Check your input.")
 		}
-		return yx.Error
+		return _order.Core{}, yx.Error
 	}
 	helper.LogDebug("Order - query - Create | Row Affected query detail order : ", yx.RowsAffected)
 	if yx.RowsAffected == 0 {
 
-		return errors.New("insert detail order failed")
+		return _order.Core{}, errors.New("insert detail order failed")
 	}
 
 	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: orderGorm.GrossAmmount, OrderStatus: orderGorm.OrderStatus}) // proses insert data
 	if zx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query update gross amount. Error  = ", zx.Error)
-		return zx.Error
+		return _order.Core{}, zx.Error
 	}
 	helper.LogDebug("Order - query - Create | Row Affected query update gross amount : ", zx.RowsAffected)
 	if yx.RowsAffected == 0 {
 
-		return errors.New("update gross ammount failed")
+		return _order.Core{}, errors.New("update gross ammount failed")
 	}
 
-	return nil
+	data = orderGorm.toCore()
+
+	return data, nil
 }
 
 func (repo *orderRepository) GetServiceByID(serviceID uint) (data _order.Service, err error) {
