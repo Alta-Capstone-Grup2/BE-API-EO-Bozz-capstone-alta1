@@ -115,9 +115,30 @@ type User struct {
 	Role     string
 }
 
+type ServiceDetailJoinPartner struct {
+	ID                 uint
+	ServiceName        string
+	ServiceIncluded    string
+	ServiceDescription string
+	ServiceCategory    string
+	ServicePrice       uint
+	AverageRating      float64
+	ServiceImageFile   string
+	City               string
+	PartnerID          uint
+	CompanyName        string
+	CompanyPhone       string
+	CompanyCity        string
+	CompanyImageFile   string
+	CompanyAddress     string
+	LinkWebsite        string
+	VerificationStatus string
+	UserID             uint
+}
+
 type ServiceInterface interface {
 	GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []Core, err error)
-	GetById(id uint) (data Core, err error)
+	GetById(id uint) (data ServiceDetailJoinPartner, err error)
 	Create(input Core, c echo.Context) error
 	Update(input Core, id uint, c echo.Context) error
 	Delete(id uint) error
@@ -130,7 +151,7 @@ type ServiceInterface interface {
 
 type RepositoryInterface interface {
 	GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []Core, err error)
-	GetById(id uint) (data Core, err error)
+	GetById(id uint) (data ServiceDetailJoinPartner, err error)
 	Create(input Core) error
 	Update(input Core, id uint) error
 	Delete(id uint) error
