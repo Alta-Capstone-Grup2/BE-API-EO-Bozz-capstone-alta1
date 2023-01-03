@@ -31,8 +31,6 @@ func GetDateTimeFormatedStr(dateTimeStr string) string {
 	return dateTimeData.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
 }
 
-<<<<<<< Updated upstream
-=======
 func GetDateTimeFormated(dateTimeInput time.Time) string {
 	return dateTimeInput.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
 }
@@ -62,7 +60,6 @@ func ValidateDateTimeFormatedToTime(dateTimeStr string, dateTimeLayout string) e
 	return nil
 }
 
->>>>>>> Stashed changes
 func AddDateTimeFormated(dateTimeStr string, years, months, days int) string {
 	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
 	if errParse != nil {
