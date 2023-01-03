@@ -2,14 +2,14 @@ package delivery
 
 import (
 	"capstone-alta1/features/order"
-	"time"
+	"capstone-alta1/utils/helper"
 )
 
 type OrderViewResponse struct {
 	ID            uint                     `json:"id"`
 	EventName     string                   `json:"event_name"`
-	StartDate     time.Time                `json:"start_date"`
-	EndDate       time.Time                `json:"end_date"`
+	StartDate     string                   `json:"start_date"`
+	EndDate       string                   `json:"end_date"`
 	EventLocation string                   `json:"event_location"`
 	ServiceName   string                   `json:"service_name"`
 	GrossAmmount  uint                     `json:"gross_ammount"`
@@ -31,8 +31,8 @@ func fromViewCore(dataCore order.OrderJoinPartner) OrderViewResponse {
 	return OrderViewResponse{
 		ID:            dataCore.ID,
 		EventName:     dataCore.EventName,
-		StartDate:     dataCore.StartDate,
-		EndDate:       dataCore.EndDate,
+		StartDate:     helper.GetDateFormated(dataCore.StartDate),
+		EndDate:       helper.GetDateFormated(dataCore.EndDate),
 		EventLocation: dataCore.EventLocation,
 		ServiceName:   dataCore.ServiceName,
 		GrossAmmount:  dataCore.GrossAmmount,
@@ -60,10 +60,8 @@ func fromViewCoreList(dataCore []order.OrderJoinPartner) []OrderViewResponse {
 type OrderResponse struct {
 	ID                 uint                  `json:"id"`
 	EventName          string                `json:"event_name"`
-	StartDate          time.Time             `json:"start_date"`
-	EndDate            time.Time             `json:"end_date"`
-	StartTime          time.Duration         `json:"start_time"`
-	EndTime            time.Duration         `json:"end_time"`
+	StartDate          string                `json:"start_date"`
+	EndDate            string                `json:"end_date"`
 	EventLocation      string                `json:"event_location"`
 	EventAddress       string                `json:"event_address"`
 	NotesForPartner    string                `json:"notes_for_partner"`
@@ -75,7 +73,7 @@ type OrderResponse struct {
 	OrderStatus        string                `json:"order_status"`
 	VANumber           string                `json:"payment_va_number"`
 	PaymentExpiredTime string                `json:"payment_expired_time"`
-	PayoutDate         time.Time             `json:"payout_date"`
+	PayoutDate         string                `json:"payout_date"`
 	PayoutRecieptFile  string                `json:"payout_reciept_file"`
 	ServiceID          uint                  `json:"service_id"`
 	ClientID           uint                  `json:"client_id"`
@@ -92,27 +90,25 @@ type DetailOrderResponse struct {
 }
 
 type OrderPaymentResponse struct {
-	ID                 uint      `json:"id"`
-	EventName          string    `json:"event_name"`
-	StartDate          time.Time `json:"start_date"`
-	EndDate            time.Time `json:"end_date"`
-	ServiceName        string    `json:"service_name"`
-	GrossAmmount       uint      `json:"gross_ammount"`
-	PaymentMethod      string    `json:"payment_method"`
-	OrderStatus        string    `json:"order_status"`
-	TransactionID      string    `json:"transaction_id"`
-	VANumber           string    `json:"va_number"`
-	PaymentExpiredTime string    `json:"payment_expired_time"`
+	ID                 uint   `json:"id"`
+	EventName          string `json:"event_name"`
+	StartDate          string `json:"start_date"`
+	EndDate            string `json:"end_date"`
+	ServiceName        string `json:"service_name"`
+	GrossAmmount       uint   `json:"gross_ammount"`
+	PaymentMethod      string `json:"payment_method"`
+	OrderStatus        string `json:"order_status"`
+	TransactionID      string `json:"transaction_id"`
+	VANumber           string `json:"va_number"`
+	PaymentExpiredTime string `json:"payment_expired_time"`
 }
 
 func fromCore(dataCore order.Core, dataCoreDetailOrder []order.DetailOrder) OrderResponse {
 	return OrderResponse{
 		ID:                 dataCore.ID,
 		EventName:          dataCore.EventName,
-		StartDate:          dataCore.StartDate,
-		EndDate:            dataCore.EndDate,
-		StartTime:          dataCore.StartTime,
-		EndTime:            dataCore.EndTime,
+		StartDate:          helper.GetDateFormated(dataCore.StartDate),
+		EndDate:            helper.GetDateFormated(dataCore.EndDate),
 		EventLocation:      dataCore.EventLocation,
 		EventAddress:       dataCore.EventAddress,
 		NotesForPartner:    dataCore.NotesForPartner,
@@ -123,8 +119,8 @@ func fromCore(dataCore order.Core, dataCoreDetailOrder []order.DetailOrder) Orde
 		OrderStatus:        dataCore.OrderStatus,
 		TransactionID:      dataCore.MidtransTransactionID,
 		VANumber:           dataCore.MidtransVaNumber,
-		PaymentExpiredTime: dataCore.MidtransExpiredTime,
-		PayoutDate:         dataCore.PayoutDate,
+		PaymentExpiredTime: helper.GetDateTimeFormatedStr(dataCore.MidtransExpiredTime),
+		PayoutDate:         helper.GetDateFormated(dataCore.PayoutDate),
 		PayoutRecieptFile:  dataCore.PayoutRecieptFile,
 		ServiceID:          dataCore.ServiceID,
 		ClientID:           dataCore.ClientID,
@@ -155,14 +151,14 @@ func fromCoreToPayment(dataCore order.Core) OrderPaymentResponse {
 	return OrderPaymentResponse{
 		ID:                 dataCore.ID,
 		EventName:          dataCore.EventName,
-		StartDate:          dataCore.StartDate,
-		EndDate:            dataCore.EndDate,
+		StartDate:          helper.GetDateFormated(dataCore.StartDate),
+		EndDate:            helper.GetDateFormated(dataCore.EndDate),
 		ServiceName:        dataCore.ServiceName,
 		GrossAmmount:       dataCore.GrossAmmount,
 		PaymentMethod:      dataCore.PaymentMethod,
 		OrderStatus:        dataCore.OrderStatus,
 		TransactionID:      dataCore.MidtransTransactionID,
 		VANumber:           dataCore.MidtransVaNumber,
-		PaymentExpiredTime: dataCore.MidtransExpiredTime,
+		PaymentExpiredTime: helper.GetDateTimeFormatedStr(dataCore.MidtransExpiredTime),
 	}
 }

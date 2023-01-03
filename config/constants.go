@@ -53,20 +53,20 @@ const (
 	//VAMandiri : mandiri
 	VAMandiri PaymentMethod = "va mandiri"
 
-	//VACimb : cimb
-	VACimb PaymentMethod = "va cimb"
+	//VAPermata : permata
+	VAPermata PaymentMethod = "va permata"
 
 	//VABca : bca
 	VABca PaymentMethod = "va bca"
+
+	//VACimb : cimb
+	VACimb PaymentMethod = "va cimb"
 
 	//VABri : bri
 	VABri PaymentMethod = "va bri"
 
 	//VAMaybank : maybank
 	VAMaybank PaymentMethod = "va maybank"
-
-	//VAPermata : permata
-	VAPermata PaymentMethod = "va permata"
 
 	//VAMega : mega
 	VAMega PaymentMethod = "va mega"

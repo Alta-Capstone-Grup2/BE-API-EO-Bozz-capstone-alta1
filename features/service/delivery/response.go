@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"capstone-alta1/features/service"
+	"capstone-alta1/utils/helper"
 	"time"
 )
 
@@ -58,10 +59,10 @@ type ServiceDiscussionResponse struct {
 }
 
 type ServiceAvailabilityResponse struct {
-	ServiceName        string    `json:"service_name"`
-	StartDate          time.Time `json:"start_date"`
-	EndDate            time.Time `json:"end_date"`
-	AvailabilityStatus string    `json:"availability_status"`
+	ServiceName        string `json:"service_name"`
+	StartDate          string `json:"start_date"`
+	EndDate            string `json:"end_date"`
+	AvailabilityStatus string `json:"availability_status"`
 }
 
 func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
@@ -129,8 +130,8 @@ func fromCoreDiscussion(dataCore service.Discussion) ServiceDiscussionResponse {
 func fromCoreAvailability(dataCore service.Order) ServiceAvailabilityResponse {
 	return ServiceAvailabilityResponse{
 		ServiceName:        dataCore.ServiceName,
-		StartDate:          dataCore.StartDate,
-		EndDate:            dataCore.EndDate,
+		StartDate:          helper.GetDateFormated(dataCore.StartDate),
+		EndDate:            helper.GetDateFormated(dataCore.EndDate),
 		AvailabilityStatus: dataCore.AvailabilityStatus,
 	}
 }

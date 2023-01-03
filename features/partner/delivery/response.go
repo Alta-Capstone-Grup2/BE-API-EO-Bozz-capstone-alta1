@@ -2,7 +2,7 @@ package delivery
 
 import (
 	"capstone-alta1/features/partner"
-	"time"
+	"capstone-alta1/utils/helper"
 )
 
 type PartnerResponse struct {
@@ -38,12 +38,12 @@ type PartnerResponse struct {
 }
 
 type PartnerListResponse struct {
-	ID                 uint      `json:"id"`
-	CompanyName        string    `json:"company_name"`
-	PICName            string    `json:"pic_name"`
-	VerificationStatus string    `json:"verification_status"`
-	RegisterDate       time.Time `json:"register_date"`
-	UserID             uint      `json:"user_id"`
+	ID                 uint   `json:"id"`
+	CompanyName        string `json:"company_name"`
+	PICName            string `json:"pic_name"`
+	VerificationStatus string `json:"verification_status"`
+	RegisterDate       string `json:"register_date"`
+	UserID             uint   `json:"user_id"`
 }
 
 type ServiceResponse struct {
@@ -58,17 +58,17 @@ type ServiceResponse struct {
 }
 
 type OrderResponse struct {
-	ID               uint      `json:"id"`
-	EventName        string    `json:"event_name"`
-	StartDate        time.Time `json:"start_date"`
-	EndDate          time.Time `json:"end_date"`
-	EventLocation    string    `json:"event_location"`
-	ServiceName      string    `json:"service_name"`
-	GrossAmmount     uint      `json:"gross_ammount"`
-	OrderStatus      string    `json:"order_status"`
-	PayoutRecieptUrl string    `json:"payout_receipt_url"`
-	ServiceID        uint      `json:"service_id"`
-	ClientID         uint      `json:"client_id"`
+	ID               uint   `json:"id"`
+	EventName        string `json:"event_name"`
+	StartDate        string `json:"start_date"`
+	EndDate          string `json:"end_date"`
+	EventLocation    string `json:"event_location"`
+	ServiceName      string `json:"service_name"`
+	GrossAmmount     uint   `json:"gross_ammount"`
+	OrderStatus      string `json:"order_status"`
+	PayoutRecieptUrl string `json:"payout_receipt_url"`
+	ServiceID        uint   `json:"service_id"`
+	ClientID         uint   `json:"client_id"`
 }
 
 type AdditionalResponse struct {
@@ -117,7 +117,7 @@ func fromListCore(dataCore partner.Core) PartnerListResponse {
 		ID:                 dataCore.ID,
 		CompanyName:        dataCore.CompanyName,
 		PICName:            dataCore.User.Name,
-		RegisterDate:       dataCore.CreatedAt,
+		RegisterDate:       helper.GetDateTimeFormated(dataCore.CreatedAt),
 		VerificationStatus: dataCore.VerificationStatus,
 		UserID:             dataCore.UserID,
 	}
@@ -143,8 +143,8 @@ func fromOrderCore(dataCore partner.OrderCore) OrderResponse {
 	return OrderResponse{
 		ID:               dataCore.ID,
 		EventName:        dataCore.EventName,
-		StartDate:        dataCore.StartDate,
-		EndDate:          dataCore.EndDate,
+		StartDate:        helper.GetDateFormated(dataCore.StartDate),
+		EndDate:          helper.GetDateFormated(dataCore.EndDate),
 		EventLocation:    dataCore.EventLocation,
 		ServiceName:      dataCore.ServiceName,
 		GrossAmmount:     dataCore.GrossAmmount,
