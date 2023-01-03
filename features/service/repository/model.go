@@ -138,6 +138,27 @@ type User struct {
 	Role     string
 }
 
+type ServiceDetailJoinPartner struct {
+	ID                 uint
+	ServiceName        string
+	ServiceIncluded    string
+	ServiceDescription string
+	ServiceCategory    string
+	ServicePrice       uint
+	AverageRating      float64
+	ServiceImageFile   string
+	City               string
+	PartnerID          uint
+	CompanyName        string
+	CompanyPhone       string
+	CompanyCity        string
+	CompanyImageFile   string
+	CompanyAddress     string
+	LinkWebsite        string
+	VerificationStatus string
+	UserID             uint
+}
+
 // mapping
 
 // mengubah struct core ke struct model gorm
@@ -201,8 +222,8 @@ func (dataModel *Service) toCoreGetAll() service.Core {
 	}
 }
 
-func (dataModel *Service) toCoreGetById() service.Core {
-	return service.Core{
+func (dataModel *ServiceDetailJoinPartner) toCoreGetById() service.ServiceDetailJoinPartner {
+	return service.ServiceDetailJoinPartner{
 		ID:                 dataModel.ID,
 		ServiceName:        dataModel.ServiceName,
 		ServiceDescription: dataModel.ServiceDescription,
@@ -213,6 +234,14 @@ func (dataModel *Service) toCoreGetById() service.Core {
 		ServiceImageFile:   dataModel.ServiceImageFile,
 		City:               dataModel.City,
 		PartnerID:          dataModel.PartnerID,
+		CompanyName:        dataModel.CompanyName,
+		CompanyPhone:       dataModel.CompanyPhone,
+		CompanyAddress:     dataModel.CompanyAddress,
+		CompanyCity:        dataModel.City,
+		CompanyImageFile:   dataModel.CompanyImageFile,
+		LinkWebsite:        dataModel.LinkWebsite,
+		VerificationStatus: dataModel.VerificationStatus,
+		UserID:             dataModel.UserID,
 	}
 }
 

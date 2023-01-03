@@ -49,11 +49,11 @@ func (service *serviceService) GetAll(queryName, queryCategory, queryCity, query
 	return data, err
 }
 
-func (service *serviceService) GetById(id uint) (data _service.Core, err error) {
+func (service *serviceService) GetById(id uint) (data _service.ServiceDetailJoinPartner, err error) {
 	data, err = service.serviceRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
-		return _service.Core{}, err
+		return _service.ServiceDetailJoinPartner{}, err
 	}
 	return data, err
 }

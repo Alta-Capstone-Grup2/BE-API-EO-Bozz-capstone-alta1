@@ -17,16 +17,28 @@ type ServiceGetAllResponse struct {
 }
 
 type ServiceGetByIdResponse struct {
-	ID                 uint    `json:"id"`
-	ServiceName        string  `json:"service_name"`
-	ServiceDescription string  `json:"service_description"`
-	ServiceIncluded    string  `json:"service_included"`
-	ServiceCategory    string  `json:"service_category"`
-	ServicePrice       uint    `json:"service_price"`
-	AverageRating      float64 `json:"average_rating"`
-	ServiceImageFile   string  `json:"service_image_file"`
-	City               string  `json:"city"`
-	PartnerID          uint    `json:"partner_id"`
+	ID                 uint                 `json:"id"`
+	ServiceName        string               `json:"service_name"`
+	ServiceDescription string               `json:"service_description"`
+	ServiceIncluded    string               `json:"service_included"`
+	ServiceCategory    string               `json:"service_category"`
+	ServicePrice       uint                 `json:"service_price"`
+	AverageRating      float64              `json:"average_rating"`
+	ServiceImageFile   string               `json:"service_image_file"`
+	City               string               `json:"city"`
+	Partner            PartnerServiceDetail `json:"partner"`
+}
+
+type PartnerServiceDetail struct {
+	ID                 uint   `json:"id"`
+	CompanyName        string `json:"company_name"`
+	CompanyPhone       string `json:"company_phone"`
+	CompanyCity        string `json:"company_city"`
+	CompanyImageFile   string `json:"company_image_file"`
+	CompanyAddress     string `json:"company_address"`
+	LinkWebsite        string `json:"link_website"`
+	VerificationStatus string `json:"verification_status"`
+	UserID             uint   `json:"user_id"`
 }
 
 type ServiceAdditionalResponse struct {
@@ -77,7 +89,7 @@ func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
 	}
 }
 
-func fromCoreGetById(dataCore service.Core) ServiceGetByIdResponse {
+func fromCoreGetById(dataCore service.ServiceDetailJoinPartner) ServiceGetByIdResponse {
 	return ServiceGetByIdResponse{
 		ID:                 dataCore.ID,
 		ServiceName:        dataCore.ServiceName,
@@ -88,7 +100,17 @@ func fromCoreGetById(dataCore service.Core) ServiceGetByIdResponse {
 		AverageRating:      dataCore.AverageRating,
 		ServiceImageFile:   dataCore.ServiceImageFile,
 		City:               dataCore.City,
-		PartnerID:          dataCore.PartnerID,
+		Partner: PartnerServiceDetail{
+			ID:                 dataCore.PartnerID,
+			CompanyName:        dataCore.CompanyName,
+			CompanyPhone:       dataCore.CompanyPhone,
+			CompanyAddress:     dataCore.CompanyAddress,
+			CompanyCity:        dataCore.City,
+			CompanyImageFile:   dataCore.CompanyImageFile,
+			LinkWebsite:        dataCore.LinkWebsite,
+			VerificationStatus: dataCore.VerificationStatus,
+			UserID:             dataCore.UserID,
+		},
 	}
 }
 
