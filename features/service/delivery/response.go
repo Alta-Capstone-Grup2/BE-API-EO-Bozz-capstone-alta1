@@ -20,7 +20,7 @@ type ServiceGetByIdResponse struct {
 	ID                 uint    `json:"id"`
 	ServiceName        string  `json:"service_name"`
 	ServiceDescription string  `json:"service_description"`
-	ServiceInclude     string  `json:"service_include"`
+	ServiceIncluded    string  `json:"service_included"`
 	ServiceCategory    string  `json:"service_category"`
 	ServicePrice       uint    `json:"service_price"`
 	AverageRating      float64 `json:"average_rating"`
@@ -82,7 +82,7 @@ func fromCoreGetById(dataCore service.Core) ServiceGetByIdResponse {
 		ID:                 dataCore.ID,
 		ServiceName:        dataCore.ServiceName,
 		ServiceDescription: dataCore.ServiceDescription,
-		ServiceInclude:     dataCore.ServiceInclude,
+		ServiceIncluded:    dataCore.ServiceIncluded,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
 		AverageRating:      dataCore.AverageRating,

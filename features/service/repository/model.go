@@ -10,7 +10,7 @@ import (
 type Service struct {
 	gorm.Model
 	ServiceName        string
-	ServiceInclude     string
+	ServiceIncluded    string
 	ServiceDescription string
 	ServiceCategory    string
 	ServicePrice       uint
@@ -144,6 +144,7 @@ type User struct {
 func fromCore(dataCore service.Core) Service {
 	modelData := Service{
 		ServiceName:        dataCore.ServiceName,
+		ServiceIncluded:    dataCore.ServiceIncluded,
 		ServiceDescription: dataCore.ServiceDescription,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
@@ -205,7 +206,7 @@ func (dataModel *Service) toCoreGetById() service.Core {
 		ID:                 dataModel.ID,
 		ServiceName:        dataModel.ServiceName,
 		ServiceDescription: dataModel.ServiceDescription,
-		ServiceInclude:     dataModel.ServiceInclude,
+		ServiceIncluded:    dataModel.ServiceIncluded,
 		ServiceCategory:    dataModel.ServiceCategory,
 		ServicePrice:       dataModel.ServicePrice,
 		AverageRating:      dataModel.AverageRating,

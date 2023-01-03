@@ -7,7 +7,7 @@ import (
 
 type ServiceRequest struct {
 	ServiceName        string `json:"service_name" form:"service_name"`
-	ServiceInclude     string `json:"service_include" form:"service_include"`
+	ServiceIncluded    string `json:"service_included" form:"service_included"`
 	ServiceDescription string `json:"service_description" form:"service_description"`
 	ServiceCategory    string `json:"service_category" form:"service_category"`
 	ServicePrice       string `json:"service_price" form:"service_price"`
@@ -35,7 +35,7 @@ func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 	priceInt, _ := strconv.Atoi(input.ServicePrice)
 	coreInput := service.Core{
 		ServiceName:        input.ServiceName,
-		ServiceInclude:     input.ServiceInclude,
+		ServiceIncluded:    input.ServiceIncluded,
 		ServiceDescription: input.ServiceDescription,
 		ServiceCategory:    input.ServiceCategory,
 		ServicePrice:       uint(priceInt),
