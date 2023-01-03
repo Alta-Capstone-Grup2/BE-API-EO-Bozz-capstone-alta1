@@ -65,7 +65,7 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	// 	return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	// }
 
-	// core
+	// midtrans core
 	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), thirdparty.GetVABank(inputOrder.PaymentMethod))
 	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
 	if midtransResp.TransactionStatus != "pending" {
@@ -166,7 +166,7 @@ func (order *orderService) UpdateStatusPayout(id uint, c echo.Context) error {
 func (order *orderService) UpdateMidtrans(input _order.Core) error {
 	inputMidtrans := thirdparty.CheckMidtrans(input.MidtransTransactionID)
 
-	helper.LogDebug("Midtrans data, ", inputMidtrans)
+	helper.LogDebug("Update Midtrans data =  ", inputMidtrans)
 
 	if inputMidtrans.TransactionStatus != "settlement" {
 		return errors.New("Payment status not settlement. Please check again")

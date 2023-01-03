@@ -67,9 +67,8 @@ func toCoreStatus(inputCancel string, orderId uint) order.Core {
 }
 
 type UpdateMidtransRequest struct {
-	ID          uint   `json:"id" form:"id"`
 	OrderID     string `json:"order_id" form:"order_id"`
-	OrderStatus string `json:"status" form:"status"`
+	OrderStatus string `json:"status" form:"transaction_status"`
 }
 
 func toUpdateMidtrans(input UpdateMidtransRequest) order.Core {
