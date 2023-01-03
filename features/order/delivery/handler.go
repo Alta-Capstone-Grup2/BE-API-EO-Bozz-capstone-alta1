@@ -92,7 +92,6 @@ func (delivery *orderDelivery) GetById(c echo.Context) error {
 	}
 
 	dataResponse := fromCore(results, results2)
-
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
 

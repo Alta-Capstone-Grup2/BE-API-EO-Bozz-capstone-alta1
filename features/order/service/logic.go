@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"github.com/midtrans/midtrans-go"
 )
 
 type orderService struct {
@@ -65,15 +66,28 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	// 	return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	// }
 
+	vaBank, errVaBank := thirdparty.GetVABank(inputOrder.PaymentMethod)
+	if errVaBank != nil {
+		helper.LogDebug("Order - logic - GetVABank = ", errVaBank)
+		return _order.Core{}, errVaBank
+	}
 	// midtrans core
-	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), thirdparty.GetVABank(inputOrder.PaymentMethod))
+	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), vaBank)
 	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
 	if midtransResp.TransactionStatus != "pending" {
 		helper.LogDebug("Order - logic - Failed process to midtrans")
 		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	}
 
-	inputOrder.MidtransVaNumber = midtransResp.VaNumbers[0].VANumber
+	// validasi pemilihan va number berdasarkan metode bank tf
+	var vaNumber string
+	if vaBank == midtrans.BankPermata {
+		vaNumber = midtransResp.PermataVaNumber
+	} else {
+		vaNumber = midtransResp.VaNumbers[0].VANumber
+	}
+
+	inputOrder.MidtransVaNumber = vaNumber
 	inputOrder.MidtransExpiredTime = "After 12 Hours from " + midtransResp.TransactionTime
 	inputOrder.OrderStatus = "Waiting For Payment"
 
