@@ -166,7 +166,7 @@ func (order *orderService) UpdateStatusPayout(id uint, c echo.Context) error {
 func (order *orderService) UpdateMidtrans(input _order.Core) error {
 	inputMidtrans := thirdparty.CheckMidtrans(input.MidtransTransactionID)
 
-	helper.LogDebug("Update Midtrans data =  ", inputMidtrans)
+	helper.LogDebug("Update Midtrans data =  ", *inputMidtrans)
 
 	if inputMidtrans.TransactionStatus != "settlement" {
 		return errors.New("Payment status not settlement. Please check again")

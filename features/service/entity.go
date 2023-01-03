@@ -9,7 +9,7 @@ import (
 type Core struct {
 	ID                 uint
 	ServiceName        string
-	ServiceInclude     string
+	ServiceIncluded    string
 	ServiceDescription string
 	ServiceCategory    string
 	ServicePrice       uint

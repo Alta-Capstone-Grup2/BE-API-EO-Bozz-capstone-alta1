@@ -76,8 +76,11 @@ func (delivery *serviceDelivery) GetById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
+	helper.LogDebug("Service - Handler - GetById | results = ", helper.ConvToJson(results))
+
 	dataResponse := fromCoreGetById(results)
 
+	helper.LogDebug("Service - Handler - GetById | dataresposnee = ", helper.ConvToJson(dataResponse))
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
 
