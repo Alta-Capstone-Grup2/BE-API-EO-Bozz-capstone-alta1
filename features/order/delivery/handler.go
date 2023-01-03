@@ -25,6 +25,7 @@ func New(order order.ServiceInterface, e *echo.Echo) {
 	e.GET("/orders/:id", handler.GetById, middlewares.JWTMiddleware())
 	e.PUT("/orders/:id", handler.UpdateStatusCancel, middlewares.JWTMiddleware())
 	e.PUT("/orders/:id/payout", handler.UpdateStatusPayout, middlewares.JWTMiddleware())
+	e.POST("/orders/payment_notifications", handler.UpdateMidtrans())
 }
 
 func (delivery *orderDelivery) Create(c echo.Context) error {
@@ -144,8 +145,11 @@ func (delivery *orderDelivery) UpdateMidtrans() echo.HandlerFunc {
 		var input UpdateMidtransRequest
 		errBind := c.Bind(&input)
 		if errBind != nil {
-			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+			helper.LogDebug("Order - handler - UpdateMidtrans | Error binding data. Error  = ", errBind.Error)
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data."))
 		}
+
+		helper.LogDebug("Order - handler - UpdateMidtrans | Binding data  = ", input)
 
 		res := toUpdateMidtrans(input)
 		delivery.orderService.UpdateMidtrans(res)
