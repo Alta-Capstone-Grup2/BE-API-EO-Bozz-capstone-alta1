@@ -89,7 +89,6 @@ type DetailOrderResponse struct {
 	Qty                 uint   `json:"qty"`
 	DetailOrderTotal    uint   `json:"detail_order_total"`
 	ServiceAdditionalID uint   `json:"service_additional_id"`
-	GrossAmmount        uint   `json:"gross_ammount"`
 }
 
 type OrderPaymentResponse struct {

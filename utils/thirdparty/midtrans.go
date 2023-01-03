@@ -3,6 +3,7 @@ package thirdparty
 import (
 	cfg "capstone-alta1/config"
 	"capstone-alta1/utils/helper"
+	"errors"
 	"os"
 
 	"github.com/midtrans/midtrans-go"
@@ -74,23 +75,20 @@ func OrderMidtransCore(orderId string, grossAmmount int64, paymentType midtrans.
 	return chargeRes
 }
 
-func GetVABank(input string) midtrans.Bank {
+func GetVABank(input string) (midtrans.Bank, error) {
 	helper.LogDebug("get va bank ", input)
 	if input == string(cfg.VABNI) {
-		return midtrans.BankBni
-	} else if input == string(cfg.VABca) {
-		return midtrans.BankBca
-	} else if input == string(cfg.VABri) {
-		return midtrans.BankBri
-	} else if input == string(cfg.VACimb) {
-		return midtrans.BankCimb
-	} else if input == string(cfg.VAMandiri) {
-		return midtrans.BankMandiri
-	} else if input == string(cfg.VAMaybank) {
-		return midtrans.BankMaybank
-	} else if input == string(cfg.VAMega) {
-		return midtrans.BankMega
-	} else {
-		return midtrans.BankPermata
+		return midtrans.BankBni, nil
 	}
+	if input == string(cfg.VABca) {
+		return midtrans.BankBca, nil
+	}
+	if input == string(cfg.VABri) {
+		return midtrans.BankBri, nil
+	}
+	if input == string(cfg.VAPermata) {
+		return midtrans.BankPermata, nil
+	}
+	helper.LogDebug("Thirdpary - Midtrans - GetVABank | Error get VA Bank. Input  = ", input)
+	return "", errors.New("Failed to get VA Bank. Please check input again or choose other payment method.")
 }
