@@ -2,6 +2,7 @@ package helper
 
 import (
 	cfg "capstone-alta1/config"
+	"errors"
 	"strings"
 	"time"
 )
@@ -30,6 +31,8 @@ func GetDateTimeFormatedStr(dateTimeStr string) string {
 	return dateTimeData.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
 }
 
+<<<<<<< Updated upstream
+=======
 func GetDateTimeFormated(dateTimeInput time.Time) string {
 	return dateTimeInput.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
 }
@@ -49,6 +52,17 @@ func GetDateTimeFormatedToTime(dateTimeStr string) time.Time {
 	return dateTimeData.In(location)
 }
 
+func ValidateDateTimeFormatedToTime(dateTimeStr string, dateTimeLayout string) error {
+	dateTimeData, errParse := time.Parse(dateTimeLayout, dateTimeStr)
+	if errParse != nil {
+		LogDebug("Failed Parse Datetime. GetDateTimeFormatedToTime | input = ", dateTimeStr, " format ", dateTimeLayout, " result = ", dateTimeData)
+		return errors.New("Incorrect Datetime Format. Please check your input. Use format " + dateTimeLayout)
+	}
+
+	return nil
+}
+
+>>>>>>> Stashed changes
 func AddDateTimeFormated(dateTimeStr string, years, months, days int) string {
 	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
 	if errParse != nil {
