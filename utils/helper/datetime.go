@@ -20,7 +20,7 @@ func GetDateTimeNowZUTC7() string {
 	return time.Now().In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT_Z)
 }
 
-func GetDateTimeFormated(dateTimeStr string) string {
+func GetDateTimeFormatedStr(dateTimeStr string) string {
 	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
 	if errParse != nil {
 		LogDebug("Failed parse date time.")
@@ -28,6 +28,25 @@ func GetDateTimeFormated(dateTimeStr string) string {
 	}
 
 	return dateTimeData.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
+}
+
+func GetDateTimeFormated(dateTimeInput time.Time) string {
+	return dateTimeInput.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
+}
+
+func GetDateFormated(dateTimeInput time.Time) string {
+	return dateTimeInput.In(location).Format(cfg.DEFAULT_DATE_LAYOUT)
+}
+
+func GetDateTimeFormatedToTime(dateTimeStr string) time.Time {
+	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
+	LogDebug("GetDateTimeFormatedToTime | input = ", dateTimeStr, " 	result = ", dateTimeData)
+	if errParse != nil {
+		LogDebug("Failed parse date time.")
+		return time.Time{}
+	}
+
+	return dateTimeData.In(location)
 }
 
 func AddDateTimeFormated(dateTimeStr string, years, months, days int) string {
