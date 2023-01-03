@@ -54,7 +54,7 @@ func CheckMidtrans(orderId string) *coreapi.TransactionStatusResponse {
 	return res
 }
 
-func OrderMidtransCore(orderId string, grossAmmount int64, paymentType midtrans.Bank) *coreapi.ChargeResponse {
+func OrderMidtransCore(orderId string, grossAmmount int64, paymentType midtrans.Bank, orderTime string) *coreapi.ChargeResponse {
 	Init()
 	midtrans.ServerKey = os.Getenv("MIDTRANS_SERVER")
 	midtrans.ClientKey = os.Getenv("MIDTRANS_CLIENT")
@@ -68,6 +68,11 @@ func OrderMidtransCore(orderId string, grossAmmount int64, paymentType midtrans.
 		TransactionDetails: midtrans.TransactionDetails{
 			OrderID:  orderId,
 			GrossAmt: grossAmmount,
+		},
+		CustomExpiry: &coreapi.CustomExpiry{
+			OrderTime:      orderTime,
+			ExpiryDuration: cfg.PAYMENT_EXPIRED_DURATION,
+			Unit:           cfg.PAYMENT_EXPIRED_UNIT,
 		},
 	}
 

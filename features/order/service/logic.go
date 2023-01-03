@@ -71,8 +71,12 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 		helper.LogDebug("Order - logic - GetVABank = ", errVaBank)
 		return _order.Core{}, errVaBank
 	}
+
+	orderDateTime := helper.GetDateTimeNowZUTC7()
+	helper.LogDebug("orderdate time = ", orderDateTime)
+
 	// midtrans core
-	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), vaBank)
+	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), vaBank, orderDateTime)
 	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
 	if midtransResp.TransactionStatus != "pending" {
 		helper.LogDebug("Order - logic - Failed process to midtrans")
@@ -88,7 +92,7 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	}
 
 	inputOrder.MidtransVaNumber = vaNumber
-	inputOrder.MidtransExpiredTime = "After 12 Hours from " + midtransResp.TransactionTime
+	inputOrder.MidtransExpiredTime = helper.AddDateTimeFormated(midtransResp.TransactionTime, 0, 0, 1)
 	inputOrder.OrderStatus = "Waiting For Payment"
 
 	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))

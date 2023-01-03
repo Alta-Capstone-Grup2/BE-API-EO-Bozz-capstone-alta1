@@ -16,6 +16,10 @@ func GetDateTimeNow() string {
 	return time.Now().In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
 }
 
+func GetDateTimeNowZUTC7() string {
+	return time.Now().In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT_Z)
+}
+
 func GetDateTimeFormated(dateTimeStr string) string {
 	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
 	if errParse != nil {
@@ -24,6 +28,30 @@ func GetDateTimeFormated(dateTimeStr string) string {
 	}
 
 	return dateTimeData.In(location).Format(cfg.DEFAULT_DATETIME_LAYOUT)
+}
+
+func AddDateTimeFormated(dateTimeStr string, years, months, days int) string {
+	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
+	if errParse != nil {
+		LogDebug("Failed parse date time.")
+		return ""
+	}
+
+	addedDateTime := dateTimeData.AddDate(years, months, days)
+
+	return addedDateTime.Format(cfg.DEFAULT_DATETIME_LAYOUT)
+}
+
+func AddDateTimeFormatedZUTC7(dateTimeStr string, years, months, days int) string {
+	dateTimeData, errParse := time.Parse(cfg.DEFAULT_DATETIME_LAYOUT, dateTimeStr)
+	if errParse != nil {
+		LogDebug("Failed parse date time.")
+		return ""
+	}
+
+	addedDateTime := dateTimeData.AddDate(years, months, days)
+
+	return addedDateTime.Format(cfg.DEFAULT_DATETIME_LAYOUT_Z)
 }
 
 func GetDateNowShort() string {

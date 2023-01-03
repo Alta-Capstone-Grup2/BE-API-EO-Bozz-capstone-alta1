@@ -4,6 +4,7 @@ const (
 	// Config Constant
 	DEFAULT_DATE_LAYOUT       = "2006-01-02"
 	DEFAULT_DATETIME_LAYOUT   = "2006-01-02 15:04:05"
+	DEFAULT_DATETIME_LAYOUT_Z = "2006-01-02 15:04:05 -0700"
 	DEFAULT_DATETIME_LOCATION = "Asia/Jakarta"
 
 	// Partner verification constant
@@ -70,3 +71,6 @@ const (
 	//VAMega : mega
 	VAMega PaymentMethod = "va mega"
 )
+
+const PAYMENT_EXPIRED_DURATION = 1
+const PAYMENT_EXPIRED_UNIT = "day"
