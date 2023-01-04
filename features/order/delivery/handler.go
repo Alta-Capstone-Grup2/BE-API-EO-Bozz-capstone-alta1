@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	cfg "capstone-alta1/config"
 	"capstone-alta1/features/order"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
@@ -30,6 +29,12 @@ func New(order order.ServiceInterface, e *echo.Echo) {
 }
 
 func (delivery *orderDelivery) Create(c echo.Context) error {
+	// authorization
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "Client" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("Error process request. This action only for Client"))
+	}
+
 	orderInput := OrderRequest{}
 	errBind := c.Bind(&orderInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
@@ -38,10 +43,10 @@ func (delivery *orderDelivery) Create(c echo.Context) error {
 	}
 
 	//validate startdate enddate format
-	if errFormatStart := helper.ValidateDateTimeFormatedToTime(orderInput.StartDate, cfg.DEFAULT_DATETIME_LAYOUT); errFormatStart != nil {
+	if errFormatStart := helper.ValidateDateFormat(orderInput.StartDate); errFormatStart != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatStart.Error()))
 	}
-	if errFormatEnd := helper.ValidateDateTimeFormatedToTime(orderInput.EndDate, cfg.DEFAULT_DATETIME_LAYOUT); errFormatEnd != nil {
+	if errFormatEnd := helper.ValidateDateFormat(orderInput.EndDate); errFormatEnd != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatEnd.Error()))
 	}
 
