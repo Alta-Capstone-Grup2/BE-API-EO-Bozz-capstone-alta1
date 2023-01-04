@@ -64,7 +64,11 @@ func LoginOauthGoogle(c echo.Context) error {
 
 func (handler *AuthHandler) CallbackOauthGoogle(c echo.Context) error {
 	// Read oauthState from Cookie
-	oauthState, _ := c.Cookie("oauthstate")
+	oauthState, err := c.Cookie("oauthstate")
+
+	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err cookie oauthstate. Error = ", err)
+	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err cookie oauthstate. Oauthstate = ", helper.ConvToJson(oauthState))
+	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err cookie oauthstate. from value  = ", c.FormValue("state"))
 
 	if c.FormValue("state") != oauthState.Value {
 		log.Println("invalid oauth google state")
