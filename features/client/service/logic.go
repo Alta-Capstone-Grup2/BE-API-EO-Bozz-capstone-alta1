@@ -136,3 +136,13 @@ func (service *clientService) GetOrderById(id uint) (data []client.Order, err er
 	return data, err
 
 }
+
+func (service *clientService) UpdateCompleteOrder(input client.Order, id uint) error {
+	err := service.clientRepository.UpdateCompleteOrder(input, id)
+	if err != nil {
+		log.Error(err.Error())
+		return err
+	}
+
+	return nil
+}

@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	cfg "capstone-alta1/config"
 	"capstone-alta1/features/client"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
@@ -28,6 +29,8 @@ func New(service client.ServiceInterface, e *echo.Echo) {
 	e.PUT("/clients", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/clients", handler.Delete, middlewares.JWTMiddleware())
 	e.GET("/clients/orders", handler.GetOrderById, middlewares.JWTMiddleware())
+	e.GET("/clients/orders/:id/complete", handler.UpdateCompleteOrder, middlewares.JWTMiddleware())
+
 }
 
 func (delivery *ClientDelivery) GetAll(c echo.Context) error {
@@ -134,4 +137,23 @@ func (delivery *ClientDelivery) GetOrderById(c echo.Context) error {
 	dataResponse := fromCoreListOrder(results)
 
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read data.", dataResponse))
+}
+
+func (delivery *ClientDelivery) UpdateCompleteOrder(c echo.Context) error {
+	clientId := middlewares.ExtractTokenClientID(c)
+	idParam := c.Param("id")
+	orderId, errConv := strconv.Atoi(idParam)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
+	}
+	inputComplete := cfg.ORDER_STATUS_COMPLETE_ORDER
+	dataOrder := toOrderStatus(inputComplete, uint(clientId))
+	err := delivery.clientService.UpdateCompleteOrder(dataOrder, uint(orderId))
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed update data. "+err.Error()))
+	}
+	return c.JSON(http.StatusOK, helper.SuccessResponse("Success update data."))
 }
