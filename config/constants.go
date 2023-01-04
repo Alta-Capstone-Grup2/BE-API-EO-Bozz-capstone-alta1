@@ -2,12 +2,16 @@ package config
 
 const (
 	// Config Constant
+
+	BASE_URL = "https://irisminty.my.id"
+
+	// Datetime
 	DEFAULT_DATE_LAYOUT       = "2006-01-02"
 	DEFAULT_DATETIME_LAYOUT   = "2006-01-02 15:04:05"
 	DEFAULT_DATETIME_LAYOUT_Z = "2006-01-02 15:04:05 -0700"
 	DEFAULT_DATETIME_LOCATION = "Asia/Jakarta"
 
-	// Date format 2006-03-01
+	// Regex Date format 2006-03-01
 	DATE_REGEX = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])"
 	// DATE_REGEX = `([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))`
 

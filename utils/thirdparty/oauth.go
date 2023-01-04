@@ -1,6 +1,7 @@
 package thirdparty
 
 import (
+	cfg "capstone-alta1/config"
 	"context"
 	"encoding/base64"
 	"fmt"
@@ -17,7 +18,7 @@ import (
 
 func AuthConfig() *oauth2.Config {
 	var googleOauthConfig = &oauth2.Config{
-		RedirectURL:  "https://rawatinap.online/auth/google/callback",
+		RedirectURL:  fmt.Sprintf("%s/auth/google/callback", cfg.BASE_URL),
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
