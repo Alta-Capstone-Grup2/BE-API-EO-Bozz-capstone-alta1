@@ -16,10 +16,10 @@ type ServiceRequest struct {
 
 type ServiceUpdateRequest struct {
 	ServiceName        string `json:"service_name" form:"service_name"`
+	ServiceIncluded    string `json:"service_included" form:"service_included"`
 	ServiceDescription string `json:"service_description" form:"service_description"`
 	ServiceCategory    string `json:"service_category" form:"service_category"`
 	ServicePrice       string `json:"service_price" form:"service_price"`
-	AverageRating      string `json:"average_rating" form:"average_rating"`
 	City               string `json:"city" form:"city"`
 }
 
@@ -47,13 +47,12 @@ func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 
 func toCoreUpdate(input ServiceUpdateRequest, InputPartnerID uint) service.Core {
 	priceInt, _ := strconv.Atoi(input.ServicePrice)
-	ratingInt, _ := strconv.Atoi(input.AverageRating)
 	coreInput := service.Core{
 		ServiceName:        input.ServiceName,
+		ServiceIncluded:    input.ServiceIncluded,
 		ServiceDescription: input.ServiceDescription,
 		ServiceCategory:    input.ServiceCategory,
 		ServicePrice:       uint(priceInt),
-		AverageRating:      float64(ratingInt),
 		City:               input.City,
 		PartnerID:          InputPartnerID,
 	}

@@ -50,14 +50,14 @@ func LoginOauthGoogle(c echo.Context) error {
 	// var w http.ResponseWriter
 	// var r *http.Request
 	// Create oauthState cookie
-	oauthState := oauth.GenerateStateOauthCookie(c)
+	//oauthState := oauth.GenerateStateOauthCookie(c)
 
 	/*
 		AuthCodeURL receive state that is a token to protect the user from CSRF attacks. You must always provide a non-empty string and
 		validate that it matches the the state query parameter on your redirect callback.
 	*/
-	u := oauth.AuthConfig().AuthCodeURL(oauthState)
-	c.Redirect(http.StatusTemporaryRedirect, u)
+	//u := oauth.AuthConfig().AuthCodeURL(oauthState)
+	//c.Redirect(http.StatusTemporaryRedirect, u)
 	return c.JSON(http.StatusOK, "success")
 }
 

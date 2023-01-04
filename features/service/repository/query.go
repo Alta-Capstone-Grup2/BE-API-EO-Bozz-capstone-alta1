@@ -5,7 +5,6 @@ import (
 	"capstone-alta1/utils/helper"
 	"errors"
 	"fmt"
-	"strconv"
 	"time"
 
 	"gorm.io/gorm"
@@ -35,12 +34,31 @@ func (repo *serviceRepository) Create(input _service.Core) error {
 
 func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 	var results []Service
-	minInt, _ := strconv.Atoi(queryMinPrice)
-	maxInt, _ := strconv.Atoi(queryMaxPrice)
-	tx := repo.db.Where("service_name LIKE ? OR service_category LIKE ? OR city LIKE ? OR service_price BETWEEN ? AND ?", "%"+queryName+"%", "%"+queryCategory+"%", "%"+queryCity+"%", uint(minInt), uint(maxInt)).Find(&results)
+	// minInt, _ := strconv.Atoi(queryMinPrice)
+	// maxInt, _ := strconv.Atoi(queryMaxPrice)
+	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{City: queryCity, ServiceCategory: queryCategory}).Find(&results)
+	// tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where("OR service_category LIKE ? OR city LIKE ? OR service_price BETWEEN ? AND ?", "%"+queryName+"%", "%"+queryCategory+"%", "%"+queryCity+"%", uint(minInt), uint(maxInt)).Find(&results)
+
 	if tx.Error != nil {
+		helper.LogDebug("Order - query - GetAll | Error Query Find = ", tx.Error)
 		return nil, tx.Error
 	}
+
+	helper.LogDebug("Order - query - GetAll | Result data : ", results)
+	helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return nil, tx.Error
+	}
+
+	// query min max price
+	// var queryWhereMinMax string
+	// if queryMinPrice != "" && queryMaxPrice != "" {
+	// 	queryCategory = fmt.Sprint("service_price BETWEEN %d AND %d", minInt, maxInt)
+	// } else if queryMinPrice != "" && queryMaxPrice == "" {
+	// 	queryCategory = fmt.Sprint("service_price BETWEEN %d AND %d", minInt, maxInt)
+
+	// }
+
 	var dataCore = toCoreListGetAll(results)
 	return dataCore, nil
 
