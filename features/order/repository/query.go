@@ -165,7 +165,6 @@ func (repo *orderRepository) GetAll(query string) (data []_order.OrderJoinPartne
 			return nil, tx.Error
 		}
 
-
 		helper.LogDebug("Order - query - GetAll | Resukt data : ", results)
 		helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
 		if tx.RowsAffected == 0 {
