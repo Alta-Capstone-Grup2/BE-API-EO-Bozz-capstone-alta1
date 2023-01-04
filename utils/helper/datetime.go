@@ -3,6 +3,7 @@ package helper
 import (
 	cfg "capstone-alta1/config"
 	"errors"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -50,13 +51,23 @@ func GetDateTimeFormatedToTime(dateTimeStr string) time.Time {
 	return dateTimeData.In(location)
 }
 
-func ValidateDateTimeFormatedToTime(dateTimeStr string, dateTimeLayout string) error {
-	dateTimeData, errParse := time.Parse(dateTimeLayout, dateTimeStr)
-	if errParse != nil {
-		LogDebug("Failed Parse Datetime. GetDateTimeFormatedToTime | input = ", dateTimeStr, " format ", dateTimeLayout, " result = ", dateTimeData)
-		return errors.New("Incorrect Datetime Format. Please check your input. Use format " + dateTimeLayout)
-	}
+// func ValidateDateTimeFormatedToTime(dateTimeStr string, dateTimeLayout string) error {
+// 	dateTimeData, errParse := time.Parse(dateTimeLayout, dateTimeStr)
+// 	if errParse != nil {
+// 		LogDebug("Failed Parse Datetime. GetDateTimeFormatedToTime | input = ", dateTimeStr, " format ", dateTimeLayout, " result = ", dateTimeData)
+// 		return errors.New("Incorrect Datetime Format. Please check your input. Use format " + dateTimeLayout)
+// 	}
 
+// 	return nil
+// }
+
+// Validate date format 2006-03-01
+func ValidateDateFormat(dateTimeStr string) error {
+	dateTimeFormat := regexp.MustCompile(cfg.DATE_REGEX)
+	isFormatValid := dateTimeFormat.MatchString(dateTimeStr)
+	if !isFormatValid {
+		return errors.New("Incorrect Datetime Format. Please check your input. Use format " + cfg.DEFAULT_DATE_LAYOUT)
+	}
 	return nil
 }
 

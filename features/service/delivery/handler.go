@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	cfg "capstone-alta1/config"
 	"capstone-alta1/features/service"
 	"capstone-alta1/middlewares"
 	"capstone-alta1/utils/helper"
@@ -237,10 +236,10 @@ func (delivery *serviceDelivery) CheckAvailability(c echo.Context) error {
 	helper.LogDebug("\n isi queryEnd= ", queryEnd)
 
 	//validate startdate enddate format
-	if errFormatStart := helper.ValidateDateTimeFormatedToTime(queryStart, cfg.DEFAULT_DATETIME_LAYOUT); errFormatStart != nil {
+	if errFormatStart := helper.ValidateDateFormat(queryStart); errFormatStart != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatStart.Error()))
 	}
-	if errFormatEnd := helper.ValidateDateTimeFormatedToTime(queryEnd, cfg.DEFAULT_DATETIME_LAYOUT); errFormatEnd != nil {
+	if errFormatEnd := helper.ValidateDateFormat(queryEnd); errFormatEnd != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatEnd.Error()))
 	}
 
