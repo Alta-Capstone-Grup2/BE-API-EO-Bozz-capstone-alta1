@@ -93,7 +93,7 @@ func (handler *AuthHandler) CallbackOauthGoogle(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("failed login"))
 	}
-
+	helper.LogDebug("Call back url = ", fmt.Sprintf("%s/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
 	return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%s/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
 
 }
