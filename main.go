@@ -24,6 +24,5 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
-
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", cfg.SERVER_PORT)))
 }

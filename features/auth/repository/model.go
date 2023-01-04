@@ -59,6 +59,11 @@ type Client struct {
 	User            User
 }
 
+type Oauth struct {
+	Email string `json:"email"`
+	name  string
+}
+
 //DTO
 
 func (dataModel User) toCore() auth.Core {

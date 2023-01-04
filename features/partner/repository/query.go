@@ -4,7 +4,7 @@ import (
 	cfg "capstone-alta1/config"
 	partner "capstone-alta1/features/partner"
 	"capstone-alta1/utils/helper"
-	sendEmail "capstone-alta1/utils/thirdparty"
+	thirdparty "capstone-alta1/utils/thirdparty"
 	"errors"
 
 	"gorm.io/gorm"
@@ -36,9 +36,9 @@ func (repo *partnerRepository) Create(input partner.Core) error {
 // GetAll implements user.Repository
 func (repo *partnerRepository) GetAll(query string) (data []partner.Core, err error) {
 	var partners []Partner
-	var users []User
+	// var users []User
 	if query != "" {
-		tx := repo.db.Where("users.name LIKE ?", query).Find(&users).Find(&partners)
+		tx := repo.db.Raw("SELECT `partners`.`id`,`partners`.`company_name`,`users`.`name`,`partners`.`verification_status`,`partners`.`register_date`,`partners`.`user_id` FROM `partners` LEFT JOIN `users` ON `partners`.`user_id` = `users`.`id` WHERE `users`.`name` LIKE ?", query)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}
@@ -286,10 +286,23 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			sendEmail.SendMail(clientEmail)
+			thirdparty.SendMail(clientEmail)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
 		}
+	}
+
+	//get client data for google calendar schedule
+	xx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
+	if xx.Error != nil {
+		return yx.Error
+	}
+
+	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		clientEmail := client.User.Email
+		clientAddress := client.Address
+		scheduleDate := ModelDataOrder.StartDate.String()
+		thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
 	}
 
 	return nil

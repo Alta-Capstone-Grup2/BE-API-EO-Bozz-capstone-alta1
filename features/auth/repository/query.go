@@ -2,6 +2,8 @@ package repository
 
 import (
 	"capstone-alta1/features/auth"
+	_user "capstone-alta1/features/user/repository"
+	middlewares "capstone-alta1/middlewares"
 	"errors"
 
 	"gorm.io/gorm"
@@ -66,4 +68,43 @@ func (repo *authData) FindPartner(userID uint) (result auth.PartnerCore, err err
 
 	var dataCore = partner.toCore()
 	return dataCore, nil
+}
+
+func (repo *authData) LoginOauth(auths auth.Oauth) (string, _user.User, error) {
+	var userData _user.User
+	var dataPartner auth.PartnerCore
+	var dataClient auth.ClientCore
+	clientId := dataClient.ID
+	partnerId := dataPartner.User.ID
+	// var dataCore auth.Core
+
+	tx := repo.db.Where("email = ?", auths.Email).First(&userData)
+	user := _user.User{}
+	user.Email = auths.Email
+	user.Name = auths.Name
+
+	if tx.Error != nil {
+
+		tx1 := repo.db.Create(&user) // proses insert data
+
+		if tx1.Error != nil {
+			return "", _user.User{}, tx1.Error
+		}
+		if tx1.RowsAffected == 0 {
+			return "", _user.User{}, errors.New("insert failed")
+		}
+
+	}
+
+	tx3 := repo.db.Where("email = ?", auths.Email).First(&userData)
+	if tx3.Error != nil {
+		return "", _user.User{}, tx3.Error
+	}
+
+	token, errToken := middlewares.CreateToken(int(userData.ID), userData.Name, userData.Role, int(clientId), int(partnerId))
+	if errToken != nil {
+		return "", _user.User{}, errToken
+	}
+
+	return token, userData, nil
 }

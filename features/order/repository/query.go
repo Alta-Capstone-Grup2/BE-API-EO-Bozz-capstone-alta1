@@ -155,19 +155,25 @@ func (do *DetailOrder) BeforeCreate(tx *gorm.DB) (err error) {
 	return txBeforeCreate.Error
 }
 
-func (repo *orderRepository) GetAll() (data []_order.OrderJoinPartner, err error) {
+func (repo *orderRepository) GetAll(query string) (data []_order.OrderJoinPartner, err error) {
 	var results []OrderJoinPartner
 
-	tx := repo.db.Raw("SELECT `orders`.*, `partners`.`id` AS `partner_id`, `partners`.`company_name`, `partners`.`bank_name`, `partners`.`bank_account_number`, `partners`.`bank_account_name` FROM `partners` JOIN `services` ON `partners`.`id` = `services`.`partner_id` JOIN `orders` ON `orders`.`service_id` = `services`.`id`;").Scan(&results)
-	if tx.Error != nil {
-		helper.LogDebug("Order - query - GetAll | Error Query Find = ", tx.Error)
-		return nil, tx.Error
-	}
+	if query == "" {
+		tx := repo.db.Raw("SELECT `orders`.*, `partners`.`id` AS `partner_id`, `partners`.`company_name`, `partners`.`bank_name`, `partners`.`bank_account_number`, `partners`.`bank_account_name` FROM `partners` JOIN `services` ON `partners`.`id` = `services`.`partner_id` JOIN `orders` ON `orders`.`service_id` = `services`.`id`;").Scan(&results)
+		if tx.Error != nil {
+			helper.LogDebug("Order - query - GetAll | Error Query Find = ", tx.Error)
+			return nil, tx.Error
+		}
 
-	helper.LogDebug("Order - query - GetAll | Result data : ", results)
-	helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
-	if tx.RowsAffected == 0 {
-		return nil, tx.Error
+
+		helper.LogDebug("Order - query - GetAll | Resukt data : ", results)
+		helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
+		if tx.RowsAffected == 0 {
+			return nil, tx.Error
+		}
+
+	} else {
+		repo.GetAllWithSearch(query)
 	}
 
 	var dataCore = toOrderJoinPartnerCoreList(results)

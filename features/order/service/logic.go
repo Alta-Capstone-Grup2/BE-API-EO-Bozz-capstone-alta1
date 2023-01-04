@@ -108,18 +108,17 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 }
 
 func (order *orderService) GetAll(query string) (data []_order.OrderJoinPartner, err error) {
-	if query == "query" {
-		data, err = order.orderRepository.GetAllWithSearch(query)
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
-	} else {
-		data, err = order.orderRepository.GetAll()
-		if err != nil {
-			helper.LogDebug(err)
-			return nil, helper.ServiceErrorMsg(err)
-		}
+	// if query == "query" {
+	// 	data, err = order.orderRepository.GetAllWithSearch(query)
+	// 	if err != nil {
+	// 		helper.LogDebug(err)
+	// 		return nil, helper.ServiceErrorMsg(err)
+	// 	}
+	// } else {
+	data, err = order.orderRepository.GetAll(query)
+	if err != nil {
+		helper.LogDebug(err)
+		return nil, helper.ServiceErrorMsg(err)
 	}
 	return data, nil
 }

@@ -2,6 +2,7 @@ package service
 
 import (
 	"capstone-alta1/features/auth"
+	user "capstone-alta1/features/user/repository"
 	"capstone-alta1/middlewares"
 	"errors"
 	"fmt"
@@ -82,4 +83,9 @@ func (service *authService) Login(dataCore auth.Core) (data auth.Core, token str
 	}
 
 	return result, token, clientID, partnerID, nil
+}
+
+func (service *authService) LoginOauth(auths auth.Oauth) (string, user.User, error) {
+	token, data, err := service.authData.LoginOauth(auths)
+	return token, data, err
 }

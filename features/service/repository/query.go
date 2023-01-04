@@ -35,44 +35,15 @@ func (repo *serviceRepository) Create(input _service.Core) error {
 
 func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, queryMinPrice, queryMaxPrice string) (data []_service.Core, err error) {
 	var results []Service
-	if queryName != "" {
-		tx := repo.db.Where("service_name LIKE ?", queryName).Find(&results)
-		if tx.Error != nil {
-			return nil, tx.Error
-		}
-		var dataCore = toCoreListGetAll(results)
-		return dataCore, nil
-	} else if queryCategory != "" {
-		tx := repo.db.Where("service_category LIKE ?", queryCategory).Find(&results)
-		if tx.Error != nil {
-			return nil, tx.Error
-		}
-		var dataCore = toCoreListGetAll(results)
-		return dataCore, nil
-	} else if queryCity != "" {
-		tx := repo.db.Where("city LIKE ?", queryCity).Find(&results)
-		if tx.Error != nil {
-			return nil, tx.Error
-		}
-		var dataCore = toCoreListGetAll(results)
-		return dataCore, nil
-	} else if queryMinPrice != "" || queryMaxPrice != "" {
-		minInt, _ := strconv.Atoi(queryMinPrice)
-		maxInt, _ := strconv.Atoi(queryMaxPrice)
-		tx := repo.db.Where("service_price BETWEEN ? AND ?", uint(minInt), uint(maxInt)).Find(&results)
-		if tx.Error != nil {
-			return nil, tx.Error
-		}
-		var dataCore = toCoreListGetAll(results)
-		return dataCore, nil
-	} else {
-		tx := repo.db.Find(&results)
-		if tx.Error != nil {
-			return nil, tx.Error
-		}
-		var dataCore = toCoreListGetAll(results)
-		return dataCore, nil
+	minInt, _ := strconv.Atoi(queryMinPrice)
+	maxInt, _ := strconv.Atoi(queryMaxPrice)
+	tx := repo.db.Where("service_name LIKE ? OR service_category LIKE ? OR city LIKE ? OR service_price BETWEEN ? AND ?", "%"+queryName+"%", "%"+queryCategory+"%", "%"+queryCity+"%", uint(minInt), uint(maxInt)).Find(&results)
+	if tx.Error != nil {
+		return nil, tx.Error
 	}
+	var dataCore = toCoreListGetAll(results)
+	return dataCore, nil
+
 }
 
 func (repo *serviceRepository) GetById(id uint) (data _service.ServiceDetailJoinPartner, err error) {
