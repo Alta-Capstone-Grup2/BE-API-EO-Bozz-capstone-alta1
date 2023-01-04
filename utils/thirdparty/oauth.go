@@ -18,7 +18,7 @@ import (
 
 func AuthConfig() *oauth2.Config {
 	var googleOauthConfig = &oauth2.Config{
-		RedirectURL:  fmt.Sprintf("%s/auth/google/callback", cfg.BASE_URL),
+		RedirectURL:  fmt.Sprintf("%s/callback/oauth/google", cfg.BASE_URL),
 		ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
