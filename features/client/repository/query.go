@@ -149,3 +149,17 @@ func (repo *clientRepository) GetOrderById(clientId uint) (data []client.Order, 
 	var dataCore = toCoreListOrder(clientorder)
 	return dataCore, nil
 }
+
+func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId uint) error {
+	orderGorm := fromOrder(input)
+	var order Order
+
+	tx := repo.db.Model(&order).Where("ID = ?", orderId).Updates(&orderGorm)
+	if tx.Error != nil {
+		return errors.New("failed update client")
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New("update failed")
+	}
+	return nil
+}

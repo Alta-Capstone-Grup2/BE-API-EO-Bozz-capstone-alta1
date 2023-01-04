@@ -73,6 +73,14 @@ func fromCore(dataCore client.Core) Client {
 	return clientGorm
 }
 
+func fromOrder(dataCore client.Order) Order {
+	clientGorm := Order{
+		OrderStatus: dataCore.OrderStatus,
+		ClientID:    dataCore.ClientID,
+	}
+	return clientGorm
+}
+
 // mengubah struct model gorm ke struct core
 func (dataModel *Client) toCore() client.Core {
 	return client.Core{
