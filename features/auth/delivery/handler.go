@@ -58,6 +58,16 @@ func LoginOauthGoogle(c echo.Context) error {
 		validate that it matches the the state query parameter on your redirect callback.
 	*/
 	u := oauth.AuthConfig().AuthCodeURL(oauthState)
+
+	helper.LogDebug("Auth Handler LoginOauthGoogle | Oauth Data = ", u)
+	oauthState2, err := c.Cookie("oauthstate")
+	if err != nil {
+		helper.LogDebug("Auth Handler LoginOauthGoogle | Error get oauth from cookie. Err = ", err)
+
+	}
+	helper.LogDebug("Auth Handler LoginOauthGoogle | Oauth Data = ", oauthState)
+	helper.LogDebug("Auth Handler LoginOauthGoogle | Oauth Data 2 = ", oauthState2)
+
 	c.Redirect(http.StatusTemporaryRedirect, u)
 	return c.JSON(http.StatusOK, "success")
 }
@@ -69,6 +79,10 @@ func (handler *AuthHandler) CallbackOauthGoogle(c echo.Context) error {
 	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err cookie oauthstate. Error = ", err)
 	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err cookie oauthstate. Oauthstate = ", helper.ConvToJson(oauthState))
 	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err cookie oauthstate. from value  = ", c.FormValue("state"))
+
+	if err != nil {
+		return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%s/?error_msg=Failed to login. Please contact your administrator", cfg.BASE_URL))
+	}
 
 	if c.FormValue("state") != oauthState.Value {
 		log.Println("invalid oauth google state")
