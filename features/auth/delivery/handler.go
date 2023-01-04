@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	cfg "capstone-alta1/config"
 	"capstone-alta1/features/auth"
 	"capstone-alta1/utils/helper"
 	oauth "capstone-alta1/utils/thirdparty"
@@ -93,6 +94,6 @@ func (handler *AuthHandler) CallbackOauthGoogle(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("failed login"))
 	}
 
-	return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("http://127.0.0.1:5173/?token=%s&nama=%s&userid=%d", token, dataUser.Name, dataUser.ID))
+	return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%s/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
 
 }
