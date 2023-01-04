@@ -1,9 +1,11 @@
 package thirdparty
 
 import (
+	"capstone-alta1/utils/helper"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -89,11 +91,16 @@ func Calendar(email, date, address string) (string, error) {
 		},
 	}
 	ctx := context.Background()
+	b, err := ioutil.ReadFile("./credentials.json")
+	if err != nil {
+		log.Fatalf("Unable to read client secret file: %v", err)
+	}
 
-	client_id := os.Getenv("GOOGLE_OAUTH_CLIENT_ID2")
-	project := os.Getenv("GOOGLE_PROJECT_ID2")
-	secret := os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET2")
-	b := `{"web":{"client_id":"` + client_id + `","project_id":"` + project + `","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"` + secret + `"}}`
+	// client_id := os.Getenv("GOOGLE_OAUTH_CLIENT_ID2")
+	// project := os.Getenv("GOOGLE_PROJECT_ID2")
+	// secret := os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET2")
+	// b := `{"web":{"client_id":"` + client_id + `","project_id":"` + project + `","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"` + secret + `","redirect_uris":["http://localhost"]}}`
+
 	bt := []byte(b)
 
 	// If modifying these scopes, delete your previously saved token.json.
@@ -108,12 +115,21 @@ func Calendar(email, date, address string) (string, error) {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
+	// calendarId := "primary"
+	// event_notification := srv.Events.Insert(calendarId, event).SendUpdates("all")
+	// event, err = event_notification.Do()
+	// if err != nil {
+	// 	helper.LogDebug("Thirdpary Calendar Err Create Event = ", err)
+	// 	log.Fatal("Unable to create event")
+	// }
+
 	calendarId := "primary"
-	event_notification := srv.Events.Insert(calendarId, event).SendUpdates("all")
-	event, err = event_notification.Do()
+	event, err = srv.Events.Insert(calendarId, event).Do()
 	if err != nil {
-		log.Fatal("Unable to create event")
+		helper.LogDebug("Thirdpary Calendar Err Create Event = ", err)
+		log.Fatalf("Unable to create event. %v\n", err)
 	}
+	fmt.Printf("Event created: %s\n", event.HtmlLink)
 
 	return event.HtmlLink, nil
 }

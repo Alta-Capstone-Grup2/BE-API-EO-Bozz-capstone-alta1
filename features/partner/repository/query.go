@@ -301,7 +301,7 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
 		clientEmail := client.User.Email
 		clientAddress := client.Address
-		scheduleDate := ModelDataOrder.StartDate.String()
+		scheduleDate := "2023-01-10"
 		thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
 	}
 
