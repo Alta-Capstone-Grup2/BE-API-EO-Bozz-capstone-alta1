@@ -63,20 +63,20 @@ func (delivery *orderDelivery) Create(c echo.Context) error {
 	helper.LogDebug("Order - handler - Create | Data core order  = ", helper.ConvToJson(dataCore))
 	helper.LogDebug("Order - handler - Create | Data detail order  = ", helper.ConvToJson(dataDetailOrder))
 
-	// result, err := delivery.orderService.Create(dataCore, dataDetailOrder)
-	// if err != nil {
-	// 	if strings.Contains(err.Error(), "Error:Field validation") {
-	// 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
-	// 	}
-	// 	if strings.Contains(err.Error(), "Service Data or Additional Data Not Found. Please Check your input") {
-	// 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed insert data. "+err.Error()))
-	// 	}
-	// 	return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
-	// }
+	result, err := delivery.orderService.Create(dataCore, dataDetailOrder)
+	if err != nil {
+		if strings.Contains(err.Error(), "Error:Field validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
+		}
+		if strings.Contains(err.Error(), "Service Data or Additional Data Not Found. Please Check your input") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Failed insert data. "+err.Error()))
+		}
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("Failed insert data. "+err.Error()))
+	}
 
-	//dataResponse := fromCoreToPayment(result)
+	dataResponse := fromCoreToPayment(result)
 
-	return c.JSON(http.StatusCreated, helper.SuccessWithDataResponse("Success create data", nil))
+	return c.JSON(http.StatusCreated, helper.SuccessWithDataResponse("Success create data", dataResponse))
 }
 
 func (delivery *orderDelivery) GetAll(c echo.Context) error {
