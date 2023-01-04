@@ -1,6 +1,9 @@
 package auth
 
-import "time"
+import (
+	user "capstone-alta1/features/user/repository"
+	"time"
+)
 
 type Core struct {
 	ID        uint
@@ -53,12 +56,19 @@ type PartnerCore struct {
 	User               Core
 }
 
+type Oauth struct {
+	Email string `json:"email"`
+	Name  string `json:"name"`
+}
+
 type ServiceInterface interface {
 	Login(input Core) (data Core, token string, clientID uint, partnerID uint, err error)
+	LoginOauth(auth Oauth) (string, user.User, error)
 }
 
 type RepositoryInterface interface {
 	FindUser(email string) (result Core, err error)
 	FindClient(userID uint) (result ClientCore, err error)
 	FindPartner(userID uint) (result PartnerCore, err error)
+	LoginOauth(auth Oauth) (string, user.User, error)
 }

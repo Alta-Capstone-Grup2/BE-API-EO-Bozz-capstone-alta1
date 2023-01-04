@@ -34,9 +34,9 @@ func (repo *clientRepository) Create(input client.Core) error {
 // GetAll implements user.Repository
 func (repo *clientRepository) GetAll(query string) (data []client.Core, err error) {
 	var clients []Client
-	var users []User
+	// var users []User
 	if query != "" {
-		tx := repo.db.Where("users.name LIKE ?", query).Find(&users).Find(&clients)
+		tx := repo.db.Raw("SELECT `clients`.`id`,`users`.`name`,`users`.`email`,`users`.`role`,`clients`.`gender`,`clients`.`address`,`client`.`city`,`clients`.`phone`,`clients`.`client_image_file`,`users`.`id` FROM `clients` LEFT JOIN `users` ON `clients`.`users_id` = `users`.`id` WHERE `users`.`name` LIKE ?", query)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}
