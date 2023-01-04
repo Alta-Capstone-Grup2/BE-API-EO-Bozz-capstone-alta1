@@ -76,5 +76,7 @@ const (
 	VAMega PaymentMethod = "va mega"
 )
 
+var PAYMENTMETHOD interface{} = `"va permata", "va bca", "va bni", "va bri"`
+
 const PAYMENT_EXPIRED_DURATION = 1
 const PAYMENT_EXPIRED_UNIT = "day"
