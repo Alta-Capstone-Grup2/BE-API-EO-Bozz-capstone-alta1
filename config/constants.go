@@ -4,7 +4,12 @@ const (
 	// Config Constant
 	DEFAULT_DATE_LAYOUT       = "2006-01-02"
 	DEFAULT_DATETIME_LAYOUT   = "2006-01-02 15:04:05"
+	DEFAULT_DATETIME_LAYOUT_Z = "2006-01-02 15:04:05 -0700"
 	DEFAULT_DATETIME_LOCATION = "Asia/Jakarta"
+
+	// Date format 2006-03-01
+	DATE_REGEX = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])"
+	// DATE_REGEX = `([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))`
 
 	// Partner verification constant
 	PARTNER_VERIFICATION_STATUS_NOT_VERIFIED = "Not Verified"
@@ -52,11 +57,14 @@ const (
 	//VAMandiri : mandiri
 	VAMandiri PaymentMethod = "va mandiri"
 
-	//VACimb : cimb
-	VACimb PaymentMethod = "va cimb"
+	//VAPermata : permata
+	VAPermata PaymentMethod = "va permata"
 
 	//VABca : bca
 	VABca PaymentMethod = "va bca"
+
+	//VACimb : cimb
+	VACimb PaymentMethod = "va cimb"
 
 	//VABri : bri
 	VABri PaymentMethod = "va bri"
@@ -64,9 +72,9 @@ const (
 	//VAMaybank : maybank
 	VAMaybank PaymentMethod = "va maybank"
 
-	//VAPermata : permata
-	VAPermata PaymentMethod = "va permata"
-
 	//VAMega : mega
 	VAMega PaymentMethod = "va mega"
 )
+
+const PAYMENT_EXPIRED_DURATION = 1
+const PAYMENT_EXPIRED_UNIT = "day"

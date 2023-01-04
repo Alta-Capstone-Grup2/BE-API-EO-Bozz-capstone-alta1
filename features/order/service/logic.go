@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"github.com/midtrans/midtrans-go"
 )
 
 type orderService struct {
@@ -65,16 +66,33 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	// 	return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	// }
 
-	// core
-	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), thirdparty.GetVABank(inputOrder.PaymentMethod))
+	vaBank, errVaBank := thirdparty.GetVABank(inputOrder.PaymentMethod)
+	if errVaBank != nil {
+		helper.LogDebug("Order - logic - GetVABank = ", errVaBank)
+		return _order.Core{}, errVaBank
+	}
+
+	orderDateTime := helper.GetDateTimeNowZUTC7()
+	helper.LogDebug("orderdate time = ", orderDateTime)
+
+	// midtrans core
+	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), vaBank, orderDateTime)
 	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
 	if midtransResp.TransactionStatus != "pending" {
 		helper.LogDebug("Order - logic - Failed process to midtrans")
 		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	}
 
-	inputOrder.MidtransVaNumber = midtransResp.VaNumbers[0].VANumber
-	inputOrder.MidtransExpiredTime = "After 12 Hours from " + midtransResp.TransactionTime
+	// validasi pemilihan va number berdasarkan metode bank tf
+	var vaNumber string
+	if vaBank == midtrans.BankPermata {
+		vaNumber = midtransResp.PermataVaNumber
+	} else {
+		vaNumber = midtransResp.VaNumbers[0].VANumber
+	}
+
+	inputOrder.MidtransVaNumber = vaNumber
+	inputOrder.MidtransExpiredTime = helper.AddDateTimeFormated(midtransResp.TransactionTime, 0, 0, 1)
 	inputOrder.OrderStatus = "Waiting For Payment"
 
 	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
@@ -165,7 +183,7 @@ func (order *orderService) UpdateStatusPayout(id uint, c echo.Context) error {
 func (order *orderService) UpdateMidtrans(input _order.Core) error {
 	inputMidtrans := thirdparty.CheckMidtrans(input.MidtransTransactionID)
 
-	helper.LogDebug("Midtrans data, ", inputMidtrans)
+	helper.LogDebug("Update Midtrans data =  ", *inputMidtrans)
 
 	if inputMidtrans.TransactionStatus != "settlement" {
 		return errors.New("Payment status not settlement. Please check again")

@@ -25,14 +25,29 @@ func New(order order.ServiceInterface, e *echo.Echo) {
 	e.GET("/orders/:id", handler.GetById, middlewares.JWTMiddleware())
 	e.PUT("/orders/:id", handler.UpdateStatusCancel, middlewares.JWTMiddleware())
 	e.PUT("/orders/:id/payout", handler.UpdateStatusPayout, middlewares.JWTMiddleware())
+	e.POST("/orders/payment_notifications", handler.UpdateMidtrans())
 }
 
 func (delivery *orderDelivery) Create(c echo.Context) error {
+	// authorization
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "Client" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("Error process request. This action only for Client"))
+	}
+
 	orderInput := OrderRequest{}
 	errBind := c.Bind(&orderInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
 	if errBind != nil {
 		helper.LogDebug("Order - handler - Create | Error binding data. Error  = ", errBind.Error)
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. Please check again."))
+	}
+
+	//validate startdate enddate format
+	if errFormatStart := helper.ValidateDateFormat(orderInput.StartDate); errFormatStart != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatStart.Error()))
+	}
+	if errFormatEnd := helper.ValidateDateFormat(orderInput.EndDate); errFormatEnd != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatEnd.Error()))
 	}
 
 	inputClientID := middlewares.ExtractTokenClientID(c)
@@ -91,7 +106,6 @@ func (delivery *orderDelivery) GetById(c echo.Context) error {
 	}
 
 	dataResponse := fromCore(results, results2)
-
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
 
@@ -144,8 +158,11 @@ func (delivery *orderDelivery) UpdateMidtrans() echo.HandlerFunc {
 		var input UpdateMidtransRequest
 		errBind := c.Bind(&input)
 		if errBind != nil {
-			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data. "+errBind.Error()))
+			helper.LogDebug("Order - handler - UpdateMidtrans | Error binding data. Error  = ", errBind.Error)
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data."))
 		}
+
+		helper.LogDebug("Order - handler - UpdateMidtrans | Binding data  = ", input)
 
 		res := toUpdateMidtrans(input)
 		delivery.orderService.UpdateMidtrans(res)

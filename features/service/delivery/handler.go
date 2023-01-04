@@ -76,8 +76,11 @@ func (delivery *serviceDelivery) GetById(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
+	helper.LogDebug("Service - Handler - GetById | results = ", helper.ConvToJson(results))
+
 	dataResponse := fromCoreGetById(results)
 
+	helper.LogDebug("Service - Handler - GetById | dataresposnee = ", helper.ConvToJson(dataResponse))
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read user.", dataResponse))
 }
 
@@ -231,6 +234,14 @@ func (delivery *serviceDelivery) CheckAvailability(c echo.Context) error {
 	queryEnd := c.QueryParam("end_date")
 	helper.LogDebug("\n isi queryStart = ", queryStart)
 	helper.LogDebug("\n isi queryEnd= ", queryEnd)
+
+	//validate startdate enddate format
+	if errFormatStart := helper.ValidateDateFormat(queryStart); errFormatStart != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatStart.Error()))
+	}
+	if errFormatEnd := helper.ValidateDateFormat(queryEnd); errFormatEnd != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatEnd.Error()))
+	}
 
 	data, err := delivery.serviceService.CheckAvailability(uint(serviceId), queryStart, queryEnd)
 	if err != nil {

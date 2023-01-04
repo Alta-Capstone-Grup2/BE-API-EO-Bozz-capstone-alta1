@@ -2,7 +2,7 @@ package delivery
 
 import (
 	"capstone-alta1/features/client"
-	"time"
+	"capstone-alta1/utils/helper"
 )
 
 type ClientResponse struct {
@@ -21,8 +21,8 @@ type ClientResponse struct {
 type ClientOrderResponse struct {
 	ID            uint
 	EventName     string
-	StartDate     time.Time
-	EndDate       time.Time
+	StartDate     string
+	EndDate       string
 	EventLocation string
 	ServiceName   string
 	GrossAmmount  uint
@@ -50,8 +50,8 @@ func fromCoreOrder(dataCore client.Order) ClientOrderResponse {
 	return ClientOrderResponse{
 		ID:            dataCore.ID,
 		EventName:     dataCore.EventName,
-		StartDate:     dataCore.StartDate,
-		EndDate:       dataCore.EndDate,
+		StartDate:     helper.GetDateFormated(dataCore.StartDate),
+		EndDate:       helper.GetDateFormated(dataCore.EndDate),
 		EventLocation: dataCore.EventLocation,
 		ServiceName:   dataCore.ServiceName,
 		GrossAmmount:  dataCore.GrossAmmount,

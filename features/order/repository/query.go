@@ -165,6 +165,7 @@ func (repo *orderRepository) GetAll(query string) (data []_order.OrderJoinPartne
 			return nil, tx.Error
 		}
 
+
 		helper.LogDebug("Order - query - GetAll | Resukt data : ", results)
 		helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
 		if tx.RowsAffected == 0 {
@@ -179,18 +180,22 @@ func (repo *orderRepository) GetAll(query string) (data []_order.OrderJoinPartne
 	return dataCore, nil
 }
 
-func (repo *orderRepository) GetAllWithSearch(query string) (data []_order.Core, err error) {
-	var order []Order
-	tx := repo.db.Where("event_name LIKE ?", "%"+query+"%").Find(&order)
+func (repo *orderRepository) GetAllWithSearch(eventName string) (data []_order.OrderJoinPartner, err error) {
+	var results []OrderJoinPartner
+
+	tx := repo.db.Raw("SELECT `orders`.*, `partners`.`id` AS `partner_id`, `partners`.`company_name`, `partners`.`bank_name`, `partners`.`bank_account_number`, `partners`.`bank_account_name` FROM `partners` JOIN `services` ON `partners`.`id` = `services`.`partner_id` JOIN `orders` ON `orders`.`service_id` = `services`.`id`;").Where("event_name LIKE ?", "%"+eventName+"%").Scan(&results)
 	if tx.Error != nil {
+		helper.LogDebug("Order - query - GetAll | Error Query Find = ", tx.Error)
 		return nil, tx.Error
 	}
 
+	helper.LogDebug("Order - query - GetAll | Result data : ", results)
+	helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		return data, tx.Error
+		return nil, tx.Error
 	}
 
-	var dataCore = toCoreList(order)
+	var dataCore = toOrderJoinPartnerCoreList(results)
 	return dataCore, nil
 }
 

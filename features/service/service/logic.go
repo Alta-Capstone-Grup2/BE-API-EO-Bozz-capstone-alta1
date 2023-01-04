@@ -5,7 +5,6 @@ import (
 	_service "capstone-alta1/features/service"
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
-	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -49,11 +48,11 @@ func (service *serviceService) GetAll(queryName, queryCategory, queryCity, query
 	return data, err
 }
 
-func (service *serviceService) GetById(id uint) (data _service.Core, err error) {
+func (service *serviceService) GetById(id uint) (data _service.ServiceDetailJoinPartner, err error) {
 	data, err = service.serviceRepository.GetById(id)
 	if err != nil {
 		log.Error(err.Error())
-		return _service.Core{}, err
+		return _service.ServiceDetailJoinPartner{}, err
 	}
 	return data, err
 }
@@ -126,10 +125,12 @@ func (service *serviceService) GetDiscussionById(id uint) (data []_service.Discu
 }
 
 func (service *serviceService) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
-	// datetime layout
-	layoutDefault := "2006-01-02 15:04:05"
-	startDate, _ := time.Parse(layoutDefault, queryStart)
-	endtDate, _ := time.Parse(layoutDefault, queryEnd)
+
+	startDate := helper.GetDateTimeFormatedToTime(queryStart + " 00:00:00")
+	endtDate := helper.GetDateTimeFormatedToTime(queryEnd + " 00:00:00")
+
+	helper.LogDebug("Data startdate ", startDate, " enddate ", endtDate)
+
 	data, err = service.serviceRepository.CheckAvailability(serviceId, startDate, endtDate)
 	if err != nil {
 		return _service.Order{}, helper.ServiceErrorMsg(err)

@@ -2,14 +2,13 @@ package delivery
 
 import (
 	"capstone-alta1/features/order"
-
-	"time"
+	"capstone-alta1/utils/helper"
 )
 
 type OrderRequest struct {
 	EventName       string               `json:"event_name" form:"event_name"`
-	StartDate       time.Time            `json:"start_date" form:"start_date"`
-	EndDate         time.Time            `json:"end_date" form:"end_date"`
+	StartDate       string               `json:"start_date" form:"start_date"`
+	EndDate         string               `json:"end_date" form:"end_date"`
 	EventLocation   string               `json:"event_location" form:"event_location"`
 	EventAddress    string               `json:"event_address" form:"event_address"`
 	NotesForPartner string               `json:"notes_for_partner" form:"notes_for_partner"`
@@ -30,8 +29,8 @@ type OrderDetailRequest struct {
 func toCore(input OrderRequest, inputClientID uint) order.Core {
 	coreInput := order.Core{
 		EventName:       input.EventName,
-		StartDate:       input.StartDate,
-		EndDate:         input.EndDate,
+		StartDate:       helper.GetDateTimeFormatedToTime(input.StartDate + " 00:00:00"),
+		EndDate:         helper.GetDateTimeFormatedToTime(input.EndDate + " 00:00:00"),
 		EventLocation:   input.EventLocation,
 		EventAddress:    input.EventAddress,
 		NotesForPartner: input.NotesForPartner,
@@ -67,9 +66,8 @@ func toCoreStatus(inputCancel string, orderId uint) order.Core {
 }
 
 type UpdateMidtransRequest struct {
-	ID          uint   `json:"id" form:"id"`
 	OrderID     string `json:"order_id" form:"order_id"`
-	OrderStatus string `json:"status" form:"status"`
+	OrderStatus string `json:"transaction_status" form:"transaction_status"`
 }
 
 func toUpdateMidtrans(input UpdateMidtransRequest) order.Core {

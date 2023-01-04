@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"capstone-alta1/features/service"
+	"capstone-alta1/utils/helper"
 	"time"
 )
 
@@ -17,16 +18,28 @@ type ServiceGetAllResponse struct {
 }
 
 type ServiceGetByIdResponse struct {
-	ID                 uint    `json:"id"`
-	ServiceName        string  `json:"service_name"`
-	ServiceDescription string  `json:"service_description"`
-	ServiceInclude     string  `json:"service_include"`
-	ServiceCategory    string  `json:"service_category"`
-	ServicePrice       uint    `json:"service_price"`
-	AverageRating      float64 `json:"average_rating"`
-	ServiceImageFile   string  `json:"service_image_file"`
-	City               string  `json:"city"`
-	PartnerID          uint    `json:"partner_id"`
+	ID                 uint                 `json:"id"`
+	ServiceName        string               `json:"service_name"`
+	ServiceDescription string               `json:"service_description"`
+	ServiceIncluded    string               `json:"service_included"`
+	ServiceCategory    string               `json:"service_category"`
+	ServicePrice       uint                 `json:"service_price"`
+	AverageRating      float64              `json:"average_rating"`
+	ServiceImageFile   string               `json:"service_image_file"`
+	City               string               `json:"city"`
+	Partner            PartnerServiceDetail `json:"partner"`
+}
+
+type PartnerServiceDetail struct {
+	ID                 uint   `json:"id"`
+	CompanyName        string `json:"company_name"`
+	CompanyPhone       string `json:"company_phone"`
+	CompanyCity        string `json:"company_city"`
+	CompanyImageFile   string `json:"company_image_file"`
+	CompanyAddress     string `json:"company_address"`
+	LinkWebsite        string `json:"link_website"`
+	VerificationStatus string `json:"verification_status"`
+	UserID             uint   `json:"user_id"`
 }
 
 type ServiceAdditionalResponse struct {
@@ -58,10 +71,10 @@ type ServiceDiscussionResponse struct {
 }
 
 type ServiceAvailabilityResponse struct {
-	ServiceName        string    `json:"service_name"`
-	StartDate          time.Time `json:"start_date"`
-	EndDate            time.Time `json:"end_date"`
-	AvailabilityStatus string    `json:"availability_status"`
+	ServiceName        string `json:"service_name"`
+	StartDate          string `json:"start_date"`
+	EndDate            string `json:"end_date"`
+	AvailabilityStatus string `json:"availability_status"`
 }
 
 func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
@@ -77,18 +90,28 @@ func fromCoreGetAll(dataCore service.Core) ServiceGetAllResponse {
 	}
 }
 
-func fromCoreGetById(dataCore service.Core) ServiceGetByIdResponse {
+func fromCoreGetById(dataCore service.ServiceDetailJoinPartner) ServiceGetByIdResponse {
 	return ServiceGetByIdResponse{
 		ID:                 dataCore.ID,
 		ServiceName:        dataCore.ServiceName,
 		ServiceDescription: dataCore.ServiceDescription,
-		ServiceInclude:     dataCore.ServiceInclude,
+		ServiceIncluded:    dataCore.ServiceIncluded,
 		ServiceCategory:    dataCore.ServiceCategory,
 		ServicePrice:       dataCore.ServicePrice,
 		AverageRating:      dataCore.AverageRating,
 		ServiceImageFile:   dataCore.ServiceImageFile,
 		City:               dataCore.City,
-		PartnerID:          dataCore.PartnerID,
+		Partner: PartnerServiceDetail{
+			ID:                 dataCore.PartnerID,
+			CompanyName:        dataCore.CompanyName,
+			CompanyPhone:       dataCore.CompanyPhone,
+			CompanyAddress:     dataCore.CompanyAddress,
+			CompanyCity:        dataCore.City,
+			CompanyImageFile:   dataCore.CompanyImageFile,
+			LinkWebsite:        dataCore.LinkWebsite,
+			VerificationStatus: dataCore.VerificationStatus,
+			UserID:             dataCore.UserID,
+		},
 	}
 }
 
@@ -129,8 +152,8 @@ func fromCoreDiscussion(dataCore service.Discussion) ServiceDiscussionResponse {
 func fromCoreAvailability(dataCore service.Order) ServiceAvailabilityResponse {
 	return ServiceAvailabilityResponse{
 		ServiceName:        dataCore.ServiceName,
-		StartDate:          dataCore.StartDate,
-		EndDate:            dataCore.EndDate,
+		StartDate:          helper.GetDateFormated(dataCore.StartDate),
+		EndDate:            helper.GetDateFormated(dataCore.EndDate),
 		AvailabilityStatus: dataCore.AvailabilityStatus,
 	}
 }

@@ -46,20 +46,23 @@ func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, query
 
 }
 
-func (repo *serviceRepository) GetById(id uint) (data _service.Core, err error) {
-	var service Service
+func (repo *serviceRepository) GetById(id uint) (data _service.ServiceDetailJoinPartner, err error) {
+	var serviceDetailJoinPartner ServiceDetailJoinPartner
 
-	tx := repo.db.First(&service, id)
+	tx := repo.db.Raw("SELECT `services`.*, `partners`.`company_name`, `partners`.`company_phone`, `partners`.`company_city`, `partners`.`company_image_file`, `partners`.`company_address`, `partners`.`link_website`, `partners`.`verification_status`, `partners`.`user_id` FROM `services` JOIN `partners` ON `services`.`partner_id` = `partners`.`id` WHERE `services`.`id` = ?", id).Scan(&serviceDetailJoinPartner)
 
 	if tx.Error != nil {
-		return data, tx.Error
+		helper.LogDebug("Order - query - GetAll | Error Query Find = ", tx.Error)
+		return _service.ServiceDetailJoinPartner{}, tx.Error
 	}
 
+	helper.LogDebug("Order - query - GetAll | Result data : ", serviceDetailJoinPartner)
+	helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		return data, tx.Error
+		return _service.ServiceDetailJoinPartner{}, tx.Error
 	}
 
-	var dataCore = service.toCoreGetById()
+	var dataCore = serviceDetailJoinPartner.toCoreGetById()
 	return dataCore, nil
 }
 
