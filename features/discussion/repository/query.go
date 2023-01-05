@@ -39,7 +39,7 @@ func (repo *discussionRepository) Create(input discussion.Core) error {
 func (repo *discussionRepository) GetAll() (data []discussion.Core, err error) {
 	var results []Discussion
 
-	tx := repo.db.Find(&results)
+	tx := repo.db.Order("created_at DESC").Find(&results)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
