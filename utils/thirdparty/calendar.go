@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -21,7 +20,7 @@ func getClient(config *oauth2.Config) *http.Client {
 	// The file token.json stores the user's access and refresh tokens, and is
 	// created automatically when the authorization flow completes for the first
 	// time.
-	tokFile := "./token.json"
+	tokFile := "token.json"
 	tok, err := tokenFromFile(tokFile)
 	if err != nil {
 		tok = getTokenFromWeb(config)
@@ -91,15 +90,15 @@ func Calendar(email, date, address string) (string, error) {
 		},
 	}
 	ctx := context.Background()
-	b, err := ioutil.ReadFile("./credentials.json")
-	if err != nil {
-		log.Fatalf("Unable to read client secret file: %v", err)
-	}
+	// b, err := ioutil.ReadFile("credentials.json")
+	// if err != nil {
+	// 	log.Fatalf("Unable to read client secret file: %v", err)
+	// }
 
-	// client_id := os.Getenv("GOOGLE_OAUTH_CLIENT_ID2")
-	// project := os.Getenv("GOOGLE_PROJECT_ID2")
-	// secret := os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET2")
-	// b := `{"web":{"client_id":"` + client_id + `","project_id":"` + project + `","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"` + secret + `","redirect_uris":["http://localhost"]}}`
+	client_id := os.Getenv("GOOGLE_OAUTH_CLIENT_ID")
+	project := os.Getenv("GOOGLE_PROJECT_ID")
+	secret := os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET")
+	b := `{"web":{"client_id":"` + client_id + `","project_id":"` + project + `","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"` + secret + `","redirect_uris":["http://localhost"]}}`
 
 	bt := []byte(b)
 

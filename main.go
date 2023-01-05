@@ -18,7 +18,6 @@ func main() {
 	e := echo.New()
 
 	factory.InitFactory(e, db)
-
 	// middleware
 	middlewares.LogMiddlewares(e)
 	e.Pre(middleware.RemoveTrailingSlash())
