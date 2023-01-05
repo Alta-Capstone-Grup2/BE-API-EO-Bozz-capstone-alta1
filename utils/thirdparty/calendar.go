@@ -21,7 +21,7 @@ func getClient(config *oauth2.Config) *http.Client {
 	// The file token.json stores the user's access and refresh tokens, and is
 	// created automatically when the authorization flow completes for the first
 	// time.
-	tokFile := "token.json"
+	tokFile := "./token.json"
 	tok, err := tokenFromFile(tokFile)
 	if err != nil {
 		tok = getTokenFromWeb(config)
@@ -104,7 +104,7 @@ func Calendar(email, date, address string) (string, error) {
 	bt := []byte(b)
 
 	// If modifying these scopes, delete your previously saved token.json.
-	config, err := google.ConfigFromJSON(bt, calendar.CalendarReadonlyScope)
+	config, err := google.ConfigFromJSON(bt, calendar.CalendarScope)
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
@@ -124,7 +124,7 @@ func Calendar(email, date, address string) (string, error) {
 	// }
 
 	calendarId := "primary"
-	event, err = srv.Events.Insert(calendarId, event).Do()
+	event, err = srv.Events.Insert(calendarId, event).SendUpdates("all").Do()
 	if err != nil {
 		helper.LogDebug("Thirdpary Calendar Err Create Event = ", err)
 		log.Fatalf("Unable to create event. %v\n", err)

@@ -87,5 +87,8 @@ func (service *authService) Login(dataCore auth.Core) (data auth.Core, token str
 
 func (service *authService) LoginOauth(auths auth.Oauth) (string, user.User, error) {
 	token, data, err := service.authData.LoginOauth(auths)
+	if err != nil {
+		return "", user.User{}, errors.New("Login Failed, incorrect input")
+	}
 	return token, data, err
 }

@@ -1,8 +1,10 @@
 package repository
 
 import (
+	cfg "capstone-alta1/config"
 	_order "capstone-alta1/features/order"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
 	"errors"
 	"strings"
 
@@ -93,6 +95,21 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	}
 
 	data = orderGorm.toCore()
+
+	var client Client
+	xx := repo.db.Preload("User").First(&client, orderGorm.ClientID)
+	if xx.Error != nil {
+		return _order.Core{}, xx.Error
+	}
+
+	if orderGorm.OrderStatus == cfg.ORDER_STATUS_WAITING_FOR_PAYMENT {
+		if client.User.Email != "" {
+			clientEmail := client.User.Email
+			thirdparty.SendMailWaitingPayment(clientEmail)
+		} else {
+			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
+		}
+	}
 
 	return data, nil
 }
@@ -247,6 +264,21 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 
 	helper.LogDebug("Order - query -  UpdateStatusPayout | Order data : ", result)
 
+	var client Client
+	yx := repo.db.Preload("User").First(&client, result.ClientID)
+	if yx.Error != nil {
+		return yx.Error
+	}
+
+	if result.OrderStatus == cfg.ORDER_STATUS_PAID_OFF {
+		if client.User.Email != "" {
+			clientEmail := client.User.Email
+			thirdparty.SendMailPayoutSuccess(clientEmail)
+		} else {
+			helper.LogDebug("Partner-query-UpdateOrderPayoutDone | Failed Sent Email. Client email not found.")
+		}
+	}
+
 	return nil
 }
 
@@ -255,6 +287,21 @@ func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
 	orderGorm := fromCore(input)
 	if err := rq.db.Where("midtrans_transaction_id = ?", orderGorm.MidtransTransactionID).Updates(&orderGorm).Error; err != nil {
 		return err
+	}
+
+	var client Client
+	yx := rq.db.Preload("User").First(&client, input.ClientID)
+	if yx.Error != nil {
+		return yx.Error
+	}
+
+	if input.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
+		if client.User.Email != "" {
+			clientEmail := client.User.Email
+			thirdparty.SendMailWaitingConfirmation(clientEmail)
+		} else {
+			helper.LogDebug("Partner-query-UpdateOrderPayoutDone | Failed Sent Email. Client email not found.")
+		}
 	}
 
 	return nil
