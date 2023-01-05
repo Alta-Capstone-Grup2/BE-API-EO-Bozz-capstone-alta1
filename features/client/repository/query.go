@@ -38,7 +38,7 @@ func (repo *clientRepository) GetAll(query string) (data []client.Core, err erro
 	var clients []Client
 	// var users []User
 	if query != "" {
-		tx := repo.db.Raw("SELECT `clients`.`id`,`users`.`name`,`users`.`email`,`users`.`role`,`clients`.`gender`,`clients`.`address`,`client`.`city`,`clients`.`phone`,`clients`.`client_image_file`,`users`.`id` FROM `clients` LEFT JOIN `users` ON `clients`.`users_id` = `users`.`id` WHERE `users`.`name` LIKE ?", query)
+		tx := repo.db.Raw("SELECT * FROM `clients` JOIN `users` ON `clients`.`user_id` = `users`.`id` WHERE name LIKE ?", query).Scan(&clients)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}
@@ -53,23 +53,6 @@ func (repo *clientRepository) GetAll(query string) (data []client.Core, err erro
 		return dataCore, nil
 	}
 }
-
-// func (repo *clientRepository) GetAllWithSearch(query string) (data []client.Core, err error) {
-// 	var client []Client
-// 	tx := repo.db.Preload("User").Where("name LIKE ?", "%"+query+"%").Find(&client)
-// 	if tx.Error != nil {
-// 		return nil, tx.Error
-// 	}
-
-// 	if tx.RowsAffected == 0 {
-// 		return data, tx.Error
-// 	}
-
-// 	fmt.Println("\n\n 2 getall client = ", client)
-
-// 	var dataCore = toCoreList(client)
-// 	return dataCore, nil
-// }
 
 // GetById implements user.RepositoryInterface
 func (repo *clientRepository) GetById(id uint) (data client.Core, err error) {

@@ -29,7 +29,7 @@ func (repo *reviewRepository) Create(input review.Core) error {
 		return errors.New("insert failed")
 	}
 
-	tx1 := repo.db.First(&service, input.OrderID)
+	tx1 := repo.db.First(&service, input.ServiceID)
 	if tx1.Error != nil {
 		return tx1.Error
 	}
