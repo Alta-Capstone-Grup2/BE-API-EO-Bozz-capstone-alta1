@@ -37,7 +37,7 @@ func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, query
 	var results []Service
 	maxInt, _ := strconv.Atoi(queryMaxPrice)
 	minInt, _ := strconv.Atoi(queryMinPrice)
-	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{City: queryCity, ServiceCategory: queryCategory}).Where("service_price >= ? AND service_price <= ?", uint(minInt), uint(maxInt)).Find(&results)
+	tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where(&Service{City: queryCity, ServiceCategory: queryCategory}).Find(&results)
 	// tx := repo.db.Where("service_name LIKE ?", "%"+queryName+"%").Where("OR service_category LIKE ? OR city LIKE ? OR service_price BETWEEN ? AND ?", "%"+queryName+"%", "%"+queryCategory+"%", "%"+queryCity+"%", uint(minInt), uint(maxInt)).Find(&results)
 
 	if tx.Error != nil {
@@ -46,9 +46,28 @@ func (repo *serviceRepository) GetAll(queryName, queryCategory, queryCity, query
 	}
 
 	helper.LogDebug("Order - query - GetAll | Result data : ", results)
-	helper.LogDebug("Order - query - GetAll | Row Affected query get additional data : ", tx.RowsAffected)
+	helper.LogDebug("Order - query - GetAll | Row Affected : ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
 		return nil, tx.Error
+	}
+
+	helper.LogDebug("Order - query - GetAll | Min : ", minInt, " Max ", maxInt)
+	var ty *gorm.DB
+	if maxInt > minInt {
+		ty = repo.db.Where("service_price >= ? AND service_price <= ?", uint(minInt), uint(maxInt)).Find(&results)
+	} else {
+		ty = repo.db.Where("service_price >= ?", uint(minInt)).Find(&results)
+	}
+
+	if tx.Error != nil {
+		helper.LogDebug("Order - query - GetAll | Error Query Find = ", ty.Error)
+		return nil, ty.Error
+	}
+
+	helper.LogDebug("Order - query - GetAll | Result data 2: ", results)
+	helper.LogDebug("Order - query - GetAll | Row Affected 2 : ", ty.RowsAffected)
+	if ty.RowsAffected == 0 {
+		return nil, ty.Error
 	}
 
 	var dataCore = toCoreListGetAll(results)
