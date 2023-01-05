@@ -46,7 +46,7 @@ type ServiceInterface interface {
 	Update(input Core, clientID uint, userID uint, c echo.Context) error
 	Delete(clientID uint, userID uint) error
 	GetOrderById(id uint) (data []Order, err error)
-	UpdateCompleteOrder(input Order, id uint) error
+	UpdateCompleteOrder(input Order, orderId, clientId uint) error
 }
 
 type RepositoryInterface interface {
@@ -57,5 +57,5 @@ type RepositoryInterface interface {
 	Delete(clientID uint, userID uint) error
 	FindUser(email string) (data Core, err error)
 	GetOrderById(id uint) (data []Order, err error)
-	UpdateCompleteOrder(input Order, id uint) error
+	UpdateCompleteOrder(input Order, orderId, clientId uint) error
 }

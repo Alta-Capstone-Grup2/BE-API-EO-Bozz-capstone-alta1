@@ -147,8 +147,8 @@ func (delivery *ClientDelivery) UpdateCompleteOrder(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
 	inputComplete := cfg.ORDER_STATUS_COMPLETE_ORDER
-	dataOrder := toOrderStatus(inputComplete, uint(clientId))
-	err := delivery.clientService.UpdateCompleteOrder(dataOrder, uint(orderId))
+	dataOrder := toOrderStatus(inputComplete)
+	err := delivery.clientService.UpdateCompleteOrder(dataOrder, uint(orderId), uint(clientId))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))

@@ -137,8 +137,8 @@ func (service *clientService) GetOrderById(id uint) (data []client.Order, err er
 
 }
 
-func (service *clientService) UpdateCompleteOrder(input client.Order, id uint) error {
-	err := service.clientRepository.UpdateCompleteOrder(input, id)
+func (service *clientService) UpdateCompleteOrder(input client.Order, orderId, clientId uint) error {
+	err := service.clientRepository.UpdateCompleteOrder(input, orderId, clientId)
 	if err != nil {
 		log.Error(err.Error())
 		return err
