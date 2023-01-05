@@ -2,6 +2,7 @@ package thirdparty
 
 import (
 	"capstone-alta1/utils/helper"
+	"log"
 
 	"gopkg.in/gomail.v2"
 )
@@ -34,6 +35,7 @@ func SendMailConfirmedOrder(emailClient string) {
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
 		helper.LogDebug("Failed sent email. Error : ", err)
+		log.Fatal(err.Error())
 	} else {
 		helper.LogDebug("Success sent email. ")
 	}
@@ -61,6 +63,7 @@ func SendMailWaitingPayment(emailClient string) {
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
 		helper.LogDebug("Failed sent email. Error : ", err)
+		log.Fatal(err.Error())
 	} else {
 		helper.LogDebug("Success sent email. ")
 	}
@@ -88,6 +91,7 @@ func SendMailWaitingConfirmation(emailClient string) {
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
 		helper.LogDebug("Failed sent email. Error : ", err)
+		log.Fatal(err.Error())
 	} else {
 		helper.LogDebug("Success sent email. ")
 	}
@@ -115,6 +119,7 @@ func SendMailCompleteOrder(emailClient string) {
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
 		helper.LogDebug("Failed sent email. Error : ", err)
+		log.Fatal(err.Error())
 	} else {
 		helper.LogDebug("Success sent email. ")
 	}
@@ -142,6 +147,7 @@ func SendMailPayoutSuccess(emailClient string) {
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
 		helper.LogDebug("Failed sent email. Error : ", err)
+		log.Fatal(err.Error())
 	} else {
 		helper.LogDebug("Success sent email. ")
 	}
