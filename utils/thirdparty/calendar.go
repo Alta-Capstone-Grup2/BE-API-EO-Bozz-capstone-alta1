@@ -70,18 +70,18 @@ func saveToken(path string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
-func Calendar(email, date, address string) (string, error) {
+func Calendar(email, eventName, startDate, endDate, address string) (string, error) {
 	event := &calendar.Event{
-		Summary:     "EO-Bozz Delvery",
+		Summary:     eventName,
 		Location:    address,
 		Description: "Contact Admin: eo.bozz01@gmail.com",
 		Start: &calendar.EventDateTime{
-			Date: date,
+			Date: startDate,
 
 			TimeZone: "Asia/Jakarta",
 		},
 		End: &calendar.EventDateTime{
-			Date:     date,
+			Date:     endDate,
 			TimeZone: "Asia/Jakarta",
 		},
 		//Recurrence: []string{"RRULE:FREQ=DAILY;COUNT=2"},

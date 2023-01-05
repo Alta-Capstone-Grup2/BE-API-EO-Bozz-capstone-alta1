@@ -99,7 +99,7 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 	var client Client
 	xx := repo.db.Preload("User").First(&client, orderGorm.ClientID)
 	if xx.Error != nil {
-		return _order.Core{}, xx.Error
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", xx.Error)
 	}
 
 	if orderGorm.OrderStatus == cfg.ORDER_STATUS_WAITING_FOR_PAYMENT {
@@ -264,10 +264,15 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 
 	helper.LogDebug("Order - query -  UpdateStatusPayout | Order data : ", result)
 
+	orderData, _, err := repo.GetById(id)
+	if err != nil {
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get order by id  data. Error .", err.Error)
+	}
+
 	var client Client
-	yx := repo.db.Preload("User").First(&client, result.ClientID)
-	if yx.Error != nil {
-		return yx.Error
+	xx := repo.db.Preload("User").First(&client, orderData.ClientID)
+	if xx.Error != nil {
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", xx.Error)
 	}
 
 	if result.OrderStatus == cfg.ORDER_STATUS_PAID_OFF {
@@ -283,16 +288,21 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 }
 
 // UPDATE STATUS ORDER AFTER PAYMENT MIDTRANS
-func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
+func (repo *orderRepository) UpdateMidtrans(input _order.Core) error {
 	orderGorm := fromCore(input)
-	if err := rq.db.Where("midtrans_transaction_id = ?", orderGorm.MidtransTransactionID).Updates(&orderGorm).Error; err != nil {
+	if err := repo.db.Where("midtrans_transaction_id = ?", orderGorm.MidtransTransactionID).Updates(&orderGorm).Error; err != nil {
 		return err
 	}
 
+	var orderData Order
+	if err2 := repo.db.Where("midtrans_transaction_id = ?", orderGorm.MidtransTransactionID).Find(&orderData).Error; err2 != nil {
+		helper.LogDebug("Partner-query-UpdateMidtrans | Failed Sent Email. Error get order by id  data. Error .", err2.Error)
+	}
+
 	var client Client
-	yx := rq.db.Preload("User").First(&client, orderGorm.ClientID)
-	if yx.Error != nil {
-		return yx.Error
+	xx := repo.db.Preload("User").First(&client, orderData.ClientID)
+	if xx.Error != nil {
+		helper.LogDebug("Partner-query-UpdateMidtrans | Failed Sent Email. Error get client data. Error .", xx.Error)
 	}
 
 	if orderGorm.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
@@ -300,7 +310,7 @@ func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
 			clientEmail := client.User.Email
 			thirdparty.SendMailWaitingConfirmation(clientEmail)
 		} else {
-			helper.LogDebug("Partner-query-UpdateOrderPayoutDone | Failed Sent Email. Client email not found.")
+			helper.LogDebug("Partner-query-UpdateMidtrans | Failed Sent Email. Client email not found.")
 		}
 	}
 

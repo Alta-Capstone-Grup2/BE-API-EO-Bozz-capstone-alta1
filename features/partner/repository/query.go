@@ -278,7 +278,7 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	var client Client
 	yx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
 	if yx.Error != nil {
-		return yx.Error
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", yx.Error)
 	}
 
 	helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | client data : ", client)
@@ -292,21 +292,15 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 		}
 	}
 
-	//get client data for google calendar schedule
-	xx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
-	if xx.Error != nil {
-		return yx.Error
-	}
+	// if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+	// 	const yyyymmdd = "2006-01-02"
+	// 	dateString := ModelDataOrder.StartDate.Format(yyyymmdd)
 
-	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
-		const yyyymmdd = "2006-01-02"
-		dateString := ModelDataOrder.StartDate.Format(yyyymmdd)
-
-		clientEmail := client.User.Email
-		clientAddress := client.Address
-		scheduleDate := dateString
-		thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
-	}
+	// 	clientEmail := client.User.Email
+	// 	clientAddress := client.Address
+	// 	scheduleDate := dateString
+	// 	thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
+	// }
 
 	return nil
 }
