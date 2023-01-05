@@ -11,14 +11,12 @@ const CONFIG_SMTP_HOST = "smtp.gmail.com"
 const CONFIG_SMTP_PORT = 587
 const CONFIG_SENDER_NAME = "EO-Bozz <eobozz01@gmail.com>"
 
-var CONFIG_AUTH_EMAIL string = os.Getenv("MAILER_SENDER_EMAIL")
-var CONFIG_AUTH_PASSWORD string = os.Getenv("MAILER_SENDER_PASSWORD")
-
 func SendMailConfirmedOrder(emailClient string) {
+	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
+	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
 	mailer.SetHeader("To", emailClient)
-	mailer.SetAddressHeader("Cc", CONFIG_AUTH_EMAIL, "EO-Bozz")
 	mailer.SetHeader("Subject", "Confirmed Email from EO-Bozz")
 	mailer.SetBody("text/html", "Hello World!, <p>Thanks for Order, see you later. :) </p>")
 	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
@@ -31,7 +29,8 @@ func SendMailConfirmedOrder(emailClient string) {
 	}
 
 	helper.LogDebug("Gomail email recipient ", emailClient)
-	helper.LogDebug("Gomail dialer data", *dialer)
+	// helper.LogDebug("Gomail config ", CONFIG_AUTH_EMAIL, " pass", CONFIG_AUTH_PASSWORD)
+	// helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
@@ -42,10 +41,12 @@ func SendMailConfirmedOrder(emailClient string) {
 }
 
 func SendMailWaitingPayment(emailClient string) {
+	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
+	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
+
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
 	mailer.SetHeader("To", emailClient)
-	mailer.SetAddressHeader("Cc", "eobozz01@gmail.com", "EO-Bozz")
 	mailer.SetHeader("Subject", "Waiting for Payment from EO-Bozz")
 	mailer.SetBody("text/html", "Hello World!, <p>Waiting for Payment, please payout your transaction.</p>")
 	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
@@ -58,6 +59,7 @@ func SendMailWaitingPayment(emailClient string) {
 	}
 
 	helper.LogDebug("Gomail email recipient ", emailClient)
+	helper.LogDebug("Gomail config ", CONFIG_AUTH_EMAIL, " pass", CONFIG_AUTH_PASSWORD)
 	helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
@@ -69,10 +71,12 @@ func SendMailWaitingPayment(emailClient string) {
 }
 
 func SendMailWaitingConfirmation(emailClient string) {
+	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
+	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
+
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
 	mailer.SetHeader("To", emailClient)
-	mailer.SetAddressHeader("Cc", "eobozz01@gmail.com", "EO-Bozz")
 	mailer.SetHeader("Subject", "Payout Success, please wait your EO Confirmation")
 	mailer.SetBody("text/html", "Hello World!, <p>Thanks for your paid, your EO is checking payment. Please wait for confirmation from EO.</p>")
 	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
@@ -85,7 +89,6 @@ func SendMailWaitingConfirmation(emailClient string) {
 	}
 
 	helper.LogDebug("Gomail email recipient ", emailClient)
-	helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
@@ -96,10 +99,12 @@ func SendMailWaitingConfirmation(emailClient string) {
 }
 
 func SendMailCompleteOrder(emailClient string) {
+	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
+	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
+
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
 	mailer.SetHeader("To", emailClient)
-	mailer.SetAddressHeader("Cc", "eobozz01@gmail.com", "EO-Bozz")
 	mailer.SetHeader("Subject", "Order Done")
 	mailer.SetBody("text/html", "Hello World!, <p>Thank you for your cooperation, see you next time.</p>")
 	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
@@ -112,7 +117,6 @@ func SendMailCompleteOrder(emailClient string) {
 	}
 
 	helper.LogDebug("Gomail email recipient ", emailClient)
-	helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
@@ -123,10 +127,12 @@ func SendMailCompleteOrder(emailClient string) {
 }
 
 func SendMailPayoutSuccess(emailClient string) {
+	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
+	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
+
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
 	mailer.SetHeader("To", emailClient)
-	mailer.SetAddressHeader("Cc", "eobozz01@gmail.com", "EO-Bozz")
 	mailer.SetHeader("Subject", "Payout Done")
 	mailer.SetBody("text/html", "Hello World!, <p>Thank you for using EO-Bozz as your business advice.</p>")
 	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
@@ -139,7 +145,6 @@ func SendMailPayoutSuccess(emailClient string) {
 	}
 
 	helper.LogDebug("Gomail email recipient ", emailClient)
-	helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
