@@ -149,9 +149,9 @@ func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId, c
 
 	//send email
 	var client Client
-	yx := repo.db.Preload("User").First(&client, order.ClientID)
+	yx := repo.db.Preload("User").First(&client, clientId)
 	if yx.Error != nil {
-		return yx.Error
+		helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Failed get client data. Error ", yx.Error)
 	}
 
 	if order.OrderStatus == cfg.ORDER_STATUS_COMPLETE_ORDER {

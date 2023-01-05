@@ -29,7 +29,7 @@ func New(service client.ServiceInterface, e *echo.Echo) {
 	e.PUT("/clients", handler.Update, middlewares.JWTMiddleware())
 	e.DELETE("/clients", handler.Delete, middlewares.JWTMiddleware())
 	e.GET("/clients/orders", handler.GetOrderById, middlewares.JWTMiddleware())
-	e.GET("/clients/orders/:id/complete", handler.UpdateCompleteOrder, middlewares.JWTMiddleware())
+	e.PUT("/clients/orders/:id/complete", handler.UpdateCompleteOrder, middlewares.JWTMiddleware())
 
 }
 
