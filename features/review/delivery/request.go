@@ -8,14 +8,14 @@ type InsertRequest struct {
 	Review    string  `json:"review" form:"review"`
 	Rating    float64 `json:"rating" form:"rating"`
 	OrderID   uint    `json:"order_id" form:"order_id"`
-	ServiceID uint    `json:"service_id" form:"service"`
+	ServiceID uint    `json:"service_id" form:"service_id"`
 }
 
 type UpdateRequest struct {
 	Review    string  `json:"review" form:"review"`
 	Rating    float64 `json:"rating" form:"rating"`
 	OrderID   uint    `json:"order_id" form:"order_id"`
-	ServiceID uint    `json:"service_id" form:"service"`
+	ServiceID uint    `json:"service_id" form:"service_id"`
 }
 
 func toCore(i interface{}, clientID uint) review.Core {

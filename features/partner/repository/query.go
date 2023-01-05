@@ -38,7 +38,7 @@ func (repo *partnerRepository) GetAll(query string) (data []partner.Core, err er
 	var partners []Partner
 	// var users []User
 	if query != "" {
-		tx := repo.db.Raw("SELECT `partners`.`id`,`partners`.`company_name`,`users`.`name`,`partners`.`verification_status`,`partners`.`register_date`,`partners`.`user_id` FROM `partners` LEFT JOIN `users` ON `partners`.`user_id` = `users`.`id` WHERE `users`.`name` LIKE ?", query)
+		tx := repo.db.Raw("SELECT * FROM `partners` JOIN `users` ON `partners`.`user_id` = `users`.`id` WHERE name LIKE ?", query).Scan(&partners)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}
