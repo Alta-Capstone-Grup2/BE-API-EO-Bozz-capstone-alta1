@@ -31,10 +31,9 @@ func toCore(input ClientRequest) client.Core {
 	return clientCoredata
 }
 
-func toOrderStatus(inputComplete string, clientId uint) client.Order {
+func toOrderStatus(inputComplete string) client.Order {
 	coreInput := client.Order{
 		OrderStatus: inputComplete,
-		ClientID:    clientId,
 	}
 	return coreInput
 }

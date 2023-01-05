@@ -152,11 +152,11 @@ func (repo *clientRepository) GetOrderById(clientId uint) (data []client.Order, 
 	return dataCore, nil
 }
 
-func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId uint) error {
+func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId, clientId uint) error {
 	orderGorm := fromOrder(input)
 	var order Order
 
-	tx := repo.db.Model(&order).Where("ID = ?", orderId).Updates(&orderGorm)
+	tx := repo.db.Model(&order).Where("ID = ?", orderId).Where("client_id = ?", clientId).Updates(&orderGorm)
 	if tx.Error != nil {
 		return errors.New("failed update client")
 	}
@@ -164,6 +164,7 @@ func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId ui
 		return errors.New("update failed")
 	}
 
+	//send email
 	var client Client
 	yx := repo.db.Preload("User").First(&client, order.ClientID)
 	if yx.Error != nil {

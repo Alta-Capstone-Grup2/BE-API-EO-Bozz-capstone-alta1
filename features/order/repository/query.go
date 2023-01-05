@@ -290,12 +290,12 @@ func (rq *orderRepository) UpdateMidtrans(input _order.Core) error {
 	}
 
 	var client Client
-	yx := rq.db.Preload("User").First(&client, input.ClientID)
+	yx := rq.db.Preload("User").First(&client, orderGorm.ClientID)
 	if yx.Error != nil {
 		return yx.Error
 	}
 
-	if input.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
+	if orderGorm.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
 			thirdparty.SendMailWaitingConfirmation(clientEmail)
