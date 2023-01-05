@@ -1,8 +1,10 @@
 package repository
 
 import (
+	cfg "capstone-alta1/config"
 	client "capstone-alta1/features/client"
 	"capstone-alta1/utils/helper"
+	"capstone-alta1/utils/thirdparty"
 	"errors"
 
 	"gorm.io/gorm"
@@ -161,5 +163,21 @@ func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId ui
 	if tx.RowsAffected == 0 {
 		return errors.New("update failed")
 	}
+
+	var client Client
+	yx := repo.db.Preload("User").First(&client, order.ClientID)
+	if yx.Error != nil {
+		return yx.Error
+	}
+
+	if order.OrderStatus == cfg.ORDER_STATUS_COMPLETE_ORDER {
+		if client.User.Email != "" {
+			clientEmail := client.User.Email
+			thirdparty.SendMailCompleteOrder(clientEmail)
+		} else {
+			helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Failed Sent Email. Client email not found.")
+		}
+	}
+
 	return nil
 }

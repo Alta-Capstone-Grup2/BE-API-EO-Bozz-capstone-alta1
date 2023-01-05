@@ -286,7 +286,7 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMail(clientEmail)
+			thirdparty.SendMailConfirmedOrder(clientEmail)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
 		}
@@ -299,9 +299,12 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	}
 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		const yyyymmdd = "2006-01-02"
+		dateString := ModelDataOrder.StartDate.Format(yyyymmdd)
+
 		clientEmail := client.User.Email
 		clientAddress := client.Address
-		scheduleDate := "2023-01-10"
+		scheduleDate := dateString
 		thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
 	}
 

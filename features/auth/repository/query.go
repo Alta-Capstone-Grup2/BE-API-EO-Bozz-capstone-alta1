@@ -72,10 +72,10 @@ func (repo *authData) FindPartner(userID uint) (result auth.PartnerCore, err err
 
 func (repo *authData) LoginOauth(auths auth.Oauth) (string, _user.User, error) {
 	var userData _user.User
-	var dataPartner auth.PartnerCore
-	var dataClient auth.ClientCore
-	clientId := dataClient.ID
-	partnerId := dataPartner.User.ID
+	// var dataPartner auth.PartnerCore
+	// var dataClient auth.ClientCore
+	// clientId := dataClient.ID
+	// partnerId := dataPartner.User.ID
 	// var dataCore auth.Core
 
 	tx := repo.db.Where("email = ?", auths.Email).First(&userData)
@@ -101,7 +101,7 @@ func (repo *authData) LoginOauth(auths auth.Oauth) (string, _user.User, error) {
 		return "", _user.User{}, tx3.Error
 	}
 
-	token, errToken := middlewares.CreateToken(int(userData.ID), userData.Name, userData.Role, int(clientId), int(partnerId))
+	token, errToken := middlewares.CreateToken(int(userData.ID), userData.Name, userData.Role, 0, 0)
 	if errToken != nil {
 		return "", _user.User{}, errToken
 	}
