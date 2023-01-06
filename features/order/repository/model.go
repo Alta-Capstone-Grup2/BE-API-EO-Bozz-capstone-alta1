@@ -25,8 +25,6 @@ type Order struct {
 	PayoutRecieptFile     string
 	PayoutDate            time.Time `gorm:"default:null"`
 	MidtransTransactionID string
-	MidtransToken         string
-	MidtransLink          string
 	MidtransVaNumber      string
 	MidtransExpiredTime   string
 	ServiceID             uint
@@ -156,6 +154,7 @@ type OrderJoinPartner struct {
 // mengubah struct core ke struct model gorm
 func fromCore(dataCore order.Core) Order {
 	modelData := Order{
+
 		EventName:             dataCore.EventName,
 		StartDate:             dataCore.StartDate,
 		EndDate:               dataCore.EndDate,
@@ -172,8 +171,6 @@ func fromCore(dataCore order.Core) Order {
 		PayoutDate:            dataCore.PayoutDate,
 		PayoutRecieptFile:     dataCore.PayoutRecieptFile,
 		MidtransTransactionID: dataCore.MidtransTransactionID,
-		MidtransLink:          dataCore.MidtransLink,
-		MidtransToken:         dataCore.MidtransToken,
 		MidtransVaNumber:      dataCore.MidtransVaNumber,
 		MidtransExpiredTime:   dataCore.MidtransExpiredTime,
 		ServiceID:             dataCore.ServiceID,
@@ -234,8 +231,6 @@ func (dataModel *Order) toCore() order.Core {
 		PayoutDate:            dataModel.PayoutDate,
 		PayoutRecieptFile:     dataModel.PayoutRecieptFile,
 		MidtransTransactionID: dataModel.MidtransTransactionID,
-		MidtransLink:          dataModel.MidtransLink,
-		MidtransToken:         dataModel.MidtransToken,
 		MidtransVaNumber:      dataModel.MidtransVaNumber,
 		MidtransExpiredTime:   dataModel.MidtransExpiredTime,
 		ServiceID:             dataModel.ServiceID,
@@ -298,8 +293,6 @@ func (dataModel *Order) toCoreOrder() order.Core {
 		PaymentMethod:         dataModel.PaymentMethod,
 		OrderStatus:           dataModel.OrderStatus,
 		MidtransTransactionID: dataModel.MidtransTransactionID,
-		MidtransLink:          dataModel.MidtransLink,
-		MidtransToken:         dataModel.MidtransToken,
 		MidtransVaNumber:      dataModel.MidtransVaNumber,
 		MidtransExpiredTime:   dataModel.MidtransExpiredTime,
 		PayoutRecieptFile:     dataModel.PayoutRecieptFile,
