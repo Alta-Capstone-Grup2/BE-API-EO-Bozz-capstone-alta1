@@ -50,13 +50,6 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	inputOrder.ServiceName = serviceData.ServiceName
 	inputOrder.ServicePrice = serviceData.ServicePrice
 
-	var grossAmmout uint
-	for _, val := range inputDetail {
-		grossAmmout += val.DetailOrderTotal
-	}
-	grossAmmout += inputOrder.ServicePrice
-
-	inputOrder.GrossAmmount = grossAmmout
 	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
 
 	// snap url
@@ -66,7 +59,17 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	// 	return _order.Core{}, errors.New("Payment Failed. Please try again later.")
 	// }
 
-	vaBank, errVaBank := thirdparty.GetVABank(inputOrder.PaymentMethod)
+	// proses
+	data, errCreate := order.orderRepository.Create(inputOrder, inputDetail)
+	if errCreate != nil {
+		helper.LogDebug("Order - logic - Create | Error execute create order. Error  = ", errCreate.Error())
+		return _order.Core{}, helper.ServiceErrorMsg(errCreate)
+	}
+
+	helper.LogDebug("Order - logic - Return Create data = ", helper.ConvToJson(data))
+
+	// proses midtrans
+	vaBank, errVaBank := thirdparty.GetVABank(data.PaymentMethod)
 	if errVaBank != nil {
 		helper.LogDebug("Order - logic - GetVABank = ", errVaBank)
 		return _order.Core{}, errVaBank
@@ -76,7 +79,7 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 	helper.LogDebug("orderdate time = ", orderDateTime)
 
 	// midtrans core
-	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(inputOrder.GrossAmmount), vaBank, orderDateTime)
+	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(data.GrossAmmount), vaBank, orderDateTime)
 	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
 	if midtransResp.TransactionStatus != "pending" {
 		helper.LogDebug("Order - logic - Failed process to midtrans")
@@ -91,20 +94,21 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 		vaNumber = midtransResp.VaNumbers[0].VANumber
 	}
 
-	inputOrder.MidtransVaNumber = vaNumber
-	inputOrder.MidtransExpiredTime = helper.AddDateTimeFormated(midtransResp.TransactionTime, 0, 0, 1)
-	inputOrder.OrderStatus = "Waiting For Payment"
+	data.MidtransVaNumber = vaNumber
+	data.MidtransExpiredTime = helper.AddDateTimeFormated(midtransResp.TransactionTime, 0, 0, 1)
+	data.OrderStatus = "Waiting For Payment"
 
-	helper.LogDebug("Order - logic - GetServiceByID | Input Order   = ", helper.ConvToJson(inputOrder))
+	helper.LogDebug("Order - logic - Create | Input data   = ", helper.ConvToJson(data))
 
-	// proses
-	data, errCreate := order.orderRepository.Create(inputOrder, inputDetail)
-	if errCreate != nil {
-		helper.LogDebug("Order - logic - Create | Error execute create order. Error  = ", errCreate.Error())
+	result, errUpdateAddOrder := order.orderRepository.UpdateAddOrderMidtrans(data, data.ID)
+	if errUpdateAddOrder != nil {
+		helper.LogDebug("Order - logic - Create | Error execute UpdateAddOrder. Error  = ", errUpdateAddOrder.Error())
 		return _order.Core{}, helper.ServiceErrorMsg(errCreate)
 	}
 
-	return data, nil
+	helper.LogDebug("Order - logic - Create | Input data2   = ", helper.ConvToJson(result))
+
+	return result, nil
 }
 
 func (order *orderService) GetAll(query string) (data []_order.OrderJoinPartner, err error) {

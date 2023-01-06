@@ -83,7 +83,15 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 		return _order.Core{}, errors.New("insert detail order failed")
 	}
 
-	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: orderGorm.GrossAmmount, OrderStatus: orderGorm.OrderStatus}) // proses insert data
+	var grossAmmout uint
+	for _, val := range detailorderGorm {
+		helper.LogDebug("Gross Ammount ", grossAmmout, " detail order total ", val.DetailOrderTotal)
+		grossAmmout += val.DetailOrderTotal
+	}
+	grossAmmout += orderGorm.ServicePrice
+	helper.LogDebug("Gross Ammount final ", grossAmmout)
+
+	zx := repo.db.Model(&orderGorm).Updates(Order{GrossAmmount: grossAmmout, OrderStatus: orderGorm.OrderStatus}) // proses insert data
 	if zx.Error != nil {
 		helper.LogDebug("Order - query - Create | Error execute query update gross amount. Error  = ", zx.Error)
 		return _order.Core{}, zx.Error
@@ -96,6 +104,31 @@ func (repo *orderRepository) Create(inputOrder _order.Core, inputDetail []_order
 
 	data = orderGorm.toCore()
 
+	return data, nil
+}
+func (repo *orderRepository) UpdateAddOrderMidtrans(inputOrder _order.Core, id uint) (data _order.Core, err error) {
+	orderGorm := fromCore(inputOrder)
+	var orderModel Order
+
+	// Update Order Process
+	tx := repo.db.Model(&orderModel).Where("ID = ?", id).Updates(&orderGorm) // proses insert data
+	if tx.Error != nil {
+		helper.LogDebug("Order - query - UpdateAddOrderMidtrans | Error execute query order. Error  = ", tx.Error)
+		if strings.Contains(tx.Error.Error(), "Cannot add or update a child row: a foreign key constraint fails") {
+			return _order.Core{}, errors.New("Service Data or Additional Data Not Found. Please Check your input.")
+		}
+		return _order.Core{}, tx.Error
+	}
+	helper.LogDebug("Order - query - UpdateAddOrderMidtrans | Row Affected query order : ", tx.RowsAffected)
+	if tx.RowsAffected == 0 {
+		return _order.Core{}, errors.New("insert order failed")
+	}
+
+	orderGorm.ID = id
+
+	data = orderGorm.toCore()
+
+	// Send Email
 	var client Client
 	xx := repo.db.Preload("User").First(&client, orderGorm.ClientID)
 	if xx.Error != nil {

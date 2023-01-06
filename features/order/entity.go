@@ -24,8 +24,6 @@ type Core struct {
 	PayoutRecieptFile     string
 	PayoutDate            time.Time
 	MidtransTransactionID string
-	MidtransToken         string
-	MidtransLink          string
 	MidtransVaNumber      string
 	MidtransExpiredTime   string
 	ServiceID             uint
@@ -168,4 +166,5 @@ type RepositoryInterface interface {
 	UpdateStatusPayout(input Core, id uint) error
 	UpdateMidtrans(input Core) error
 	GetServiceByID(serviceID uint) (data Service, err error)
+	UpdateAddOrderMidtrans(inputOrder Core, id uint) (data Core, err error)
 }
