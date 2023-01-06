@@ -6,6 +6,7 @@ import (
 	middlewares "capstone-alta1/middlewares"
 	"errors"
 
+	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
 )
 
@@ -70,7 +71,7 @@ func (repo *authData) FindPartner(userID uint) (result auth.PartnerCore, err err
 	return dataCore, nil
 }
 
-func (repo *authData) LoginOauth(auths auth.Oauth) (string, _user.User, error) {
+func (repo *authData) LoginOauth(auths auth.Oauth) (string, auth.ClientCore, error) {
 	var userData _user.User
 	// var dataPartner auth.PartnerCore
 	// var dataClient auth.ClientCore
@@ -84,27 +85,30 @@ func (repo *authData) LoginOauth(auths auth.Oauth) (string, _user.User, error) {
 	user.Name = auths.Name
 
 	if tx.Error != nil {
-
+		user.Role = "Client"
 		tx1 := repo.db.Create(&user) // proses insert data
 
 		if tx1.Error != nil {
-			return "", _user.User{}, tx1.Error
+			return "", auth.ClientCore{}, tx1.Error
 		}
 		if tx1.RowsAffected == 0 {
-			return "", _user.User{}, errors.New("insert failed")
+			return "", auth.ClientCore{}, errors.New("insert failed")
 		}
 
 	}
-
-	tx3 := repo.db.Where("email = ?", auths.Email).First(&userData)
+	var client Client
+	tx3 := repo.db.Where("ID = ?", userData.ID).Preload("User").First(&client)
 	if tx3.Error != nil {
-		return "", _user.User{}, tx3.Error
+		return "", auth.ClientCore{}, tx3.Error
 	}
 
-	token, errToken := middlewares.CreateToken(int(userData.ID), userData.Name, userData.Role, 0, 0)
+	token, errToken := middlewares.CreateToken(int(client.UserID), client.User.Name, client.User.Role, int(client.ID), 0)
 	if errToken != nil {
-		return "", _user.User{}, errToken
+		log.Error(errToken.Error())
+		return token, auth.ClientCore{}, errors.New("Failed to login, error on generate token, please try again.")
 	}
 
-	return token, userData, nil
+	var dataCore = client.toCore()
+
+	return token, dataCore, nil
 }

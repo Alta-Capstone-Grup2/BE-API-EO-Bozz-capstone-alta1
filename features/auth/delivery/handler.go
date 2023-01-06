@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	cfg "capstone-alta1/config"
 	"capstone-alta1/features/auth"
 	"capstone-alta1/utils/helper"
 	oauth "capstone-alta1/utils/thirdparty"
@@ -10,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -93,12 +93,17 @@ func (handler *AuthHandler) CallbackOauthGoogle(c echo.Context) error {
 		log.Fatal("error unmarshal")
 	}
 
-	token, dataUser, err := handler.authService.LoginOauth(google)
+	token, dataClient, err := handler.authService.LoginOauth(google)
 	if err != nil {
+		helper.LogDebug("Auth - Handler - CallbackOauthGoogle | err process login oauth Error = ", err)
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("failed login"))
 	}
-	helper.LogDebug("Call back url = ", fmt.Sprintf("%s/login/oauth/google/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
-	return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%s/login/oauth/google/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
+
+	call_back_url := fmt.Sprintf("%s%s?token=%s&name=%s&user_id=%d&client_id=%d&partner_id=%d&role=%s", os.Getenv("SERVER_FRONTEND"), os.Getenv("REDIRECT_OAUTH_LOGIN"), token, dataClient.User.Name, dataClient.User.ID, dataClient.ID, 0, dataClient.User.Role)
+
+	helper.LogDebug("Auth - Handler - CallbackOauthGoogle | Call Back URL = ", call_back_url)
+
+	return c.Redirect(http.StatusTemporaryRedirect, call_back_url)
 
 }
 
