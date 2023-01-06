@@ -68,6 +68,10 @@ func (delivery *serviceDelivery) GetById(c echo.Context) error {
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error. Id must integer."))
 	}
+	serviceId := service.ServiceDetailJoinPartner{}
+	if id == 0 || id != int(serviceId.ID) {
+		return c.JSON(http.StatusConflict, helper.FailedResponse("id not found"))
+	}
 	results, err := delivery.serviceService.GetById(uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Get data success. No data.") {

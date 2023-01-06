@@ -59,12 +59,12 @@ func toCoreUpdate(input ServiceUpdateRequest, InputPartnerID uint) service.Core 
 	return coreInput
 }
 
-func toCoreAdditional(input AdditionalRequest) service.ServiceAdditional {
-	coreInput := service.ServiceAdditional{
-		AdditionalID: input.AdditionalID,
-	}
-	return coreInput
-}
+// func toCoreAdditional(input AdditionalRequest) service.ServiceAdditional {
+// 	coreInput := service.ServiceAdditional{
+// 		AdditionalID: input.AdditionalID,
+// 	}
+// 	return coreInput
+// }
 
 func toServiceAdditionalList(requestData ServiceAdditionalRequest) []service.ServiceAdditional {
 	var dataCore []service.ServiceAdditional
@@ -77,10 +77,10 @@ func toServiceAdditionalList(requestData ServiceAdditionalRequest) []service.Ser
 	return dataCore
 }
 
-func toAdditionalList(requestData []AdditionalRequest) []service.ServiceAdditional {
-	var dataCore []service.ServiceAdditional
-	for _, v := range requestData {
-		dataCore = append(dataCore, toCoreAdditional(v))
-	}
-	return dataCore
-}
+// func toAdditionalList(requestData []AdditionalRequest) []service.ServiceAdditional {
+// 	var dataCore []service.ServiceAdditional
+// 	for _, v := range requestData {
+// 		dataCore = append(dataCore, toCoreAdditional(v))
+// 	}
+// 	return dataCore
+// }
