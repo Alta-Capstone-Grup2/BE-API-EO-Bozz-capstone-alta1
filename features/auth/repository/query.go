@@ -97,7 +97,7 @@ func (repo *authData) LoginOauth(auths auth.Oauth) (string, auth.ClientCore, err
 
 	}
 	var client Client
-	tx3 := repo.db.Where("ID = ?", userData.ID).Preload("User").First(&client)
+	tx3 := repo.db.Where("user_id = ?", userData.ID).Preload("User").First(&client)
 	if tx3.Error != nil {
 		return "", auth.ClientCore{}, tx3.Error
 	}
