@@ -38,7 +38,7 @@ func (repo *clientRepository) GetAll(query string) (data []client.Core, err erro
 	var clients []Client
 	// var users []User
 	if query != "" {
-		tx := repo.db.Raw("SELECT `clients`.*, `users`.* FROM `clients` JOIN `users` ON `clients`.`user_id` = `users`.`id` WHERE `users`.`name` LIKE ?", "%"+query+"%").Scan(&clients)
+		tx := repo.db.Where("`clients`.`users`.`name` LIKE ?", query).Find(&clients)
 		// tx := repo.db.Raw("SELECT * FROM `clients` JOIN `users` ON `clients`.`user_id` = `users`.`id` WHERE name LIKE ?", query).Scan(&clients)
 		if tx.Error != nil {
 			return nil, tx.Error
