@@ -47,7 +47,7 @@ func GenerateStateOauthCookie(c echo.Context) string {
 	b := make([]byte, 16)
 	rand.Read(b)
 	state := base64.URLEncoding.EncodeToString(b)
-	cookie := http.Cookie{Name: "oauthstate", Value: state, Expires: expiration}
+	cookie := http.Cookie{Name: "oauthstate", Value: state, Expires: expiration, Path: "/"}
 	c.SetCookie(&cookie)
 
 	return state
