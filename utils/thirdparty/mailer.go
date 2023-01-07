@@ -1,8 +1,13 @@
 package thirdparty
 
 import (
+	"bytes"
 	"capstone-alta1/utils/helper"
+	"errors"
+	"fmt"
 	"os"
+	"path"
+	"text/template"
 
 	"gopkg.in/gomail.v2"
 )
@@ -11,14 +16,22 @@ const CONFIG_SMTP_HOST = "smtp.gmail.com"
 const CONFIG_SMTP_PORT = 587
 const CONFIG_SENDER_NAME = "EO-Bozz <eobozz01@gmail.com>"
 
-func SendMailConfirmedOrder(emailClient string) {
+func SendMail(recipientEmail, subject string, data interface{}, fileTemplate string) error {
+
+	emailBody, errParseTempalte := ParseTemplate(fileTemplate, data)
+	if errParseTempalte != nil {
+		helper.LogDebug("mailer - SendMail - Failed ParseTemplate. Error ", errParseTempalte)
+		return errors.New("Failed sent email. Please try again.")
+	}
+
 	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
 	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
+
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
-	mailer.SetHeader("To", emailClient)
-	mailer.SetHeader("Subject", "Confirmed Email from EO-Bozz")
-	mailer.SetBody("text/html", "Hello World!, <p>Thanks for Order, see you later. :) </p>")
+	mailer.SetHeader("To", recipientEmail)
+	mailer.SetHeader("Subject", subject)
+	mailer.SetBody("text/html", emailBody)
 	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
 
 	dialer := &gomail.Dialer{
@@ -28,15 +41,43 @@ func SendMailConfirmedOrder(emailClient string) {
 		Password: CONFIG_AUTH_PASSWORD,
 	}
 
-	helper.LogDebug("Gomail email recipient ", emailClient)
-	// helper.LogDebug("Gomail config ", CONFIG_AUTH_EMAIL, " pass", CONFIG_AUTH_PASSWORD)
-	// helper.LogDebug("Gomail dialer data", *dialer)
+	helper.LogDebug("Gomail email recipient ", recipientEmail)
+	helper.LogDebug("Gomail config ", CONFIG_AUTH_EMAIL, " pass", CONFIG_AUTH_PASSWORD)
+	helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
 	if err != nil {
 		helper.LogDebug("Failed sent email. Error : ", err)
+		return errors.New("Failed sent email. Please try again.")
+	}
+	helper.LogDebug("Success sent email. ")
+
+	return nil
+}
+
+func ParseTemplate(templateFileName string, data interface{}) (string, error) {
+	t, err := template.ParseFiles(templateFileName)
+	if err != nil {
+		helper.LogDebug("mailer - ParseTempalte - Failed ParseTemplate. Error ", err)
+		return "", err
+	}
+	buf := new(bytes.Buffer)
+	if err = t.Execute(buf, data); err != nil {
+		helper.LogDebug("mailer - ParseTempalte - Failed Execute. Error ", err)
+		return "", err
+	}
+	return buf.String(), nil
+}
+
+func SendEmailWaitingPayment2(recipientEmail, subject string, data interface{}) {
+
+	template := path.Join("utils", "thirdparty", "payment_waiting_for_payment.html")
+	err := SendMail(recipientEmail, subject, data, template)
+	if err != nil {
+		helper.LogDebug("SendEmailWaitingPayment2 - Failed send email")
+		fmt.Println("send email '" + subject + "' success")
 	} else {
-		helper.LogDebug("Success sent email. ")
+		fmt.Println(err)
 	}
 }
 
@@ -61,6 +102,35 @@ func SendMailWaitingPayment(emailClient string) {
 	helper.LogDebug("Gomail email recipient ", emailClient)
 	helper.LogDebug("Gomail config ", CONFIG_AUTH_EMAIL, " pass", CONFIG_AUTH_PASSWORD)
 	helper.LogDebug("Gomail dialer data", *dialer)
+
+	err := dialer.DialAndSend(mailer)
+	if err != nil {
+		helper.LogDebug("Failed sent email. Error : ", err)
+	} else {
+		helper.LogDebug("Success sent email. ")
+	}
+}
+
+func SendMailConfirmedOrder(emailClient string) {
+	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
+	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
+	mailer := gomail.NewMessage()
+	mailer.SetHeader("From", CONFIG_SENDER_NAME)
+	mailer.SetHeader("To", emailClient)
+	mailer.SetHeader("Subject", "Confirmed Email from EO-Bozz")
+	mailer.SetBody("text/html", "Hello World!, <p>Thanks for Order, see you later. :) </p>")
+	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
+
+	dialer := &gomail.Dialer{
+		Host:     CONFIG_SMTP_HOST,
+		Port:     CONFIG_SMTP_PORT,
+		Username: CONFIG_AUTH_EMAIL,
+		Password: CONFIG_AUTH_PASSWORD,
+	}
+
+	helper.LogDebug("Gomail email recipient ", emailClient)
+	// helper.LogDebug("Gomail config ", CONFIG_AUTH_EMAIL, " pass", CONFIG_AUTH_PASSWORD)
+	// helper.LogDebug("Gomail dialer data", *dialer)
 
 	err := dialer.DialAndSend(mailer)
 	if err != nil {

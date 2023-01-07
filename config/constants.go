@@ -48,7 +48,7 @@ const (
 	SERVICE_IMAGE_FILE = "service_image_file"
 
 	ORDER_FOLDER              = "order"
-	ORDER_PAYOUT_RECEIPT_FILE = "payout_receipt_file"
+	ORDER_PAYOUT_RECEIPT_FILE = "	"
 )
 
 // Midtrans

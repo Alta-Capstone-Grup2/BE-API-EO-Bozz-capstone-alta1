@@ -80,7 +80,13 @@ func (order *orderService) Create(inputOrder _order.Core, inputDetail []_order.D
 
 	// midtrans core
 	midtransResp := thirdparty.OrderMidtransCore(transactionID, int64(data.GrossAmmount), vaBank, orderDateTime)
+
 	helper.LogDebug("Order - logic - Midtrans Resp = ", helper.ConvToJson(midtransResp))
+	if midtransResp.TransactionStatus != "pending" {
+		helper.LogDebug("Order - logic - Failed process to midtrans")
+		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
+	}
+
 	if midtransResp.TransactionStatus != "pending" {
 		helper.LogDebug("Order - logic - Failed process to midtrans")
 		return _order.Core{}, errors.New("Payment Failed. Please try again later.")
