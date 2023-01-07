@@ -1562,15 +1562,6 @@ paths:
       description: "conect to service"
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id service to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id service 1"
-            type: integer
-            example: 1
       requestBody:
         required: true
         content:
