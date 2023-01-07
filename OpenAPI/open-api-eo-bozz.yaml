@@ -77,7 +77,70 @@ paths:
                   name: "Budiman"
                   email: "budi123@gmail.com"
                   role: "User"
+                  client_id: 1
+                  partner_id: 1
                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzAwMzYwMjcsInJvbGUiOiJ1c2VyIiwidXNlcklkIjoxfQ.pT-FmSraUUb8HY73ofYbbt3vFgbej0XaHP9VMas8Q44"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /login/oauth/google:
+    post:
+      summary: "Login User With google"
+      tags:
+      - "Auth"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/RequestLogin"
+            example:
+              email: "budi123@gmail.com"
+              password: "123"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                status: "Success"
+                message: "Login Success"
+                data:
+                  id: 1
+                  name: "Budiman"
+                  email: "budi123@gmail.com"
+                  role: "User"
+                  client_id: 1
+                  partner_id: 1
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzAwMzYwMjcsInJvbGUiOiJ1c2VyIiwidXNlcklkIjoxfQ.pT-FmSraUUb8HY73ofYbbt3vFgbej0XaHP9VMas8Q44"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /callback/oauth/google:
+    post:
+      summary: "Callback Login User With google"
+      tags:
+      - "Auth"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData"
+              example:
+                status: "Success"
+                message: "Callback Redirect Success"
         "400" :
           $ref : "#/components/responses/400"  
         "404" :
@@ -287,6 +350,38 @@ paths:
               example:
                   status: "Success"
                   message: "Success Update password user."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: "Get User currently login"
+      description: "Get data user Only return 1 data."
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: "Success Get User currently login"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success Get User currently login"
+                  data:
+                    id: 1
+                    name: "Jasiman"
+                    email: "Jasiman123@gmail.com"
+                    role: "User"
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -528,6 +623,48 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
+  /clients/orders/{id}/complete:
+    put:
+      tags:
+        - Clients
+      summary: "Update status order complete"
+      description: "update status order by id have complete order"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: order id
+          description: "Id order to update status order"
+          required: true
+          in: path
+          schema:
+            description: "Id order 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/RequestClient"
+      responses:
+        '200':
+          description: "Success update update status order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update status order have complete"
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
 
 ### Endpoint Partners
   /partners:
@@ -745,11 +882,11 @@ paths:
         - JWTAuth: []
       parameters:
         - name: id
-          description: "Id service to get data"
+          description: "Id order to get data"
           required: true
           in: path
           schema:
-            description: "Id service 1"
+            description: "Id order 1"
             type: integer
             example: 1
       requestBody:
@@ -779,7 +916,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /partners/services:
+  /partners/{id}/services:
     get:
       tags:
         - Partners
@@ -787,6 +924,15 @@ paths:
       description: "Get data partner service using id partner at path parameter. Only return 1 data."
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id partner to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id partner 1"
+            type: integer
+            example: 1
       responses:
         '200':
           description: "Success Get Partner service by Id"
@@ -1079,12 +1225,19 @@ paths:
             type: string
             example: "wedding javva"
         - name: category
-          description: "service name"
+          description: "service category"
           required: false
           in: query
           schema:
             type: string
             example: "wedding"
+        - name: city
+          description: "city"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "jakarta"
         - name: min price
           description: "min price"
           required: false
@@ -1257,50 +1410,6 @@ paths:
           $ref: "#/components/responses/500"
         
   /services/{id}/additionals:
-    post:
-      tags:
-        - Services
-      summary: "connect additional to service"
-      description: "conect to service"
-      security:
-        - JWTAuth: []
-      parameters:
-        - name: id
-          description: "Id service to get data"
-          required: true
-          in: path
-          schema:
-            description: "Id service 1"
-            type: integer
-            example: 1
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-                $ref: "#/components/schemas/RequestServiceOther"
-            example:
-              service_id: 1
-              additional_id: 1
-                
-      responses:
-        '200':
-          description: "Success connect to service"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseWithoutData" 
-              example:
-                  status: "Success"
-                  message: "Success connect to service."
-        "400" :
-          $ref : "#/components/responses/400"  
-        "401" :
-          $ref : "#/components/responses/401"  
-        "404" :
-          $ref : "#/components/responses/404"  
-        '500':
-          $ref: "#/components/responses/500"
     get:
       tags:
         - Services
@@ -1436,6 +1545,52 @@ paths:
                         partner_id: 2
                         client_id: 2
                         service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /services/additionals:
+    post:
+      tags:
+        - Services
+      summary: "connect additional to service"
+      description: "conect to service"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id service to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id service 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/RequestServiceOther"
+            example:
+              service_id: 1
+              additional_id: 1
+                
+      responses:
+        '200':
+          description: "Success connect to service"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success connect to service."
         "400" :
           $ref : "#/components/responses/400"  
         "401" :
@@ -1917,6 +2072,42 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
+  /orders/payment_notifications:
+    post:
+      tags:
+        - Orders
+      summary: "Update status midtrans"
+      description: "Update status midtrans"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+                $ref: "#/components/schemas/RequestOrder"
+            example:
+                order_id: 1
+                order_status: "waiting confirmation"
+      responses:
+        '200':
+          description: "Success update status"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update status."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
 
 ### Endpoint Reviews
   /reviews:
@@ -1998,6 +2189,48 @@ paths:
           $ref: "#/components/responses/500"
 
   /reviews/{id}:
+    get:
+      tags:
+        - Reviews
+      summary: "Get review by id"
+      description: "Get review by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id review to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id review 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A list of review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success get all review"
+                  data:
+                      id: 1
+                      review: "blbalalablbalablablab"
+                      rating: "*****"
+                      order_id: 1
+                      service_id: 1
+                      client_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
     put:
       tags:
         - Reviews
@@ -2160,6 +2393,96 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
+  /discussions/{id}:
+    get:
+      tags:
+        - Discussions
+      summary: "Get discussions by id"
+      description: "Get dicuissions by id"
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id discussions to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id discussions 1"
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: discussions by id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithData"
+              example:
+                  status: "Success"
+                  message: "Success get discussions by id" 
+                  data:
+                      id: 1
+                      comment: "lorem ipsum blablabla"
+                      created_at: "2022-12-25 00:00:00"
+                      partner_id: 1
+                      client_id: 1
+                      service_id: 1
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
+    put:
+      tags:
+        - Discussions
+      summary: "Update discussion by id"
+      description: "Update discussion using id service at path parameter."
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id discussion to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id discussion 1"
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/RequestReview"
+            example:
+              comment: "lorem ipsum blablabla"
+              created_at: "2022-12-25 00:00:00"
+              partner_id: 1
+              client_id: 1
+              service_id: 1
+      responses:
+        '200':
+          description: "Success update discussion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseWithoutData" 
+              example:
+                  status: "Success"
+                  message: "Success Update discussion."
+        "400" :
+          $ref : "#/components/responses/400"  
+        "401" :
+          $ref : "#/components/responses/401"  
+        "404" :
+          $ref : "#/components/responses/404"  
+        '500':
+          $ref: "#/components/responses/500"
+
     delete:
       tags:
         - Discussions
@@ -2167,6 +2490,15 @@ paths:
       description: "Delete discussions using id service at path parameter."
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: "Id discussions to get data"
+          required: true
+          in: path
+          schema:
+            description: "Id discussions 1"
+            type: integer
+            example: 1
       responses:
         '200':
           description: "Success Delete discussions."

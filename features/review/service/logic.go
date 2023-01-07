@@ -5,7 +5,6 @@ import (
 	"capstone-alta1/utils/helper"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 )
 
@@ -21,7 +20,7 @@ func New(repo review.RepositoryInterface) review.ServiceInterface {
 	}
 }
 
-func (service *reviewService) Create(input review.Core, clientId uint, c echo.Context) (err error) {
+func (service *reviewService) Create(input review.Core) (err error) {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate
@@ -60,7 +59,7 @@ func (service *reviewService) GetById(id uint) (data review.Core, err error) {
 
 }
 
-func (service *reviewService) Update(input review.Core, id uint, c echo.Context) error {
+func (service *reviewService) Update(input review.Core, id uint) error {
 	// validasi input
 	if errValidate := service.validate.Struct(input); errValidate != nil {
 		return errValidate

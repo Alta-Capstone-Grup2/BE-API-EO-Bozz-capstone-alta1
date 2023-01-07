@@ -106,29 +106,3 @@ func (handler *AuthHandler) CallbackOauthGoogle(c echo.Context) error {
 	return c.Redirect(http.StatusTemporaryRedirect, call_back_url)
 
 }
-
-/* punya mas teguh
-
-token, dataUser, err := delivery.authServices.LoginOauth(google)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("failed login"))
-	}
-
-	// data1 := map[string]interface{}{
-	// 	"user_id": dataUser.ID,
-	// 	"token":   token,
-	// 	"name":    dataUser.Nama,
-	// }
-	// fmt.Sprintf("token=%s&nama=%s&userid=%d", token, dataUser.Nama, dataUser.ID)
-	return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("http://127.0.0.1:5173/login/auth/google?token=%s&nama=%s&userid=%d", token, dataUser.Nama, dataUser.ID))
-*/
-
-/* punya eo-bozz
-
-token, dataUser, err := handler.authService.LoginOauth(google)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("failed login"))
-	}
-	helper.LogDebug("Call back url = ", fmt.Sprintf("%s/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
-	return c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("%s/?token=%s&nama=%s&userid=%d", cfg.BASE_URL, token, dataUser.Name, dataUser.ID))
-*/
