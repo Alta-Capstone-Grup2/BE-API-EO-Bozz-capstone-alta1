@@ -98,3 +98,7 @@ cd BE-API-EO-Bozz-capstone-alta1/
 
 - [Faishal](https://github.com/mfaishal882)
 - [Yusnar](https://github.com/yusnarsetiyadi)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 441fc8a356cdeffd4fe68305fe4c3748b5b653d7
