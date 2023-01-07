@@ -6,6 +6,7 @@ import (
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
 	"errors"
+	"fmt"
 	"strings"
 
 	"gorm.io/gorm"
@@ -138,7 +139,18 @@ func (repo *orderRepository) UpdateAddOrderMidtrans(inputOrder _order.Core, id u
 	if orderGorm.OrderStatus == cfg.ORDER_STATUS_WAITING_FOR_PAYMENT {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMailWaitingPayment(clientEmail)
+			//thirdparty.SendMailWaitingPayment(clientEmail)
+			vaString := thirdparty.GetVABankTitle(data.PaymentMethod)
+			var dataBody = map[string]interface{}{
+				"name":                 client.User.Name,
+				"payment_method":       vaString,
+				"payment_expired_time": data.MidtransExpiredTime,
+				"gross_ammount":        helper.FormatCurrencyIDR(data.GrossAmmount),
+				"va_number":            data.MidtransVaNumber,
+			}
+
+			thirdparty.SendEmailWaitingPayment2(clientEmail, fmt.Sprintf("Waiting for payment with %s for payment %s", vaString, data.MidtransTransactionID), dataBody)
+
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
 		}

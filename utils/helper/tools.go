@@ -1,6 +1,10 @@
 package helper
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/leekchan/accounting"
+)
 
 func ConvToJson(structData interface{}) string {
 
@@ -10,4 +14,9 @@ func ConvToJson(structData interface{}) string {
 		return ""
 	}
 	return string(jsonData)
+}
+
+func FormatCurrencyIDR(moneyInput uint) string {
+	currFormat := accounting.Accounting{Symbol: "Rp", Precision: 2, Thousand: ".", Decimal: ","}
+	return currFormat.FormatMoney(moneyInput)
 }

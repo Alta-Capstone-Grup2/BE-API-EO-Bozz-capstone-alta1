@@ -97,3 +97,21 @@ func GetVABank(input string) (midtrans.Bank, error) {
 	helper.LogDebug("Thirdpary - Midtrans - GetVABank | Error get VA Bank. Input  = ", input)
 	return "", errors.New("Failed to get VA Bank. Please check input again or choose other payment method.")
 }
+
+func GetVABankTitle(input string) string {
+	helper.LogDebug("get va bank ", input)
+	if input == string(cfg.VABNI) {
+		return "BNI Virtual Account"
+	}
+	if input == string(cfg.VABca) {
+		return "BCA Virtual Account"
+	}
+	if input == string(cfg.VABri) {
+		return "BRI Virtual Account"
+	}
+	if input == string(cfg.VAPermata) {
+		return "Permata Virtual Account"
+	}
+	helper.LogDebug("Thirdpary - Midtrans - GetVABankTitle | Error get VA Bank. Input  = ", input)
+	return ""
+}
