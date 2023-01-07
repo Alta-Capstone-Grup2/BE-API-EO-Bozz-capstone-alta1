@@ -2,8 +2,6 @@ package review
 
 import (
 	"time"
-
-	"github.com/labstack/echo/v4"
 )
 
 type Core struct {
@@ -68,9 +66,9 @@ type Service struct {
 
 type ServiceInterface interface {
 	GetAll(query string) (data []Core, err error)
-	Create(input Core, id uint, c echo.Context) error
+	Create(input Core) error
 	GetById(id uint) (data Core, err error)
-	Update(input Core, id uint, c echo.Context) error
+	Update(input Core, id uint) error
 	Delete(id uint) error
 }
 

@@ -86,7 +86,7 @@ func (delivery *ReviewDelivery) Create(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput, uint(clientID))
-	err := delivery.reviewService.Create(dataCore, uint(clientID), c)
+	err := delivery.reviewService.Create(dataCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
@@ -125,7 +125,7 @@ func (delivery *ReviewDelivery) Update(c echo.Context) error {
 
 	// process
 	dataCore := toCore(userInput, uint(clientID))
-	err := delivery.reviewService.Update(dataCore, uint(id), c)
+	err := delivery.reviewService.Update(dataCore, uint(id))
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse("Some field cannot Empty. Details : "+err.Error()))
