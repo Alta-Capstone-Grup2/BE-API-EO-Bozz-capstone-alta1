@@ -1,103 +1,100 @@
 <h1 align="center">EO-Bozz</h1>
 
 <p align="center">
-   💫 Project Kolaborasi Alterra Academy Backend Batch 13 & Frontend Batch 10 💫
+   💫 Connecting EO And Clients Easily 💫
 </div>
 
-# Latar Belakang & Permasalahan 
+# Background & Problems
 
-Anda membutuhkan jasa EO untuk event tertentu? 
-namun anda masih kesulitan untuk mengatur waktu dengan berbagai kegiatan sehari-hari? 
-terlebih jika anda sudah menemukan jasa EO yang diperlukan, apa anda sudah merasa cocok dengan harga yang ditawarkan?
-jika sudah cocok, apa anda yakin dengan pengalaman EO dalam menangani event tertentu?
-tenang, anda tidak perlu khawatir, kini telah hadir EO-Bozz
+- You need EO services for certain events?
+- but you still have difficulty managing time with various daily activities?
+- especially if you have found the required EO services, do you feel that you are suitable for the price offered?
+- If it is suitable, are you sure about the EO's experience in handling certain events?
+- calm down, you don't need to worry, now EO-Bozz is here
 
-# Gambaran Aplikasi
+# Application Overview
 
-EO-Bozz merupakan aplikasi yang menyediakan jasa EO (Event Organizer) dengan berbagai pilihan, terverifikasi dan review yang jelas dari kegiatan yang pernah EO tersebut tangani. Menjadi perantara antara EO dan Customer yang membutuhkan jasanya sehingga mencegah permasalahan diatas terjadi dalam kehidupan anda.
+EO-Bozz is an application that provides EO (Event Organizer) services with various choices, verified and clear reviews of the activities that the EO has handled. Become an intermediary between the EO and customers who need their services so as to prevent the above problems from happening in your life.
 
-# Fitur untuk EO:
+# Features for EOs:
 
-1. pengguna dapat membuat akun sebagai partner atau EO.
-2. pengguna dapat melakukan login.
-3. pengguna dapat mengubah informasi akun dan menghapus akun.
-4. saat membuat akun, pengguna wajib melengkapi dokumen-dokumen yang diperlukan sebagai persyaratan untuk mendaftar sebagai partner di EO-Bozz dan menunggu verifikasi dari admin.
-5. setelah akun terverifikasi, pengguna dapat memulai untuk memasarkan jasa atau layanan yang dimiliki, juga dapat menambahkan additional untuk layanan tersebut.
-6. pengguna sebagai EO juga dapat menerima review dan melakukan diskusi dengan client terkait pemesanan layanan.
-7. setelah dirasa cocok dengan kesepakatan antara client, pengguna sebagai partner dapat mengkonfirmasi pesanan dan menentukan jadwal event yang diselenggarakan.
-8. setelah event berjalan sesuai harapan, pengguna sebagai partner akan menerima payout dari admin dan review dari client agar dapat meningkatkan kualitas kinerja EO di EO-Bozz.
+1. user can create account as partner or EO.
+2. Users can log in.
+3. User can change account information and delete account.
+4. when creating an account, the user must complete the required documents as a requirement to register as a partner at EO-Bozz and wait for verification from the admin.
+5. after the account is verified, the user can start to market the services or services that are owned, can also add add-ons for these services.
+6. Users as EO can also receive reviews and hold discussions with clients regarding ordering services.
+7. after it is deemed suitable with the agreement between the client, the user as a partner can confirm orders and determine the schedule of events to be held.
+8. After the event runs as expected, users as partners will receive payouts from the admin and reviews from the client in order to improve the quality of EO performance at EO-Bozz.
 
-# Fitur untuk Client:
+# Features for Clients:
 
-1. pengguna dapat membuat akun sebagai Customer atau Client.
-2. pengguna dapat melakukan login.
-3. pengguna dapat mengubah informasi akun dan menghapus akun.
-4. saat membuat akun, pengguna wajib melengkapi data-data client sepeti alamat, gender, dll.
-5. setelah melakukan login sebagai Client, pengguna dapat langsung melihat semua layanan yang dimiliki EO-Bozz dari semua partner / EO yang terdaftar dan melihat berbagai review yang ada.
-6. pengguna sebagai client juga dapat memulai diskusi untuk membuat penawaran dan kesepakatan kepada EO, disini pengguna dapat mulai mencari layanan berdasarkan event, category, kota, dan rentang harga yang diinginkan.
-7. setelah dirasa cocok dengan penawaran, kesepakatan, dan harga yang ditetapkan, pengguna wajib melakukan cek ketersediaan layanan sesuai tanggal yang diinginkan.
-8. apabila layanan telah tersedia di tanggal tersebut, pengguna sebagai client dapat melakukan pemesanan dengan melengkapi data-data yang diperlukan.
-9. kemudian client akan mendapat email secara berkala di setiap perubahan status order, juga client akan mendapat penjadwalan dari admin untuk melakukan pembayaran daan pelaksanaan event.
-10. setelah event telah selesai dilaksanakan, pengguna bisa memberikan review terhadap EO yang menangani event.
+1. Users can create an account as a customer or client.
+2. Users can log in.
+3. User can change account information and delete account.
+4. when creating an account, the user must complete client data such as address, gender, etc.
+5. After logging in as a Client, users can immediately see all the services that EO-Bozz has from all registered partners / EOs and see various existing reviews.
+6. Users as clients can also start discussions to make offers and agreements with EO, here users can start looking for services based on the event, category, city, and desired price range.
+7. after it is deemed suitable with the offer, agreement, and price set, the user must check the availability of the service according to the desired date.
+8. If the service is available on that date, the user as a client can place an order by completing the required data.
+9. then the client will receive periodic emails for every change in order status, also the client will receive a schedule from the admin to make payments and carry out events.
+10. After the event has been completed, the user can provide a review of the EO who handled the event.
 
-# Fitur oleh Admin:
+# Features by Admin:
 
-1. admin dapat login.
-2. admin bertugas memverifikasi data EO yang melakukan register.
-3. admin menyediakan fitur add additional to service untuk partner, sehingga memudahkan partner dalam memanage layanan nya.
-4. admin menyediakan fitur check availability untuk cek ketersediaan layanan.
-5. admin menyediakan fitur pembayaran midtrans.
-6. admin menyediakan fitur penjadwalan di google calendar.
-7. admin menyediakan fitur login dengan akun google.
+1. admin can login.
+2. The admin is in charge of verifying the EO data that registers.
+3. The admin provides the add additional to service feature for partners, making it easier for partners to manage their services.
+4. Admin provides a check availability feature to check service availability.
+5. admin provides a midtrans payment feature.
+6. Admin provides a scheduling feature on Google Calendar.
+7. Admin provides a login feature with a Google account.
 
-# Skema
+# ERD Project
 
-
-
-# Swagger
+# Open API 
 
 https://app.swaggerhub.com/apis-docs/YUSNARSETIYADI150403_1/EO-Bozz/1.0.0
 
-# Teknologi yang kami gunakan
+# Technology Stack
 
-1. Golang
-2. Google Cloud Platform
-3. Docker
-4. MySQL
-5. Github
-6. Draw.io
-7. Swaggerhub
-8. Echo Framework
-9. Gorm.io
-10. Code Clean Archiecture
-11. Postman
-12. Midtrans
-13. Google Calendar
-14. Gomail
+1. [Golang](https://go.dev/)
+2. [Google Cloud Platform](https://cloud.google.com/)
+3. [Docker](https://www.docker.com/)
+4. [MySQL](https://www.mysql.com/)
+5. [Github](https://github.com/)
+6. [Draw.io](https://app.diagrams.net)
+7. [Swaggerhub](https://app.swaggerhub.com)
+8. [Echo Framework](https://echo.labstack.com)
+9. [Gorm.io](https://gorm.io)
+10. [Code Clean Archiecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+11. [Postman](https://www.postman.com)
+12. [Midtrans](https://midtrans.com/id)
+13. [Google Calendar](https://developers.google.com/calendar/api/quickstart/go?hl=id)
+14. [Gomail/SMTP](https://pkg.go.dev/gopkg.in/gomail.v2)
+15. [CloudFlare](https://www.cloudflare.com)
+16. [Visual Studio Code](https://code.visualstudio.com)
 
-# Cobain!
+# Try it!
 
-Coba program yang kami buat dengan cara:
-A. coba fungsionalitas
+Try our program by:
 
-kunjungi laman [EO-Bozz](https://irisminty.my.id)
+1. Try the functionality
 
-B. kustomisasi fungsionalitas
+- visit the [EO-Bozz](https://irisminty.my.id)
 
-1. clone repository ini:
+2. Customization of functionality
+
+- Clone this repository:
 ```
 git clone https://github.com/Alta-Capstone-Grup2/BE-API-EO-Bozz-capstone-alta1.git
 ```
-2. pindah ke folder BE
+- Move to the BE-API-EO-Bozz-capstone-alta1 folder
 ```
 cd BE-API-EO-Bozz-capstone-alta1/
 ```
 
-# Kontributor Backend
+# Backend Contributors
 
 - [Faishal](https://github.com/mfaishal882)
 - [Yusnar](https://github.com/yusnarsetiyadi)
-
-# Mentor Backend
-
-- [iffakhry](https://github.com/iffakhry) 
