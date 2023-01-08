@@ -65,7 +65,7 @@ func toCore(input PartnerRequest) partner.Core {
 		Event3ImageFile:   input.Event3ImageFile,
 		BankName:          input.BankName,
 		BankAccountNumber: input.BankAccountNumber,
-		BankAccountName:   input.BankName,
+		BankAccountName:   input.BankAccountName,
 		User: partner.UserCore{
 			Name:     input.Name,
 			Email:    input.Email,
