@@ -275,8 +275,10 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 		return errors.New("Order data no need partner confirmation.")
 	}
 
-	//get client email for send email
 	var client Client
+	const yyyymmdd = "2006-01-02"
+
+	//for gomail and calendar
 	yx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
 	if yx.Error != nil {
 		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", yx.Error)
@@ -285,23 +287,50 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | client data : ", client)
 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		clientEmail := client.User.Email
+		eventName := ModelDataOrder.EventName
+		startDate := ModelDataOrder.StartDate.Format(yyyymmdd)
+		endDate := ModelDataOrder.EndDate.Format(yyyymmdd)
+		clientAddress := client.Address
+		calendarSchedule, err := thirdparty.Calendar(clientEmail, eventName, startDate, endDate, clientAddress)
+		if err != nil {
+			helper.HandlerErrorMsg(err)
+		}
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMailConfirmedOrder(clientEmail)
+			thirdparty.SendMailConfirmedOrder(clientEmail, calendarSchedule)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
 		}
 	}
 
-	// if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
-	// 	const yyyymmdd = "2006-01-02"
-	// 	dateString := ModelDataOrder.StartDate.Format(yyyymmdd)
-
-	// 	clientEmail := client.User.Email
-	// 	clientAddress := client.Address
-	// 	scheduleDate := dateString
-	// 	thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
-	// }
-
 	return nil
 }
+
+// //get client email for send email
+// var client Client
+// yx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
+// if yx.Error != nil {
+// 	helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", yx.Error)
+// }
+
+// helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | client data : ", client)
+
+// if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+// 	if client.User.Email != "" {
+// 		clientEmail := client.User.Email
+// 		thirdparty.SendMailConfirmedOrder(clientEmail)
+// 	} else {
+// 		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
+// 	}
+// }
+
+// // if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+// // 	const yyyymmdd = "2006-01-02"
+// // 	dateString := ModelDataOrder.StartDate.Format(yyyymmdd)
+
+// // 	clientEmail := client.User.Email
+// // 	clientAddress := client.Address
+// // 	scheduleDate := dateString
+// // 	thirdparty.Calendar(clientEmail, scheduleDate, clientAddress)
+// // }

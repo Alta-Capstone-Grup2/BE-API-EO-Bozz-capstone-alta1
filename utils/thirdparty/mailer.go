@@ -111,7 +111,7 @@ func SendMailWaitingPayment(emailClient string) {
 	}
 }
 
-func SendMailConfirmedOrder(emailClient string) {
+func SendMailConfirmedOrder(emailClient, Calendar string) {
 	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
 	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")
 	mailer := gomail.NewMessage()
@@ -119,7 +119,7 @@ func SendMailConfirmedOrder(emailClient string) {
 	mailer.SetHeader("To", emailClient)
 	mailer.SetHeader("Subject", "Confirmed Email from EO-Bozz")
 	mailer.SetBody("text/html", "Hello World!, <p>Thanks for Order, see you later. :) </p>")
-	// mailer.Attach("https://project3bucker.s3.ap-southeast-1.amazonaws.com/partner/EEz06AIRAiyJe4ghKfU5-default_image.jpg")
+	mailer.Attach(Calendar)
 
 	dialer := &gomail.Dialer{
 		Host:     CONFIG_SMTP_HOST,
