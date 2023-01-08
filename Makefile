@@ -7,5 +7,8 @@ testreview:
 testdiscussion:
 	go test ./features/discussion... -coverprofile=cover.out && go tool cover -html=cover.out
 
+testadditional:
+	go test ./features/additional... -coverprofile=cover.out && go tool cover -html=cover.out
+
 run:
 	go run main.go
