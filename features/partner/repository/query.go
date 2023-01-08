@@ -278,7 +278,7 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	var client Client
 	const yyyymmdd = "2006-01-02"
 
-	//for gomail and calendar
+	//for gomail
 	yx := repo.db.Preload("User").First(&client, ModelDataOrder.ClientID)
 	if yx.Error != nil {
 		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", yx.Error)
@@ -287,23 +287,26 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | client data : ", client)
 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
-		clientEmail := client.User.Email
-		eventName := ModelDataOrder.EventName
-		startDate := ModelDataOrder.StartDate.Format(yyyymmdd)
-		endDate := ModelDataOrder.EndDate.Format(yyyymmdd)
-		clientAddress := client.Address
-		calendarSchedule, err := thirdparty.Calendar(clientEmail, eventName, startDate, endDate, clientAddress)
-		if err != nil {
-			helper.HandlerErrorMsg(err)
-		}
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMailConfirmedOrder(clientEmail, calendarSchedule)
+			thirdparty.SendMailConfirmedOrder(clientEmail)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
 		}
 	}
 
+	//for calendar
+	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		clientEmail := client.User.Email
+		eventName := ModelDataOrder.EventName
+		startDate := ModelDataOrder.StartDate.Format(yyyymmdd)
+		endDate := ModelDataOrder.EndDate.Format(yyyymmdd)
+		clientAddress := client.Address
+		thirdparty.Calendar(clientEmail, eventName, startDate, endDate, clientAddress)
+		if err != nil {
+			helper.HandlerErrorMsg(err)
+		}
+	}
 	return nil
 }
 
