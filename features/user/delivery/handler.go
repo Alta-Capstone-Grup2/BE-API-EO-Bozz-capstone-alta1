@@ -91,6 +91,7 @@ func (delivery *UserDelivery) Create(c echo.Context) error {
 	}
 
 	dataCore := toCore(userInput)
+	dataCore.Role = "Admin"
 	err := delivery.userService.Create(dataCore, c)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {
@@ -105,6 +106,12 @@ func (delivery *UserDelivery) Create(c echo.Context) error {
 }
 
 func (delivery *UserDelivery) Update(c echo.Context) error {
+	// authorization
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "Admin" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("Error process request. This action only for Admin"))
+	}
+
 	idUser := middlewares.ExtractTokenUserId(c)
 
 	userInput := UpdateRequest{}
