@@ -1,4 +1,7 @@
-<h1 align="center">EO-Bozz</h1>
+<div align="center">
+   <a href="https://github.com/Alta-Capstone-Grup2/BE-API-EO-Bozz-capstone-alta1">
+    <img src="https://user-images.githubusercontent.com/116538882/211175131-95d2c06b-8ec1-401b-93bc-90f31a2c2967.png" alt="Logo" width="500px">
+  </a>
 
 <p align="center">
    💫 Connecting EO And Clients Easily 💫
