@@ -105,7 +105,7 @@ func fromCore(dataCore partner.Core) PartnerResponse {
 		Event3ImageFile:    dataCore.Event3ImageFile,
 		BankName:           dataCore.BankName,
 		BankAccountNumber:  dataCore.BankAccountNumber,
-		BankAccountName:    dataCore.BankName,
+		BankAccountName:    dataCore.BankAccountName,
 		VerificationStatus: dataCore.VerificationStatus,
 		VerificationLog:    dataCore.VerificationLog,
 		UserID:             dataCore.UserID,
