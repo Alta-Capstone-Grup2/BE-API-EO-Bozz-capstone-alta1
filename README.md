@@ -52,6 +52,7 @@ EO-Bozz is an application that provides EO (Event Organizer) services with vario
 
 # ERD Project
 
+![erd-eo-bozz v3](https://user-images.githubusercontent.com/116538882/211174918-36b8da21-c936-4aae-b1fc-2136b120f15a.jpg)
 
 
 # Open API 
