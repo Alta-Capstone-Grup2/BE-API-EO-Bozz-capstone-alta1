@@ -52,6 +52,8 @@ EO-Bozz is an application that provides EO (Event Organizer) services with vario
 
 # ERD Project
 
+
+
 # Open API 
 
 https://app.swaggerhub.com/apis-docs/YUSNARSETIYADI150403_1/EO-Bozz/1.0.0
@@ -98,7 +100,3 @@ cd BE-API-EO-Bozz-capstone-alta1/
 
 - [Faishal](https://github.com/mfaishal882)
 - [Yusnar](https://github.com/yusnarsetiyadi)
-<<<<<<< HEAD
-=======
-
->>>>>>> 441fc8a356cdeffd4fe68305fe4c3748b5b653d7
