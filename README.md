@@ -104,3 +104,10 @@ cd BE-API-EO-Bozz-capstone-alta1/
 
 - [Faishal](https://github.com/mfaishal882)
 - [Yusnar](https://github.com/yusnarsetiyadi)
+
+# Frontend Contributors
+
+- [Novalia](https://github.com/Novalia9517)
+- [Gilang Suprobo](https://github.com/gilangsup)
+
+# [Frontend Repository](https://github.com/Alta-Capstone-Grup2/Frontend)
