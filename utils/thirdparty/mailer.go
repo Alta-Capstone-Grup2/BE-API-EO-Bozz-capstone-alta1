@@ -118,9 +118,8 @@ func SendMailConfirmedOrder(emailClient, Calendar string) {
 	mailer.SetHeader("From", CONFIG_SENDER_NAME)
 	mailer.SetHeader("To", emailClient)
 	mailer.SetHeader("Subject", "Confirmed Email from EO-Bozz")
-	mailer.SetBody("text/html", "Hello World!, <p>Thanks for Order, see you later. :) </p>")
-	// mailer.Attach(Calendar)
-	mailer.AddAlternative("text/html", Calendar)
+	mailer.SetBody("text/html", "Hello World!, <p>Thanks for Order, see you later. :) </p>"+"<div>"+Calendar+"</div>")
+	mailer.Attach(Calendar)
 
 	dialer := &gomail.Dialer{
 		Host:     CONFIG_SMTP_HOST,
