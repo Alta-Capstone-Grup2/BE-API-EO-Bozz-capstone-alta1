@@ -7,11 +7,34 @@ import (
 	"testing"
 	"time"
 
+	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
 
 // var err error
 
+func TestCreate(t *testing.T) {
+	repo := new(mocks.DiscussionRepository)
+	inputData := discussion.Core{Comment: "ada", ClientID: 1, PartnerID: 1, ServiceID: 1}
+	var c echo.Context
+	t.Run("Success Create", func(t *testing.T) {
+		repo.On("Create", inputData).Return(nil).Once()
+		srv := New(repo)
+		err := srv.Create(inputData, c)
+		assert.Nil(t, err)
+		repo.AssertExpectations(t)
+	})
+
+	// t.Run("Failed to Create", func(t *testing.T) {
+	// 	inputData := discussion.Core{Comment: "ada", ClientID: 1, PartnerID: 1, ServiceID: 1}
+	// 	repo.On("Create").Return(errors.New("error")).Once()
+	// 	srv := New(repo)
+	// 	err := srv.Create(inputData, c)
+	// 	assert.NotNil(t, err)
+	// 	assert.Equal(t, "error", err.Error())
+	// 	repo.AssertExpectations(t)
+	// })
+}
 func TestGetAll(t *testing.T) {
 	repo := new(mocks.DiscussionRepository)
 	returnData := []discussion.Core{{ID: 1, Comment: "ada", PartnerID: 1, ClientID: 1, ServiceID: 1, CreatedAt: time.Now()}}
