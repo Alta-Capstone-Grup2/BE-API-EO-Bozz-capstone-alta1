@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d15339d5-74b0-4fdd-9221-7d2867e54eca",
+		"_postman_id": "32415521-bd28-402b-aca8-66f1dcb815d6",
 		"name": "Capstone-Alta-1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -93,7 +93,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"hasan8@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"hasan2@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -168,7 +168,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"hasan8@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"hasan9@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -246,7 +246,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"poci7@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"jofafak742@prolug.com\",\r\n    \"password\": \"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -290,6 +290,75 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Redirect Login Google",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5173/login/oauth/google?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJjbGllbnRJRCI6MSwiZXhwIjoxNjczMDgzMTIxLCJuYW1lIjoiUG9jaSIsInBhcnRuZXJJRCI6MCwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6M30.mWAtWpX0Qz3K_oZHeUUqLM5JvpKmXlnLDStMscUjFyw&name=Poci&user_id=3&client_id=1&partner_id=0&role=Client",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5173",
+							"path": [
+								"login",
+								"oauth",
+								"google"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJjbGllbnRJRCI6MSwiZXhwIjoxNjczMDgzMTIxLCJuYW1lIjoiUG9jaSIsInBhcnRuZXJJRCI6MCwicm9sZSI6IkNsaWVudCIsInVzZXJJZCI6M30.mWAtWpX0Qz3K_oZHeUUqLM5JvpKmXlnLDStMscUjFyw"
+								},
+								{
+									"key": "name",
+									"value": "Poci"
+								},
+								{
+									"key": "user_id",
+									"value": "3"
+								},
+								{
+									"key": "client_id",
+									"value": "1"
+								},
+								{
+									"key": "partner_id",
+									"value": "0"
+								},
+								{
+									"key": "role",
+									"value": "Client"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Callback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/callback/oauth/google",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"callback",
+								"oauth",
+								"google"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -308,7 +377,7 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "full_name",
+									"key": "name",
 									"value": "jojo",
 									"type": "text"
 								},
@@ -321,21 +390,6 @@
 									"key": "password",
 									"value": "1234",
 									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "0891239123",
-									"type": "text"
-								},
-								{
-									"key": "gender",
-									"value": "Male",
-									"type": "text"
-								},
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
 								}
 							]
 						},
@@ -401,62 +455,7 @@
 					]
 				},
 				{
-					"name": "Add User Copy",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "full_name",
-									"value": "Dorami",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "dorami@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "1234",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "0891239123",
-									"type": "text"
-								},
-								{
-									"key": "gender",
-									"value": "Male",
-									"type": "text"
-								},
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/users",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit User",
+					"name": "Edit User Only Admin",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -464,45 +463,25 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "full_name",
-									"value": "made gusti",
+									"key": "name",
+									"value": "adminadmin",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "made@gmail.com",
+									"value": "admin@gmail.com",
 									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "1234",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "0891239123",
-									"type": "text"
-								},
-								{
-									"key": "gender",
-									"value": "Male",
-									"type": "text"
-								},
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/D:/wawabunny/golang/immersive-alta/assets/Max-R_Headshot (1).jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/users/1",
+							"raw": "{{base_url}}/users/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"1"
+								""
 							]
 						}
 					},
@@ -665,77 +644,6 @@
 					"response": []
 				},
 				{
-					"name": "Get User With Search by Name",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/users/?name=giant",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users",
-								""
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "giant"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Get User With Search by Name",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/users/?name=gia",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"users",
-										""
-									],
-									"query": [
-										{
-											"key": "name",
-											"value": "gia"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 12 Dec 2022 22:03:43 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "278"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"full_name\": \"Giant\",\n            \"email\": \"giant@gmail.com\",\n            \"phone\": \"0891239123\",\n            \"gender\": \"Male\",\n            \"profile_image_url\": \"https://trialtestbucket.s3.amazonaws.com/profile/oes2zahVPnyojpGIDTc2-people19.png\",\n            \"is_hosting\": \"\"\n        }\n    ],\n    \"message\": \"Success read all users\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				},
-				{
 					"name": "Get User by id",
 					"request": {
 						"method": "GET",
@@ -795,109 +703,7 @@
 					]
 				},
 				{
-					"name": "Get User Properties",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/users/3/properties",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users",
-								"3",
-								"properties"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Get User Properties",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/users/2/properties",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"users",
-										"2",
-										"properties"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Thu, 15 Dec 2022 05:32:17 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "73"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Failed process data, data must be yours.\",\n    \"status\": \"Failed\"\n}"
-						},
-						{
-							"name": "Get User Properties",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/users/3/properties",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"users",
-										"3",
-										"properties"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Thu, 15 Dec 2022 05:32:32 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "680"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"property_name\": \"Aura House 2bds Eco Bamboo House, Pool, River View\",\n            \"price_per_night\": 5614797,\n            \"city\": \"Bali\",\n            \"facilities\": \"4 tamu2 kamar tidur2 tempat tidur2 kamar mandi\",\n            \"rating_average\": 3.25,\n            \"image_thumbnail_url\": \"ttps://a0.muscache.com/im/pictures/0b25f6b3-f215-4938-ac81-581eb3929047.jpg?im_w=1200\"\n        },\n        {\n            \"id\": 2,\n            \"property_name\": \"Aura House 2bds Eco Bamboo House, Pool, River View\",\n            \"price_per_night\": 5000,\n            \"city\": \"Bali\",\n            \"facilities\": \"4 tamu2 kamar tidur2 tempat tidur2 kamar mandi\",\n            \"rating_average\": 0,\n            \"image_thumbnail_url\": \"https://trialtestbucket.s3.amazonaws.com/profile/otoU8HVrSiIadj1mBDfF-Screenshot_3.jpg\"\n        }\n    ],\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				},
-				{
-					"name": "delete user by id",
+					"name": "delete user",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -1030,7 +836,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "Poci8",
+									"value": "Poci9",
 									"type": "text"
 								},
 								{
@@ -1067,6 +873,68 @@
 									"key": "client_image_file",
 									"type": "file",
 									"src": "/C:/Users/User/Pictures/2020-12-01_183148.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Poci19",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "poci19@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Jakarta",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0811-9102-395",
+									"type": "text"
+								},
+								{
+									"key": "client_image_file",
+									"type": "file",
+									"src": "/C:/Users/User/Downloads/asset_capstone/eo_bozz_logo.png"
 								}
 							]
 						},
@@ -1156,6 +1024,24 @@
 							],
 							"path": [
 								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order By Client Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"orders"
 							]
 						}
 					},
@@ -1267,6 +1153,26 @@
 							"path": [
 								"clients",
 								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Order",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/orders/48/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"orders",
+								"48",
+								"complete"
 							]
 						}
 					},
@@ -1805,13 +1711,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/partners/5",
+							"raw": "{{base_url}}/partners/4",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"partners",
-								"5"
+								"4"
 							]
 						}
 					},
@@ -1838,15 +1744,19 @@
 				{
 					"name": "Get Services by ID Partner Copy",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/partners/services",
+							"raw": "{{base_url}}/partners/4/services",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"partners",
+								"4",
 								"services"
 							]
 						}
@@ -1987,7 +1897,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"verify_log\": \"Verified ulang\",\r\n    \"status\": \"Verified\",\r\n    \"partner_id\": 14\r\n}",
+							"raw": "{\r\n    \"verify_log\": \"Revisi 1\",\r\n    \"status\": \"Not Verified\",\r\n    \"partner_id\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2112,13 +2022,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/partners/14/register",
+							"raw": "{{base_url}}/partners/1/register",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"partners",
-								"14",
+								"1",
 								"register"
 							]
 						}
@@ -2182,14 +2092,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/partners/orders/2/confirm",
+							"raw": "{{base_url}}/partners/orders/56/confirm",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"partners",
 								"orders",
-								"2",
+								"56",
 								"confirm"
 							]
 						}
@@ -2271,358 +2181,6 @@
 			]
 		},
 		{
-			"name": "Service",
-			"item": [
-				{
-					"name": "Add",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "service_name",
-									"value": "Intimate Wedding Ballroom 2",
-									"type": "text"
-								},
-								{
-									"key": "service_description",
-									"value": "1. Main Backdrop\n- Main Backdrop 8x3 or 4 m\n- Main Backdrop Sofa Set\n- Mini garden at front stage\n- Basic Lighting with LED lighting\n\n2. Akad/Blessing Decoration (in one location)\n- Akad/Blessing Table Decor\n- Akad/Blessing Chair Decor ( include chair)\n\n3. Aisle/Pathway Decoration\n- 6pcs Standing Flowers/ 4pcs Standing Flowers with 8pcs aisle centerpiece\n\n4. Entrance Decor\n- Welcome Sign\n- Registry Table and Angpau box include Simply Backdrop\n- Entrance/ Wedding Gate\n\n5. Photo Gallery\n- 3 set of Photo Gallery ( print photos included)\n\n6. Entertainment Backdrop\n- Simply Iron/Arch Gate Backdrop OR mini garden at front Entertainment stage\n\n7. Photobooth\n- Simply Photobooth 2,5x2,5m\n\nBonus Handbouquet and Corsage",
-									"type": "text"
-								},
-								{
-									"key": "service_category",
-									"value": "Wedding Venue",
-									"type": "text"
-								},
-								{
-									"key": "service_price",
-									"value": "36100000",
-									"type": "text"
-								},
-								{
-									"key": "average_rating",
-									"value": "0",
-									"type": "text"
-								},
-								{
-									"key": "service_image_file",
-									"type": "file",
-									"src": "/C:/Users/User/Downloads/asset_capstone/upload-XO1OyPrLp.jpg"
-								},
-								{
-									"key": "city",
-									"value": "Jakarta",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/services",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "Poci4Update",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "poci4@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "1234",
-									"type": "text"
-								},
-								{
-									"key": "gender",
-									"value": "Male",
-									"type": "text"
-								},
-								{
-									"key": "address",
-									"value": "Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830",
-									"type": "text"
-								},
-								{
-									"key": "city",
-									"value": "123Jakarta",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "0811-9102-395",
-									"type": "text"
-								},
-								{
-									"key": "client_image_file",
-									"type": "file",
-									"src": "/C:/Users/User/Pictures/2020-12-01_183158.png"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/services",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/services",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Service Additional",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"service_id\": 1,\r\n\"additional_id\": 12\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/services/additionals",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services",
-								"additionals"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Discussion by Service ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/services/1/discussions",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services",
-								"1",
-								"discussions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Check Availbility",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/services/1/availability?start_date=2023-02-01&end_date=2023-02-15",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services",
-								"1",
-								"availability"
-							],
-							"query": [
-								{
-									"key": "start_date",
-									"value": "2023-02-01"
-								},
-								{
-									"key": "end_date",
-									"value": "2023-02-15"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get with Filter",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/services",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services"
-							],
-							"query": [
-								{
-									"key": "city",
-									"value": "jakarta",
-									"disabled": true
-								},
-								{
-									"key": "service_name",
-									"value": "ALL",
-									"disabled": true
-								},
-								{
-									"key": "service_category",
-									"value": "Wedding",
-									"disabled": true
-								},
-								{
-									"key": "service_price",
-									"value": "1000",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/services/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"services",
-								"1"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Get by id",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/clients/2",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"clients",
-										"2"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Sat, 24 Dec 2022 00:31:22 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "332"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Poci\",\n        \"email\": \"poci@gmail.com\",\n        \"role\": \"Client\",\n        \"gender\": \"Male\",\n        \"address\": \"Perumahan Citra Garden 3 Blok C10/no.25, Pegadungan, Kec. Kalideres, Daerah Khusus Ibukota Jakarta 11830\",\n        \"city\": \"Jakarta\",\n        \"phone\": \"0811-9102-395\",\n        \"client_image_url\": \"\",\n        \"user_id\": 13\n    },\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Delete by id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/clients/4",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"clients",
-								"4"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
 			"name": "Additional",
 			"item": [
 				{
@@ -2632,7 +2190,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"additional_name\": \"Paket tambahan Mic 4 Sound 500watt / 8 hours\",\r\n    \"additional_price\": 2750000\r\n}",
+							"raw": "{\r\n    \"additional_name\": \"Paket tambahan Snack Gold (Roti, Pastry, Buah, Juice) 50 pax\",\r\n    \"additional_price\": 16200000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2718,7 +2276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"additional_name\": \"Paket tambahan Mic 4 Sound 500watt / 8 hours\",\r\n    \"additional_price\": 3750000\r\n}",
+							"raw": "{\r\n    \"additional_name\": \"Paket tambahan Mic 4 Sound 500watt / 8 hours 22\",\r\n    \"additional_price\": 3750000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2726,13 +2284,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/additionals/7",
+							"raw": "{{base_url}}/additionals/4",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"additionals",
-								"7"
+								"4"
 							]
 						}
 					},
@@ -3417,319 +2975,6 @@
 			]
 		},
 		{
-			"name": "Review Copy",
-			"item": [
-				{
-					"name": "Add",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲 99\",\r\n    \"rating\": 5,\r\n    \"order_id\": 1,\r\n    \"service_id\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/reviews",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Add",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "title",
-											"value": "Nestled amongst the giant redwoods",
-											"type": "text"
-										},
-										{
-											"key": "file",
-											"type": "file",
-											"src": "/D:/wawabunny/golang/immersive-alta/assets/people19.png"
-										},
-										{
-											"key": "property_id",
-											"value": "1",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{base_url}}/property_images",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"property_images"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 13 Dec 2022 08:35:37 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "53"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Success create data\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Edit",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲. edited 7\",\r\n    \"rating\": 5,\r\n    \"order_id\": 1,\r\n    \"service_id\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/reviews/5",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews",
-								"5"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/reviews",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Get",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/reviews",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"reviews"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Sun, 25 Dec 2022 06:45:50 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "284"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲\",\n            \"rating\": 5,\n            \"order_id\": 1,\n            \"service_id\": 1,\n            \"client_id\": 0\n        }\n    ],\n    \"message\": \"Success read all data.\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Get by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/reviews/5",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews",
-								"5"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Get by id",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/reviews/5",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"reviews",
-										"5"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 26 Dec 2022 23:10:41 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "280"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"review\": \"Sangat puas pelayanannya,owner nya baik banget sangat membantu untuk wedding ku,makanannya enak,dekorasi buffetnya bagus,sukses terus mumtaza🤲 4\",\n        \"rating\": 5,\n        \"order_id\": 1,\n        \"service_id\": 1,\n        \"client_id\": 1\n    },\n    \"message\": \"Success read user.\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Delete by id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/reviews/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews",
-								"1"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Delete by id",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/comments/3",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"comments",
-										"3"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=UTF-8"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 13 Dec 2022 22:49:38 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "54"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"Success delete data.\",\n    \"status\": \"Success\"\n}"
-						}
-					]
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
 			"name": "City",
 			"item": [
 				{
@@ -3804,7 +3049,7 @@
 							"formdata": [
 								{
 									"key": "service_name",
-									"value": "Intimate Wedding Ballroom",
+									"value": "Intimate Wedding Swimming Pool Party",
 									"type": "text"
 								},
 								{
@@ -3819,7 +3064,7 @@
 								},
 								{
 									"key": "service_price",
-									"value": "36100000",
+									"value": "48500000",
 									"type": "text"
 								},
 								{
@@ -3946,12 +3191,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/clients",
+							"raw": "{{base_url}}/services",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"clients"
+								"services"
 							],
 							"query": [
 								{
@@ -3980,13 +3225,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/clients/2",
+							"raw": "{{base_url}}/services/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"clients",
-								"2"
+								"services",
+								"1"
 							]
 						}
 					},
@@ -4057,13 +3302,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/services/1/additionals",
+							"raw": "{{base_url}}/services/20/additionals",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"services",
-								"1",
+								"20",
 								"additionals"
 							]
 						}
@@ -4076,7 +3321,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/services/1/reviews",
+							"raw": "{{base_url}}/services/1/reviews",
+							"host": [
+								"{{base_url}}"
+							],
 							"path": [
 								"services",
 								"1",
@@ -4111,19 +3359,13 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "service_id",
-									"value": "1",
-									"type": "default"
-								},
-								{
-									"key": "additional_id",
-									"value": "1",
-									"type": "default"
+							"mode": "raw",
+							"raw": "{\r\n    \"service_id\": 2,\r\n    \"additionals\": [\r\n        {\r\n            \"additional_id\": 11\r\n        },\r\n        {\r\n            \"additional_id\": 12\r\n        }\r\n\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/services/additionals",
@@ -4193,13 +3435,13 @@
 			"name": "Order",
 			"item": [
 				{
-					"name": "create order",
+					"name": "create order local",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"event_name\": \"Birthday sweet 17th Tamtam\",\r\n\"start_date\": \"2023-01-15T00:33:00.000Z\",\r\n\"end_date\":\"2023-01-15T00:33:00.000Z\",\r\n\"event_location\":\"Tangerang\",\r\n\"event_address\":\"Jl. Pantai Indah No.7, Ancol, Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14430\",\r\n\"notes_for_partner\":\"Semua makanan tanpa kerang\",\r\n\"payment_method\":\"VA BCA\",\r\n\"service_id\":1,\r\n\"order_details\":\r\n[\r\n    {\r\n        \"service_additional_id\":1,\r\n        \"qty\":1\r\n    },\r\n    {\r\n        \"service_additional_id\":2,\r\n        \"qty\":2\r\n    }\r\n]\r\n}",
+							"raw": "{\r\n\"event_name\": \"Wedding Losa & Ello 12\",\r\n\"start_date\": \"2023-01-20\",\r\n\"end_date\":\"2023-01-21\",\r\n\"event_location\":\"Tangerang\",\r\n\"event_address\":\"Jl. Pantai Indah No.7, Ancol, Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14430\",\r\n\"notes_for_partner\":\"Semua makanan tanpa kerang\",\r\n\"payment_method\":\"va bca\",\r\n\"service_id\":2,\r\n\"order_details\":\r\n[\r\n    {\r\n        \"service_additional_id\":8,\r\n        \"qty\":2\r\n    },\r\n    {\r\n        \"service_additional_id\":22,\r\n        \"qty\":2\r\n    }\r\n]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4225,7 +3467,33 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"event_name\": \"Birthday sweet 17th Tamtam\",\r\n\"start_date\": \"2023-01-15T00:33:00.000Z\",\r\n\"end_date\":\"2023-01-15T00:33:00.000Z\",\r\n\"event_location\":\"Tangerang\",\r\n\"event_address\":\"Jl. Pantai Indah No.7, Ancol, Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14430\",\r\n\"notes_for_partner\":\"Semua makanan tanpa kerang\",\r\n\"payment_method\":\"VA BCA\",\r\n\"service_id\":11,\r\n\"order_details\":\r\n[\r\n    {\r\n        \"service_additional_id\":1,\r\n        \"qty\":3\r\n    },\r\n    {\r\n        \"service_additional_id\":2,\r\n        \"qty\":1\r\n    }\r\n]\r\n}",
+							"raw": "{\r\n\"event_name\": \"Birthday sweet 17th Tamtam 99\",\r\n\"start_date\": \"2023-01-15T00:33:00.000Z\",\r\n\"end_date\":\"2023-01-15T00:33:00.000Z\",\r\n\"event_location\":\"Tangerang\",\r\n\"event_address\":\"Jl. Pantai Indah No.7, Ancol, Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14430\",\r\n\"notes_for_partner\":\"Semua makanan tanpa kerang\",\r\n\"payment_method\":\"va bca\",\r\n\"service_id\":20,\r\n\"order_details\":\r\n[\r\n    {\r\n        \"service_additional_id\":4,\r\n        \"qty\":4\r\n    },\r\n    {\r\n        \"service_additional_id\":5,\r\n        \"qty\":2\r\n    }\r\n]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create order live tes salah payment method",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"event_name\": \"BirdDay Partyy DC Indo\",\r\n\"start_date\": \"2023-01-15T00:33:00.000Z\",\r\n\"end_date\":\"2023-01-15T00:33:00.000Z\",\r\n\"event_location\":\"Tangerang\",\r\n\"event_address\":\"Jl. Pantai Indah No.7, Ancol, Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14430\",\r\n\"notes_for_partner\":\"Semua makanan tanpa kerang\",\r\n\"payment_method\":\"VA BCA\",\r\n\"service_id\":11,\r\n\"order_details\":\r\n[\r\n    {\r\n        \"service_additional_id\":199,\r\n        \"qty\":3\r\n    },\r\n    {\r\n        \"service_additional_id\":3,\r\n        \"qty\":1\r\n    }\r\n]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4253,20 +3521,20 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "",
+									"key": "payout_receipt_file",
 									"type": "file",
-									"src": "/C:/Users/user/OneDrive/Pictures/Screenshots/2020-08-17.png"
+									"src": "/C:/Users/User/Downloads/asset_capstone/bukti_tf_bca.jpeg"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/orders/1/payout",
+							"raw": "{{base_url}}/orders/11/payout",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"orders",
-								"1",
+								"11",
 								"payout"
 							]
 						}
@@ -4290,13 +3558,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/orders/1",
+							"raw": "{{base_url}}/orders/5",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"orders",
-								"1"
+								"5"
 							],
 							"query": [
 								{
@@ -4315,13 +3583,49 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/orders/4",
+							"raw": "{{base_url}}/orders/61",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"orders",
-								"4"
+								"61"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get order by id Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/54",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								"54"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get order by id live",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/25",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								"25"
 							]
 						}
 					},
@@ -4339,10 +3643,100 @@
 							],
 							"path": [
 								"orders"
+							],
+							"query": [
+								{
+									"key": "event_name",
+									"value": "tam tam",
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get all order search filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Temp JSON",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 36,\r\n    \"event_name\": \"Wedding Losa \\u0026 Ello \",\r\n    \"start_date\": \"2023-01-15T00:33:00Z\",\r\n    \"end_date\": \"2023-01-15T00:33:00Z\",\r\n    \"start_time\": 0,\r\n    \"end_time\": 0,\r\n    \"event_location\": \"Tangerang\",\r\n    \"event_address\": \"Jl. Pantai Indah No.7, Ancol, Kec. Pademangan, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14430\",\r\n    \"notes_for_partner\": \"Semua makanan tanpa kerang\",\r\n    \"service_name\": \"Intimate Wedding Ballroom 2\",\r\n    \"service_price\": 36100000,\r\n    \"gross_ammount\": 36100000,\r\n    \"payment_method\": \"va bni\",\r\n    \"transaction_id\": \"INV-20230103-888c9111-1486-44e5-94bf-d650ef07e530\",\r\n    \"order_status\": \"Waiting For Payment\",\r\n    \"payment_va_number\": \"9882641592632492\",\r\n    \"payment_expired_time\": \"After 12 Hours from 2023-01-03 05:22:26\",\r\n    \"payout_date\": \"0001-01-01T00:00:00Z\",\r\n    \"payout_reciept_file\": \"\",\r\n    \"service_id\": 2,\r\n    \"client_id\": 5,\r\n    \"detail_orders\": [\r\n        {\r\n            \"id\": 46,\r\n            \"additional_name\": \"Paket tambahan Dekorasi Gold / 8 hours\",\r\n            \"additional_price\": 17500000,\r\n            \"qty\": 1,\r\n            \"detail_order_total\": 17500000,\r\n            \"service_additional_id\": 8,\r\n            \"gross_ammount\": 0\r\n        },\r\n        {\r\n            \"id\": 47,\r\n            \"additional_name\": \"Paket tambahan Dekorasi Silver / 8 hours\",\r\n            \"additional_price\": 11500000,\r\n            \"qty\": 2,\r\n            \"detail_order_total\": 23000000,\r\n            \"service_additional_id\": 22,\r\n            \"gross_ammount\": 0\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"name": "Bank Transfer Resp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Temp JSON",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Temp JSON",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
 				}
 			]
 		}
