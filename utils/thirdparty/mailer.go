@@ -81,6 +81,18 @@ func SendEmailWaitingPayment2(recipientEmail, subject string, data interface{}) 
 	}
 }
 
+func SendEmailWaitingConfirmation2(recipientEmail, subject string, data interface{}) {
+
+	template := path.Join("utils", "thirdparty", "order_waiting_confirmation.html")
+	err := SendMail(recipientEmail, subject, data, template)
+	if err != nil {
+		helper.LogDebug("SendEmailWaitingConfirmation - Failed send email")
+		fmt.Println("send email '" + subject + "' success")
+	} else {
+		fmt.Println(err)
+	}
+}
+
 func SendMailWaitingPayment(emailClient string) {
 	CONFIG_AUTH_EMAIL := os.Getenv("MAILER_SENDER_EMAIL")
 	CONFIG_AUTH_PASSWORD := os.Getenv("MAILER_SENDER_PASSWORD")

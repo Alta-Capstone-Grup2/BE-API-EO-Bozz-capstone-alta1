@@ -353,7 +353,15 @@ func (repo *orderRepository) UpdateMidtrans(input _order.Core) error {
 	if orderGorm.OrderStatus == cfg.ORDER_STATUS_WAITING_CONFIRMATION {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMailWaitingConfirmation(clientEmail)
+			vaString := thirdparty.GetVABankTitle(orderData.PaymentMethod)
+			var dataBody = map[string]interface{}{
+				"name":             client.User.Name,
+				"payment_method":   vaString,
+				"gross_ammount":    helper.FormatCurrencyIDR(orderData.GrossAmmount),
+				"payment_datetime": helper.GetDateNow(),
+			}
+
+			thirdparty.SendEmailWaitingConfirmation2(clientEmail, fmt.Sprintf("Checkout Order with %s Success at %s", orderData.PaymentMethod, helper.GetDateNowShort()), dataBody)
 		} else {
 			helper.LogDebug("Partner-query-UpdateMidtrans | Failed Sent Email. Client email not found.")
 		}
