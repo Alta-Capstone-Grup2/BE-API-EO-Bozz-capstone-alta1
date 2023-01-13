@@ -27,16 +27,25 @@ type User struct {
 }
 
 type Order struct {
-	ID            uint
-	EventName     string
-	StartDate     time.Time
-	EndDate       time.Time
-	EventLocation string
-	ServiceName   string
-	GrossAmmount  uint
-	OrderStatus   string
-	ServiceID     uint
-	ClientID      uint
+	ID                    uint
+	EventName             string
+	StartDate             time.Time
+	EndDate               time.Time
+	EventLocation         string
+	EventAddress          string
+	NotesForPartner       string
+	ServiceName           string
+	ServicePrice          uint
+	GrossAmmount          uint
+	PaymentMethod         string
+	OrderStatus           string
+	PayoutRecieptFile     string
+	PayoutDate            time.Time
+	MidtransTransactionID string
+	MidtransVaNumber      string
+	MidtransExpiredTime   string
+	ServiceID             uint
+	ClientID              uint
 }
 
 type ServiceInterface interface {

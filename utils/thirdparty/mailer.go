@@ -86,7 +86,7 @@ func SendEmailWaitingConfirmation2(recipientEmail, subject string, data interfac
 	template := path.Join("utils", "thirdparty", "order_waiting_confirmation.html")
 	err := SendMail(recipientEmail, subject, data, template)
 	if err != nil {
-		helper.LogDebug("SendEmailWaitingConfirmation - Failed send email")
+		helper.LogDebug("SendEmailWaitingConfirmation2 - Failed send email")
 		fmt.Println("send email '" + subject + "' success")
 	} else {
 		fmt.Println(err)
@@ -95,10 +95,34 @@ func SendEmailWaitingConfirmation2(recipientEmail, subject string, data interfac
 
 func SendEmailOrderConfirmed2(recipientEmail, subject string, data interface{}) {
 
-	template := path.Join("utils", "thirdparty", "order_waiting_confirmation.html")
+	template := path.Join("utils", "thirdparty", "order_order_confirmed.html")
 	err := SendMail(recipientEmail, subject, data, template)
 	if err != nil {
-		helper.LogDebug("SendEmailWaitingConfirmation - Failed send email")
+		helper.LogDebug("SendEmailOrderConfirmed2 - Failed send email")
+		fmt.Println("send email '" + subject + "' success")
+	} else {
+		fmt.Println(err)
+	}
+}
+
+func SendEmailCompleteOrder2(recipientEmail, subject string, data interface{}) {
+
+	template := path.Join("utils", "thirdparty", "order_complete_order.html")
+	err := SendMail(recipientEmail, subject, data, template)
+	if err != nil {
+		helper.LogDebug("SendEmailCompleteOrder2 - Failed send email")
+		fmt.Println("send email '" + subject + "' success")
+	} else {
+		fmt.Println(err)
+	}
+}
+
+func SendEmailPaidOff2(recipientEmail, subject string, data interface{}) {
+
+	template := path.Join("utils", "thirdparty", "order_paid_off.html")
+	err := SendMail(recipientEmail, subject, data, template)
+	if err != nil {
+		helper.LogDebug("SendEmailPaidOff2 - Failed send email")
 		fmt.Println("send email '" + subject + "' success")
 	} else {
 		fmt.Println(err)

@@ -433,11 +433,12 @@
                                   padding: 0px;
                                 "
                               >
-                                Payment proccess succesful. Order has been
-                                forwarded to the Partner.
+                                Your Order Complete. Thank you for using our
+                                service. Please give rating and review to this
+                                services.
                               </h5>
                               <p>
-                                <span>Thank you! Your payment details:</span>
+                                <span>Your order details:</span>
                               </p>
                               <table
                                 style="
@@ -453,26 +454,26 @@
                                 <tbody>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      Total Payment (Gross Ammount)
+                                      Event Name
                                     </td>
                                     <td style="width: 50%; height: 22px">
-                                      {{.gross_ammount}}
-                                    </td>
-                                  </tr>
-                                  <tr style="height: 22px">
-                                    <td style="width: 50%; height: 22px">
-                                      Payment Method
-                                    </td>
-                                    <td style="width: 50%; height: 22px">
-                                      {{.payment_method}}
+                                      {{.event_name}}
                                     </td>
                                   </tr>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      Payment Date
+                                      Start Date
                                     </td>
                                     <td style="width: 50%; height: 22px">
-                                      {{.payment_datetime}}
+                                      {{.start_date}}
+                                    </td>
+                                  </tr>
+                                  <tr style="height: 22px">
+                                    <td style="width: 50%; height: 22px">
+                                      End Date
+                                    </td>
+                                    <td style="width: 50%; height: 22px">
+                                      {{.end_date}}
                                     </td>
                                   </tr>
                                   <tr>

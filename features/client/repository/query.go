@@ -6,6 +6,7 @@ import (
 	"capstone-alta1/utils/helper"
 	"capstone-alta1/utils/thirdparty"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -138,14 +139,34 @@ func (repo *clientRepository) GetOrderById(clientId uint) (data []client.Order, 
 
 func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId, clientId uint) error {
 	orderGorm := fromOrder(input)
-	var order Order
+	var ModelDataOrder Order
 
-	tx := repo.db.Model(&order).Where("ID = ?", orderId).Where("client_id = ?", clientId).Updates(&orderGorm)
+	// check status yang ada
+	tx := repo.db.First(&ModelDataOrder, orderId)
 	if tx.Error != nil {
-		return errors.New("failed update client")
+		helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Error execute query check order. Error :", tx.Error)
+		return tx.Error
 	}
+
+	helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Row Affected query check order: ", tx.RowsAffected)
 	if tx.RowsAffected == 0 {
-		return errors.New("update failed")
+		return tx.Error
+	}
+
+	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
+		// proses update
+		ty := repo.db.Model(&ModelDataOrder).Where("ID = ?", orderId).Where("client_id = ?", clientId).Updates(&orderGorm)
+		if ty.Error != nil {
+			helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Error execute query update status. Error :", ty.Error)
+			return errors.New("failed update client")
+		}
+		helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Row Affected update status: ", ty.RowsAffected)
+		if ty.RowsAffected == 0 {
+			return errors.New("update failed")
+		}
+	} else {
+		helper.LogDebug("Partner-query-UpdateOrderStatusComplete | modelData.OrderStatus : ", ModelDataOrder.OrderStatus)
+		return errors.New("Order data no need to complete.")
 	}
 
 	//send email
@@ -155,10 +176,18 @@ func (repo *clientRepository) UpdateCompleteOrder(input client.Order, orderId, c
 		helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Failed get client data. Error ", yx.Error)
 	}
 
-	if order.OrderStatus == cfg.ORDER_STATUS_COMPLETE_ORDER {
+	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_COMPLETE_ORDER {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMailCompleteOrder(clientEmail)
+			vaString := thirdparty.GetVABankTitle(ModelDataOrder.PaymentMethod)
+			var dataBody = map[string]interface{}{
+				"name":           client.User.Name,
+				"event_name":     ModelDataOrder.EventName,
+				"payment_method": vaString,
+				"gross_ammount":  helper.FormatCurrencyIDR(ModelDataOrder.GrossAmmount),
+			}
+
+			thirdparty.SendEmailCompleteOrder2(clientEmail, fmt.Sprintf("Order Confirmed for Event : %s", ModelDataOrder.EventName), dataBody)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderStatusComplete | Failed Sent Email. Client email not found.")
 		}
