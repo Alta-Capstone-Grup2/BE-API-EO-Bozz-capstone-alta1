@@ -159,5 +159,5 @@ type RepositoryInterface interface {
 	GetReviewById(id uint) (data []Review, err error)
 	GetDiscussionById(id uint) (data []Discussion, err error)
 	AddAdditionalToService(input []ServiceAdditional) error
-	CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data Order, err error)
+	CheckAvailability(serviceId uint, queryStart, queryEnd string) (data Order, err error)
 }

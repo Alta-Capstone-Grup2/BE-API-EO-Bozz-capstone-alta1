@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -198,7 +197,7 @@ func (repo *serviceRepository) GetDiscussionById(serviceId uint) (data []_servic
 	return dataCore, nil
 }
 
-func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd time.Time) (data _service.Order, err error) {
+func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, queryEnd string) (data _service.Order, err error) {
 	//check available
 	var services []Service
 	var service Service
@@ -217,16 +216,19 @@ func (repo *serviceRepository) CheckAvailability(serviceId uint, queryStart, que
 	statusAvailable := "Available"
 	statusNotvalable := "Not Available"
 
+	resultQueryStart := helper.GetDateTimeFormatedToTime(queryStart + " 00:00:00")
+	resultQueryEnd := helper.GetDateTimeFormatedToTime(queryEnd + " 00:00:00")
+
 	if tx.Error != nil {
-		return orders.toCoreNotAvailable(serviceName, queryStart, queryEnd, statusNotvalable), tx.Error
+		return orders.toCoreNotAvailable(serviceName, resultQueryStart, resultQueryEnd, statusNotvalable), tx.Error
 	}
 
 	affectedRow := tx.RowsAffected
 	fmt.Println("\n\nHasil check availbility, \n Checkin date = ", queryStart, " \n Checkout date = ", queryEnd, " \n Hasil Row = ", affectedRow)
 
 	if affectedRow == 0 {
-		return orders.toCoreAvailable(serviceName, queryStart, queryEnd, statusAvailable), nil
+		return orders.toCoreAvailable(serviceName, resultQueryStart, resultQueryEnd, statusAvailable), nil
 	}
 
-	return orders.toCoreNotAvailable(serviceName, queryStart, queryEnd, statusNotvalable), nil
+	return orders.toCoreNotAvailable(serviceName, resultQueryStart, resultQueryEnd, statusNotvalable), nil
 }

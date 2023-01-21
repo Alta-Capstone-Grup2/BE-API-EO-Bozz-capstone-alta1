@@ -6,7 +6,7 @@ import (
 )
 
 type ServiceRequest struct {
-	ServiceName        string `json:"service_name" form:"service_name"`
+	ServiceName        string `json:"service_name" form:"service_name" `
 	ServiceIncluded    string `json:"service_included" form:"service_included"`
 	ServiceDescription string `json:"service_description" form:"service_description"`
 	ServiceCategory    string `json:"service_category" form:"service_category"`
@@ -29,6 +29,11 @@ type ServiceAdditionalRequest struct {
 }
 type AdditionalRequest struct {
 	AdditionalID uint `json:"additional_id" form:"additional_id"`
+}
+
+type CheckAvailabilityRequest struct {
+	StartDate string `json:"start_date" form:"start_date"`
+	EndDate   string `json:"end_date" form:"end_date"`
 }
 
 func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
