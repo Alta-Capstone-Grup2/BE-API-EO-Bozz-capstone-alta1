@@ -309,21 +309,37 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 
 	helper.LogDebug("Order - query -  UpdateStatusPayout | Order data : ", result)
 
+	// Send Paid Off Email
 	orderData, _, err := repo.GetById(id)
 	if err != nil {
 		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get order by id  data. Error .", err.Error)
 	}
 
-	var client Client
-	xx := repo.db.Preload("User").First(&client, orderData.ClientID)
-	if xx.Error != nil {
-		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get client data. Error .", xx.Error)
+	var partner Partner
+	serviceData, errServiceData := repo.GetServiceByID(orderData.ServiceID)
+	if errServiceData != nil {
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Error get service data. Error .", errServiceData.Error)
 	}
 
+	partnerData := repo.db.Preload("User").First(&partner, serviceData.PartnerID)
+	if partnerData.Error != nil {
+		helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Error get partner data. Error .", partnerData.Error)
+	}
+
+	helper.LogDebug("Service Data ", serviceData)
+	helper.LogDebug("Partner Data ", partner)
+
 	if result.OrderStatus == cfg.ORDER_STATUS_PAID_OFF {
-		if client.User.Email != "" {
-			clientEmail := client.User.Email
-			thirdparty.SendMailPayoutSuccess(clientEmail)
+		if partner.User.Email != "" {
+			partnerEmail := partner.User.Email
+			var dataBody = map[string]interface{}{
+				"event_nanme":         orderData.EventName,
+				"gross_ammount":       helper.FormatCurrencyIDR(orderData.GrossAmmount),
+				"payout_date":         orderData.PayoutDate,
+				"payout_reciept_file": orderData.PayoutRecieptFile,
+			}
+
+			thirdparty.SendEmailPaidOff2(partnerEmail, fmt.Sprintf("EOBozz Order Fund Paid Off for Order ", orderData.MidtransTransactionID), dataBody)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderPayoutDone | Failed Sent Email. Client email not found.")
 		}

@@ -178,6 +178,10 @@
         padding: 12px 25px;
         text-decoration: none;
         text-transform: capitalize;
+        display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid green; 
       }
 
       .btn-primary table td {
@@ -433,12 +437,11 @@
                                   padding: 0px;
                                 "
                               >
-                                Your Order Complete. Thank you for using our
-                                service. Please give rating and review to this
-                                services.
+                                Order Paid Off. Order payment have been
+                                transfered.
                               </h5>
                               <p>
-                                <span>Your order details:</span>
+                                <span>Your paid off detail :</span>
                               </p>
                               <table
                                 style="
@@ -462,24 +465,42 @@
                                   </tr>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      Start Date
+                                      Gross Ammount
                                     </td>
                                     <td style="width: 50%; height: 22px">
-                                      {{.start_date}}
+                                      {{.gross_ammount}}
                                     </td>
                                   </tr>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      End Date
+                                      Payout Date
                                     </td>
                                     <td style="width: 50%; height: 22px">
-                                      {{.end_date}}
+                                      {{.payout_date}}
                                     </td>
                                   </tr>
-                                  <tr>
-                                    <td style="width: 50%"></td>
-                                    <td style="width: 50%"></td>
+                                </tbody>
+                              </table>
+                              <table
+                                class="btn btn-primary"
+                                role="presentation"
+                                border="0"
+                                cellspacing="0"
+                                cellpadding="0"
+                              >
+                                <tbody >
+                                  <tr >
+                                    <td rowspan="2">
+                                      <a
+                                        href="{{.payout_date}}"
+                                        target="_blank"
+                                        >Downoad Payout Receipt</a
+                                      >
+                                    </td>
+                                    <td></td>
                                   </tr>
+                                  <tr></tr>
+                                </tr>
                                 </tbody>
                               </table>
                               <p>
