@@ -333,13 +333,14 @@ func (repo *orderRepository) UpdateStatusPayout(input _order.Core, id uint) erro
 		if partner.User.Email != "" {
 			partnerEmail := partner.User.Email
 			var dataBody = map[string]interface{}{
-				"event_nanme":         orderData.EventName,
+				"name":                partner.User.Name,
+				"event_name":          orderData.EventName,
 				"gross_ammount":       helper.FormatCurrencyIDR(orderData.GrossAmmount),
-				"payout_date":         orderData.PayoutDate,
+				"payout_date":         helper.GetDateFormated(orderData.PayoutDate),
 				"payout_reciept_file": orderData.PayoutRecieptFile,
 			}
 
-			thirdparty.SendEmailPaidOff2(partnerEmail, fmt.Sprintf("EOBozz Order Fund Paid Off for Order ", orderData.MidtransTransactionID), dataBody)
+			thirdparty.SendEmailPaidOff2(partnerEmail, fmt.Sprintf("EOBozz Order Fund Paid Off for Order %s", orderData.MidtransTransactionID), dataBody)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderPayoutDone | Failed Sent Email. Client email not found.")
 		}
