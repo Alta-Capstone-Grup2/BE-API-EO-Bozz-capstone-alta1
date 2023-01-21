@@ -18,7 +18,7 @@ func New(db *gorm.DB) city.RepositoryInterface {
 
 func (repo *cityRepository) GetAll() (data []city.Core, err error) {
 	var results []City
-	tx := repo.db.Find(&results)
+	tx := repo.db.Order("city_name asc").Find(&results)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

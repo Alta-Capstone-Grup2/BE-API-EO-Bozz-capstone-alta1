@@ -6,7 +6,7 @@ import (
 )
 
 type ServiceRequest struct {
-	ServiceName        string `json:"service_name" form:"service_name"`
+	ServiceName        string `json:"service_name" form:"service_name" `
 	ServiceIncluded    string `json:"service_included" form:"service_included"`
 	ServiceDescription string `json:"service_description" form:"service_description"`
 	ServiceCategory    string `json:"service_category" form:"service_category"`
