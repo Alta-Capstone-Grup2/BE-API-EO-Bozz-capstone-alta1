@@ -6,6 +6,7 @@ import (
 	"capstone-alta1/utils/helper"
 	thirdparty "capstone-alta1/utils/thirdparty"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -289,7 +290,15 @@ func (repo *partnerRepository) UpdateOrderConfirmStatus(orderID uint, partnerID 
 	if ModelDataOrder.OrderStatus == cfg.ORDER_STATUS_ORDER_CONFIRMED {
 		if client.User.Email != "" {
 			clientEmail := client.User.Email
-			thirdparty.SendMailConfirmedOrder(clientEmail)
+			vaString := thirdparty.GetVABankTitle(ModelDataOrder.PaymentMethod)
+			var dataBody = map[string]interface{}{
+				"name":           client.User.Name,
+				"event_name":     ModelDataOrder.EventName,
+				"payment_method": vaString,
+				"gross_ammount":  helper.FormatCurrencyIDR(ModelDataOrder.GrossAmmount),
+			}
+
+			thirdparty.SendEmailOrderConfirmed2(clientEmail, fmt.Sprintf("Order Confirmed for Event : %s", ModelDataOrder.EventName), dataBody)
 		} else {
 			helper.LogDebug("Partner-query-UpdateOrderConfirmStatus | Failed Sent Email. Client email not found.")
 		}

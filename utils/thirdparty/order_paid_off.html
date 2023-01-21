@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><title>EO Bozz Email Notification</title> Transactional Email</title>
+    <title>EO Bozz Email Notification</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -178,6 +178,10 @@
         padding: 12px 25px;
         text-decoration: none;
         text-transform: capitalize;
+        display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid green; 
       }
 
       .btn-primary table td {
@@ -433,14 +437,11 @@
                                   padding: 0px;
                                 "
                               >
-                                Waiting for payment with {{.payment_method}}
-                                before {{.payment_expired_time}}
+                                Order Paid Off. Order payment have been
+                                transfered.
                               </h5>
                               <p>
-                                <span
-                                  >Immediately make payment for your order with
-                                  the following details:</span
-                                >
+                                <span>Your paid off detail :</span>
                               </p>
                               <table
                                 style="
@@ -456,7 +457,15 @@
                                 <tbody>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      Total Payment (Gross Ammount)
+                                      Event Name
+                                    </td>
+                                    <td style="width: 50%; height: 22px">
+                                      {{.event_name}}
+                                    </td>
+                                  </tr>
+                                  <tr style="height: 22px">
+                                    <td style="width: 50%; height: 22px">
+                                      Gross Ammount
                                     </td>
                                     <td style="width: 50%; height: 22px">
                                       {{.gross_ammount}}
@@ -464,24 +473,10 @@
                                   </tr>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      Payment Method
+                                      Payout Date
                                     </td>
                                     <td style="width: 50%; height: 22px">
-                                      {{.payment_method}}
-                                    </td>
-                                  </tr>
-                                  <tr style="height: 22px">
-                                    <td style="width: 50%; height: 22px">
-                                      VA Number
-                                    </td>
-                                    <td style="width: 50%; height: 22px">
-                                      {{.va_number}}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td style="width: 50%">Payment Due Date</td>
-                                    <td style="width: 50%">
-                                      {{.payment_expired_time}}
+                                      {{.payout_date}}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -493,30 +488,19 @@
                                 cellspacing="0"
                                 cellpadding="0"
                               >
-                                <tbody>
-                                  <tr>
-                                    <td align="mid">
-                                      <p>&nbsp;</p>
-                                      <table
-                                        role="presentation"
-                                        border="0"
-                                        cellspacing="0"
-                                        cellpadding="0"
+                                <tbody >
+                                  <tr >
+                                    <td rowspan="2">
+                                      <a
+                                        href={{.payout_date}}
+                                        target="_blank"
+                                        >Downoad Payout Receipt</a
                                       >
-                                        <tbody>
-                                          <tr>
-                                            <td>
-                                              <a
-                                                href="https://www.tokopedia.com/help/article/metode-bayar-virtual-account-di-tokopedia"
-                                                target="_blank"
-                                                >How to pay</a
-                                              >
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
                                     </td>
+                                    <td></td>
                                   </tr>
+                                  <tr></tr>
+                                </tr>
                                 </tbody>
                               </table>
                               <p>

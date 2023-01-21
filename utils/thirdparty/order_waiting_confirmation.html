@@ -433,14 +433,11 @@
                                   padding: 0px;
                                 "
                               >
-                                Waiting for payment with {{.payment_method}}
-                                before {{.payment_expired_time}}
+                                Payment proccess succesful. Order has been
+                                forwarded to the Partner.
                               </h5>
                               <p>
-                                <span
-                                  >Immediately make payment for your order with
-                                  the following details:</span
-                                >
+                                <span>Thank you! Your payment details:</span>
                               </p>
                               <table
                                 style="
@@ -472,50 +469,15 @@
                                   </tr>
                                   <tr style="height: 22px">
                                     <td style="width: 50%; height: 22px">
-                                      VA Number
+                                      Payment Date
                                     </td>
                                     <td style="width: 50%; height: 22px">
-                                      {{.va_number}}
+                                      {{.payment_datetime}}
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td style="width: 50%">Payment Due Date</td>
-                                    <td style="width: 50%">
-                                      {{.payment_expired_time}}
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              <table
-                                class="btn btn-primary"
-                                role="presentation"
-                                border="0"
-                                cellspacing="0"
-                                cellpadding="0"
-                              >
-                                <tbody>
-                                  <tr>
-                                    <td align="mid">
-                                      <p>&nbsp;</p>
-                                      <table
-                                        role="presentation"
-                                        border="0"
-                                        cellspacing="0"
-                                        cellpadding="0"
-                                      >
-                                        <tbody>
-                                          <tr>
-                                            <td>
-                                              <a
-                                                href="https://www.tokopedia.com/help/article/metode-bayar-virtual-account-di-tokopedia"
-                                                target="_blank"
-                                                >How to pay</a
-                                              >
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </td>
+                                    <td style="width: 50%"></td>
+                                    <td style="width: 50%"></td>
                                   </tr>
                                 </tbody>
                               </table>

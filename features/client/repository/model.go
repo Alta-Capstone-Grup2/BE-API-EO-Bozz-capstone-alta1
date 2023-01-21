@@ -32,15 +32,24 @@ type User struct {
 
 type Order struct {
 	gorm.Model
-	EventName     string
-	StartDate     time.Time
-	EndDate       time.Time
-	EventLocation string
-	ServiceName   string
-	GrossAmmount  uint
-	OrderStatus   string
-	ServiceID     uint
-	ClientID      uint
+	EventName             string
+	StartDate             time.Time
+	EndDate               time.Time
+	EventLocation         string
+	EventAddress          string
+	NotesForPartner       string
+	ServiceName           string
+	ServicePrice          uint
+	GrossAmmount          uint
+	PaymentMethod         string
+	OrderStatus           string
+	PayoutRecieptFile     string
+	PayoutDate            time.Time
+	MidtransTransactionID string
+	MidtransVaNumber      string
+	MidtransExpiredTime   string
+	ServiceID             uint
+	ClientID              uint
 }
 
 type Review struct {
@@ -102,16 +111,25 @@ func (dataModel *Client) toCore() client.Core {
 
 func (data *Order) toCoreOrder() client.Order {
 	return client.Order{
-		ID:            data.ID,
-		EventName:     data.EventName,
-		StartDate:     data.StartDate,
-		EndDate:       data.EndDate,
-		EventLocation: data.EventLocation,
-		ServiceName:   data.ServiceName,
-		GrossAmmount:  data.GrossAmmount,
-		OrderStatus:   data.OrderStatus,
-		ServiceID:     data.ServiceID,
-		ClientID:      data.ClientID,
+		ID:                    data.ID,
+		EventName:             data.EventName,
+		StartDate:             data.StartDate,
+		EndDate:               data.EndDate,
+		EventLocation:         data.EventLocation,
+		ServiceName:           data.ServiceName,
+		GrossAmmount:          data.GrossAmmount,
+		OrderStatus:           data.OrderStatus,
+		ServiceID:             data.ServiceID,
+		ClientID:              data.ClientID,
+		EventAddress:          data.EventAddress,
+		NotesForPartner:       data.NotesForPartner,
+		ServicePrice:          data.ServicePrice,
+		PaymentMethod:         data.PaymentMethod,
+		PayoutRecieptFile:     data.PayoutRecieptFile,
+		PayoutDate:            data.PayoutDate,
+		MidtransTransactionID: data.MidtransTransactionID,
+		MidtransVaNumber:      data.MidtransVaNumber,
+		MidtransExpiredTime:   data.MidtransExpiredTime,
 	}
 }
 
