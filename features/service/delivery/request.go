@@ -31,6 +31,11 @@ type AdditionalRequest struct {
 	AdditionalID uint `json:"additional_id" form:"additional_id"`
 }
 
+type CheckAvailabilityRequest struct {
+	StartDate string `json:"start_date" form:"start_date"`
+	EndDate   string `json:"end_date" form:"end_date"`
+}
+
 func toCore(input ServiceRequest, InputPartnerID uint) service.Core {
 	priceInt, _ := strconv.Atoi(input.ServicePrice)
 	coreInput := service.Core{

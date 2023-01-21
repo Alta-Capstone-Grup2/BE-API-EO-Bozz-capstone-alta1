@@ -243,6 +243,18 @@ func (delivery *serviceDelivery) CheckAvailability(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(errFormatEnd.Error()))
 	}
 
+	// query param to struct
+	CheckAvailabilityData := CheckAvailabilityRequest{
+		StartDate: queryStart,
+		EndDate:   queryEnd,
+	}
+
+	//input validation
+	if errValidateInput := Validate(CheckAvailabilityData); errValidateInput != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Incorrect input. "+errValidateInput.Error()))
+	}
+
+	// process
 	data, err := delivery.serviceService.CheckAvailability(uint(serviceId), queryStart, queryEnd)
 	if err != nil {
 		if strings.Contains(err.Error(), "Error:Field validation") {

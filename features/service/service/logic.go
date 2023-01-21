@@ -130,9 +130,10 @@ func (service *serviceService) CheckAvailability(serviceId uint, queryStart, que
 	startDate := helper.GetDateTimeFormatedToTime(queryStart + " 00:00:00")
 	endtDate := helper.GetDateTimeFormatedToTime(queryEnd + " 00:00:00")
 
+	helper.LogDebug("Input param Data startdate ", queryStart, " enddate ", queryEnd)
 	helper.LogDebug("Data startdate ", startDate, " enddate ", endtDate)
 
-	data, err = service.serviceRepository.CheckAvailability(serviceId, startDate, endtDate)
+	data, err = service.serviceRepository.CheckAvailability(serviceId, queryStart, queryEnd)
 	if err != nil {
 		return _service.Order{}, helper.ServiceErrorMsg(err)
 	}
